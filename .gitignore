@@ -30,3 +30,6 @@ build/
 
 #Maven files
 /.mvn/
+mvnw
+mvnw.cmd
+AM16.iml
