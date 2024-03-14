@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.common.model.cards.decks;
 
 import it.polimi.ingsw.am16.common.model.cards.Card;
+import it.polimi.ingsw.am16.common.util.RNG;
 
 import java.util.*;
 
@@ -61,9 +62,7 @@ public abstract class Deck<T extends Card> {
      * Randomly shuffles the deck.
      */
     public void shuffle() {
-        //TODO maybe add a centralized RNG instead of using a new Random every time it's needed.
-        Random r = new Random();
-        Collections.shuffle(cards, r);
+        Collections.shuffle(cards, RNG.getRNG());
     }
 
     /**
