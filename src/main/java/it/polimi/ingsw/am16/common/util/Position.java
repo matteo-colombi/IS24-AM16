@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO write documentation
- * @param x
- * @param y
+ * Record used to keep track of coordinates on game boards.
+ * @param x x-coordinate of the point.
+ * @param y y-coordinate of the point.
  */
 public record Position(int x, int y) {
     private static final int numNeighbours = 4;
@@ -14,8 +14,8 @@ public record Position(int x, int y) {
     private static final int[] yDisplacements = {-1, -1, 1, 1};
 
     /**
-     * TODO write documentation
-     * @return
+     * Gives the 4 Positions of this Position's neighbours, diagonally from each corner.
+     * @return List of the neighbours.
      */
     public List<Position> getNeighbours() {
         List<Position> neighbours = new ArrayList<>();
@@ -26,9 +26,9 @@ public record Position(int x, int y) {
     }
 
     /**
-     * TODO write documentation
-     * @param offset
-     * @return
+     * Adds this position with the given offset position, obtained by summing each x-coordinate and each y-coordinate.
+     * @param offset The offset to add.
+     * @return The new position.
      */
     public Position addOffset(Position offset) {
         return new Position(x + offset.x, y + offset.y);

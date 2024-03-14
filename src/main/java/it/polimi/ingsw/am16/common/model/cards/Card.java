@@ -1,16 +1,16 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
 /**
- * //TODO write documentation
+ * Class used to model all the cards in the game.
  */
 public abstract class Card {
     private final int id;
     private final String name;
 
     /**
-     * //TODO write documentation
-     * @param id
-     * @param name
+     * Construct a card with the given numerical id and name.
+     * @param id the card's numerical id.
+     * @param name the card's name.
      */
     public Card(int id, String name) {
         this.id = id;
@@ -18,16 +18,14 @@ public abstract class Card {
     }
 
     /**
-     * //TODO write documentation
-     * @return
+     * @return The card's numerical id.
      */
     public int getId() {
         return id;
     }
 
     /**
-     * //TODO write documentation
-     * @return
+     * @return The card's name.
      */
     public String getName() {
         return name;

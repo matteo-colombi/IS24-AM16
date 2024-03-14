@@ -1,15 +1,15 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
-public class StarterCard extends BoardCard{
+/**
+ * Class used to model starter cards.
+ */
+public class StarterCard extends BoardCard {
     /**
-     * TODO write documentation
-     * This method constructs a starter card.
-     * Only 1 starter card must be in play for each player
-     *
-     * @param id the identifier of the card
-     * @param name
-     * @param frontSide the front side of the starter card
-     * @param backSide the back side of the starter card
+     * Constructs a new starter card with the given numerical id, name and sides.
+     * @param id The card's numerical id.
+     * @param name The card's name
+     * @param frontSide The card's front side.
+     * @param backSide The card's back side.
      */
     public StarterCard(int id, String name, CardSide frontSide, CardSide backSide) {
         super(id, name, frontSide, backSide);

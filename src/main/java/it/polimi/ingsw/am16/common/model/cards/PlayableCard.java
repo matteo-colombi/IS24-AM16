@@ -1,19 +1,19 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
 /**
- * TODO write documentation
+ * Class used to model the card's that can be given to the player to play during the game.
  */
 public abstract class PlayableCard extends BoardCard {
 
     private final ResourceType type;
 
     /**
-     * TODO write documentation
-     * @param id
-     * @param name
-     * @param frontSide
-     * @param backSide
-     * @param type
+     * Constructs a new playable card with the given id, name, sides and of the given resource type.
+     * @param id The card's numerical id.
+     * @param name The card's name.
+     * @param frontSide The card's front side.
+     * @param backSide The card's back side.
+     * @param type The card's resource type.
      */
     public PlayableCard(int id, String name, CardSide frontSide, CardSide backSide, ResourceType type) {
         super(id, name, frontSide, backSide);
@@ -21,8 +21,7 @@ public abstract class PlayableCard extends BoardCard {
     }
 
     /**
-     * TODO write documentation
-     * @return
+     * @return The card's resource type.
      */
     public ResourceType getType() {
         return type;

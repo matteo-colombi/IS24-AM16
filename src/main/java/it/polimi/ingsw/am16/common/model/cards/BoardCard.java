@@ -1,7 +1,7 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
 /**
- * TODO write documentation
+ * Class used to model the cards that can be placed on the player's board.
  */
 public abstract class BoardCard extends Card {
 
@@ -9,11 +9,11 @@ public abstract class BoardCard extends Card {
     private final CardSide backSide;
 
     /**
-     * TODO write documentation
-     * @param id
-     * @param name
-     * @param frontSide
-     * @param backSide
+     * Constructs a new card with the given numerical id, name and sides.
+     * @param id The card's numerical id.
+     * @param name The card's name.
+     * @param frontSide The card's front side.
+     * @param backSide The card's back side.
      */
     public BoardCard(int id, String name, CardSide frontSide, CardSide backSide) {
         super(id, name);
@@ -22,16 +22,14 @@ public abstract class BoardCard extends Card {
     }
 
     /**
-     * TODO write documentation
-     * @return
+     * @return The card's front side.
      */
     public CardSide getFrontSide() {
         return frontSide;
     }
 
     /**
-     * TODO write documentation
-     * @return
+     * @return The card's back side.
      */
     public CardSide getBackSide() {
         return backSide;
