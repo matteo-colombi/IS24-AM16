@@ -1,4 +1,4 @@
-package it.polimi.ingsw.am16.common.model;
+package it.polimi.ingsw.am16.common.model.players;
 
 import it.polimi.ingsw.am16.common.model.cards.BoardCard;
 import it.polimi.ingsw.am16.common.model.cards.CardSide;
@@ -35,9 +35,9 @@ public interface PlayAreaModel {
     /**
      * TODO write documentation
      * @param playedCard
-     * @param newCardPos
      * @param side
+     * @param newCardPosition
      * @return
      */
-    boolean checkLegalMove(PlayableCard playedCard, Position newCardPos, SideType side);
+    boolean checkLegalMove(PlayableCard playedCard, SideType side, Position newCardPosition);
 }

@@ -31,7 +31,7 @@ public interface GameModel {
     boolean allPlayersChoseObjective();
     void startGame();
     int chooseStartingPlayer();
-    void placeCard(int playerId, PlayableCard placedCard, Position newCardPos, SideType side) throws IllegalMoveException;
+    void placeCard(int playerId, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException;
     void drawCard(int playerId, DrawType drawType);
     boolean checkEndGame();
     void evaluateObjectivePoints();

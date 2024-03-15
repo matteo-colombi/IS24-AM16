@@ -1,6 +1,6 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
-import it.polimi.ingsw.am16.common.model.PlayArea;
+import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.util.HashMap;
@@ -20,7 +20,7 @@ public class CardSide {
     private final SideType side;
     private final Map<CornersIdx, Cornerable> corners;
 
-    private enum CornersIdx{
+    public enum CornersIdx{
         TOP_LEFT,
         TOP_RIGHT,
         BOTTOM_RIGHT,
@@ -121,6 +121,30 @@ public class CardSide {
         this.corners.put(CornersIdx.TOP_RIGHT, corners[CornersIdx.TOP_RIGHT.ordinal()]);
         this.corners.put(CornersIdx.BOTTOM_RIGHT, corners[CornersIdx.BOTTOM_RIGHT.ordinal()]);
         this.corners.put(CornersIdx.BOTTOM_LEFT, corners[CornersIdx.BOTTOM_LEFT.ordinal()]);
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public List<ResourceType> getCost() {
+        return cost;
+    }
+
+    public List<ResourceType> getPermanentResourcesGiven() {
+        return permanentResourcesGiven;
+    }
+
+    PointMultiplierPolicy getPointMultiplierPolicy() {
+        return pointMultiplierPolicy;
+    }
+
+    public SideType getSide() {
+        return side;
+    }
+
+    public Map<CornersIdx, Cornerable> getCorners() {
+        return corners;
     }
 
     // TODO

@@ -192,10 +192,10 @@ public class Game implements GameModel {
     }
 
     @Override
-    public void placeCard(int playerId, PlayableCard placedCard, Position newCardPos, SideType side) throws IllegalMoveException {
+    public void placeCard(int playerId, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException {
         for(int i = 0; i < numPlayers; i++) {
             if(players[i].getPlayerId() == playerId) {
-                players[i].playCard(placedCard, newCardPos, side);
+                players[i].playCard(placedCard, side, newCardPos);
             }
         }
     }

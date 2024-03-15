@@ -1,7 +1,7 @@
-package it.polimi.ingsw.am16.common.model;
+package it.polimi.ingsw.am16.common.model.players;
 
+import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.model.cards.*;
-import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.util.ArrayList;
@@ -94,33 +94,101 @@ public class PlayArea implements PlayAreaModel {
 
     //region Local Methods
 
+    private CardSide getCardSide(BoardCard card, SideType side) {
+        if (side == SideType.FRONT)
+            return card.getFrontSide();
+
+        return card.getBackSide();
+    }
+
     /**
      * TODO write documentation
      *
      * @param starterCard
      * @param side
      */
-    public void setStarterCard(StarterCard starterCard, SideType side){
+    public void setStarterCard(StarterCard starterCard, SideType side) {
+        Position starterPosition = new Position(0, 0);
 
+        updateField(starterCard, side, starterPosition);
     }
 
     /**
      * TODO write documentation
      *
      * @param playedCard
+     * @param side
      * @param newCardPosition
      */
-    public void playCard(PlayableCard playedCard, Position newCardPosition, SideType side) {
+    public void playCard(PlayableCard playedCard, SideType side, Position newCardPosition) throws IllegalMoveException {
+        if (!checkLegalMove(playedCard, side, newCardPosition))
+            throw new IllegalMoveException("Illegal move");
+
+        updateField(playedCard, side, newCardPosition);
+        updateCounts(playedCard, side, newCardPosition);
+        updateBounds(newCardPosition);
     }
 
     /**
      * TODO write documentation
      *
      * @param playedCard
+     * @param side
      * @param newCardPosition
      */
-    public void updateCounts(PlayableCard playedCard, Position newCardPosition) {
+    private void updateField(BoardCard playedCard, SideType side, Position newCardPosition) {
+        cardCount++;
 
+        cardPlacementOrder.add(newCardPosition);
+        field.put(newCardPosition, playedCard);
+        activeSides.put(playedCard, getCardSide(playedCard, side));
+    }
+
+    /**
+     * TODO write documentation
+     *
+     * @param playedCard
+     * @param side
+     * @param newCardPosition
+     */
+    public void updateCounts(PlayableCard playedCard, SideType side, Position newCardPosition) {
+        CardSide activeSide = activeSides.get(playedCard);
+
+        // FIXME
+        for (Cornerable corner : activeSide.getCorners().values()) {
+            switch (corner) {
+                case ResourceType.ANIMAL:
+                case ResourceType.PLANT:
+                case ResourceType.INSECT:
+                case ResourceType.FUNGI: {
+                    resourceCounts.merge((ResourceType) corner, 1, Integer::sum);
+                    break;
+                }
+                case ObjectType.INKWELL:
+                case ObjectType.MANUSCRIPT:
+                case ObjectType.QUILL: {
+                    objectCounts.merge((ObjectType) corner, 1, Integer::sum);
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
+
+        //TODO implementare la parte relativa agli angoli coperti dalla nuova carta
+    }
+
+    /**
+     * TODO write documentation
+     *
+     * @param newCardPosition
+     */
+    private void updateBounds(Position newCardPosition) {
+        minX = Math.min(minX, newCardPosition.x());
+        maxX = Math.max(maxX, newCardPosition.x());
+        minY = Math.min(minY, newCardPosition.y());
+        maxY = Math.max(maxY, newCardPosition.y());
     }
 
     //endregion
@@ -134,8 +202,7 @@ public class PlayArea implements PlayAreaModel {
      */
     @Override
     public List<Position> getPlacementOrder() {
-        //TODO implement this
-        return null;
+        return List.copyOf(cardPlacementOrder);
     }
 
     /**
@@ -145,8 +212,7 @@ public class PlayArea implements PlayAreaModel {
      */
     @Override
     public Map<Position, BoardCard> getField() {
-        //TODO implement this
-        return null;
+        return Map.copyOf(field);
     }
 
     /**
@@ -156,22 +222,21 @@ public class PlayArea implements PlayAreaModel {
      */
     @Override
     public Map<BoardCard, CardSide> getActiveSides() {
-        //TODO implement this
-        return null;
+        return Map.copyOf(activeSides);
     }
 
     /**
      * TODO write documentation
      *
      * @param playedCard
-     * @param newCardPos
      * @param side
+     * @param newCardPosition
      * @return
      */
     @Override
-    public boolean checkLegalMove(PlayableCard playedCard, Position newCardPos, SideType side) {
+    public boolean checkLegalMove(PlayableCard playedCard, SideType side, Position newCardPosition) {
         //TODO implement this
-        return false;
+        return true;
     }
 
     //endregion

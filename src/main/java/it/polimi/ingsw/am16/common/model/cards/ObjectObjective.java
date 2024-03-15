@@ -1,6 +1,6 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
-import it.polimi.ingsw.am16.common.model.PlayArea;
+import it.polimi.ingsw.am16.common.model.players.PlayArea;
 
 import java.util.Map;
 

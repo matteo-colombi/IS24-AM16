@@ -13,6 +13,7 @@ public class RNG extends Random {
 
     /**
      * Instantiates the RNG with the given seed.
+     *
      * @param seed The seed.
      */
     private RNG(long seed) {
@@ -21,6 +22,7 @@ public class RNG extends Random {
 
     /**
      * Sets the RNG seed.
+     *
      * @param seed The seed.
      */
     public static synchronized void setRNGSeed(long seed) {
@@ -29,6 +31,7 @@ public class RNG extends Random {
 
     /**
      * Returns the RNG instance.
+     *
      * @return The RNG.
      */
     public static synchronized RNG getRNG() {

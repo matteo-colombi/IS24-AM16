@@ -1,8 +1,6 @@
 package it.polimi.ingsw.am16.common.model.players;
 
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
-import it.polimi.ingsw.am16.common.model.PlayArea;
-import it.polimi.ingsw.am16.common.model.PlayAreaModel;
 import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
@@ -13,7 +11,6 @@ import it.polimi.ingsw.am16.common.util.Position;
 
 /**
  * Class to handle players in a game. A player has a unique id for identification and a username. <br>
- *
  */
 public class Player implements PlayerModel {
     private final int playerId;
@@ -58,7 +55,7 @@ public class Player implements PlayerModel {
     }
 
     @Override
-    public int getTotalPoints(){
+    public int getTotalPoints() {
         return currGamePoints + currObjectivePoints;
     }
 
@@ -83,57 +80,50 @@ public class Player implements PlayerModel {
         return new ObjectiveCard[]{possiblePersonalObjectives[0], possiblePersonalObjectives[1]};
     }
 
-    public void addGamePoints(int points){
+    public void addGamePoints(int points) {
         currGamePoints += points;
     }
 
-    public void addObjectivePoints(int points){
+    public void addObjectivePoints(int points) {
         currObjectivePoints += points;
     }
 
-    public void giveCard(PlayableCard card){
+    public void giveCard(PlayableCard card) {
         this.hand.getCards().add(card);
     }
 
-    public boolean removeCard(PlayableCard card){
+    public boolean removeCard(PlayableCard card) {
         return this.hand.getCards().remove(card);
     }
 
-    public void playCard(PlayableCard card, Position newCardPos, SideType side) throws IllegalMoveException {
-        if(playArea.checkLegalMove(card, newCardPos, side)){
-            this.playArea.playCard(card, newCardPos, side);
-        } else {
-            throw new IllegalMoveException("Illegal move");
-        }
-        //TODO maybe the checkLegalMove can be done directly in playArea instead of here
+    public void playCard(PlayableCard card, SideType side, Position newCardPos) throws IllegalMoveException {
+        this.playArea.playCard(card, side, newCardPos);
     }
 
-    public void giveObjectiveOptions(ObjectiveCard firstOption, ObjectiveCard secondOption){
+    public void giveObjectiveOptions(ObjectiveCard firstOption, ObjectiveCard secondOption) {
         this.possiblePersonalObjectives[0] = firstOption;
         this.possiblePersonalObjectives[1] = secondOption;
     }
 
-    public void setStarterCard(StarterCard starterCard){
+    public void setStarterCard(StarterCard starterCard) {
         this.starterCard = starterCard;
     }
 
-    public void setObjectiveCard(ObjectiveCard objectiveCard){
+    public void setObjectiveCard(ObjectiveCard objectiveCard) {
         this.personalObjective = objectiveCard;
     }
 
-    public void chooseStarterCardSide(SideType side){
+    public void chooseStarterCardSide(SideType side) {
         playArea.setStarterCard(this.starterCard, side);
     }
 
-    public int evaluateCommonObjective(ObjectiveCard commonObjective){
+    public int evaluateCommonObjective(ObjectiveCard commonObjective) {
         return commonObjective.evaluatePoints(this.playArea);
     }
 
-    public int evaluatePersonalObjective(){
+    public int evaluatePersonalObjective() {
         return this.personalObjective.evaluatePoints(this.playArea);
     }
-
-
 
 
 }
