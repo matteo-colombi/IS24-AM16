@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.common.model;
 
 import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Map;
  */
 public class PlayArea implements PlayAreaModel {
     //TODO implement everything
+    private final Player player;
     private int cardCount;
     private final Map<ResourceType, Integer> resourceCounts;
     private final Map<ObjectType, Integer> objectCounts;
@@ -24,7 +26,8 @@ public class PlayArea implements PlayAreaModel {
     private int minY;
     private int maxY;
 
-    public PlayArea() {
+    public PlayArea(Player player) {
+        this.player = player;
         this.cardCount = 0;
         this.resourceCounts = new HashMap<>();
         this.objectCounts = new HashMap<>();
@@ -107,7 +110,7 @@ public class PlayArea implements PlayAreaModel {
      * @param playedCard
      * @param newCardPosition
      */
-    public void playCard(PlayableCard playedCard, Position newCardPosition) {
+    public void playCard(PlayableCard playedCard, Position newCardPosition, SideType side) {
     }
 
     /**
@@ -162,10 +165,11 @@ public class PlayArea implements PlayAreaModel {
      *
      * @param playedCard
      * @param newCardPos
+     * @param side
      * @return
      */
     @Override
-    public boolean checkLegalMove(PlayableCard playedCard, Position newCardPos) {
+    public boolean checkLegalMove(PlayableCard playedCard, Position newCardPos, SideType side) {
         //TODO implement this
         return false;
     }

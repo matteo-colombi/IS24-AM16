@@ -3,6 +3,7 @@ package it.polimi.ingsw.am16.common.model;
 import it.polimi.ingsw.am16.common.model.cards.BoardCard;
 import it.polimi.ingsw.am16.common.model.cards.CardSide;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
+import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.util.List;
@@ -35,7 +36,8 @@ public interface PlayAreaModel {
      * TODO write documentation
      * @param playedCard
      * @param newCardPos
+     * @param side
      * @return
      */
-    boolean checkLegalMove(PlayableCard playedCard, Position newCardPos);
+    boolean checkLegalMove(PlayableCard playedCard, Position newCardPos, SideType side);
 }
