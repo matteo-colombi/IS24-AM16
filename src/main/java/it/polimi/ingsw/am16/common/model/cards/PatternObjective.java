@@ -50,12 +50,12 @@ public final class PatternObjective extends ObjectiveCard {
         Position currPos = new Position(startX, startY);
         for(int i = 0; i<pattern.types.length-1; i++) {
             //FIXME find a way to remove the instanceof and cast. Maybe we can add a special ResourceType.STARTER used for starter cards and put getType in BoardCard?
-            //Downside to the ResourceType.STARTER: it's Cornerable so it can be accidentally put in a card's corner and mess stuff up.
+            //Downside to the ResourceType.STARTER: you can use it where you shouldn't and mess stuff up.
+            if(usedPositions.contains(currPos))
+                return false;
             if(field.get(currPos) instanceof StarterCard)
                 return false;
             if(((PlayableCard)field.get(currPos)).getType() != pattern.types[i])
-                return false;
-            if(usedPositions.contains(currPos))
                 return false;
             tempUsedPositions.add(currPos);
             if (i != pattern.types.length-1)

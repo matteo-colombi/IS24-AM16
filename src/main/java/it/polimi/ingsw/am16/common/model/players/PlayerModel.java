@@ -5,12 +5,13 @@ import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
 import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
 
 public interface PlayerModel {
-    public PlayerColor getPlayerColor();
-    public int getPlayerId();
-    public int getTotalPoints();
-    public int getGamePoints();
-    public int getObjectivePoints();
-    public HandModel getHand();
-    public ObjectiveCard getPersonalObjective();
-    public PlayAreaModel getPlayArea();
+    PlayerColor getPlayerColor();
+    int getPlayerId();
+    int getTotalPoints();
+    int getGamePoints();
+    int getObjectivePoints();
+    HandModel getHand();
+    ObjectiveCard getPersonalObjective();
+    PlayAreaModel getPlayArea();
+    ObjectiveCard[] getPersonalObjectiveOptions();
 }

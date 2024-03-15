@@ -22,10 +22,10 @@ public class CardRegistry {
      * TODO specify where the card details are taken from.
      */
     public static void initializeRegistry() {
-        objectiveCards = new ArrayList<>();
-        starterCards = new ArrayList<>();
-        goldCards = new ArrayList<>();
-        resourceCards = new ArrayList<>();
+        initializeObjectiveCards();
+        initializeStarterCards();
+        initializeGoldCards();
+        initializeResourceCards();
 
         initialized = true;
     }
@@ -68,7 +68,7 @@ public class CardRegistry {
 
     /**
      * Returns an unmodifiable list of all the Gold Cards in the game.
-     * @return An unmodifiable {@link List<GoldCard>}.
+     * @return An unmodifiable {@link List} of {@link GoldCard}.
      */
     public static List<GoldCard> getGoldCards() {
         if (!initialized)
@@ -78,7 +78,7 @@ public class CardRegistry {
 
     /**
      * Returns an unmodifiable list of all the Resource Cards in the game.
-     * @return An unmodifiable {@link List<ResourceCard>}.
+     * @return An unmodifiable {@link List} of {@link ResourceCard}.
      */
     public static List<ResourceCard> getResourceCards() {
         if (!initialized)

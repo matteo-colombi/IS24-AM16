@@ -15,7 +15,7 @@ import it.polimi.ingsw.am16.common.util.Position;
  * Class to handle players in a game. A player has a unique id for identification and a username. <br>
  *
  */
-public class Player {
+public class Player implements PlayerModel {
     private final int playerId;
     private final String username;
     private int currGamePoints;
@@ -37,40 +37,50 @@ public class Player {
         this.playArea = new PlayArea(this);
     }
 
+    @Override
+    public PlayerColor getPlayerColor() {
+        return color;
+    }
+
+    @Override
     public int getPlayerId() {
         return playerId;
     }
 
+    @Override
     public int getGamePoints() {
         return currGamePoints;
     }
 
+    @Override
     public int getObjectivePoints() {
         return currObjectivePoints;
     }
 
+    @Override
     public int getTotalPoints(){
         return currGamePoints + currObjectivePoints;
     }
 
+    @Override
     public ObjectiveCard getPersonalObjective() {
         return personalObjective;
     }
 
-    public PlayerColor getColor() {
-        return color;
-    }
-
+    @Override
     public HandModel getHand() {
         return hand;
     }
 
+    @Override
     public PlayArea getPlayArea() {
         return playArea;
     }
 
-    public ObjectiveCard[] getPossiblePersonalObjectives() {
-        return possiblePersonalObjectives;
+    @Override
+    public ObjectiveCard[] getPersonalObjectiveOptions() {
+        //FIXME make me more robust
+        return new ObjectiveCard[]{possiblePersonalObjectives[0], possiblePersonalObjectives[1]};
     }
 
     public void addGamePoints(int points){
