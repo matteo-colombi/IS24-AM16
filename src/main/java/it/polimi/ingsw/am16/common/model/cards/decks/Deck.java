@@ -73,6 +73,14 @@ public abstract class Deck<T extends Card> {
     }
 
     /**
+     * Checks if the deck has run out of cards.
+     * @return <code>true</code> if the deck is empty, <code>false</code> otherwise.
+     */
+    public boolean isEmpty() {
+        return cards.isEmpty();
+    }
+
+    /**
      * @return The list of cards in the deck.
      */
     public List<T> getCards() {

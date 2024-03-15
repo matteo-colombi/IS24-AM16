@@ -1,14 +1,8 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
-import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
-import it.polimi.ingsw.am16.common.model.PlayArea;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.util.Position;
-import javafx.geometry.Side;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
