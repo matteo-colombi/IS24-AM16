@@ -7,12 +7,12 @@ public interface HandModel {
      *
      * @return the number of cards in hand
      */
-    public int getSize();
+    int getSize();
 
     /**
      *
-     * @param index index of the card in the list of cards representing the hand
+     * @param index Index of the card in the list of cards representing the hand
      * @return the wanted card
      */
-    public PlayableCard getCard(int index);
+    PlayableCard getCard(int index);
 }

@@ -6,12 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hand implements HandModel{
-    private List<PlayableCard> cards;
+    private final List<PlayableCard> cards;
     private int size;
 
-    public Hand(List<PlayableCard> cards) {
+    public Hand() {
         this.cards = new ArrayList<>();
-        this.cards.addAll(cards);
     }
 
     public List<PlayableCard> getCards() {
