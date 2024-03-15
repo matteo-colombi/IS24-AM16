@@ -95,7 +95,7 @@ public class Player {
         } else {
             throw new IllegalMoveException("Illegal move");
         }
-
+        //TODO maybe the checkLegalMove can be done directly in playArea instead of here
     }
 
     public void giveObjectiveOptions(ObjectiveCard firstOption, ObjectiveCard secondOption){
