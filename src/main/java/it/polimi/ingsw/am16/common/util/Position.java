@@ -64,5 +64,4 @@ public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
         result = 31 * result + y;
         return result;
     }
-
 }

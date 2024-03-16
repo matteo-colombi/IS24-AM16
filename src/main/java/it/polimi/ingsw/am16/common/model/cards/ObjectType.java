@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public enum ObjectType implements Cornerable {
     @JsonProperty("inkwell")
+public enum ObjectType {
     INKWELL,
 
     @JsonProperty("manuscript")

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Enum that includes the game's resource types.
  */
-public enum ResourceType implements Cornerable {
+public enum ResourceType {
     @JsonProperty("animal")
     ANIMAL,
 

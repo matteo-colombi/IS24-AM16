@@ -18,14 +18,7 @@ public class CardSide {
     private final List<ResourceType> permanentResourcesGiven;
     private final PointMultiplierPolicy pointMultiplierPolicy;
     private final SideType side;
-    private final Map<CornersIdx, Cornerable> corners;
-
-    public enum CornersIdx{
-        TOP_LEFT,
-        TOP_RIGHT,
-        BOTTOM_RIGHT,
-        BOTTOM_LEFT
-    }
+    private final Map<CornersIdx, CornerType> corners;
 
     // TODO
     enum PointMultiplierPolicy {
@@ -150,7 +143,7 @@ public class CardSide {
         return side;
     }
 
-    public Map<CornersIdx, Cornerable> getCorners() {
+    public Map<CornersIdx, CornerType> getCorners() {
         return corners;
     }
 

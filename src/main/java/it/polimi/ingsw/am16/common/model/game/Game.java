@@ -255,9 +255,9 @@ public class Game implements GameModel {
 
     }
 
-    // TODO Draw case
+    // TODO asap
     @Override
-    public int selectWinner() {
+    public void selectWinners() {
         int tmpPoints = 0;
         int tmpId = -1;
         for(int i = 0; i < numPlayers; i++) {
@@ -266,7 +266,7 @@ public class Game implements GameModel {
                 tmpId = players[i].getPlayerId();
             }
         }
-        return tmpId;
+
     }
 
 
@@ -277,17 +277,20 @@ public class Game implements GameModel {
 
     @Override
     public ObjectiveCard[] getCommonObjectiveCards() {
-        return commonObjectiveCards;
+        ObjectiveCard[] tmp = commonObjectiveCards.clone();
+        return tmp;
     }
 
     @Override
     public GoldCard[] getCommonGoldCards() {
-        return commonGoldCards;
+        GoldCard[] tmp = commonGoldCards.clone();
+        return tmp;
     }
 
     @Override
     public ResourceCard[] getCommonResourceCards() {
-        return commonResourceCards;
+        ResourceCard[] tmp = commonResourceCards.clone();
+        return tmp;
     }
 
 

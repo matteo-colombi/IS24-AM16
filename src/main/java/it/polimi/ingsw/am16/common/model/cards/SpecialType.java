@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Enum that includes {@link Cornerable} elements that are neither Resources nor Objects.
  */
+@Deprecated
 public enum SpecialType implements Cornerable {
     @JsonProperty("blocked")
     BLOCKED,
