@@ -14,7 +14,7 @@ public final class ObjectObjective extends ObjectiveCard {
     private final Map<ObjectType, Integer> objectsRequired;
 
     /**
-     * Constructs a new objective card with the given numerical id and name, that requires the specified objects in order to give points.
+     * Constructs a new objective card with the given name, that requires the specified objects in order to give points.
      * @param name The card's name.
      * @param points The points given by this card.
      * @param objectsRequired Map containing the amounts of each object required for this card to award points.
@@ -40,5 +40,14 @@ public final class ObjectObjective extends ObjectiveCard {
             multiplier = Math.min(multiplier, playArea.getObjectCounts().get(object) / objectsRequired.get(object));
         }
         return getPoints()*multiplier;
+    }
+
+    @Override
+    public String toString() {
+        return "\nObjectObjective{" +
+                "name=" + getName() + ", " +
+                "points=" + getPoints() + ", " +
+                "objectsRequired=" + objectsRequired +
+                "}";
     }
 }

@@ -9,7 +9,7 @@ import it.polimi.ingsw.am16.common.model.players.PlayArea;
  */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        property = "type"
+        property = "objectiveType"
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = PatternObjective.class, name = "pattern"),
@@ -20,7 +20,7 @@ public abstract class ObjectiveCard extends Card {
     private final int points;
 
     /**
-     * Constructs a new objective card with the given numerical id, name, and that gives the specified amount of points.
+     * Constructs a new objective card with the given name, and that gives the specified amount of points.
      * @param name The card's name.
      * @param points The number of points given by this card according to the game's rules.
      */

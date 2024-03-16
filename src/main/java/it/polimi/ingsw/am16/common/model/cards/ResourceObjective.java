@@ -13,7 +13,7 @@ public final class ResourceObjective extends ObjectiveCard {
     private final int quantity;
 
     /**
-     * Constructs a new objective card with the given numerical id and name, that requires the specified resource and amount in order to give points.
+     * Constructs a new objective card with the given name, that requires the specified resource and amount in order to give points.
      * @param name The card's name.
      * @param points The points given by this card.
      * @param type The resource type required by this card for it to give points.
@@ -23,7 +23,7 @@ public final class ResourceObjective extends ObjectiveCard {
     public ResourceObjective(
             @JsonProperty("name") String name,
             @JsonProperty("points") int points,
-            @JsonProperty("type") ResourceType type,
+            @JsonProperty("resourceType") ResourceType type,
             @JsonProperty("quantity") int quantity) {
         super(name, points);
         this.type = type;
@@ -38,5 +38,15 @@ public final class ResourceObjective extends ObjectiveCard {
     @Override
     public int evaluatePoints(PlayArea playArea) {
         return getPoints()*(playArea.getResourceCounts().get(type)/quantity);
+    }
+
+    @Override
+    public String toString() {
+        return "\nResourceObjective{" +
+                "name=" + getName() + ", " +
+                "points=" + getPoints() + ", " +
+                "resourceType=" + type + ", " +
+                "quantity=" + quantity +
+                "}";
     }
 }

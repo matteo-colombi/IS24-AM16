@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.util.Position;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +18,7 @@ public final class PatternObjective extends ObjectiveCard {
     private final CardPattern pattern;
 
     /**
-     * Constructs a new objective card with the given id and name, that gives the specified amount of points when the given pattern is present on the player's board.
+     * Constructs a new objective card with the given name, that gives the specified amount of points when the given pattern is present on the player's board.
      * @param name The card's name.
      * @param points The points given by this card.
      * @param pattern The pattern of cards required that has to be present on the board for this card to give points.
@@ -50,6 +51,14 @@ public final class PatternObjective extends ObjectiveCard {
         return foundPatterns*getPoints();
     }
 
+    /**
+     * TODO write documentation
+     * @param field
+     * @param startX
+     * @param startY
+     * @param usedPositions
+     * @return
+     */
     private boolean checkPatternMatch(Map<Position, BoardCard> field, int startX, int startY, Set<Position> usedPositions) {
         Set<Position> tempUsedPositions = new HashSet<>();
         Position currPos = new Position(startX, startY);
@@ -68,6 +77,15 @@ public final class PatternObjective extends ObjectiveCard {
         }
         usedPositions.addAll(tempUsedPositions);
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "\nPatternObjective{" +
+                "name=" + getName() + ", " +
+                "points=" + getPoints() + ", " +
+                "pattern=" + pattern +
+                "}";
     }
 
     /**
@@ -92,6 +110,13 @@ public final class PatternObjective extends ObjectiveCard {
                 @JsonProperty("offsets") Position[] offsets) {
             this.types = types;
             this.offsets = offsets;
+        }
+
+        @Override
+        public String toString() {
+            return "Pattern{" +
+                    "types=" + Arrays.toString(types) + ", " +
+                    "offsets=" + Arrays.toString(offsets) + "}";
         }
     }
 }

@@ -1,8 +1,7 @@
 {
   "fungiCards" : [
     {
-      "id" : 1,
-      "name" : "fungi_1",
+      "name" : "resource_fungi_1",
       "frontSide" : "fungiFront",
       "backSide" : {
         "points" : 0,
@@ -10,17 +9,12 @@
         "permanentResourcesGiven" : [],
         "pointMultiplierPolicy" : "static",
         "sideType" : "back",
-        "corners" : [
-          ["resource", "fungi"],
-          ["special", "empty"],
-          ["special", "blocked"],
-          ["resource", "fungi"]]
+        "corners" : ["fungi", "empty", "blocked", "fungi"]
       },
-      "type" : ["resource", "fungi"]
+      "type" : "fungi"
     },
     {
-      "id" : 2,
-      "name" : "fungi_2",
+      "name" : "resource_fungi_2",
       "frontSide" : "fungiFront",
       "backSide" : {
         "points" : 0,
@@ -28,19 +22,14 @@
         "permanentResourcesGiven" : [],
         "pointMultiplierPolicy" : "static",
         "sideType" : "back",
-        "corners" : [
-          ["resource", "fungi"],
-          ["resource", "fungi"],
-          ["special", "empty"],
-          ["special", "blocked"]]
+        "corners" : ["fungi", "fungi", "empty", "blocked"]
       },
-      "type" : ["resource", "fungi"]
+      "type" : "fungi"
     }
   ],
   "plantCards" : [
     {
-      "id" : 3,
-      "name" : "plant_1",
+      "name" : "resource_plant_1",
       "frontSide" : "plantFront",
       "backSide" : {
         "points" : 0,
@@ -48,17 +37,12 @@
         "permanentResourcesGiven" : [],
         "pointMultiplierPolicy" : "static",
         "sideType" : "back",
-        "corners" : [
-          ["resource", "plant"],
-          ["special", "empty"],
-          ["special", "blocked"],
-          ["resource", "plant"]]
+        "corners" : ["plant", "empty", "blocked", "plant"]
       },
-      "type" : ["resource", "plant"]
+      "type" : "plant"
     },
     {
-      "id" : 4,
-      "name" : "plant_2",
+      "name" : "resource_plant_2",
       "frontSide" : "plantFront",
       "backSide" : {
         "points" : 0,
@@ -66,13 +50,15 @@
         "permanentResourcesGiven" : [],
         "pointMultiplierPolicy" : "static",
         "sideType" : "back",
-        "corners" : [
-          ["resource", "plant"],
-          ["resource", "plant"],
-          ["special", "empty"],
-          ["special", "blocked"]]
+        "corners" : ["plant", "plant", "empty", "empty"]
       },
-      "type" : ["resource", "plant"]
+      "type" : "plant"
     }
+  ],
+  "animalCards" : [
+
+  ],
+  "insectCards" : [
+
   ]
 }

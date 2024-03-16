@@ -6,7 +6,7 @@ package it.polimi.ingsw.am16.common.model.cards;
 public final class GoldCard extends PlayableCard {
 
     /**
-     * Constructs a new gold card with the given id, name, sides and resource type.
+     * Constructs a new gold card with the given name, sides and resource type.
      * @param name The card's name.
      * @param frontSide The card's front side.
      * @param backSide The card's back side.

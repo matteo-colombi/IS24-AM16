@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class ResourceCard extends PlayableCard {
 
     /**
-     * Constructs a new resource card with the given numerical id, name, sides and resource type.
+     * Constructs a new resource card with the given name, sides and resource type.
      * @param name The card's name.
      * @param frontSide The card's front side.
      * @param backSide The card's back side.

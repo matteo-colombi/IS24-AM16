@@ -1,0 +1,24 @@
+{
+  "starterCards" : [
+    {
+      "name" : "starter_1",
+      "frontSide" : {
+        "points" : 0,
+        "cost" : [],
+        "permanentResourcesGiven" : [],
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "front",
+        "corners" : ["fungi", "plant", "animal", "insect"]
+      },
+      "backSide" : {
+        "points" : 0,
+        "cost" : [],
+        "permanentResourcesGiven" : ["insect"],
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "plant", "empty", "insect"]
+      },
+      "type" : null
+    }
+  ]
+}

@@ -155,6 +155,7 @@ public class PlayArea implements PlayAreaModel {
         CardSide activeSide = activeSides.get(playedCard);
 
         // FIXME
+        /*
         for (Cornerable corner : activeSide.getCorners().values()) {
             switch (corner) {
                 case ResourceType.ANIMAL:
@@ -175,6 +176,7 @@ public class PlayArea implements PlayAreaModel {
                 }
             }
         }
+         */
 
         //TODO implementare la parte relativa agli angoli coperti dalla nuova carta
     }

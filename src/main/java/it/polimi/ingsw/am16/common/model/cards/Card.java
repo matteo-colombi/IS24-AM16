@@ -7,7 +7,7 @@ public abstract class Card {
     private final String name;
 
     /**
-     * Construct a card with the given numerical id and name.
+     * Construct a card with the given name.
      * @param name the card's name.
      */
     public Card(String name) {
@@ -18,5 +18,20 @@ public abstract class Card {
      */
     public String getName() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Card card = (Card) o;
+
+        return name.equals(card.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }

@@ -47,6 +47,7 @@ public class CardRegistry {
             return false;
         } catch (Exception e) {
             //TODO Log the error
+            e.printStackTrace();
             initialized = false;
             return false;
         }
@@ -76,8 +77,8 @@ public class CardRegistry {
         JsonNode root = mapper.readTree(f);
         ResourceCard[] fungiResourceCards = mapper.readValue(root.get("fungiCards").toString(), ResourceCard[].class);
         ResourceCard[] plantResourceCards = mapper.readValue(root.get("plantCards").toString(), ResourceCard[].class);
-        ResourceCard[] animalResourceCards = mapper.readValue(root.get("plantCards").toString(), ResourceCard[].class);
-        ResourceCard[] insectResourceCards = mapper.readValue(root.get("plantCards").toString(), ResourceCard[].class);
+        ResourceCard[] animalResourceCards = mapper.readValue(root.get("animalCards").toString(), ResourceCard[].class);
+        ResourceCard[] insectResourceCards = mapper.readValue(root.get("insectCards").toString(), ResourceCard[].class);
         List<ResourceCard> allResourceCards = new ArrayList<>();
         allResourceCards.addAll(List.of(fungiResourceCards));
         allResourceCards.addAll(List.of(plantResourceCards));
@@ -91,8 +92,19 @@ public class CardRegistry {
      * The JSON file is taken from {@link FilePaths}<code>.GOLD_CARDS_JSON</code>.
      * @throws IOException If the JSON file is not found.
      */
-    private static void initializeGoldCards() {
-
+    private static void initializeGoldCards() throws IOException {
+        File f = new File(FilePaths.GOLD_CARDS_JSON);
+        JsonNode root = mapper.readTree(f);
+        GoldCard[] fungiGoldCards = mapper.readValue(root.get("fungiCards").toString(), GoldCard[].class);
+        GoldCard[] plantGoldCards = mapper.readValue(root.get("plantCards").toString(), GoldCard[].class);
+        GoldCard[] animalGoldCards = mapper.readValue(root.get("animalCards").toString(), GoldCard[].class);
+        GoldCard[] insectGoldCards = mapper.readValue(root.get("insectCards").toString(), GoldCard[].class);
+        List<GoldCard> allGoldCards = new ArrayList<>();
+        allGoldCards.addAll(List.of(fungiGoldCards));
+        allGoldCards.addAll(List.of(plantGoldCards));
+        allGoldCards.addAll(List.of(animalGoldCards));
+        allGoldCards.addAll(List.of(insectGoldCards));
+        goldCards = Collections.unmodifiableList(allGoldCards);
     }
 
     /**
@@ -100,8 +112,10 @@ public class CardRegistry {
      * The JSON file is taken from {@link FilePaths}<code>.STARTER_CARDS_JSON</code>.
      * @throws IOException If the JSON file is not found.
      */
-    private static void initializeStarterCards() {
-
+    private static void initializeStarterCards() throws IOException {
+        File f = new File(FilePaths.STARTER_CARDS_JSON);
+        JsonNode root = mapper.readTree(f);
+        starterCards = List.of(mapper.readValue(root.get("starterCards").toString(), StarterCard[].class));
     }
 
     /**
@@ -112,8 +126,7 @@ public class CardRegistry {
     private static void initializeObjectiveCards() throws IOException {
         File f = new File(FilePaths.OBJECTIVE_CARDS_JSON);
         JsonNode root = mapper.readTree(f);
-        //ObjectiveCard
-        //resourceCards = Collections.unmodifiableList(allResourceCards);
+        objectiveCards = List.of(mapper.readValue(root.get("objectiveCards").toString(), ObjectiveCard[].class));
     }
 
     /**

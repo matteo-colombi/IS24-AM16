@@ -6,7 +6,7 @@ package it.polimi.ingsw.am16.common.model.cards;
 public abstract class PlayableCard extends BoardCard {
 
     /**
-     * Constructs a new playable card with the given id, name, sides and of the given resource type.
+     * Constructs a new playable card with the given name, sides and of the given resource type.
      * @param name The card's name.
      * @param frontSide The card's front side.
      * @param backSide The card's back side.

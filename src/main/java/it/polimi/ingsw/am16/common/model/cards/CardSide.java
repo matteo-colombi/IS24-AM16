@@ -109,7 +109,7 @@ public class CardSide {
             @JsonProperty("permanentResourcesGiven") ResourceType[] permanentResourcesGiven,
             @JsonProperty("pointMultiplierPolicy") PointMultiplierPolicy pointMultiplierPolicy,
             @JsonProperty("sideType") SideType side,
-            @JsonProperty("corners") Cornerable[] corners) {
+            @JsonProperty("corners") CornerType[] corners) {
         this.points = points;
         this.cost = List.of(cost);
         this.permanentResourcesGiven = List.of(permanentResourcesGiven);

@@ -12,8 +12,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         property = "type"
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = ResourceType.class, name = "resource"),
-        @JsonSubTypes.Type(value = ObjectType.class, name = "object"),
         @JsonSubTypes.Type(value = SpecialType.class, name = "special")
 })
 public interface Cornerable {

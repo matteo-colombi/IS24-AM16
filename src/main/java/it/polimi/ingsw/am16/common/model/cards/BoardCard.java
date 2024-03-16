@@ -10,7 +10,7 @@ public abstract class BoardCard extends Card {
     private final ResourceType type;
 
     /**
-     * Constructs a new card with the given numerical id, name and sides.
+     * Constructs a new card with the given name and sides.
      * @param name The card's name.
      * @param frontSide The card's front side.
      * @param backSide The card's back side.
