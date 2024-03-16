@@ -1,5 +1,7 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.util.Position;
 
@@ -16,13 +18,16 @@ public final class PatternObjective extends ObjectiveCard {
 
     /**
      * Constructs a new objective card with the given id and name, that gives the specified amount of points when the given pattern is present on the player's board.
-     * @param id The card's numerical id.
      * @param name The card's name.
      * @param points The points given by this card.
      * @param pattern The pattern of cards required that has to be present on the board for this card to give points.
      */
-    public PatternObjective(int id, String name, int points, CardPattern pattern) {
-        super(id, name, points);
+    @JsonCreator
+    public PatternObjective(
+            @JsonProperty("name") String name,
+            @JsonProperty("points") int points,
+            @JsonProperty("pattern") CardPattern pattern) {
+        super(name, points);
         this.pattern = pattern;
     }
 
@@ -81,7 +86,10 @@ public final class PatternObjective extends ObjectiveCard {
          * @param types The card types present in this pattern.
          * @param offsets The offsets that specify the position jumps from one card to the next.
          */
-        public CardPattern(ResourceType[] types, Position[] offsets) {
+        @JsonCreator
+        public CardPattern(
+                @JsonProperty("types") ResourceType[] types,
+                @JsonProperty("offsets") Position[] offsets) {
             this.types = types;
             this.offsets = offsets;
         }

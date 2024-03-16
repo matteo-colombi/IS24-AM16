@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am16;
 
+import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,7 +24,12 @@ public class HelloApplication /* extends Application */ {
     public static void main(String[] args) {
         // launch();
         System.out.println("Hello World");
-
+        if(CardRegistry.initializeRegistry()) {
+            System.out.println("Cards loaded correctly.");
+            System.out.println(CardRegistry.getObjectiveCards());
+        } else {
+            System.err.println("Error initializing the cards. Aborting.");
+        }
     }
 }
 

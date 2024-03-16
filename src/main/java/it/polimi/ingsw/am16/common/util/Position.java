@@ -1,5 +1,7 @@
 package it.polimi.ingsw.am16.common.util;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +10,7 @@ import java.util.List;
  * @param x x-coordinate of the point.
  * @param y y-coordinate of the point.
  */
-public record Position(int x, int y) {
+public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
     private static final int numNeighbours = 4;
     private static final int[] xDisplacements = {-1, 1, -1, 1};
     private static final int[] yDisplacements = {-1, -1, 1, 1};

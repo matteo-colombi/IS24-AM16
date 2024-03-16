@@ -7,18 +7,20 @@ public abstract class BoardCard extends Card {
 
     private final CardSide frontSide;
     private final CardSide backSide;
+    private final ResourceType type;
 
     /**
      * Constructs a new card with the given numerical id, name and sides.
-     * @param id The card's numerical id.
      * @param name The card's name.
      * @param frontSide The card's front side.
      * @param backSide The card's back side.
+     * @param type The card's type. Set to <code>null</code> for starter cards.
      */
-    public BoardCard(int id, String name, CardSide frontSide, CardSide backSide) {
-        super(id, name);
+    public BoardCard(String name, CardSide frontSide, CardSide backSide, ResourceType type) {
+        super(name);
         this.frontSide = frontSide;
         this.backSide = backSide;
+        this.type = type;
     }
 
     /**
@@ -33,5 +35,13 @@ public abstract class BoardCard extends Card {
      */
     public CardSide getBackSide() {
         return backSide;
+    }
+
+    /**
+     * Returns the card's type.
+     * @return The card's type. Returns <code>null</code> if this is a starter card.
+     */
+    public ResourceType getType() {
+        return type;
     }
 }

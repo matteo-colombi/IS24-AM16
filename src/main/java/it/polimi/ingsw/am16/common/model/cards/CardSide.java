@@ -1,11 +1,11 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.util.Position;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -32,6 +32,7 @@ public class CardSide {
         /**
          * Used by cards that give a fixed amount of points.
          */
+        @JsonProperty("static")
         STATIC_POLICY(playArea -> {
             return 1;
         }),
@@ -39,6 +40,7 @@ public class CardSide {
         /**
          * Used by cards that give a proportional amount of points based on the number of covered corners.
          */
+        @JsonProperty("corners_covered")
         CORNERS_COVERED_POLICY(playArea -> {
             int neighbourCounter = 0;
 
@@ -56,6 +58,7 @@ public class CardSide {
         /**
          * Used by cards that give a proportional amount of points based on the number of visible {@link ObjectType}<code>.INKWELL</code>.
          */
+        @JsonProperty("inkwell")
         INKWELL_POLICY(playArea -> {
             Map<ObjectType, Integer> objCounts = playArea.getObjectCounts();
 
@@ -65,6 +68,7 @@ public class CardSide {
         /**
          * Used by cards that give a proportional amount of points based on the number of visible {@link ObjectType}<code>.MANUSCRIPT</code>.
          */
+        @JsonProperty("manuscript")
         MANUSCRIPT_POLICY(playArea -> {
             Map<ObjectType, Integer> objCounts = playArea.getObjectCounts();
 
@@ -74,6 +78,7 @@ public class CardSide {
         /**
          * Used by cards that give a proportional amount of points based on the number of visible {@link ObjectType}<code>.QUILL</code>.
          */
+        @JsonProperty("quill")
         QUILL_POLICY(playArea -> {
             Map<ObjectType, Integer> objCounts = playArea.getObjectCounts();
 
@@ -104,15 +109,17 @@ public class CardSide {
      * @param side
      * @param corners The corners of this card. Must be in the order TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT.
      */
-     CardSide(int points,
-                    List<ResourceType> cost,
-                    List<ResourceType> permanentResourcesGiven,
-                    PointMultiplierPolicy pointMultiplierPolicy,
-                    SideType side,
-                    Cornerable[] corners) {
+    @JsonCreator
+    CardSide(
+            @JsonProperty("points") int points,
+            @JsonProperty("cost") ResourceType[] cost,
+            @JsonProperty("permanentResourcesGiven") ResourceType[] permanentResourcesGiven,
+            @JsonProperty("pointMultiplierPolicy") PointMultiplierPolicy pointMultiplierPolicy,
+            @JsonProperty("sideType") SideType side,
+            @JsonProperty("corners") Cornerable[] corners) {
         this.points = points;
-        this.cost = cost;
-        this.permanentResourcesGiven = permanentResourcesGiven;
+        this.cost = List.of(cost);
+        this.permanentResourcesGiven = List.of(permanentResourcesGiven);
         this.pointMultiplierPolicy = pointMultiplierPolicy;
         this.side = side;
 
@@ -150,5 +157,28 @@ public class CardSide {
     // TODO
     public int getAwardedPoints(PlayArea playArea) {
         return points * pointMultiplierPolicy.evaluate(playArea);
+    }
+
+    @Override
+    public String toString() {
+        return "CardSide{" +
+                "points=" + points +
+                ", cost=" + cost +
+                ", permanentResourcesGiven=" + permanentResourcesGiven +
+                ", pointMultiplierPolicy=" + pointMultiplierPolicy +
+                ", side=" + side +
+                ", corners=" + corners +
+                '}';
+    }
+
+    private static final Map<String, CardSide> commonSides = new HashMap<>();
+
+    @JsonCreator
+    static CardSide commonSidesFactory(String name) {
+        return commonSides.get(name);
+    }
+
+    static void addCommonSide(String name, CardSide cardSide) {
+        commonSides.put(name, cardSide);
     }
 }
