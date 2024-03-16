@@ -10,12 +10,6 @@ import java.util.List;
  */
 
 public class Hand implements HandModel{
-    /**
-     * The list of cards contained in a player's hand. There will always be 3 cards in this
-     * list, exception made for the time period between placing a card on the board and
-     * picking/drawing a new one, or after placing a card during the last turn, in which
-     * replacing the newly placed card won't affect the game state anymore.
-     */
     private final List<PlayableCard> cards;
 
     /**
@@ -54,6 +48,7 @@ public class Hand implements HandModel{
     public PlayableCard getCard(int index){
         return this.cards.get(index);
     }
+
 
 
 

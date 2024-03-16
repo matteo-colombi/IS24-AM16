@@ -3,6 +3,8 @@ package it.polimi.ingsw.am16.common.model.players;
 import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
 import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
 
+import java.util.List;
+
 public interface PlayerModel {
     /**
      *
@@ -56,5 +58,5 @@ public interface PlayerModel {
      * @return The player's two objective cards from which they'll choose their personal
      * objective
      */
-    ObjectiveCard[] getPersonalObjectiveOptions();
+    List<ObjectiveCard> getPersonalObjectiveOptions();
 }

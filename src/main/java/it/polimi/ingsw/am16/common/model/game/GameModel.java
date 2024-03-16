@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.common.model.game;
 
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
+import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.model.players.PlayerModel;
@@ -27,7 +28,7 @@ public interface GameModel {
     void distributeCards();
     void drawCommonObjectives();
     void distributePersonalObjectives();
-    void setPlayerObjective(int playerId, ObjectiveCard objectiveCard);
+    void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) throws UnknownObjectiveCardException;
     boolean allPlayersChoseObjective();
     void startGame();
     int chooseStartingPlayer();

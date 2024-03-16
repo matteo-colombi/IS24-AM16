@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.common.model.game;
 
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
+import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.cards.decks.*;
 import it.polimi.ingsw.am16.common.model.players.Player;
@@ -165,12 +166,13 @@ public class Game implements GameModel {
     }
 
     @Override
-    public void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) {
+    public void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) throws UnknownObjectiveCardException {
         for(int i = 0; i < numPlayers; i++) {
             if(players[i].getPlayerId() == playerId) {
                 players[i].setObjectiveCard(objectiveCard);
             }
         }
+        //TODO how do we catch that exception?
     }
 
 
