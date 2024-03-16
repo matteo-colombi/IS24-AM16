@@ -36,7 +36,7 @@ public interface GameModel {
     boolean checkEndGame();
     void evaluateObjectivePoints();
     void endGame();
-    int selectWinner();
+    void selectWinners();
     PlayerModel[] getPlayers();
     ObjectiveCard[] getCommonObjectiveCards();
     GoldCard[] getCommonGoldCards();
