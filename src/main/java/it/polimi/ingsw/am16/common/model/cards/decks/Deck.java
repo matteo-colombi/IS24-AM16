@@ -51,11 +51,19 @@ public abstract class Deck<T extends Card> {
     }
 
     /**
-     * Adds the given card to the deck.
+     * Adds the given card to the bottom of the deck.
      * @param card
      */
     public void addCard(T card) {
         cards.add(card);
+    }
+
+    /**
+     * Adds the given cards to the bottom of the deck, in the order they are given
+     * @param newCards The cards to be added.
+     */
+    public void addCards(List<T> newCards) {
+        cards.addAll(newCards);
     }
 
     /**

@@ -46,8 +46,9 @@ public abstract class BoardCard extends Card {
     }
 
     /**
-     * @param sideType
-     * @return
+     * Returns the corresponding side of this card.
+     * @param sideType The side to be returned.
+     * @return the card's side corresponding to the <code>sideType</code> given.
      */
     public CardSide getSideByType(SideType sideType) {
         if (sideType == SideType.FRONT)

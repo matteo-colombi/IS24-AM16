@@ -8,7 +8,6 @@ import java.util.List;
 /**
  * Handles a player's hand of resource and gold cards.
  */
-
 public class Hand implements HandModel{
     private final List<PlayableCard> cards;
 
@@ -23,7 +22,6 @@ public class Hand implements HandModel{
      *
      * @return The list of cards in the hand.
      */
-
     public List<PlayableCard> getCards() {
         return this.cards;
     }
@@ -32,7 +30,6 @@ public class Hand implements HandModel{
      *
      * @return The number of cards in the hand.
      */
-
     @Override
     public int getSize(){
         return this.cards.size();
@@ -43,14 +40,8 @@ public class Hand implements HandModel{
      * @param index Index of the card in the list of cards representing the hand
      * @return The card corresponding to the index
      */
-
     @Override
     public PlayableCard getCard(int index){
         return this.cards.get(index);
     }
-
-
-
-
-
 }

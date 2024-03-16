@@ -13,6 +13,6 @@ public class ResourceCardsDeck extends Deck<ResourceCard> {
      */
     @Override
     public void initialize() {
-        //TODO implement this once the CardRegistry is up and running
+        addCards(CardRegistry.getResourceCards());
     }
 }

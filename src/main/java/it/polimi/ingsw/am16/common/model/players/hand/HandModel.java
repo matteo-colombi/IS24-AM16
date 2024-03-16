@@ -2,6 +2,9 @@ package it.polimi.ingsw.am16.common.model.players.hand;
 
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 
+/**
+ * TODO write doc for the interface itself
+ */
 public interface HandModel {
     /**
      *

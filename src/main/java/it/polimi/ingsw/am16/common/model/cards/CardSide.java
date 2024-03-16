@@ -20,7 +20,9 @@ public class CardSide {
     private final SideType side;
     private final Map<CornersIdx, CornerType> corners;
 
-    // TODO
+    /**
+     * TODO write documentation
+     */
     enum PointMultiplierPolicy {
         /**
          * Used by cards that give a fixed amount of points.
@@ -80,11 +82,16 @@ public class CardSide {
 
         private final Function<PlayArea, Integer> policy;
 
+        /**
+         * TODO write documentation
+         * @param policy
+         */
         PointMultiplierPolicy(Function<PlayArea, Integer> policy) {
             this.policy = policy;
         }
 
         /**
+         * TODO write documentation
          * @param playArea
          * @return
          */
@@ -123,31 +130,59 @@ public class CardSide {
         this.corners.put(CornersIdx.BOTTOM_LEFT, corners[CornersIdx.BOTTOM_LEFT.ordinal()]);
     }
 
+    /**
+     * TODO write doc
+     * @return
+     */
     public int getPoints() {
         return points;
     }
 
+    /**
+     * TODO write doc
+     * @return
+     */
     public List<ResourceType> getCost() {
         return cost;
     }
 
+    /**
+     * TODO write doc
+     * @return
+     */
     public List<ResourceType> getPermanentResourcesGiven() {
         return permanentResourcesGiven;
     }
 
+    /**
+     * TODO write doc
+     * @return
+     */
     PointMultiplierPolicy getPointMultiplierPolicy() {
         return pointMultiplierPolicy;
     }
 
+    /**
+     * TODO write doc
+     * @return
+     */
     public SideType getSide() {
         return side;
     }
 
+    /**
+     * TODO write doc
+     * @return
+     */
     public Map<CornersIdx, CornerType> getCorners() {
         return corners;
     }
 
-    // TODO
+    /**
+     * TODO write doc
+     * @param playArea
+     * @return
+     */
     public int getAwardedPoints(PlayArea playArea) {
         return points * pointMultiplierPolicy.evaluate(playArea);
     }
@@ -166,11 +201,21 @@ public class CardSide {
 
     private static final Map<String, CardSide> commonSides = new HashMap<>();
 
+    /**
+     * TODO write doc
+     * @param name
+     * @return
+     */
     @JsonCreator
     static CardSide commonSidesFactory(String name) {
         return commonSides.get(name);
     }
 
+    /**
+     * TODO write doc
+     * @param name
+     * @param cardSide
+     */
     static void addCommonSide(String name, CardSide cardSide) {
         commonSides.put(name, cardSide);
     }

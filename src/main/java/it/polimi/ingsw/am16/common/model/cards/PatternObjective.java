@@ -52,24 +52,20 @@ public final class PatternObjective extends ObjectiveCard {
     }
 
     /**
-     * TODO write documentation
-     * @param field
-     * @param startX
-     * @param startY
-     * @param usedPositions
-     * @return
+     * Checks if the pattern of this card matches with the field, starting from the given coordinates.
+     * @param field The player's field.
+     * @param startX The starting x-coordinate.
+     * @param startY The starting y-coordinate.
+     * @param usedPositions Set of positions which cannot be reused in this pattern because they were already used for this objective. The new positions will be added if this pattern matches.
+     * @return <code>true</code> if a match is found in the field at the given coordinates.
      */
     private boolean checkPatternMatch(Map<Position, BoardCard> field, int startX, int startY, Set<Position> usedPositions) {
         Set<Position> tempUsedPositions = new HashSet<>();
         Position currPos = new Position(startX, startY);
         for(int i = 0; i<pattern.types.length-1; i++) {
-            //FIXME find a way to remove the instanceof and cast. Maybe we can add a special ResourceType.STARTER used for starter cards and put getType in BoardCard?
-            //Downside to the ResourceType.STARTER: you can use it where you shouldn't and mess stuff up.
             if(usedPositions.contains(currPos))
                 return false;
-            if(field.get(currPos) instanceof StarterCard)
-                return false;
-            if(((PlayableCard)field.get(currPos)).getType() != pattern.types[i])
+            if((field.get(currPos)).getType() != pattern.types[i])
                 return false;
             tempUsedPositions.add(currPos);
             if (i != pattern.types.length-1)

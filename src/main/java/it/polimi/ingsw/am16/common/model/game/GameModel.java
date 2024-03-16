@@ -10,6 +10,9 @@ import javafx.geometry.Side;
 
 import java.util.List;
 
+/**
+ * TODO write doc everywhere
+ */
 public interface GameModel {
     String getid();
     void addPlayer(String username);

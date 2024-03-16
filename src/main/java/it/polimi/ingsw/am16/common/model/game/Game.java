@@ -14,6 +14,9 @@ import it.polimi.ingsw.am16.common.util.RNG;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO write doc everywhere
+ */
 public class Game implements GameModel {
     private final String id;
     private final int numPlayers;

@@ -13,6 +13,6 @@ public class GoldCardsDeck extends Deck<GoldCard> {
      */
     @Override
     public void initialize() {
-        //TODO implement this once the CardRegistry is up and running
+        addCards(CardRegistry.getGoldCards());
     }
 }

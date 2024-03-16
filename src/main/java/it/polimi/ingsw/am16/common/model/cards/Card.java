@@ -20,6 +20,11 @@ public abstract class Card {
         return name;
     }
 
+    /**
+     * Checks equality between the given object and <code>this</code>.
+     * @param o The object to be compared.
+     * @return <code>true</code> if the given object is a {@link Card} and has the same name as <code>this</code>.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -30,6 +35,10 @@ public abstract class Card {
         return name.equals(card.name);
     }
 
+    /**
+     * Calculates the card's hashcode based on the card's name.
+     * @return the card's hashcode.
+     */
     @Override
     public int hashCode() {
         return name.hashCode();

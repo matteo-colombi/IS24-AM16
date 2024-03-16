@@ -5,6 +5,9 @@ import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
 
 import java.util.List;
 
+/**
+ * TODO write doc for the interface itself
+ */
 public interface PlayerModel {
     /**
      *
