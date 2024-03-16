@@ -59,4 +59,17 @@ public interface PlayerModel {
      * objective
      */
     List<ObjectiveCard> getPersonalObjectiveOptions();
+
+    /**
+     *
+     * @return whether the player has chosen which side of their starter card to display
+     */
+    boolean getChoseStarterCardSide();
+
+    /**
+     *
+     * @return which of the two given possible personal objectives the player chose
+     */
+    boolean getChosePersonalObjective();
 }
+

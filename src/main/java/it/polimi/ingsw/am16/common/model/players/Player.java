@@ -144,6 +144,24 @@ public class Player implements PlayerModel {
     }
 
     /**
+     *
+     * @return whether the player has chosen which side of their starter card to display
+     */
+    @Override
+    public boolean getChoseStarterCardSide() {
+        return choseStarterCardSide;
+    }
+
+    /**
+     *
+     * @return which of the two given possible personal objectives the player chose
+     */
+    @Override
+    public boolean getChosePersonalObjective() {
+        return choseObjectiveCard;
+    }
+
+    /**
      * Increases the amount of points gathered by placing a card on the board.
      * @param points The amount of points earned in an action
      */
