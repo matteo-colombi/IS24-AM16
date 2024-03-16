@@ -62,5 +62,4 @@ public record Position(int x, int y) {
         result = 31 * result + y;
         return result;
     }
-
 }
