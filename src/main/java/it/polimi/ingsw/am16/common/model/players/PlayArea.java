@@ -13,11 +13,9 @@ import java.util.Map;
  * //TODO write documentation
  */
 public class PlayArea implements PlayAreaModel {
-    //TODO implement everything
     private final Player player;
     private int cardCount;
-    private final Map<ResourceType, Integer> resourceCounts;
-    private final Map<ObjectType, Integer> objectCounts;
+    private final Map<CornerType, Integer> resourceAndObjectCounts;
     private final List<Position> cardPlacementOrder;
     private final Map<Position, BoardCard> field;
     private final Map<BoardCard, CardSide> activeSides;
@@ -29,8 +27,7 @@ public class PlayArea implements PlayAreaModel {
     public PlayArea(Player player) {
         this.player = player;
         this.cardCount = 0;
-        this.resourceCounts = new HashMap<>();
-        this.objectCounts = new HashMap<>();
+        this.resourceAndObjectCounts = new HashMap<>();
         this.cardPlacementOrder = new ArrayList<>();
         this.field = new HashMap<>();
         this.activeSides = new HashMap<>();
@@ -51,10 +48,32 @@ public class PlayArea implements PlayAreaModel {
     }
 
     public Map<ResourceType, Integer> getResourceCounts() {
+        Map<ResourceType, Integer> resourceCounts = new HashMap<>();
+
+        Integer animalCounts = resourceAndObjectCounts.get(CornerType.ANIMAL);
+        Integer fungiCounts = resourceAndObjectCounts.get(CornerType.FUNGI);
+        Integer insectCounts = resourceAndObjectCounts.get(CornerType.INSECT);
+        Integer plantCounts = resourceAndObjectCounts.get(CornerType.PLANT);
+
+        resourceCounts.put(ResourceType.ANIMAL, animalCounts);
+        resourceCounts.put(ResourceType.FUNGI, fungiCounts);
+        resourceCounts.put(ResourceType.INSECT, insectCounts);
+        resourceCounts.put(ResourceType.PLANT, plantCounts);
+
         return resourceCounts;
     }
 
     public Map<ObjectType, Integer> getObjectCounts() {
+        Map<ObjectType, Integer> objectCounts = new HashMap<>();
+
+        Integer inkwellCounts = resourceAndObjectCounts.get(CornerType.INKWELL);
+        Integer manuscriptCounts = resourceAndObjectCounts.get(CornerType.MANUSCRIPT);
+        Integer quillCounts = resourceAndObjectCounts.get(CornerType.QUILL);
+
+        objectCounts.put(ObjectType.INKWELL, inkwellCounts);
+        objectCounts.put(ObjectType.MANUSCRIPT, manuscriptCounts);
+        objectCounts.put(ObjectType.QUILL, quillCounts);
+
         return objectCounts;
     }
 
@@ -94,13 +113,6 @@ public class PlayArea implements PlayAreaModel {
 
     //region Local Methods
 
-    private CardSide getCardSide(BoardCard card, SideType side) {
-        if (side == SideType.FRONT)
-            return card.getFrontSide();
-
-        return card.getBackSide();
-    }
-
     /**
      * TODO write documentation
      *
@@ -110,7 +122,11 @@ public class PlayArea implements PlayAreaModel {
     public void setStarterCard(StarterCard starterCard, SideType side) {
         Position starterPosition = new Position(0, 0);
 
+        if (field.containsKey(starterPosition))
+            return;
+
         updateField(starterCard, side, starterPosition);
+        updateCounts(starterCard, side, starterPosition);
     }
 
     /**
@@ -118,15 +134,15 @@ public class PlayArea implements PlayAreaModel {
      *
      * @param playedCard
      * @param side
-     * @param newCardPosition
+     * @param playedCardPosition
      */
-    public void playCard(PlayableCard playedCard, SideType side, Position newCardPosition) throws IllegalMoveException {
-        if (!checkLegalMove(playedCard, side, newCardPosition))
+    public void playCard(PlayableCard playedCard, SideType side, Position playedCardPosition) throws IllegalMoveException {
+        if (!checkLegalMove(playedCard, side, playedCardPosition))
             throw new IllegalMoveException("Illegal move");
 
-        updateField(playedCard, side, newCardPosition);
-        updateCounts(playedCard, side, newCardPosition);
-        updateBounds(newCardPosition);
+        updateField(playedCard, side, playedCardPosition);
+        updateCounts(playedCard, side, playedCardPosition);
+        updateBounds(playedCardPosition);
     }
 
     /**
@@ -134,14 +150,14 @@ public class PlayArea implements PlayAreaModel {
      *
      * @param playedCard
      * @param side
-     * @param newCardPosition
+     * @param playedCardPosition
      */
-    private void updateField(BoardCard playedCard, SideType side, Position newCardPosition) {
+    private void updateField(BoardCard playedCard, SideType side, Position playedCardPosition) {
         cardCount++;
 
-        cardPlacementOrder.add(newCardPosition);
-        field.put(newCardPosition, playedCard);
-        activeSides.put(playedCard, getCardSide(playedCard, side));
+        cardPlacementOrder.add(playedCardPosition);
+        field.put(playedCardPosition, playedCard);
+        activeSides.put(playedCard, playedCard.getSideByType(side));
     }
 
     /**
@@ -149,46 +165,52 @@ public class PlayArea implements PlayAreaModel {
      *
      * @param playedCard
      * @param side
-     * @param newCardPosition
+     * @param playedCardPosition
      */
-    public void updateCounts(PlayableCard playedCard, SideType side, Position newCardPosition) {
+    public void updateCounts(BoardCard playedCard, SideType side, Position playedCardPosition) {
         CardSide activeSide = activeSides.get(playedCard);
 
-        // FIXME
-        for (Cornerable corner : activeSide.getCorners().values()) {
-            switch (corner) {
-                case ResourceType.ANIMAL:
-                case ResourceType.PLANT:
-                case ResourceType.INSECT:
-                case ResourceType.FUNGI: {
-                    resourceCounts.merge((ResourceType) corner, 1, Integer::sum);
-                    break;
-                }
-                case ObjectType.INKWELL:
-                case ObjectType.MANUSCRIPT:
-                case ObjectType.QUILL: {
-                    objectCounts.merge((ObjectType) corner, 1, Integer::sum);
-                    break;
-                }
-                default: {
-                    break;
-                }
+        if (side == SideType.FRONT) {
+            for (CornerType corner : activeSide.getCorners().values()) {
+                if (corner == CornerType.BLOCKED || corner == CornerType.EMPTY)
+                    continue;
+
+                resourceAndObjectCounts.merge(corner, 1, Integer::sum);
             }
+        } else {
+            //TODO implementare la parte relativa alle risorse permanenti
+
         }
 
         //TODO implementare la parte relativa agli angoli coperti dalla nuova carta
+
+        for (Position neighbourPosition : playedCardPosition.getNeighbours()) {
+            if (!field.containsKey(neighbourPosition))
+                continue;
+
+            BoardCard neighbourCard = field.get(neighbourPosition);
+            CardSide neighbourCardSide = activeSides.get(neighbourCard);
+
+            //FIXME è osceno, cambialo appena possibile
+            if (playedCardPosition.getOffset(neighbourPosition).equals(new Position(-1, -1))) {
+                neighbourCardSide.getCorners().get(CornersIdx.BOTTOM_RIGHT);
+
+
+
+            }
+        }
     }
 
     /**
      * TODO write documentation
      *
-     * @param newCardPosition
+     * @param playedCardPosition
      */
-    private void updateBounds(Position newCardPosition) {
-        minX = Math.min(minX, newCardPosition.x());
-        maxX = Math.max(maxX, newCardPosition.x());
-        minY = Math.min(minY, newCardPosition.y());
-        maxY = Math.max(maxY, newCardPosition.y());
+    private void updateBounds(Position playedCardPosition) {
+        minX = Math.min(minX, playedCardPosition.x());
+        maxX = Math.max(maxX, playedCardPosition.x());
+        minY = Math.min(minY, playedCardPosition.y());
+        maxY = Math.max(maxY, playedCardPosition.y());
     }
 
     //endregion

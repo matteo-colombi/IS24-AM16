@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * Record used to keep track of coordinates on game boards.
+ *
  * @param x x-coordinate of the point.
  * @param y y-coordinate of the point.
  */
@@ -15,18 +16,22 @@ public record Position(int x, int y) {
 
     /**
      * Gives the 4 Positions of this Position's neighbours, diagonally from each corner.
+     *
      * @return List of the neighbours.
      */
     public List<Position> getNeighbours() {
         List<Position> neighbours = new ArrayList<>();
-        for(int i = 0; i<numNeighbours; i++) {
-            neighbours.add(new Position(x+xDisplacements[i], y+yDisplacements[i]));
+
+        for (int i = 0; i < numNeighbours; i++) {
+            neighbours.add(new Position(x + xDisplacements[i], y + yDisplacements[i]));
         }
+
         return neighbours;
     }
 
     /**
      * Adds this position with the given offset position, obtained by summing each x-coordinate and each y-coordinate.
+     *
      * @param offset The offset to add.
      * @return The new position.
      */
@@ -34,10 +39,15 @@ public record Position(int x, int y) {
         return new Position(x + offset.x, y + offset.y);
     }
 
+    public Position getOffset(Position other) {
+        return new Position(other.x - x, other.y - y);
+    }
+
     /**
      * Checks equality between tho positions.
      * Two {@link Position} objects are equal if both the <code>x</code> coordinates match
      * and the <code>y</code> coordinates match.
+     *
      * @param o The reference object with which to compare.
      * @return the result of the equality check.
      */
@@ -54,6 +64,7 @@ public record Position(int x, int y) {
 
     /**
      * Calculates the hashcode of the position based on the <code>x</code> and <code>y</code> coordinates.
+     *
      * @return the calculated hashcode.
      */
     @Override
