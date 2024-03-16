@@ -30,6 +30,7 @@ public class Player implements PlayerModel {
     private final PlayArea playArea;
     private boolean choseStarterCardSide;
     private boolean choseObjectiveCard;
+    private boolean choseColor;
 
     /**
      * Creates a new player, initializing their ID and username to a chosen value, and their
@@ -49,6 +50,7 @@ public class Player implements PlayerModel {
         this.color = null;
         this.choseObjectiveCard = false;
         this.choseStarterCardSide = false;
+        this.choseColor = false;
     }
 
     /**
@@ -159,6 +161,10 @@ public class Player implements PlayerModel {
     @Override
     public boolean getChosePersonalObjective() {
         return choseObjectiveCard;
+    }
+
+    public boolean getChoseColor() {
+        return choseColor;
     }
 
     /**
@@ -288,6 +294,7 @@ public class Player implements PlayerModel {
     public void setColor(PlayerColor color){
         if(this.color == null){
             this.color = color;
+            this.choseColor = true;
         }
     }
 

@@ -63,7 +63,7 @@ public class Game implements GameModel {
         players[getCurrentPlayerCount()] = player;
         setCurrentPlayerCount(getCurrentPlayerCount() + 1);
     }
-
+    @Override
     public int getNumPlayers() {
         return numPlayers;
     }
@@ -108,11 +108,11 @@ public class Game implements GameModel {
     }
 
 
-    // TODO Not yet
+
     @Override
     public void drawStarterCards() {
         for (int i = 0; i < numPlayers; i++) {
-           // players[i].giveStarterCard(starterCardsDeck.drawCard());
+           players[i].setStarterCard(starterCardsDeck.drawCard());
         }
     }
 
@@ -125,22 +125,36 @@ public class Game implements GameModel {
         }
     }
 
-    // TODO Not yet
+
     @Override
     public void setPlayerColor(int playerId, PlayerColor color) {
-
+        for(int i = 0; i < numPlayers; i++) {
+            if(players[i].getPlayerId() == playerId) {
+                players[i].setColor(color);
+            }
+        }
     }
 
-    // TODO Not yet
+
     @Override
     public boolean allPlayersChoseStarterSide() {
-        return false;
+        for(int i = 0; i < numPlayers; i++){
+            if(!players[i].getChoseStarterCardSide()) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    // TODO Not yet
+
     @Override
     public boolean allPlayersChoseColor() {
-        return false;
+        for(int i = 0; i < numPlayers; i++){
+            if(!players[i].getChoseColor()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -176,10 +190,15 @@ public class Game implements GameModel {
     }
 
 
-    // TODO Not yet
+
     @Override
     public boolean allPlayersChoseObjective() {
-        return false;
+        for(int i = 0; i < numPlayers; i++){
+            if(!players[i].getChosePersonalObjective()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // TODO
@@ -245,10 +264,13 @@ public class Game implements GameModel {
         return false;
     }
 
-    // TODO asap
     @Override
     public void evaluateObjectivePoints() {
-
+        for(int i = 0; i < numPlayers; i++) {
+            players[i].evaluateCommonObjective(getCommonObjectiveCards()[0]);
+            players[i].evaluateCommonObjective(getCommonObjectiveCards()[0]);
+            players[i].evaluatePersonalObjective();
+        }
     }
 
     //TODO
@@ -257,18 +279,42 @@ public class Game implements GameModel {
 
     }
 
-    // TODO asap
     @Override
     public void selectWinners() {
         int tmpPoints = 0;
         int tmpId = -1;
+        int tmpObjPoints = 0;
+        List<Integer> tmpWinners = new ArrayList<>();
         for(int i = 0; i < numPlayers; i++) {
             if(players[i].getTotalPoints() > tmpPoints) {
                 tmpPoints = players[i].getTotalPoints();
                 tmpId = players[i].getPlayerId();
             }
         }
-
+        tmpWinners.add(tmpId);
+        for(int j = 0; j < numPlayers; j++){
+            if(players[j].getTotalPoints() == tmpPoints && players[j].getPlayerId() != tmpId) {
+                tmpWinners.add(players[j].getPlayerId());
+            }
+        }
+        if(tmpWinners.size() == 1) {
+            winnerIds.add(tmpId);
+            return;
+        }
+        if(tmpWinners.size() > 1) {
+            for(int k = 0; k < numPlayers; k++) {
+                if(players[k].getObjectivePoints() > tmpObjPoints && tmpWinners.contains(players[k].getPlayerId())){
+                    tmpObjPoints = players[k].getObjectivePoints();
+                    tmpId = players[k].getPlayerId();
+                }
+            }
+        }
+        winnerIds.add(tmpId);
+        for(int l = 0; l < numPlayers; l++) {
+            if(players[l].getObjectivePoints() == tmpObjPoints && players[l].getPlayerId() != tmpId && tmpWinners.contains(players[l].getPlayerId())) {
+                winnerIds.add(players[l].getPlayerId());
+            }
+        }
     }
 
 
