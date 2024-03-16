@@ -34,4 +34,15 @@ public abstract class BoardCard extends Card {
     public CardSide getBackSide() {
         return backSide;
     }
+
+    /**
+     * @param sideType
+     * @return
+     */
+    public CardSide getSideByType(SideType sideType) {
+        if (sideType == SideType.FRONT)
+            return getFrontSide();
+
+        return getBackSide();
+    }
 }
