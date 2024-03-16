@@ -1,5 +1,8 @@
 package it.polimi.ingsw.am16.common.util;
 
+import it.polimi.ingsw.am16.common.model.cards.BoardCard;
+import javafx.geometry.Pos;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +14,7 @@ import java.util.List;
  */
 public record Position(int x, int y) {
     private static final int numNeighbours = 4;
-    private static final int[] xDisplacements = {-1, 1, -1, 1};
+    private static final int[] xDisplacements = {-1, 1, 1, -1};
     private static final int[] yDisplacements = {-1, -1, 1, 1};
 
     /**
@@ -41,6 +44,22 @@ public record Position(int x, int y) {
 
     public Position getOffset(Position other) {
         return new Position(other.x - x, other.y - y);
+    }
+
+    public boolean isTopLeft(Position other) {
+        return getOffset(other).equals(new Position(-1, -1));
+    }
+
+    public boolean isTopRight(Position other) {
+        return getOffset(other).equals(new Position(1, -1));
+    }
+
+    public boolean isBottomRight(Position other) {
+        return getOffset(other).equals(new Position(1, 1));
+    }
+
+    public boolean isBottomLeft(Position other) {
+        return getOffset(other).equals(new Position(-1, 1));
     }
 
     /**

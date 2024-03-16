@@ -191,8 +191,8 @@ public class PlayArea implements PlayAreaModel {
             BoardCard neighbourCard = field.get(neighbourPosition);
             CardSide neighbourCardSide = activeSides.get(neighbourCard);
 
-            //FIXME è osceno, cambialo appena possibile
-            if (playedCardPosition.getOffset(neighbourPosition).equals(new Position(-1, -1))) {
+            //TODO
+            if (playedCardPosition.isTopLeft(neighbourPosition)) {
                 neighbourCardSide.getCorners().get(CornersIdx.BOTTOM_RIGHT);
 
 
