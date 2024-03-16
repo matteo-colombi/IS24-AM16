@@ -1,0 +1,33 @@
+{
+  "objectiveCards" : [
+    {
+      "objectiveType" : "pattern",
+      "name" : "objective_pattern_1",
+      "points" : 2,
+      "pattern" : {
+        "types" : ["fungi", "fungi", "fungi"],
+        "offsets" : [
+          {"x" : 1, "y" : 1},
+          {"x" : 1, "y" : 1}
+        ]
+      }
+    },
+    {
+      "objectiveType" : "resource",
+      "name" : "objective_resources_1",
+      "points" : 2,
+      "resourceType" : "fungi",
+      "quantity" : 3
+    },
+    {
+      "objectiveType" : "object",
+      "name" : "objective_object_1",
+      "points" : 3,
+      "objectRequired" : {
+        "inkwell" : 1,
+        "manuscript" : 1,
+        "quill" : 1
+      }
+    }
+  ]
+}

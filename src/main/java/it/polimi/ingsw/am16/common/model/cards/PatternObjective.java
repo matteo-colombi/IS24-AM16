@@ -1,8 +1,11 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.util.Position;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -15,21 +18,22 @@ public final class PatternObjective extends ObjectiveCard {
     private final CardPattern pattern;
 
     /**
-     * Constructs a new objective card with the given id and name, that gives the specified amount of points when the given pattern is present on the player's board.
-     *
-     * @param id      The card's numerical id.
-     * @param name    The card's name.
-     * @param points  The points given by this card.
+     * Constructs a new objective card with the given name, that gives the specified amount of points when the given pattern is present on the player's board.
+     * @param name The card's name.
+     * @param points The points given by this card.
      * @param pattern The pattern of cards required that has to be present on the board for this card to give points.
      */
-    public PatternObjective(int id, String name, int points, CardPattern pattern) {
-        super(id, name, points);
+    @JsonCreator
+    public PatternObjective(
+            @JsonProperty("name") String name,
+            @JsonProperty("points") int points,
+            @JsonProperty("pattern") CardPattern pattern) {
+        super(name, points);
         this.pattern = pattern;
     }
 
     /**
      * Calculates the points given by this card based on the player's board state.
-     *
      * @param playArea The player's play area, including the board state.
      * @return The number of points given by this card based on the patterns present on the board.
      */
@@ -44,27 +48,44 @@ public final class PatternObjective extends ObjectiveCard {
                 }
             }
         }
-        return foundPatterns * getPoints();
+        return foundPatterns*getPoints();
     }
 
+    /**
+     * TODO write documentation
+     * @param field
+     * @param startX
+     * @param startY
+     * @param usedPositions
+     * @return
+     */
     private boolean checkPatternMatch(Map<Position, BoardCard> field, int startX, int startY, Set<Position> usedPositions) {
         Set<Position> tempUsedPositions = new HashSet<>();
         Position currPos = new Position(startX, startY);
-        for (int i = 0; i < pattern.types.length - 1; i++) {
+        for(int i = 0; i<pattern.types.length-1; i++) {
             //FIXME find a way to remove the instanceof and cast. Maybe we can add a special ResourceType.STARTER used for starter cards and put getType in BoardCard?
             //Downside to the ResourceType.STARTER: you can use it where you shouldn't and mess stuff up.
-            if (usedPositions.contains(currPos))
+            if(usedPositions.contains(currPos))
                 return false;
-            if (field.get(currPos) instanceof StarterCard)
+            if(field.get(currPos) instanceof StarterCard)
                 return false;
-            if (((PlayableCard) field.get(currPos)).getType() != pattern.types[i])
+            if(((PlayableCard)field.get(currPos)).getType() != pattern.types[i])
                 return false;
             tempUsedPositions.add(currPos);
-            if (i != pattern.types.length - 1)
+            if (i != pattern.types.length-1)
                 currPos = currPos.addOffset(pattern.offsets[i]);
         }
         usedPositions.addAll(tempUsedPositions);
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "\nPatternObjective{" +
+                "name=" + getName() + ", " +
+                "points=" + getPoints() + ", " +
+                "pattern=" + pattern +
+                "}";
     }
 
     /**
@@ -80,13 +101,22 @@ public final class PatternObjective extends ObjectiveCard {
          * <code>types = {FUNGI, FUNGI, FUNGI}</code>
          * <br>
          * <code>offsets = {(1, -1),(1, -1)}</code>
-         *
-         * @param types   The card types present in this pattern.
+         * @param types The card types present in this pattern.
          * @param offsets The offsets that specify the position jumps from one card to the next.
          */
-        public CardPattern(ResourceType[] types, Position[] offsets) {
+        @JsonCreator
+        public CardPattern(
+                @JsonProperty("types") ResourceType[] types,
+                @JsonProperty("offsets") Position[] offsets) {
             this.types = types;
             this.offsets = offsets;
+        }
+
+        @Override
+        public String toString() {
+            return "Pattern{" +
+                    "types=" + Arrays.toString(types) + ", " +
+                    "offsets=" + Arrays.toString(offsets) + "}";
         }
     }
 }

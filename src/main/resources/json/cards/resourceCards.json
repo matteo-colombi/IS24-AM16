@@ -1,0 +1,64 @@
+{
+  "fungiCards" : [
+    {
+      "name" : "resource_fungi_1",
+      "frontSide" : "fungiFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : [],
+        "permanentResourcesGiven" : [],
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["fungi", "empty", "blocked", "fungi"]
+      },
+      "type" : "fungi"
+    },
+    {
+      "name" : "resource_fungi_2",
+      "frontSide" : "fungiFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : [],
+        "permanentResourcesGiven" : [],
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["fungi", "fungi", "empty", "blocked"]
+      },
+      "type" : "fungi"
+    }
+  ],
+  "plantCards" : [
+    {
+      "name" : "resource_plant_1",
+      "frontSide" : "plantFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : [],
+        "permanentResourcesGiven" : [],
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["plant", "empty", "blocked", "plant"]
+      },
+      "type" : "plant"
+    },
+    {
+      "name" : "resource_plant_2",
+      "frontSide" : "plantFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : [],
+        "permanentResourcesGiven" : [],
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["plant", "plant", "empty", "empty"]
+      },
+      "type" : "plant"
+    }
+  ],
+  "animalCards" : [
+
+  ],
+  "insectCards" : [
+
+  ]
+}

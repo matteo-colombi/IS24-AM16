@@ -13,7 +13,6 @@ public class TestPatternObjective {
     public void testPatternObjective() {
         // Creating some objects used in the test.
         PatternObjective objective = new PatternObjective(
-                0,
                 "testObjective",
                 2,
                 new PatternObjective.CardPattern(
@@ -24,20 +23,18 @@ public class TestPatternObjective {
 
         Player testPlayer = new Player(0, "testPlayer");
         StarterCard testStarterCard = new StarterCard(
-                1,
                 "testStarter",
+                null,
                 null,
                 null
         );
         ResourceCard testAnimalCard = new ResourceCard(
-                2,
                 "testAnimalCard",
                 null,
                 null,
                 ResourceType.ANIMAL
         );
         ResourceCard testInsectCard = new ResourceCard(
-                3,
                 "testInsectCard",
                 null,
                 null,

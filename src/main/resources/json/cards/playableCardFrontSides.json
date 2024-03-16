@@ -1,0 +1,34 @@
+{
+  "fungiFront": {
+    "points" : 0,
+    "cost" : [],
+    "permanentResourcesGiven" : ["fungi"],
+    "pointMultiplierPolicy" : "static",
+    "sideType" : "front",
+    "corners" : ["empty", "empty", "empty", "empty"]
+  },
+  "plantFront": {
+    "points" : 0,
+    "cost" : [],
+    "permanentResourcesGiven" : ["plant"],
+    "pointMultiplierPolicy" : "static",
+    "sideType" : "front",
+    "corners" : ["empty", "empty", "empty","empty"]
+  },
+  "animalFront": {
+    "points" : 0,
+    "cost" : [],
+    "permanentResourcesGiven" : ["animal"],
+    "pointMultiplierPolicy" : "static",
+    "sideType" : "front",
+    "corners" : ["empty", "empty", "empty", "empty"]
+  },
+  "insectFront": {
+    "points" : 0,
+    "cost" : [],
+    "permanentResourcesGiven" : ["insect"],
+    "pointMultiplierPolicy" : "static",
+    "sideType" : "front",
+    "corners" : ["empty", "empty", "empty", "empty"]
+  }
+}

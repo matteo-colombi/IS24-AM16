@@ -1,5 +1,7 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 
 import java.util.Map;
@@ -12,14 +14,17 @@ public final class ObjectObjective extends ObjectiveCard {
     private final Map<ObjectType, Integer> objectsRequired;
 
     /**
-     * Constructs a new objective card with the given numerical id and name, that requires the specified objects in order to give points.
-     * @param id The card's numerical id.
+     * Constructs a new objective card with the given name, that requires the specified objects in order to give points.
      * @param name The card's name.
      * @param points The points given by this card.
      * @param objectsRequired Map containing the amounts of each object required for this card to award points.
      */
-    public ObjectObjective(int id, String name, int points, Map<ObjectType, Integer> objectsRequired) {
-        super(id, name, points);
+    @JsonCreator
+    public ObjectObjective(
+            @JsonProperty("name") String name,
+            @JsonProperty("points") int points,
+            @JsonProperty("objectRequired") Map<ObjectType, Integer> objectsRequired) {
+        super(name, points);
         this.objectsRequired = objectsRequired;
     }
 
@@ -35,5 +40,14 @@ public final class ObjectObjective extends ObjectiveCard {
             multiplier = Math.min(multiplier, playArea.getObjectCounts().get(object) / objectsRequired.get(object));
         }
         return getPoints()*multiplier;
+    }
+
+    @Override
+    public String toString() {
+        return "\nObjectObjective{" +
+                "name=" + getName() + ", " +
+                "points=" + getPoints() + ", " +
+                "objectsRequired=" + objectsRequired +
+                "}";
     }
 }
