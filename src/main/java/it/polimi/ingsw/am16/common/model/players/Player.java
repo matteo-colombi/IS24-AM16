@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.common.model.players;
 
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
+import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
@@ -9,65 +10,25 @@ import it.polimi.ingsw.am16.common.model.players.hand.Hand;
 import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
 import it.polimi.ingsw.am16.common.util.Position;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class to handle players in a game. A player has a unique id for identification and a username. <br>
  *
  */
 public class Player implements PlayerModel {
-    /**
-     * Unique identifier for the player.
-     */
     private final int playerId;
-    /**
-     * The player's in-game name.
-     */
     private final String username;
-    /**
-     * The player's points gathered by placing cards on the board during a game, before adding the
-     * points from their personal objective and the common objectives of the game.
-     */
     private int currGamePoints;
-    /**
-     * The player's points gathered by fulfilling the conditions on their objective cards, which
-     * will be added to the game points at the end of the game.
-     */
     private int currObjectivePoints;
-    /**
-     * The player's personal objective card. Unlike common objectives, this one mustn't be
-     * shown to the rest of the players.
-     */
     private ObjectiveCard personalObjective;
-    /**
-     * Before the game starts, each player will have to choose between two possible
-     * personal objectives, which will be stored here before they make their choice.
-     */
-    private final ObjectiveCard[] possiblePersonalObjectives;
-    /**
-     * The player's starter card, given randomly at the start of the game.
-     */
+    private final List<ObjectiveCard> possiblePersonalObjectives;
     private StarterCard starterCard;
-    /**
-     * The player's in-game color, ideally represented on the points board.
-     */
     private PlayerColor color;
-    /**
-     * The player's hand of resource and gold cards.
-     */
     private final Hand hand;
-    /**
-     * The player's board, containing their starter card and their subsequently placed
-     * resource/gold cards.
-     */
     private final PlayArea playArea;
-    /**
-     * An indicator to mark whether the player chose which side to place their starter card on.
-     */
     private boolean choseStarterCardSide;
-    /**
-     * An indicator to mark whether the player chose their objective card between the two
-     * possible ones.
-     *
-     */
     private boolean choseObjectiveCard;
 
     /**
@@ -82,7 +43,7 @@ public class Player implements PlayerModel {
         this.username = username;
         this.currGamePoints = 0;
         this.currObjectivePoints = 0;
-        this.possiblePersonalObjectives = new ObjectiveCard[2];
+        this.possiblePersonalObjectives = new ArrayList<>();
         this.hand = new Hand();
         this.playArea = new PlayArea(this);
         this.color = null;
@@ -178,9 +139,8 @@ public class Player implements PlayerModel {
      */
 
     @Override
-    public ObjectiveCard[] getPersonalObjectiveOptions() {
-        //FIXME make me more robust
-        return new ObjectiveCard[]{possiblePersonalObjectives[0], possiblePersonalObjectives[1]};
+    public List<ObjectiveCard> getPersonalObjectiveOptions() {
+        return new ArrayList<>(possiblePersonalObjectives);
     }
 
     /**
@@ -242,8 +202,8 @@ public class Player implements PlayerModel {
      */
 
     public void giveObjectiveOptions(ObjectiveCard firstOption, ObjectiveCard secondOption) {
-        this.possiblePersonalObjectives[0] = firstOption;
-        this.possiblePersonalObjectives[1] = secondOption;
+        this.possiblePersonalObjectives.add(firstOption);
+        this.possiblePersonalObjectives.add(secondOption);
     }
 
     /**
@@ -261,15 +221,18 @@ public class Player implements PlayerModel {
      * @param objectiveCard The chosen objective card
      */
 
-    public void setObjectiveCard(ObjectiveCard objectiveCard) {
-        this.personalObjective = objectiveCard;
-        this.choseObjectiveCard = true;
-        //TODO check if the card is contained in possiblePersonalObjectives
+    public void setObjectiveCard(ObjectiveCard objectiveCard) throws UnknownObjectiveCardException{
+        if(possiblePersonalObjectives.contains(objectiveCard)){
+            this.personalObjective = objectiveCard;
+            this.choseObjectiveCard = true;
+        } else {
+            throw new UnknownObjectiveCardException("Objective card not included in the choices for the player");
+        }
     }
 
     /**
      * Sets the active side for the player's starter card, signaling that the choice has
-     * been made (links the Game and PlayArea objects).
+     * been made (links the {@link it.polimi.ingsw.am16.common.model.game.Game} and {@link PlayArea} objects).
      * @param side The chosen side
      */
 
@@ -280,23 +243,23 @@ public class Player implements PlayerModel {
 
     /**
      * Evaluates the total amount of points gathered by completing a common objective card
-     * (links the Game and PlayArea objects).
+     * (links the {@link it.polimi.ingsw.am16.common.model.game.Game} and {@link PlayArea} objects).
      * @param commonObjective The objective card to evaluate
      * @return The earned points from said objective
      */
 
-    public int evaluateCommonObjective(ObjectiveCard commonObjective) {
-        return commonObjective.evaluatePoints(this.playArea);
+    public void evaluateCommonObjective(ObjectiveCard commonObjective) {
+        this.currObjectivePoints += commonObjective.evaluatePoints(this.playArea);
     }
 
     /**
      * Evaluates the total amount of points gathered by completing the player's personal
-     * objective (links the Game and PlayArea objects).
+     * objective (links the {@link it.polimi.ingsw.am16.common.model.game.Game} and {@link PlayArea} objects).
      * @return The earned points from said objective
      */
 
-    public int evaluatePersonalObjective() {
-        return this.personalObjective.evaluatePoints(this.playArea);
+    public void evaluatePersonalObjective() {
+        this.currObjectivePoints +=  this.personalObjective.evaluatePoints(this.playArea);
     }
 
     /**
@@ -311,4 +274,28 @@ public class Player implements PlayerModel {
     }
 
 
+    /**
+     * Checks an object is equal to the player by comparing their IDs (if the parameter object is also a player).
+     * @param o The object to compare the player to
+     * @return true if the two are equal, false if they aren't
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Player player = (Player) o;
+
+        return playerId == player.playerId;
+    }
+
+    /**
+     *
+     * @return the ID of the player as its hash code
+     */
+
+    @Override
+    public int hashCode() {
+        return playerId;
+    }
 }
