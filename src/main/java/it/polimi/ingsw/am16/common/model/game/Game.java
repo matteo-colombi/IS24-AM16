@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO write doc everywhere
+ * Class to handle game(s). A game has a unique alphanumeric id and a non-variable number of players.
  */
 public class Game implements GameModel {
     private final String id;
@@ -36,6 +36,12 @@ public class Game implements GameModel {
     private int currentPlayerCount;
 
 
+    /**
+     * Creates a game, initializing its ID as well as its number of players to a chosen value, its
+     * other attributes are set to standard values.
+     * @param id The game's ID.
+     * @param numPlayers The number of players expected inside the game.
+     */
     public Game(String id, int numPlayers) {
         this.id = id;
         this.numPlayers = numPlayers;
@@ -55,42 +61,84 @@ public class Game implements GameModel {
         this.currentPlayerCount = 0;
     }
 
+    /**
+     *
+     * @return The game's ID.
+     */
     @Override
     public String getid() {
         return id;
     }
 
+    /**
+     * Adds a new player into the game. The number of players cannot exceed numPlayers.
+     * @param username The player's username.
+     */
     @Override
     public void addPlayer(String username) {
-        Player player = new Player(getCurrentPlayerCount(), username);
-        players[getCurrentPlayerCount()] = player;
-        setCurrentPlayerCount(getCurrentPlayerCount() + 1);
+        if(getCurrentPlayerCount() < getNumPlayers()) {
+            Player player = new Player(getCurrentPlayerCount(), username);
+            players[getCurrentPlayerCount()] = player;
+            setCurrentPlayerCount(getCurrentPlayerCount() + 1);
+        }
     }
+
+    /**
+     *
+     * @return The non-variable number of players expected to play the game.
+     */
     @Override
     public int getNumPlayers() {
         return numPlayers;
     }
 
+    /**
+     *
+     * @return The number of players who joined the game.
+     */
     public int getCurrentPlayerCount(){
         return currentPlayerCount;
     }
+
+    /**
+     * Updates the number of players who joined the game.
+     * @param currentPlayerCount The number of players who joined the game.
+     */
     public void setCurrentPlayerCount(int currentPlayerCount){
         this.currentPlayerCount = currentPlayerCount;
     }
+
+    /**
+     *
+     * @return The id of the player who has to finish their turn.
+     */
     @Override
     public int getActivePlayer() {
         return activePlayer;
     }
 
+    /**
+     *
+     * @return The id of the player whose turn is the first.
+     */
     @Override
     public int getStartingPlayer() {
         return startingPlayer;
     }
+
+    /**
+     *
+     * @return The id(s) of the player(s) who won.
+     */
     @Override
     public List<Integer> getWinnerIds() {
         return winnerIds;
     }
 
+    /**
+     *
+     * @return Whether the game has reached the "End Game" state.
+     */
     @Override
     public boolean getIsEndGame() {
         return isEndGame;
@@ -102,6 +150,9 @@ public class Game implements GameModel {
 
     }
 
+    /**
+     * Draws two gold cards and two resource cards. The players can see them and choose to draw them.
+     */
     @Override
     public void drawCommonCards() {
         commonResourceCards[0] = resourceCardsDeck.drawCard();
@@ -111,7 +162,9 @@ public class Game implements GameModel {
     }
 
 
-
+    /**
+     * Draws numPlayers starter cards and gives one to each player.
+     */
     @Override
     public void drawStarterCards() {
         for (int i = 0; i < numPlayers; i++) {
@@ -119,6 +172,11 @@ public class Game implements GameModel {
         }
     }
 
+    /**
+     * Lets the player choose the side of their starter card. It can be either front or back.
+     * @param playerId The player's ID.
+     * @param side The card's side.
+     */
     @Override
     public void setPlayerStarterSide(int playerId, SideType side) {
         for(int i = 0; i < numPlayers; i++) {
@@ -128,7 +186,11 @@ public class Game implements GameModel {
         }
     }
 
-
+    /**
+     * Sets the color of a player.
+     * @param playerId The player's ID.
+     * @param color The color a player chose.
+     */
     @Override
     public void setPlayerColor(int playerId, PlayerColor color) {
         for(int i = 0; i < numPlayers; i++) {
@@ -138,7 +200,10 @@ public class Game implements GameModel {
         }
     }
 
-
+    /**
+     *
+     * @return Whether all the players have chosen the side of their starter card.
+     */
     @Override
     public boolean allPlayersChoseStarterSide() {
         for(int i = 0; i < numPlayers; i++){
@@ -149,7 +214,10 @@ public class Game implements GameModel {
         return true;
     }
 
-
+    /**
+     *
+     * @return Whether all the players have chosen their color.
+     */
     @Override
     public boolean allPlayersChoseColor() {
         for(int i = 0; i < numPlayers; i++){
@@ -160,6 +228,9 @@ public class Game implements GameModel {
         return true;
     }
 
+    /**
+     * Distributes two resource cards and a gold card so that the game can start.
+     */
     @Override
     public void distributeCards() {
         for(int i = 0; i < numPlayers; i++) {
@@ -169,12 +240,18 @@ public class Game implements GameModel {
         }
     }
 
+    /**
+     * Draws two objective cards, every player can see them.
+     */
     @Override
     public void drawCommonObjectives() {
         commonObjectiveCards[0] = objectiveCardsDeck.drawCard();
         commonObjectiveCards[1] = objectiveCardsDeck.drawCard();
     }
 
+    /**
+     * Gives every player two objective cards.
+     */
     @Override
     public void distributePersonalObjectives() {
         for(int i = 0; i < numPlayers; i++) {
@@ -182,6 +259,12 @@ public class Game implements GameModel {
         }
     }
 
+    /**
+     * Sets the chosen objective card for a specific player.
+     * @param playerId The player's ID.
+     * @param objectiveCard The chosen objective card.
+     * @throws UnknownObjectiveCardException Thrown when the objective card is unknown.
+     */
     @Override
     public void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) throws UnknownObjectiveCardException {
         for(int i = 0; i < numPlayers; i++) {
@@ -193,7 +276,10 @@ public class Game implements GameModel {
     }
 
 
-
+    /**
+     *
+     * @return Whether all the players have chosen their personal objective.
+     */
     @Override
     public boolean allPlayersChoseObjective() {
         for(int i = 0; i < numPlayers; i++){
@@ -210,11 +296,23 @@ public class Game implements GameModel {
 
     }
 
+    /**
+     * Chooses the starting player randomly.
+     * @return The starting player's ID.
+     */
     @Override
     public int chooseStartingPlayer() {
         return RNG.getRNG().nextInt(numPlayers);
     }
 
+    /**
+     * Lets a player place a card.
+     * @param playerId The player's ID.
+     * @param placedCard The card the player wants to place.
+     * @param side The chosen card's side.
+     * @param newCardPos The position of the card.
+     * @throws IllegalMoveException Thrown if the player made an illegal move.
+     */
     @Override
     public void placeCard(int playerId, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException {
         for(int i = 0; i < numPlayers; i++) {
@@ -224,7 +322,11 @@ public class Game implements GameModel {
         }
     }
 
-
+    /**
+     * Lets the player draw a card. A card can be drawn from the deck or from the currently visible cards.
+     * @param playerId The player's ID.
+     * @param drawType The place a player wants to draw a card from.
+     */
     @Override
     public void drawCard(int playerId, DrawType drawType) {
         for(int i = 0; i < numPlayers; i++) {
@@ -257,6 +359,10 @@ public class Game implements GameModel {
         }
     }
 
+    /**
+     *
+     * @return Whether the game switched to the "End Game" state.
+     */
     @Override
     public boolean checkEndGame() {
         for(int i = 0; i < numPlayers; i++){
@@ -267,11 +373,14 @@ public class Game implements GameModel {
         return false;
     }
 
+    /**
+     * Evaluates every player's points earned by fulfilling the objective cards' (both common and personal) requests.
+     */
     @Override
     public void evaluateObjectivePoints() {
         for(int i = 0; i < numPlayers; i++) {
             players[i].evaluateCommonObjective(getCommonObjectiveCards()[0]);
-            players[i].evaluateCommonObjective(getCommonObjectiveCards()[0]);
+            players[i].evaluateCommonObjective(getCommonObjectiveCards()[1]);
             players[i].evaluatePersonalObjective();
         }
     }
@@ -282,6 +391,9 @@ public class Game implements GameModel {
 
     }
 
+    /**
+     * Chooses the winner(s) of the game.
+     */
     @Override
     public void selectWinners() {
         int tmpPoints = 0;
@@ -320,24 +432,39 @@ public class Game implements GameModel {
         }
     }
 
-
+    /**
+     *
+     * @return The players inside the game.
+     */
     @Override
     public PlayerModel[] getPlayers() {
         return players;
     }
 
+    /**
+     *
+     * @return The common objective cards.
+     */
     @Override
     public ObjectiveCard[] getCommonObjectiveCards() {
         ObjectiveCard[] tmp = commonObjectiveCards.clone();
         return tmp;
     }
 
+    /**
+     *
+     * @return The visible and drawable gold cards.
+     */
     @Override
     public GoldCard[] getCommonGoldCards() {
         GoldCard[] tmp = commonGoldCards.clone();
         return tmp;
     }
 
+    /**
+     *
+     * @return The visible and drawable resource cards.
+     */
     @Override
     public ResourceCard[] getCommonResourceCards() {
         ResourceCard[] tmp = commonResourceCards.clone();
