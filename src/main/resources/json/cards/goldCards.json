@@ -265,9 +265,6 @@
       "type" : "plant"
     }
   ],
-  "animalCards" : [
-
-  ],
   "insectCards" : [
     {
       "name" : "gold_insect_1",
@@ -398,6 +395,138 @@
         "corners" : ["empty", "empty", "blocked", "blocked"]
       },
       "type" : "insect"
+    }
+  ],
+  "animalCards" : [
+    {
+      "name" : "gold_animal_1",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {"animal" :  2, "insect" :  1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "inkwell",
+        "sideType" : "back",
+        "corners" : ["inkwell", "empty", "blocked", "empty"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "gold_animal_2",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {"animal" :  2, "plant" :  1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "manuscript",
+        "sideType" : "back",
+        "corners" : ["blocked", "empty", "manuscript", "empty"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "gold_animal_3",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {"animal" :  2, "fungi" :  1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "quill",
+        "sideType" : "back",
+        "corners" : ["empty", "blocked", "empty", "quill"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "gold_animal_4",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 2,
+        "cost" : {"animal" : 3, "insect" : 1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "corners_covered",
+        "sideType" : "back",
+        "corners" : ["empty", "empty", "empty", "blocked"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "gold_animal_5",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 2,
+        "cost" : {"animal" :  3, "fungi" :  1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "corners_covered",
+        "sideType" : "back",
+        "corners" : ["empty", "blocked", "empty", "empty"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "gold_animal_6",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 2,
+        "cost" : {"animal" :  3, "plant" :  1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "corners_covered",
+        "sideType" : "back",
+        "corners" : ["blocked", "empty", "empty", "empty"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "gold_animal_7",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 3,
+        "cost" : {"animal" :  3},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "blocked", "blocked", "manuscript"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "gold_animal_8",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 3,
+        "cost" : {"animal" :  3},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "inkwell", "blocked", "blocked"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "gold_animal_9",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 3,
+        "cost" : {"animal" :  3},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["blocked", "empty", "quill", "blocked"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "gold_animal_10",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 5,
+        "cost" : {"animal" :  5},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["blocked", "empty", "empty", "blocked"]
+      },
+      "type" : "animal"
     }
   ]
 }

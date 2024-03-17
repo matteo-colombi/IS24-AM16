@@ -263,9 +263,6 @@
       "type" : "plant"
     }
   ],
-  "animalCards" : [
-
-  ],
   "insectCards" : [
     {
       "name" : "resource_insect_1",
@@ -396,6 +393,138 @@
         "corners" : ["blocked", "insect", "empty", "empty"]
       },
       "type" : "insect"
+    }
+  ],
+  "animalCards" : [
+    {
+      "name" : "resource_animal_1",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["animal", "animal", "blocked", "empty"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "resource_animal_2",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["blocked", "empty", "animal", "animal"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "resource_animal_3",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["animal", "blocked", "empty", "animal"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "resource_animal_4",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "animal", "animal", "blocked"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "resource_animal_5",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["blocked", "insect", "animal", "inkwell"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "resource_animal_6",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["plant", "animal", "manuscript", "blocked"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "resource_animal_7",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["quill", "blocked", "fungi", "animal"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "resource_animal_8",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["blocked", "empty", "empty", "animal"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "resource_animal_9",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "blocked", "animal", "empty"]
+      },
+      "type" : "animal"
+    },
+    {
+      "name" : "resource_animal_10",
+      "frontSide" : "animalFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "animal", "blocked", "empty"]
+      },
+      "type" : "animal"
     }
   ]
 }
