@@ -9,10 +9,10 @@ import java.util.*;
 import java.util.function.Function;
 
 /**
- * TODO write documentation
+ * DOCME: write documentation
  */
 public class CardSide {
-    // TODO implement
+    // DOCME: implement
     private final int points;
     private final Map<ResourceType, Integer> cost;
     private final Map<ResourceType, Integer> permanentResourcesGiven;
@@ -21,7 +21,7 @@ public class CardSide {
     private final Map<CornersIdx, CornerType> corners;
 
     /**
-     * TODO write documentation
+     * DOCME: write documentation
      */
     enum PointMultiplierPolicy {
         /**
@@ -88,7 +88,7 @@ public class CardSide {
         private final Function<PlayArea, Integer> policy;
 
         /**
-         * TODO write documentation
+         * DOCME: write documentation
          * @param policy
          */
         PointMultiplierPolicy(Function<PlayArea, Integer> policy) {
@@ -96,7 +96,7 @@ public class CardSide {
         }
 
         /**
-         * TODO write documentation
+         * DOCME: write documentation
          * @param playArea
          * @return
          */
@@ -147,7 +147,7 @@ public class CardSide {
     }
 
     /**
-     * TODO write doc
+     * DOCME: write doc
      * @return
      */
     public int getPoints() {
@@ -155,7 +155,7 @@ public class CardSide {
     }
 
     /**
-     * TODO write doc
+     * DOCME: write doc
      * @return
      */
     public Map<ResourceType, Integer> getCost() {
@@ -163,7 +163,7 @@ public class CardSide {
     }
 
     /**
-     * TODO write doc
+     * DOCME: write doc
      * @return
      */
     public Map<ResourceType, Integer> getPermanentResourcesGiven() {
@@ -171,7 +171,7 @@ public class CardSide {
     }
 
     /**
-     * TODO write doc
+     * DOCME: write doc
      * @return
      */
     public SideType getSide() {
@@ -179,7 +179,7 @@ public class CardSide {
     }
 
     /**
-     * TODO write doc
+     * DOCME: write doc
      * @return
      */
     public Map<CornersIdx, CornerType> getCorners() {
@@ -187,7 +187,7 @@ public class CardSide {
     }
 
     /**
-     * TODO write doc
+     * DOCME: write doc
      * @param playArea
      * @return
      */
@@ -210,7 +210,7 @@ public class CardSide {
     private static final Map<String, CardSide> commonSides = new HashMap<>();
 
     /**
-     * TODO write doc
+     * DOCME: write doc
      * @param name
      * @return
      */
@@ -220,7 +220,7 @@ public class CardSide {
     }
 
     /**
-     * TODO write doc
+     * DOCME: write doc
      * @param name
      * @param cardSide
      */

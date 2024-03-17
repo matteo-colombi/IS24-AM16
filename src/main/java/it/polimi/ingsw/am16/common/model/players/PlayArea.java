@@ -7,7 +7,7 @@ import it.polimi.ingsw.am16.common.util.Position;
 import java.util.*;
 
 /**
- * //TODO write documentation
+ * DOCME: write documentation
  */
 public class PlayArea implements PlayAreaModel {
     private final Player player;
@@ -87,7 +87,7 @@ public class PlayArea implements PlayAreaModel {
     //region Local Methods
 
     /**
-     * TODO write documentation
+     * DOCME: write documentation
      *
      * @param starterCard
      * @param side
@@ -103,7 +103,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * TODO write documentation
+     * DOCME: write documentation
      *
      * @param playedCard
      * @param side
@@ -116,10 +116,15 @@ public class PlayArea implements PlayAreaModel {
         updateField(playedCard, side, playedCardPosition);
         updateCounts(playedCard, side, playedCardPosition);
         updateBounds(playedCardPosition);
+
+        CardSide activeSide = activeSides.get(playedCard);
+        int awardedPoints = activeSide.getAwardedPoints(this);
+
+        player.addGamePoints(awardedPoints);
     }
 
     /**
-     * TODO write documentation
+     * DOCME: write documentation
      *
      * @param playedCard
      * @param side
@@ -134,7 +139,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * TODO write documentation
+     * DOCME: write documentation
      *
      * @param playedCard
      * @param side
@@ -189,7 +194,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * TODO write documentation
+     * DOCME: write documentation
      *
      * @param playedCardPosition
      */
@@ -205,7 +210,7 @@ public class PlayArea implements PlayAreaModel {
     //region PlayAreaModel
 
     /**
-     * TODO write documentation
+     * DOCME: write documentation
      *
      * @return
      */
@@ -215,7 +220,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * TODO write documentation
+     * DOCME: write documentation
      *
      * @return
      */
@@ -225,7 +230,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * TODO write documentation
+     * DOCME: write documentation
      *
      * @return
      */
@@ -235,7 +240,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * TODO write documentation
+     * DOCME: write documentation
      *
      * @param playedCard
      * @param side
@@ -244,8 +249,23 @@ public class PlayArea implements PlayAreaModel {
      */
     @Override
     public boolean checkLegalMove(PlayableCard playedCard, SideType side, Position playedCardPosition) {
+        List<Position> neighboursPositions = playedCardPosition.getNeighbours();
+
+        // check if the playedCard has been placed isolated from the rest of the field
+        boolean isIsolated = true;
+
+        for (Position neighbourPosition : neighboursPositions) {
+            if (field.containsKey(neighbourPosition)) {
+                isIsolated = false;
+                break;
+            }
+        }
+
+        if (isIsolated)
+            return false;
+
         // check if the playedCard has been placed over a blocked corner
-        for (Position neighbourPosition : playedCardPosition.getNeighbours()) {
+        for (Position neighbourPosition : neighboursPositions) {
             if (!field.containsKey(neighbourPosition))
                 continue;
 

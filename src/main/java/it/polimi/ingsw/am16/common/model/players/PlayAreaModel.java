@@ -10,30 +10,30 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO write documentation
+ * DOCME: write documentation
  */
 public interface PlayAreaModel {
 
     /**
-     * TODO write documentation
+     * DOCME: write documentation
      * @return
      */
     List<Position> getPlacementOrder();
 
     /**
-     * TODO write documentation
+     * DOCME: write documentation
      * @return
      */
     Map<Position, BoardCard> getField();
 
     /**
-     * TODO write documentation
+     * DOCME: write documentation
      * @return
      */
     Map<BoardCard, CardSide> getActiveSides();
 
     /**
-     * TODO write documentation
+     * DOCME: write documentation
      * @param playedCard
      * @param side
      * @param playedCardPosition
