@@ -7,8 +7,92 @@
       "pattern" : {
         "types" : ["fungi", "fungi", "fungi"],
         "offsets" : [
-          {"x" : 1, "y" : 1},
-          {"x" : 1, "y" : 1}
+          {"x" : -1, "y" : -1},
+          {"x" : -1, "y" : -1}
+        ]
+      }
+    },
+    {
+      "objectiveType" : "pattern",
+      "name" : "objective_pattern_2",
+      "points" : 2,
+      "pattern" : {
+        "types" : ["plant", "plant", "plant"],
+        "offsets" : [
+          {"x" : 1, "y" : -1},
+          {"x" : 1, "y" : -1}
+        ]
+      }
+    },
+    {
+      "objectiveType" : "pattern",
+      "name" : "objective_pattern_3",
+      "points" : 2,
+      "pattern" : {
+        "types" : ["animal", "animal", "animal"],
+        "offsets" : [
+          {"x" : -1, "y" : -1},
+          {"x" : -1, "y" : -1}
+        ]
+      }
+    },
+    {
+      "objectiveType" : "pattern",
+      "name" : "objective_pattern_4",
+      "points" : 2,
+      "pattern" : {
+        "types" : ["insect", "insect", "insect"],
+        "offsets" : [
+          {"x" : 1, "y" : -1},
+          {"x" : 1, "y" : -1}
+        ]
+      }
+    },
+    {
+      "objectiveType" : "pattern",
+      "name" : "objective_pattern_5",
+      "points" : 3,
+      "pattern" : {
+        "types" : ["fungi", "fungi", "plant"],
+        "offsets" : [
+          {"x" : 0, "y" : -1},
+          {"x" : 1, "y" : -1}
+        ]
+      }
+    },
+    {
+      "objectiveType" : "pattern",
+      "name" : "objective_pattern_6",
+      "points" : 3,
+      "pattern" : {
+        "types" : ["plant", "plant", "insect"],
+        "offsets" : [
+          {"x" : 0, "y" : -1},
+          {"x" : -1, "y" : -1}
+        ]
+      }
+    },
+    {
+      "objectiveType" : "pattern",
+      "name" : "objective_pattern_7",
+      "points" : 3,
+      "pattern" : {
+        "types" : ["fungi", "animal", "animal"],
+        "offsets" : [
+          {"x" : -1, "y" : -1},
+          {"x" : 0, "y" : -1}
+        ]
+      }
+    },
+    {
+      "objectiveType" : "pattern",
+      "name" : "objective_pattern_8",
+      "points" : 3,
+      "pattern" : {
+        "types" : ["animal", "insect", "insect"],
+        "offsets" : [
+          {"x" : 1, "y" : -1},
+          {"x" : 0, "y" : -1}
         ]
       }
     },
@@ -20,6 +104,27 @@
       "quantity" : 3
     },
     {
+      "objectiveType" : "resource",
+      "name" : "objective_resources_2",
+      "points" : 2,
+      "resourceType" : "plant",
+      "quantity" : 3
+    },
+    {
+      "objectiveType" : "resource",
+      "name" : "objective_resources_3",
+      "points" : 2,
+      "resourceType" : "animal",
+      "quantity" : 3
+    },
+    {
+      "objectiveType" : "resource",
+      "name" : "objective_resources_4",
+      "points" : 2,
+      "resourceType" : "insect",
+      "quantity" : 3
+    },
+    {
       "objectiveType" : "object",
       "name" : "objective_object_1",
       "points" : 3,
@@ -27,6 +132,30 @@
         "inkwell" : 1,
         "manuscript" : 1,
         "quill" : 1
+      }
+    },
+    {
+      "objectiveType" : "object",
+      "name" : "objective_object_2",
+      "points" : 2,
+      "objectRequired" : {
+        "manuscript" : 2
+      }
+    },
+    {
+      "objectiveType" : "object",
+      "name" : "objective_object_3",
+      "points" : 2,
+      "objectRequired" : {
+        "inkwell" : 2
+      }
+    },
+    {
+      "objectiveType" : "object",
+      "name" : "objective_object_4",
+      "points" : 2,
+      "objectRequired" : {
+        "quill" : 2
       }
     }
   ]

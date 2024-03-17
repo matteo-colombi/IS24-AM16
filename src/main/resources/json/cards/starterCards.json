@@ -4,19 +4,119 @@
       "name" : "starter_1",
       "frontSide" : {
         "points" : 0,
-        "cost" : [],
-        "permanentResourcesGiven" : [],
+        "cost" : {},
+        "permanentResourcesGiven" : {},
         "pointMultiplierPolicy" : "static",
         "sideType" : "front",
         "corners" : ["fungi", "plant", "animal", "insect"]
       },
       "backSide" : {
         "points" : 0,
-        "cost" : [],
-        "permanentResourcesGiven" : ["insect"],
+        "cost" : {},
+        "permanentResourcesGiven" : {"insect" : 1},
         "pointMultiplierPolicy" : "static",
         "sideType" : "back",
         "corners" : ["empty", "plant", "empty", "insect"]
+      },
+      "type" : null
+    },
+    {
+      "name" : "starter_2",
+      "frontSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "front",
+        "corners" : ["plant", "animal", "insect", "plant"]
+      },
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {"plant" : 1},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["animal", "empty", "fungi", "empty"]
+      },
+      "type" : null
+    },
+    {
+      "name" : "starter_3",
+      "frontSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "front",
+        "corners" : ["insect", "animal", "plant", "fungi"]
+      },
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {"plant" : 1, "fungi" : 1},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "empty", "empty", "empty"]
+      },
+      "type" : null
+    },
+    {
+      "name" : "starter_4",
+      "frontSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "front",
+        "corners" : ["plant", "insect", "fungi", "animal"]
+      },
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {"animal" : 1, "insect" : 1},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "empty", "empty", "empty"]
+      },
+      "type" : null
+    },
+    {
+      "name" : "starter_5",
+      "frontSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "front",
+        "corners" : ["insect", "fungi", "animal", "plant"]
+      },
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {"animal" : 1, "insect" : 1, "plant" : 1},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "empty", "blocked", "blocked"]
+      },
+      "type" : null
+    },
+    {
+      "name" : "starter_6",
+      "frontSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "front",
+        "corners" : ["fungi", "animal", "insect", "plant"]
+      },
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {"plant" : 1, "animal" : 1, "fungi" : 1},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "empty", "blocked", "blocked"]
       },
       "type" : null
     }

@@ -13,4 +13,5 @@ module it.polimi.ingsw.am16 {
     exports it.polimi.ingsw.am16;
     exports it.polimi.ingsw.am16.common.model.cards to com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.am16.common.util to com.fasterxml.jackson.databind;
+    exports it.polimi.ingsw.am16.common.model.players to com.fasterxml.jackson.databind;
 }

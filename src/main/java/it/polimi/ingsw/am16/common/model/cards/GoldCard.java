@@ -1,5 +1,8 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Class used to model gold cards.
  */
@@ -12,7 +15,12 @@ public final class GoldCard extends PlayableCard {
      * @param backSide The card's back side.
      * @param type The card's resource type.
      */
-    public GoldCard(String name, CardSide frontSide, CardSide backSide, ResourceType type) {
+    @JsonCreator
+    public GoldCard(
+            @JsonProperty("name") String name,
+            @JsonProperty("frontSide") CardSide frontSide,
+            @JsonProperty("backSide") CardSide backSide,
+            @JsonProperty("type") ResourceType type) {
         super(name, frontSide, backSide, type);
     }
 }

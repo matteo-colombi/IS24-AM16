@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -25,7 +26,10 @@ public final class ObjectObjective extends ObjectiveCard {
             @JsonProperty("points") int points,
             @JsonProperty("objectRequired") Map<ObjectType, Integer> objectsRequired) {
         super(name, points);
-        this.objectsRequired = objectsRequired;
+        objectsRequired.putIfAbsent(ObjectType.INKWELL, 0);
+        objectsRequired.putIfAbsent(ObjectType.MANUSCRIPT, 0);
+        objectsRequired.putIfAbsent(ObjectType.QUILL, 0);
+        this.objectsRequired = Collections.unmodifiableMap(objectsRequired);
     }
 
     /**

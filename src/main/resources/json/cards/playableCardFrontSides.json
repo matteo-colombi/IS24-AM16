@@ -1,32 +1,32 @@
 {
   "fungiFront": {
     "points" : 0,
-    "cost" : [],
-    "permanentResourcesGiven" : ["fungi"],
+    "cost" : {},
+    "permanentResourcesGiven" : {"fungi" : 1},
     "pointMultiplierPolicy" : "static",
     "sideType" : "front",
     "corners" : ["empty", "empty", "empty", "empty"]
   },
   "plantFront": {
     "points" : 0,
-    "cost" : [],
-    "permanentResourcesGiven" : ["plant"],
+    "cost" : {},
+    "permanentResourcesGiven" : {"plant" : 1},
     "pointMultiplierPolicy" : "static",
     "sideType" : "front",
     "corners" : ["empty", "empty", "empty","empty"]
   },
   "animalFront": {
     "points" : 0,
-    "cost" : [],
-    "permanentResourcesGiven" : ["animal"],
+    "cost" : {},
+    "permanentResourcesGiven" : {"animal" : 1},
     "pointMultiplierPolicy" : "static",
     "sideType" : "front",
     "corners" : ["empty", "empty", "empty", "empty"]
   },
   "insectFront": {
     "points" : 0,
-    "cost" : [],
-    "permanentResourcesGiven" : ["insect"],
+    "cost" : {},
+    "permanentResourcesGiven" : {"insect" : 1},
     "pointMultiplierPolicy" : "static",
     "sideType" : "front",
     "corners" : ["empty", "empty", "empty", "empty"]
