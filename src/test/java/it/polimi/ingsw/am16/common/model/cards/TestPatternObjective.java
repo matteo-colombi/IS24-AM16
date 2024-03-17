@@ -1,71 +1,144 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
+import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.util.Position;
 import org.junit.jupiter.api.Test;
+
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestPatternObjective {
 
-    //TODO run this test once PlayArea is actually implemented.
+    private static List<ObjectiveCard> objectiveCards;
+    private static ObjectiveCard objective;
+    private static StarterCard starterCard;
+    private static Player testPlayer;
+
     @Test
-    public void testPatternObjective() {
+    public void testPatternObjective() throws IllegalMoveException {
         // Creating some objects used in the test.
-        PatternObjective objective = new PatternObjective(
-                "testObjective",
-                2,
-                new PatternObjective.CardPattern(
-                        new ResourceType[]{ResourceType.ANIMAL, ResourceType.ANIMAL, ResourceType.ANIMAL},
-                        new Position[]{new Position(-1, -1), new Position(-1, -1)}
-                )
-        );
+        initialize();
 
-        Player testPlayer = new Player(0, "testPlayer");
-        StarterCard testStarterCard = new StarterCard(
-                "testStarter",
-                null,
-                null,
-                null
-        );
-        ResourceCard testAnimalCard = new ResourceCard(
-                "testAnimalCard",
-                null,
-                null,
-                ResourceType.ANIMAL
-        );
-        ResourceCard testInsectCard = new ResourceCard(
-                "testInsectCard",
-                null,
-                null,
-                ResourceType.INSECT
-        );
+        testObjective1();
+        //TODO test other objectives
+    }
 
-        // The actual test.
-        testPlayer.getPlayArea().getField().put(new Position(0, 0), testStarterCard);
+    public void initialize() {
+        CardRegistry.initializeRegistry();
+
+        objectiveCards = CardRegistry.getObjectiveCards();
+
+        starterCard = CardRegistry.getStarterCards().getFirst();
+        assertEquals("starter_1", starterCard.getName());
+
+        testPlayer = new Player(0, "testPlayer");
+    }
+
+    @Test
+    public void testObjective1() throws IllegalMoveException {
+        objective = objectiveCards.getFirst();
+        assertEquals("objective_pattern_1", objective.getName());
 
         assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        testPlayer.getPlayArea().getField().put(new Position(1, 1), testAnimalCard);
-        testPlayer.getPlayArea().getField().put(new Position(2, 2), testAnimalCard);
-        testPlayer.getPlayArea().getField().put(new Position(3, 3), testAnimalCard);
+        PlayableCard fungiCard = CardRegistry.getResourceCards().getFirst();
+        PlayableCard insectCard = CardRegistry.getResourceCards().get(30);
+        assertEquals(ResourceType.FUNGI, fungiCard.getType());
+        assertEquals(ResourceType.INSECT, insectCard.getType());
+
+        testPlayer.setStarterCard(starterCard);
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,1));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,2));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(3,3));
 
         assertEquals(2, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        testPlayer.getPlayArea().getField().put(new Position(4, 4), testAnimalCard);
-        testPlayer.getPlayArea().getField().put(new Position(5, 5), testAnimalCard);
+        testPlayer = new Player(0, "testPlayer");
+
+        testPlayer.setStarterCard(starterCard);
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,-1));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-2,-2));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-3,-3));
 
         assertEquals(2, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        testPlayer.getPlayArea().getField().put(new Position(6, 6), testAnimalCard);
+        testPlayer = new Player(0, "testPlayer");
+
+        testPlayer.setStarterCard(starterCard);
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-2,0));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,1));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(0,2));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,3));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,4));
+
+        assertEquals(2, objective.evaluatePoints(testPlayer.getPlayArea()));
+
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(3,5));
 
         assertEquals(4, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        testPlayer.getPlayArea().getField().put(new Position(6, 6), testInsectCard);
+        testPlayer = new Player(0, "testPlayer");
+
+        testPlayer.setStarterCard(starterCard);
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-2,-2));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,-1));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,1));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,2));
+
+        assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
+
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(3,3));
 
         assertEquals(2, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        //TODO expand this to try more cases
+        testPlayer = new Player(0, "testPlayer");
 
+        testPlayer.setStarterCard(starterCard);
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,1));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,2));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(3,3));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(0,2));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,3));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,4));
+
+        assertEquals(4, objective.evaluatePoints(testPlayer.getPlayArea()));
+
+        testPlayer = new Player(0, "testPlayer");
+
+        testPlayer.setStarterCard(starterCard);
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-3,3));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-2,2));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,1));
+
+        assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
+
+        testPlayer = new Player(0, "testPlayer");
+
+        testPlayer.setStarterCard(starterCard);
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-3,3));
+        testPlayer.playCard(insectCard, SideType.FRONT, new Position(-2,2));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,1));
+
+        assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
+
+        testPlayer = new Player(0, "testPlayer");
+
+        testPlayer.setStarterCard(starterCard);
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,1));
+        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,2));
+        testPlayer.playCard(insectCard, SideType.FRONT, new Position(3,3));
+
+        assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
+
+        testPlayer = new Player(0, "testPlayer");
+
+        testPlayer.setStarterCard(starterCard);
+        testPlayer.playCard(insectCard, SideType.FRONT, new Position(1,1));
+        testPlayer.playCard(insectCard, SideType.FRONT, new Position(2,2));
+        testPlayer.playCard(insectCard, SideType.FRONT, new Position(3,3));
+
+        assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
     }
 }

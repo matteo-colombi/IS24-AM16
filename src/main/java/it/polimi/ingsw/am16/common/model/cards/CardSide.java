@@ -117,8 +117,8 @@ public class CardSide {
     @JsonCreator
     CardSide(
             @JsonProperty("points") int points,
-            @JsonProperty("cost") Map<ResourceType, Integer> cost,
-            @JsonProperty("permanentResourcesGiven") Map<ResourceType, Integer> permanentResourcesGiven,
+            @JsonProperty("cost") EnumMap<ResourceType, Integer> cost,
+            @JsonProperty("permanentResourcesGiven") EnumMap<ResourceType, Integer> permanentResourcesGiven,
             @JsonProperty("pointMultiplierPolicy") PointMultiplierPolicy pointMultiplierPolicy,
             @JsonProperty("sideType") SideType side,
             @JsonProperty("corners") CornerType[] corners) {
@@ -139,7 +139,7 @@ public class CardSide {
         this.pointMultiplierPolicy = pointMultiplierPolicy;
         this.side = side;
 
-        this.corners = new HashMap<>();
+        this.corners = new EnumMap<>(CornersIdx.class);
         this.corners.put(CornersIdx.TOP_LEFT, corners[CornersIdx.TOP_LEFT.ordinal()]);
         this.corners.put(CornersIdx.TOP_RIGHT, corners[CornersIdx.TOP_RIGHT.ordinal()]);
         this.corners.put(CornersIdx.BOTTOM_RIGHT, corners[CornersIdx.BOTTOM_RIGHT.ordinal()]);

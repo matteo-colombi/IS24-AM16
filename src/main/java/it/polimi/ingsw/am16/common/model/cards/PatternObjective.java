@@ -41,13 +41,15 @@ public final class PatternObjective extends ObjectiveCard {
     public int evaluatePoints(PlayArea playArea) {
         Set<Position> usedPositions = new HashSet<>();
         int foundPatterns = 0;
-        for (int x = playArea.getMinX(); x < playArea.getMaxX(); x++) {
-            for (int y = playArea.getMinY(); y < playArea.getMaxY(); y++) {
+
+        for (int y = playArea.getMaxY(); y >= playArea.getMinY(); y--) {
+            for (int x = playArea.getMinX(); x <= playArea.getMaxX(); x++) {
                 if (checkPatternMatch(playArea.getField(), x, y, usedPositions)) {
                     foundPatterns++;
                 }
             }
         }
+
         return foundPatterns*getPoints();
     }
 
@@ -62,16 +64,25 @@ public final class PatternObjective extends ObjectiveCard {
     private boolean checkPatternMatch(Map<Position, BoardCard> field, int startX, int startY, Set<Position> usedPositions) {
         Set<Position> tempUsedPositions = new HashSet<>();
         Position currPos = new Position(startX, startY);
-        for(int i = 0; i<pattern.types.length-1; i++) {
+
+        for(int i = 0; i < pattern.types.length; i++) {
             if(usedPositions.contains(currPos))
                 return false;
-            if((field.get(currPos)).getType() != pattern.types[i])
+
+            if(!field.containsKey(currPos))
                 return false;
+
+            if(field.get(currPos).getType() != pattern.types[i])
+                return false;
+
             tempUsedPositions.add(currPos);
+
             if (i != pattern.types.length-1)
                 currPos = currPos.addOffset(pattern.offsets[i]);
         }
+
         usedPositions.addAll(tempUsedPositions);
+
         return true;
     }
 

@@ -4,10 +4,7 @@ import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.util.Position;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * //TODO write documentation
@@ -27,7 +24,7 @@ public class PlayArea implements PlayAreaModel {
     public PlayArea(Player player) {
         this.player = player;
         this.cardCount = 0;
-        this.resourceAndObjectCounts = new HashMap<>();
+        this.resourceAndObjectCounts = new EnumMap<>(CornerType.class);
         this.cardPlacementOrder = new ArrayList<>();
         this.field = new HashMap<>();
         this.activeSides = new HashMap<>();
@@ -44,7 +41,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     public Map<ResourceType, Integer> getResourceCounts() {
-        Map<ResourceType, Integer> resourceCounts = new HashMap<>();
+        Map<ResourceType, Integer> resourceCounts = new EnumMap<>(ResourceType.class);
 
         for (ResourceType resource : ResourceType.values()) {
             CornerType mappedCorner = resource.mappedCorner();
@@ -57,7 +54,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     public Map<ObjectType, Integer> getObjectCounts() {
-        Map<ObjectType, Integer> objectCounts = new HashMap<>();
+        Map<ObjectType, Integer> objectCounts = new EnumMap<>(ObjectType.class);
 
         for (ObjectType object : ObjectType.values()) {
             CornerType mappedCorner = object.mappedCorner();
@@ -282,7 +279,7 @@ public class PlayArea implements PlayAreaModel {
         for (ResourceType resource : cardCost.keySet()) {
             CornerType mappedCorner = resource.mappedCorner();
 
-            if (cardCost.get(resource) > resourceAndObjectCounts.get(mappedCorner))
+            if (cardCost.get(resource) > resourceAndObjectCounts.getOrDefault(mappedCorner, 0))
                 return false;
         }
 
