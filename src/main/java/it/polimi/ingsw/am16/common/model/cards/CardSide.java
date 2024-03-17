@@ -123,16 +123,19 @@ public class CardSide {
             @JsonProperty("sideType") SideType side,
             @JsonProperty("corners") CornerType[] corners) {
         this.points = points;
+
         cost.putIfAbsent(ResourceType.FUNGI, 0);
         cost.putIfAbsent(ResourceType.PLANT, 0);
         cost.putIfAbsent(ResourceType.ANIMAL, 0);
         cost.putIfAbsent(ResourceType.INSECT, 0);
         this.cost = Collections.unmodifiableMap(cost);
+
         permanentResourcesGiven.putIfAbsent(ResourceType.FUNGI, 0);
         permanentResourcesGiven.putIfAbsent(ResourceType.PLANT, 0);
         permanentResourcesGiven.putIfAbsent(ResourceType.ANIMAL, 0);
         permanentResourcesGiven.putIfAbsent(ResourceType.INSECT, 0);
         this.permanentResourcesGiven = Collections.unmodifiableMap(permanentResourcesGiven);
+
         this.pointMultiplierPolicy = pointMultiplierPolicy;
         this.side = side;
 
@@ -165,14 +168,6 @@ public class CardSide {
      */
     public Map<ResourceType, Integer> getPermanentResourcesGiven() {
         return permanentResourcesGiven;
-    }
-
-    /**
-     * TODO write doc
-     * @return
-     */
-    PointMultiplierPolicy getPointMultiplierPolicy() {
-        return pointMultiplierPolicy;
     }
 
     /**

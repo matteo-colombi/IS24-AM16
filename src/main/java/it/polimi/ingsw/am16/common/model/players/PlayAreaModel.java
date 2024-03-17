@@ -36,8 +36,8 @@ public interface PlayAreaModel {
      * TODO write documentation
      * @param playedCard
      * @param side
-     * @param newCardPosition
+     * @param playedCardPosition
      * @return
      */
-    boolean checkLegalMove(PlayableCard playedCard, SideType side, Position newCardPosition);
+    boolean checkLegalMove(PlayableCard playedCard, SideType side, Position playedCardPosition);
 }

@@ -50,7 +50,111 @@
         "permanentResourcesGiven" : {},
         "pointMultiplierPolicy" : "static",
         "sideType" : "back",
-        "corners" : ["plant", "plant", "empty", "empty"]
+        "corners" : ["plant", "plant", "empty", "blocked"]
+      },
+      "type" : "plant"
+    },
+    {
+      "name" : "resource_plant_3",
+      "frontSide" : "plantFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "blocked", "plant", "plant"]
+      },
+      "type" : "plant"
+    },
+    {
+      "name" : "resource_plant_4",
+      "frontSide" : "plantFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["blocked", "plant", "plant", "empty"]
+      },
+      "type" : "plant"
+    },
+    {
+      "name" : "resource_plant_5",
+      "frontSide" : "plantFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["blocked", "insect", "plant", "quill"]
+      },
+      "type" : "plant"
+    },
+    {
+      "name" : "resource_plant_6",
+      "frontSide" : "plantFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["fungi", "plant", "inkwell", "blocked"]
+      },
+      "type" : "plant"
+    },
+    {
+      "name" : "resource_plant_7",
+      "frontSide" : "plantFront",
+      "backSide" : {
+        "points" : 0,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["manuscript", "blocked", "animal", "plant"]
+      },
+      "type" : "plant"
+    },
+    {
+      "name" : "resource_plant_8",
+      "frontSide" : "plantFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "empty", "blocked", "plant"]
+      },
+      "type" : "plant"
+    },
+    {
+      "name" : "resource_plant_9",
+      "frontSide" : "plantFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "empty", "plant", "blocked"]
+      },
+      "type" : "plant"
+    },
+    {
+      "name" : "resource_plant_10",
+      "frontSide" : "plantFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["blocked", "plant", "empty", "empty"]
       },
       "type" : "plant"
     }

@@ -50,7 +50,7 @@ public abstract class BoardCard extends Card {
      * @param sideType The side to be returned.
      * @return the card's side corresponding to the <code>sideType</code> given.
      */
-    public CardSide getSideByType(SideType sideType) {
+    public CardSide getCardSideBySideType(SideType sideType) {
         if (sideType == SideType.FRONT)
             return getFrontSide();
 

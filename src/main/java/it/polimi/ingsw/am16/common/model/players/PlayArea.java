@@ -43,22 +43,15 @@ public class PlayArea implements PlayAreaModel {
         return cardCount;
     }
 
-    public void setCardCount(int cardCount) {
-        this.cardCount = cardCount;
-    }
-
     public Map<ResourceType, Integer> getResourceCounts() {
         Map<ResourceType, Integer> resourceCounts = new HashMap<>();
 
-        Integer animalCounts = resourceAndObjectCounts.get(CornerType.ANIMAL);
-        Integer fungiCounts = resourceAndObjectCounts.get(CornerType.FUNGI);
-        Integer insectCounts = resourceAndObjectCounts.get(CornerType.INSECT);
-        Integer plantCounts = resourceAndObjectCounts.get(CornerType.PLANT);
+        for (ResourceType resource : ResourceType.values()) {
+            CornerType mappedCorner = resource.mappedCorner();
+            Integer counter = resourceAndObjectCounts.get(mappedCorner);
 
-        resourceCounts.put(ResourceType.ANIMAL, animalCounts);
-        resourceCounts.put(ResourceType.FUNGI, fungiCounts);
-        resourceCounts.put(ResourceType.INSECT, insectCounts);
-        resourceCounts.put(ResourceType.PLANT, plantCounts);
+            resourceCounts.put(resource, counter);
+        }
 
         return resourceCounts;
     }
@@ -66,13 +59,12 @@ public class PlayArea implements PlayAreaModel {
     public Map<ObjectType, Integer> getObjectCounts() {
         Map<ObjectType, Integer> objectCounts = new HashMap<>();
 
-        Integer inkwellCounts = resourceAndObjectCounts.get(CornerType.INKWELL);
-        Integer manuscriptCounts = resourceAndObjectCounts.get(CornerType.MANUSCRIPT);
-        Integer quillCounts = resourceAndObjectCounts.get(CornerType.QUILL);
+        for (ObjectType object : ObjectType.values()) {
+            CornerType mappedCorner = object.mappedCorner();
+            Integer counter = resourceAndObjectCounts.get(mappedCorner);
 
-        objectCounts.put(ObjectType.INKWELL, inkwellCounts);
-        objectCounts.put(ObjectType.MANUSCRIPT, manuscriptCounts);
-        objectCounts.put(ObjectType.QUILL, quillCounts);
+            objectCounts.put(object, counter);
+        }
 
         return objectCounts;
     }
@@ -81,32 +73,16 @@ public class PlayArea implements PlayAreaModel {
         return minX;
     }
 
-    public void setMinX(int minX) {
-        this.minX = minX;
-    }
-
     public int getMaxX() {
         return maxX;
-    }
-
-    public void setMaxX(int maxX) {
-        this.maxX = maxX;
     }
 
     public int getMinY() {
         return minY;
     }
 
-    public void setMinY(int minY) {
-        this.minY = minY;
-    }
-
     public int getMaxY() {
         return maxY;
-    }
-
-    public void setMaxY(int maxY) {
-        this.maxY = maxY;
     }
 
     //endregion
@@ -157,7 +133,7 @@ public class PlayArea implements PlayAreaModel {
 
         cardPlacementOrder.add(playedCardPosition);
         field.put(playedCardPosition, playedCard);
-        activeSides.put(playedCard, playedCard.getSideByType(side));
+        activeSides.put(playedCard, playedCard.getCardSideBySideType(side));
     }
 
     /**
@@ -167,37 +143,51 @@ public class PlayArea implements PlayAreaModel {
      * @param side
      * @param playedCardPosition
      */
-    public void updateCounts(BoardCard playedCard, SideType side, Position playedCardPosition) {
+    private void updateCounts(BoardCard playedCard, SideType side, Position playedCardPosition) {
         CardSide activeSide = activeSides.get(playedCard);
 
-        if (side == SideType.FRONT) {
-            for (CornerType corner : activeSide.getCorners().values()) {
-                if (corner == CornerType.BLOCKED || corner == CornerType.EMPTY)
-                    continue;
+        // increases the resources and objects that are in the corners of the new card
+        for (CornerType corner : activeSide.getCorners().values()) {
+            if (corner == CornerType.BLOCKED || corner == CornerType.EMPTY)
+                continue;
 
-                resourceAndObjectCounts.merge(corner, 1, Integer::sum);
-            }
-        } else {
-            //TODO implementare la parte relativa alle risorse permanenti
-
+            resourceAndObjectCounts.merge(corner, 1, Integer::sum);
         }
 
-        //TODO implementare la parte relativa agli angoli coperti dalla nuova carta
+        // increases the resources that are permanent in the new card
+        for (ResourceType resources : activeSide.getPermanentResourcesGiven().keySet()) {
+            CornerType mappedCorner = resources.mappedCorner();
 
+            resourceAndObjectCounts.merge(mappedCorner, 1, Integer::sum);
+        }
+
+        // decrements the resources and objects that have been hidden by the new card
         for (Position neighbourPosition : playedCardPosition.getNeighbours()) {
             if (!field.containsKey(neighbourPosition))
                 continue;
 
             BoardCard neighbourCard = field.get(neighbourPosition);
             CardSide neighbourCardSide = activeSides.get(neighbourCard);
+            Map<CornersIdx, CornerType> corners = neighbourCardSide.getCorners();
+            CornerType corner = null;
 
-            //TODO
             if (playedCardPosition.isTopLeft(neighbourPosition)) {
-                neighbourCardSide.getCorners().get(CornersIdx.BOTTOM_RIGHT);
-
-
-
+                corner = corners.get(CornersIdx.BOTTOM_RIGHT);
+            } else if (playedCardPosition.isTopRight(neighbourPosition)) {
+                corner = corners.get(CornersIdx.BOTTOM_LEFT);
+            } else if (playedCardPosition.isBottomRight(neighbourPosition)) {
+                corner = corners.get(CornersIdx.TOP_LEFT);
+            } else if (playedCardPosition.isBottomLeft(neighbourPosition)) {
+                corner = corners.get(CornersIdx.TOP_RIGHT);
             }
+
+            // sono sicuro che diventi un tipo tra quelli disponibili ma non si sa mai
+            assert corner != null;
+
+            if (corner == CornerType.BLOCKED || corner == CornerType.EMPTY)
+                continue;
+
+            resourceAndObjectCounts.merge(corner, -1, Integer::sum);
         }
     }
 
@@ -252,12 +242,50 @@ public class PlayArea implements PlayAreaModel {
      *
      * @param playedCard
      * @param side
-     * @param newCardPosition
+     * @param playedCardPosition
      * @return
      */
     @Override
-    public boolean checkLegalMove(PlayableCard playedCard, SideType side, Position newCardPosition) {
-        //TODO implement this
+    public boolean checkLegalMove(PlayableCard playedCard, SideType side, Position playedCardPosition) {
+        // check if the playedCard has been placed over a blocked corner
+        for (Position neighbourPosition : playedCardPosition.getNeighbours()) {
+            if (!field.containsKey(neighbourPosition))
+                continue;
+
+            BoardCard neighbourCard = field.get(neighbourPosition);
+            CardSide neighbourCardSide = activeSides.get(neighbourCard);
+            Map<CornersIdx, CornerType> corners = neighbourCardSide.getCorners();
+
+            if (playedCardPosition.isTopLeft(neighbourPosition)) {
+                if (corners.get(CornersIdx.BOTTOM_RIGHT) == CornerType.BLOCKED) {
+                    return false;
+                }
+            } else if (playedCardPosition.isTopRight(neighbourPosition)) {
+                if (corners.get(CornersIdx.BOTTOM_LEFT) == CornerType.BLOCKED) {
+                    return false;
+                }
+            } else if (playedCardPosition.isBottomRight(neighbourPosition)) {
+                if (corners.get(CornersIdx.TOP_LEFT) == CornerType.BLOCKED) {
+                    return false;
+                }
+            } else if (playedCardPosition.isBottomLeft(neighbourPosition)) {
+                if (corners.get(CornersIdx.TOP_RIGHT) == CornerType.BLOCKED) {
+                    return false;
+                }
+            }
+        }
+
+        // check if the playedCard cost is satisfied
+        CardSide cardSide = playedCard.getCardSideBySideType(side);
+        Map<ResourceType, Integer> cardCost = cardSide.getCost();
+
+        for (ResourceType resource : cardCost.keySet()) {
+            CornerType mappedCorner = resource.mappedCorner();
+
+            if (cardCost.get(resource) > resourceAndObjectCounts.get(mappedCorner))
+                return false;
+        }
+
         return true;
     }
 

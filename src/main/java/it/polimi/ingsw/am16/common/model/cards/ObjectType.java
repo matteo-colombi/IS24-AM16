@@ -7,11 +7,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public enum ObjectType {
     @JsonProperty("inkwell")
-    INKWELL,
-
+    INKWELL(CornerType.INKWELL),
     @JsonProperty("manuscript")
-    MANUSCRIPT,
-
+    MANUSCRIPT(CornerType.MANUSCRIPT),
     @JsonProperty("quill")
-    QUILL
+    QUILL(CornerType.QUILL);
+
+    private final CornerType corner;
+
+    ObjectType(CornerType corner) {
+        this.corner = corner;
+    }
+
+    public CornerType mappedCorner() {
+        return corner;
+    }
 }
