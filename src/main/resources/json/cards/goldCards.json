@@ -9,6 +9,135 @@
 
   ],
   "insectCards" : [
-
+    {
+      "name" : "gold_insect_1",
+      "frontSide" : "insectFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {"insect" : 2, "plant" : 1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "quill",
+        "sideType" : "back",
+        "corners" : ["empty", "quill", "empty", "blocked"]
+      },
+      "type" : "insect"
+    },
+    {
+      "name" : "gold_insect_2",
+      "frontSide" : "insectFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {"insect" : 2, "animal" : 1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "manuscript",
+        "sideType" : "back",
+        "corners" : ["empty", "blocked", "empty", "manuscript"]
+      },
+      "type" : "insect"
+    },
+    {
+      "name" : "gold_insect_3",
+      "frontSide" : "insectFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {"insect" : 2, "fungi" : 1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "inkwell",
+        "sideType" : "back",
+        "corners" : ["blocked", "empty", "inkwell", "empty"]
+      },
+      "type" : "insect"
+    },
+    {
+      "name" : "gold_insect_4",
+      "frontSide" : "insectFront",
+      "backSide" : {
+        "points" : 2,
+        "cost" : {"insect" : 3, "animal" : 1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "corners_covered",
+        "sideType" : "back",
+        "corners" : ["empty", "empty", "empty", "blocked"]
+      },
+      "type" : "insect"
+    },
+    {
+      "name" : "gold_insect_5",
+      "frontSide" : "insectFront",
+      "backSide" : {
+        "points" : 2,
+        "cost" : {"insect" : 3, "plant" : 1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "corners_covered",
+        "sideType" : "back",
+        "corners" : ["empty", "empty", "blocked", "empty"]
+      },
+      "type" : "insect"
+    },
+    {
+      "name" : "gold_insect_6",
+      "frontSide" : "insectFront",
+      "backSide" : {
+        "points" : 2,
+        "cost" : {"insect" : 3, "fungi" : 1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "corners_covered",
+        "sideType" : "back",
+        "corners" : ["empty", "blocked", "empty", "empty"]
+      },
+      "type" : "insect"
+    },
+    {
+      "name" : "gold_insect_7",
+      "frontSide" : "insectFront",
+      "backSide" : {
+        "points" : 3,
+        "cost" : {"insect" : 3},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["inkwell", "blocked", "blocked", "empty"]
+      },
+      "type" : "insect"
+    },
+    {
+      "name" : "gold_insect_8",
+      "frontSide" : "insectFront",
+      "backSide" : {
+        "points" : 3,
+        "cost" : {"insect" : 3},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "manuscript", "blocked", "blocked"]
+      },
+      "type" : "insect"
+    },
+    {
+      "name" : "gold_insect_9",
+      "frontSide" : "insectFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {"insect" : 3},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["blocked", "blocked", "empty", "quill"]
+      },
+      "type" : "insect"
+    },
+    {
+      "name" : "gold_insect_10",
+      "frontSide" : "insectFront",
+      "backSide" : {
+        "points" : 5,
+        "cost" : {"insect" : 5},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "empty", "blocked", "blocked"]
+      },
+      "type" : "insect"
+    }
   ]
 }

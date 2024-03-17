@@ -14,8 +14,8 @@ import java.util.function.Function;
 public class CardSide {
     // TODO implement
     private final int points;
-    private final List<ResourceType> cost;
-    private final List<ResourceType> permanentResourcesGiven;
+    private final Map<ResourceType, Integer> cost;
+    private final Map<ResourceType, Integer> permanentResourcesGiven;
     private final PointMultiplierPolicy pointMultiplierPolicy;
     private final SideType side;
     private final Map<CornersIdx, CornerType> corners;
@@ -27,6 +27,7 @@ public class CardSide {
         /**
          * Used by cards that give a fixed amount of points.
          */
+        @SuppressWarnings("unused") //Suppressing because it's being used by the JSON files, but it goes undetected.
         @JsonProperty("static")
         STATIC_POLICY(playArea -> {
             return 1;
@@ -35,6 +36,7 @@ public class CardSide {
         /**
          * Used by cards that give a proportional amount of points based on the number of covered corners.
          */
+        @SuppressWarnings("unused") //Suppressing because it's being used by the JSON files, but it goes undetected.
         @JsonProperty("corners_covered")
         CORNERS_COVERED_POLICY(playArea -> {
             int neighbourCounter = 0;
@@ -53,6 +55,7 @@ public class CardSide {
         /**
          * Used by cards that give a proportional amount of points based on the number of visible {@link ObjectType}<code>.INKWELL</code>.
          */
+        @SuppressWarnings("unused") //Suppressing because it's being used by the JSON files, but it goes undetected.
         @JsonProperty("inkwell")
         INKWELL_POLICY(playArea -> {
             Map<ObjectType, Integer> objCounts = playArea.getObjectCounts();
@@ -63,6 +66,7 @@ public class CardSide {
         /**
          * Used by cards that give a proportional amount of points based on the number of visible {@link ObjectType}<code>.MANUSCRIPT</code>.
          */
+        @SuppressWarnings("unused") //Suppressing because it's being used by the JSON files, but it goes undetected.
         @JsonProperty("manuscript")
         MANUSCRIPT_POLICY(playArea -> {
             Map<ObjectType, Integer> objCounts = playArea.getObjectCounts();
@@ -73,6 +77,7 @@ public class CardSide {
         /**
          * Used by cards that give a proportional amount of points based on the number of visible {@link ObjectType}<code>.QUILL</code>.
          */
+        @SuppressWarnings("unused") //Suppressing because it's being used by the JSON files, but it goes undetected.
         @JsonProperty("quill")
         QUILL_POLICY(playArea -> {
             Map<ObjectType, Integer> objCounts = playArea.getObjectCounts();
@@ -112,14 +117,22 @@ public class CardSide {
     @JsonCreator
     CardSide(
             @JsonProperty("points") int points,
-            @JsonProperty("cost") ResourceType[] cost,
-            @JsonProperty("permanentResourcesGiven") ResourceType[] permanentResourcesGiven,
+            @JsonProperty("cost") Map<ResourceType, Integer> cost,
+            @JsonProperty("permanentResourcesGiven") Map<ResourceType, Integer> permanentResourcesGiven,
             @JsonProperty("pointMultiplierPolicy") PointMultiplierPolicy pointMultiplierPolicy,
             @JsonProperty("sideType") SideType side,
             @JsonProperty("corners") CornerType[] corners) {
         this.points = points;
-        this.cost = List.of(cost);
-        this.permanentResourcesGiven = List.of(permanentResourcesGiven);
+        cost.putIfAbsent(ResourceType.FUNGI, 0);
+        cost.putIfAbsent(ResourceType.PLANT, 0);
+        cost.putIfAbsent(ResourceType.ANIMAL, 0);
+        cost.putIfAbsent(ResourceType.INSECT, 0);
+        this.cost = Collections.unmodifiableMap(cost);
+        permanentResourcesGiven.putIfAbsent(ResourceType.FUNGI, 0);
+        permanentResourcesGiven.putIfAbsent(ResourceType.PLANT, 0);
+        permanentResourcesGiven.putIfAbsent(ResourceType.ANIMAL, 0);
+        permanentResourcesGiven.putIfAbsent(ResourceType.INSECT, 0);
+        this.permanentResourcesGiven = Collections.unmodifiableMap(permanentResourcesGiven);
         this.pointMultiplierPolicy = pointMultiplierPolicy;
         this.side = side;
 
@@ -142,7 +155,7 @@ public class CardSide {
      * TODO write doc
      * @return
      */
-    public List<ResourceType> getCost() {
+    public Map<ResourceType, Integer> getCost() {
         return cost;
     }
 
@@ -150,7 +163,7 @@ public class CardSide {
      * TODO write doc
      * @return
      */
-    public List<ResourceType> getPermanentResourcesGiven() {
+    public Map<ResourceType, Integer> getPermanentResourcesGiven() {
         return permanentResourcesGiven;
     }
 
