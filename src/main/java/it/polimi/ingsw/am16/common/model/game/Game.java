@@ -11,8 +11,7 @@ import it.polimi.ingsw.am16.common.model.players.PlayerModel;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.util.RNG;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class to handle game(s). A game has a unique alphanumeric id and a non-variable number of players.
@@ -33,6 +32,7 @@ public class Game implements GameModel {
     private final ResourceCard[] commonResourceCards;
     private GameState state;
     private final Player[] players;
+    private List<PlayerColor> availableColors;
 
     /**
      * Creates a game, initializing its ID as well as its number of players to a chosen value, its
@@ -56,6 +56,7 @@ public class Game implements GameModel {
         this.state = GameState.INIT;
         this.players = new Player[numPlayers];
         this.currentPlayerCount = 0;
+        this.availableColors = new ArrayList<>(List.of(PlayerColor.values()));
     }
 
     /**
@@ -78,6 +79,10 @@ public class Game implements GameModel {
             throw new UnexpectedActionException("Maximum player count reached");
         if (state != GameState.INIT)
             throw new UnexpectedActionException("Game already started");
+        for(Player player : players) {
+            if (player != null && player.getUsername().equals(username))
+                throw new UnexpectedActionException("Player already present");
+        }
 
         Player player = new Player(getCurrentPlayerCount(), username);
         players[getCurrentPlayerCount()] = player;
@@ -176,7 +181,10 @@ public class Game implements GameModel {
      * @param side The card's side.
      */
     @Override
-    public void setPlayerStarterSide(int playerId, SideType side) {
+    public void setPlayerStarterSide(int playerId, SideType side) throws UnexpectedActionException {
+        if (state != GameState.INIT)
+            throw new UnexpectedActionException("Game already started");
+
         players[playerId].chooseStarterCardSide(side);
     }
 
@@ -186,8 +194,26 @@ public class Game implements GameModel {
      * @param color The color a player chose.
      */
     @Override
-    public void setPlayerColor(int playerId, PlayerColor color) {
+    public void setPlayerColor(int playerId, PlayerColor color) throws UnexpectedActionException {
+        if (state != GameState.INIT)
+            throw new UnexpectedActionException("Game already started");
+
+        for (Player player : players) {
+            if (player.getPlayerColor() == color)
+                throw new UnexpectedActionException("Color already chosen");
+        }
+
         players[playerId].setColor(color);
+        availableColors.remove(color);
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public List<PlayerColor> getAvailableColors() {
+        return availableColors;
     }
 
     /**
@@ -281,9 +307,17 @@ public class Game implements GameModel {
         return true;
     }
 
-    // TODO
+    /**
+     * //TODO write doc
+     * @throws UnexpectedActionException
+     */
     @Override
-    public void startGame() {
+    public void startGame() throws UnexpectedActionException {
+        if (state != GameState.INIT)
+            throw new UnexpectedActionException("Game already started");
+        if (!allPlayersChoseObjective())
+            throw new UnexpectedActionException("Not all players chose their objective yet");
+
         startingPlayer = chooseStartingPlayer();
         activePlayer = startingPlayer;
         state = GameState.STARTED;
@@ -490,6 +524,24 @@ public class Game implements GameModel {
     @Override
     public GameState getState() {
         return state;
+    }
+
+    /**
+     * TODO write doc
+     * @return
+     */
+    @Override
+    public ResourceType getResourceDeckTopType() {
+        return resourceCardsDeck.peekTop().getType();
+    }
+
+    /**
+     * TODO write doc
+     * @return
+     */
+    @Override
+    public ResourceType getGoldDeckTopType() {
+        return goldCardsDeck.peekTop().getType();
     }
 }
 

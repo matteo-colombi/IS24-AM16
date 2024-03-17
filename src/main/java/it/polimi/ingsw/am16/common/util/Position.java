@@ -55,8 +55,8 @@ public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
      * @param other
      * @return
      */
-    public boolean isTopLeft(Position other) {
-        return getOffset(other).equals(new Position(-1, -1));
+    public boolean neighbourIsTopLeft(Position other) {
+        return getOffset(other).equals(new Position(-1, 1));
     }
 
     /**
@@ -64,16 +64,7 @@ public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
      * @param other
      * @return
      */
-    public boolean isTopRight(Position other) {
-        return getOffset(other).equals(new Position(1, -1));
-    }
-
-    /**
-     * TODO write doc
-     * @param other
-     * @return
-     */
-    public boolean isBottomRight(Position other) {
+    public boolean neighbourIsTopRight(Position other) {
         return getOffset(other).equals(new Position(1, 1));
     }
 
@@ -82,8 +73,17 @@ public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
      * @param other
      * @return
      */
-    public boolean isBottomLeft(Position other) {
-        return getOffset(other).equals(new Position(-1, 1));
+    public boolean neighbourIsBottomRight(Position other) {
+        return getOffset(other).equals(new Position(1, -1));
+    }
+
+    /**
+     * TODO write doc
+     * @param other
+     * @return
+     */
+    public boolean neighbourIsBottomLeft(Position other) {
+        return getOffset(other).equals(new Position(-1, -1));
     }
 
     /**

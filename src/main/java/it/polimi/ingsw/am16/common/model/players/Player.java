@@ -54,6 +54,14 @@ public class Player implements PlayerModel {
     }
 
     /**
+     * @return The player's username.
+     */
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    /**
      *
      * @return The player's in-game color
      */
@@ -98,6 +106,15 @@ public class Player implements PlayerModel {
     @Override
     public int getTotalPoints() {
         return currGamePoints + currObjectivePoints;
+    }
+
+    /**
+     * TODO write doc
+     * @return
+     */
+    @Override
+    public StarterCard getStarterCard() {
+        return starterCard;
     }
 
     /**
@@ -181,7 +198,7 @@ public class Player implements PlayerModel {
      * @param card The card to be added
      */
     public void giveCard(PlayableCard card) {
-        this.hand.getCards().add(card);
+        this.hand.addCard(card);
     }
 
     /**
@@ -203,6 +220,7 @@ public class Player implements PlayerModel {
      */
     public void playCard(PlayableCard card, SideType side, Position newCardPos) throws IllegalMoveException {
         this.playArea.playCard(card, side, newCardPos);
+        hand.removeCard(card);
     }
 
     /**

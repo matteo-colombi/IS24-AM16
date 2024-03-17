@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.common.model.players;
 
 import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
+import it.polimi.ingsw.am16.common.model.cards.StarterCard;
 import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
 
 import java.util.List;
@@ -9,6 +10,11 @@ import java.util.List;
  * TODO write doc for the interface itself
  */
 public interface PlayerModel {
+    /**
+     * @return The player's username.
+     */
+    String getUsername();
+
     /**
      *
      * @return The player's in-game color
@@ -74,5 +80,11 @@ public interface PlayerModel {
      * @return which of the two given possible personal objectives the player chose
      */
     boolean getChosePersonalObjective();
+
+    /**
+     * TODO write doc
+     * @return
+     */
+    StarterCard getStarterCard();
 }
 

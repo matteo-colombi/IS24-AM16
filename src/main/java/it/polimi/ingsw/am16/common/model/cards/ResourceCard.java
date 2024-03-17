@@ -26,11 +26,11 @@ public final class ResourceCard extends PlayableCard {
 
     @Override
     public String toString() {
-        return "ResourceCard{" +
+        return "\nResourceCard{" +
                 "name="+getName() + ", " +
                 "frontSide="+getFrontSide() + ", " +
                 "backSide="+getBackSide() + ", " +
                 "type="+getType() +
-                "}\n";
+                "}";
     }
 }

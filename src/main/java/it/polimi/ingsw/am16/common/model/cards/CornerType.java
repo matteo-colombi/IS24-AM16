@@ -7,40 +7,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public enum CornerType {
     @JsonProperty("animal")
-    ANIMAL(ResourceType.ANIMAL),
+    ANIMAL,
     @JsonProperty("plant")
-    PLANT(ResourceType.PLANT),
+    PLANT,
     @JsonProperty("insect")
-    INSECT(ResourceType.INSECT),
+    INSECT,
     @JsonProperty("fungi")
-    FUNGI(ResourceType.FUNGI),
+    FUNGI,
     @JsonProperty("inkwell")
-    INKWELL(ObjectType.INKWELL),
+    INKWELL,
     @JsonProperty("manuscript")
-    MANUSCRIPT(ObjectType.MANUSCRIPT),
+    MANUSCRIPT,
     @JsonProperty("quill")
-    QUILL(ObjectType.QUILL),
+    QUILL,
     @JsonProperty("empty")
-    EMPTY(),
+    EMPTY,
     @JsonProperty("blocked")
-    BLOCKED();
+    BLOCKED;
 
-    private final ResourceType resource;
-    private final ObjectType object;
+    private ResourceType resource;
+    private ObjectType object;
 
-    CornerType(ResourceType resource) {
-        this.resource = resource;
-        this.object = null;
-    }
-
-    CornerType(ObjectType object) {
-        this.resource = null;
-        this.object = object;
-    }
-
-    CornerType() {
-        this.resource = null;
-        this.object = null;
+    public static void bindToResources() {
+        FUNGI.resource = ResourceType.FUNGI;
+        PLANT.resource = ResourceType.PLANT;
+        ANIMAL.resource = ResourceType.ANIMAL;
+        INSECT.resource = ResourceType.INSECT;
+        INKWELL.object = ObjectType.INKWELL;
+        MANUSCRIPT.object = ObjectType.MANUSCRIPT;
+        QUILL.object = ObjectType.QUILL;
     }
 
     public ResourceType mappedResource() {
@@ -50,4 +45,6 @@ public enum CornerType {
     public ObjectType mappedObject() {
         return object;
     }
+
+
 }

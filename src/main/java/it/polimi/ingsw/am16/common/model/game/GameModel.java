@@ -4,6 +4,7 @@ import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.model.players.PlayerModel;
 import it.polimi.ingsw.am16.common.util.Position;
@@ -78,6 +79,12 @@ public interface GameModel {
      * @throws UnexpectedActionException
      */
     void setPlayerColor(int playerId, PlayerColor color) throws UnexpectedActionException;
+
+    /**
+     * TODO write doc
+     * @return
+     */
+    List<PlayerColor> getAvailableColors();
 
     /**
      *
@@ -189,4 +196,16 @@ public interface GameModel {
      * @return
      */
     GameState getState();
+
+    /**
+     * TODO write doc
+     * @return
+     */
+    ResourceType getResourceDeckTopType();
+
+    /**
+     * TODO write doc
+     * @return
+     */
+    ResourceType getGoldDeckTopType();
 }

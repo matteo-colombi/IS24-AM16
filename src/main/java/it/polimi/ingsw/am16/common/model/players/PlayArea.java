@@ -32,6 +32,10 @@ public class PlayArea implements PlayAreaModel {
         this.maxX = 0;
         this.minY = 0;
         this.maxY = 0;
+
+        for(CornerType cornerType : CornerType.values()) {
+            resourceAndObjectCounts.put(cornerType, 0);
+        }
     }
 
     //region Local Getter and Setter
@@ -59,7 +63,6 @@ public class PlayArea implements PlayAreaModel {
         for (ObjectType object : ObjectType.values()) {
             CornerType mappedCorner = object.mappedCorner();
             Integer counter = resourceAndObjectCounts.get(mappedCorner);
-
             objectCounts.put(object, counter);
         }
 
@@ -152,15 +155,14 @@ public class PlayArea implements PlayAreaModel {
         for (CornerType corner : activeSide.getCorners().values()) {
             if (corner == CornerType.BLOCKED || corner == CornerType.EMPTY)
                 continue;
-
             resourceAndObjectCounts.merge(corner, 1, Integer::sum);
         }
 
         // increases the resources that are permanent in the new card
-        for (ResourceType resources : activeSide.getPermanentResourcesGiven().keySet()) {
-            CornerType mappedCorner = resources.mappedCorner();
+        for (Map.Entry<ResourceType, Integer> entry : activeSide.getPermanentResourcesGiven().entrySet()) {
+            CornerType mappedCorner = entry.getKey().mappedCorner();
 
-            resourceAndObjectCounts.merge(mappedCorner, 1, Integer::sum);
+            resourceAndObjectCounts.merge(mappedCorner, entry.getValue(), Integer::sum);
         }
 
         // decrements the resources and objects that have been hidden by the new card
@@ -173,13 +175,14 @@ public class PlayArea implements PlayAreaModel {
             Map<CornersIdx, CornerType> corners = neighbourCardSide.getCorners();
             CornerType corner = null;
 
-            if (playedCardPosition.isTopLeft(neighbourPosition)) {
+            if (playedCardPosition.neighbourIsTopLeft(neighbourPosition)) {
                 corner = corners.get(CornersIdx.BOTTOM_RIGHT);
-            } else if (playedCardPosition.isTopRight(neighbourPosition)) {
+            } else if (playedCardPosition.neighbourIsTopRight(neighbourPosition)) {
+                System.out.println("è entrato in neighbour is top right");
                 corner = corners.get(CornersIdx.BOTTOM_LEFT);
-            } else if (playedCardPosition.isBottomRight(neighbourPosition)) {
+            } else if (playedCardPosition.neighbourIsBottomRight(neighbourPosition)) {
                 corner = corners.get(CornersIdx.TOP_LEFT);
-            } else if (playedCardPosition.isBottomLeft(neighbourPosition)) {
+            } else if (playedCardPosition.neighbourIsBottomLeft(neighbourPosition)) {
                 corner = corners.get(CornersIdx.TOP_RIGHT);
             }
 
@@ -273,19 +276,19 @@ public class PlayArea implements PlayAreaModel {
             CardSide neighbourCardSide = activeSides.get(neighbourCard);
             Map<CornersIdx, CornerType> corners = neighbourCardSide.getCorners();
 
-            if (playedCardPosition.isTopLeft(neighbourPosition)) {
+            if (playedCardPosition.neighbourIsTopLeft(neighbourPosition)) {
                 if (corners.get(CornersIdx.BOTTOM_RIGHT) == CornerType.BLOCKED) {
                     return false;
                 }
-            } else if (playedCardPosition.isTopRight(neighbourPosition)) {
+            } else if (playedCardPosition.neighbourIsTopRight(neighbourPosition)) {
                 if (corners.get(CornersIdx.BOTTOM_LEFT) == CornerType.BLOCKED) {
                     return false;
                 }
-            } else if (playedCardPosition.isBottomRight(neighbourPosition)) {
+            } else if (playedCardPosition.neighbourIsBottomRight(neighbourPosition)) {
                 if (corners.get(CornersIdx.TOP_LEFT) == CornerType.BLOCKED) {
                     return false;
                 }
-            } else if (playedCardPosition.isBottomLeft(neighbourPosition)) {
+            } else if (playedCardPosition.neighbourIsBottomLeft(neighbourPosition)) {
                 if (corners.get(CornersIdx.TOP_RIGHT) == CornerType.BLOCKED) {
                     return false;
                 }
@@ -299,7 +302,7 @@ public class PlayArea implements PlayAreaModel {
         for (ResourceType resource : cardCost.keySet()) {
             CornerType mappedCorner = resource.mappedCorner();
 
-            if (cardCost.get(resource) > resourceAndObjectCounts.getOrDefault(mappedCorner, 0))
+            if (cardCost.get(resource) > resourceAndObjectCounts.get(mappedCorner))
                 return false;
         }
 

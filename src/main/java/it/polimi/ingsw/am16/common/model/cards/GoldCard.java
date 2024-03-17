@@ -23,4 +23,14 @@ public final class GoldCard extends PlayableCard {
             @JsonProperty("type") ResourceType type) {
         super(name, frontSide, backSide, type);
     }
+
+    @Override
+    public String toString() {
+        return "\nGoldCard{" +
+                "name="+getName() + ", " +
+                "frontSide="+getFrontSide() + ", " +
+                "backSide="+getBackSide() + ", " +
+                "type="+getType() +
+                "}";
+    }
 }

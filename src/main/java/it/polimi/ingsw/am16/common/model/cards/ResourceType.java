@@ -7,18 +7,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public enum ResourceType {
     @JsonProperty("animal")
-    ANIMAL(CornerType.ANIMAL),
+    ANIMAL,
     @JsonProperty("fungi")
-    FUNGI(CornerType.FUNGI),
+    FUNGI,
     @JsonProperty("insect")
-    INSECT(CornerType.INSECT),
+    INSECT,
     @JsonProperty("plant")
-    PLANT(CornerType.PLANT);
+    PLANT;
 
-    private final CornerType corner;
+    private CornerType corner;
 
-    ResourceType(CornerType corner) {
-        this.corner = corner;
+    public static void bindToCorners() {
+        FUNGI.corner = CornerType.FUNGI;
+        PLANT.corner = CornerType.PLANT;
+        ANIMAL.corner = CornerType.ANIMAL;
+        INSECT.corner = CornerType.INSECT;
     }
 
     public CornerType mappedCorner() {

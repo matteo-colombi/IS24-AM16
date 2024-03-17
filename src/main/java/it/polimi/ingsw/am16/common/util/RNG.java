@@ -26,6 +26,10 @@ public class RNG extends Random {
      * @param seed The seed.
      */
     public static synchronized void setRNGSeed(long seed) {
+        if (instance == null) {
+            instance = new RNG(seed);
+            return;
+        }
         instance.setSeed(seed);
     }
 

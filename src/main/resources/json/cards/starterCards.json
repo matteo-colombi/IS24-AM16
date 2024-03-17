@@ -28,12 +28,12 @@
         "permanentResourcesGiven" : {},
         "pointMultiplierPolicy" : "static",
         "sideType" : "front",
-        "corners" : ["plant", "animal", "insect", "plant"]
+        "corners" : ["plant", "animal", "insect", "fungi"]
       },
       "backSide" : {
         "points" : 0,
         "cost" : {},
-        "permanentResourcesGiven" : {"plant" : 1},
+        "permanentResourcesGiven" : {"fungi" : 1},
         "pointMultiplierPolicy" : "static",
         "sideType" : "back",
         "corners" : ["animal", "empty", "fungi", "empty"]

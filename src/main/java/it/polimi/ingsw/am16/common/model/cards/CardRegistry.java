@@ -30,6 +30,10 @@ public class CardRegistry {
         if (initialized)
             return false;
 
+        CornerType.bindToResources();
+        ObjectType.bindToCorners();
+        ResourceType.bindToCorners();
+
         mapper = new ObjectMapper();
         try{
             initializePlayableCardsFrontSides();

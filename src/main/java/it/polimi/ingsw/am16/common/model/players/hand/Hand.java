@@ -44,4 +44,26 @@ public class Hand implements HandModel{
     public PlayableCard getCard(int index){
         return this.cards.get(index);
     }
+
+    /**
+     * TODO write doc
+     * @param card
+     */
+    public void removeCard(PlayableCard card) {
+        this.cards.remove(card);
+    }
+
+    /**
+     * TODO write doc
+     * @param card
+     */
+    public void addCard(PlayableCard card) {
+        this.cards.add(card);
+    }
+
+    @Override
+    public String toString() {
+        return cards.toString();
+    }
+
 }
