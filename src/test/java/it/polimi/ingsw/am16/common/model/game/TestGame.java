@@ -7,7 +7,6 @@ import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.model.players.PlayerModel;
-import it.polimi.ingsw.am16.common.model.players.hand.Hand;
 import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.util.RNG;
@@ -26,19 +25,14 @@ public class TestGame {
 
         GameModel game = new Game("69xD420", 2);
         game.addPlayer("xLorde");
+
+        assertThrows(UnexpectedActionException.class, game::initializeGame);
+
         game.addPlayer("L2C");
-        try{
-            game.addPlayer("teo");
-            fail("Game did not launch exception when already full");
-        } catch (UnexpectedActionException e) {
-            assertTrue(true);
-        }
-        try {
-            game.startGame();
-            fail("Game did not launch exception when trying to start ahead of time");
-        } catch (UnexpectedActionException e) {
-            assertTrue(true);
-        }
+
+        assertThrows(UnexpectedActionException.class, () -> game.addPlayer("teo"));
+        assertThrows(UnexpectedActionException.class, game::startGame);
+
         game.initializeGame();
 
         PlayerModel[] players = game.getPlayers();
@@ -48,18 +42,15 @@ public class TestGame {
         HandModel l2cHand = l2c.getHand();
 
         System.out.println("\nPlayer starter cards:");
-        Arrays.stream(game.getPlayers()).forEach(p -> System.out.println(p.getStarterCard()));
+        Arrays.stream(game.getPlayers()).forEach(p -> System.out.println(p.getStarterCard().toString()));
 
         game.setPlayerStarterSide(0, SideType.FRONT);
         game.setPlayerStarterSide(1, SideType.BACK);
 
         game.setPlayerColor(0, PlayerColor.BLUE);
-        try{
-            game.setPlayerColor(1, PlayerColor.BLUE);
-            fail();
-        } catch (UnexpectedActionException e) {
-            assertTrue(true);
-        }
+
+        assertThrows(UnexpectedActionException.class, () -> game.setPlayerColor(1, PlayerColor.BLUE));
+
         game.setPlayerColor(1, PlayerColor.GREEN);
 
         game.initializeObjectives();
@@ -86,21 +77,10 @@ public class TestGame {
 
         System.out.println("l2c hand:");
         System.out.println(l2cHand);
-        try {
-            game.placeCard(1, l2cHand.getCard(2), SideType.BACK, new Position(1, 1));
-            fail("That move was illegal...");
-        } catch (IllegalMoveException e) {
-            assertTrue(true);
-        }
-        //FIXME try this again once that is fixed.
-        /*
-        try {
-            game.placeCard(1, l2cHand.getCard(1), SideType.BACK, new Position(0, 1));
-            fail("That too was illegal...");
-        } catch (IllegalMoveException e) {
-            assertTrue(true);
-        }
-         */
+
+        assertThrows(IllegalMoveException.class, () -> game.placeCard(1, l2cHand.getCard(2), SideType.BACK, new Position(1, 1)));
+        assertThrows(IllegalMoveException.class, () -> game.placeCard(1, l2cHand.getCard(1), SideType.BACK, new Position(0, 1)));
+
         game.placeCard(1, l2cHand.getCard(1), SideType.BACK, new Position(1, 1));
         game.drawCard(1, DrawType.RESOURCE_2);
 
@@ -157,5 +137,4 @@ public class TestGame {
         game.drawCard(0, DrawType.GOLD_DECK);
 
     }
-
 }
