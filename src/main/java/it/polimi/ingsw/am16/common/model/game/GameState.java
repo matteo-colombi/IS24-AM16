@@ -1,7 +1,7 @@
 package it.polimi.ingsw.am16.common.model.game;
 
 /**
- * TODO write doc
+ * Enum that includes the three game states.
  */
 public enum GameState {
     INIT,

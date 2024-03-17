@@ -1,7 +1,7 @@
 package it.polimi.ingsw.am16.common.model.game;
 
 /**
- * TODO write doc
+ * Enum used to define the various places where a player can draw a card from.
  */
 public enum DrawType {
     GOLD_DECK,
