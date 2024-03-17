@@ -15,13 +15,19 @@ public enum ObjectType {
 
     private CornerType corner;
 
-    public CornerType mappedCorner() {
-        return corner;
-    }
-
+    /**
+     * Method that must be called at least once that creates associations between {@link ObjectType} and {@link CornerType}.
+     */
     public static void bindToCorners() {
         MANUSCRIPT.corner = CornerType.MANUSCRIPT;
         INKWELL.corner = CornerType.INKWELL;
         QUILL.corner = CornerType.QUILL;
+    }
+
+    /**
+     * @return the corresponding {@link CornerType}.
+     */
+    public CornerType mappedCorner() {
+        return corner;
     }
 }

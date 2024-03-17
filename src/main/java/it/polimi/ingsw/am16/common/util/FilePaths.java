@@ -1,7 +1,5 @@
 package it.polimi.ingsw.am16.common.util;
 
-import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
-
 /**
  * Class that contains all the static paths for resources.
  */

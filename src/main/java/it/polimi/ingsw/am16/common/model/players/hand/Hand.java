@@ -20,7 +20,7 @@ public class Hand implements HandModel{
 
     /**
      *
-     * @return The list of cards in the hand.
+     * @return the list of cards in the hand.
      */
     public List<PlayableCard> getCards() {
         return this.cards;
@@ -28,7 +28,7 @@ public class Hand implements HandModel{
 
     /**
      *
-     * @return The number of cards in the hand.
+     * @return the number of cards in the hand.
      */
     @Override
     public int getSize(){
@@ -37,8 +37,8 @@ public class Hand implements HandModel{
 
     /**
      *
-     * @param index Index of the card in the list of cards representing the hand
-     * @return The card corresponding to the index
+     * @param index Index of the card in the list of cards representing the hand.
+     * @return the card corresponding to the index.
      */
     @Override
     public PlayableCard getCard(int index){
@@ -46,16 +46,16 @@ public class Hand implements HandModel{
     }
 
     /**
-     * TODO write doc
-     * @param card
+     * Removes the given card from the Hand. This method does nothing if the given card is not present in the hand.
+     * @param card The card to remove.
      */
     public void removeCard(PlayableCard card) {
         this.cards.remove(card);
     }
 
     /**
-     * TODO write doc
-     * @param card
+     * Adds the given card to the Hand.
+     * @param card The card to add.
      */
     public void addCard(PlayableCard card) {
         this.cards.add(card);

@@ -17,6 +17,9 @@ public enum ResourceType {
 
     private CornerType corner;
 
+    /**
+     * Method that must be called at least once that creates associations between {@link ResourceType} and {@link CornerType}.
+     */
     public static void bindToCorners() {
         FUNGI.corner = CornerType.FUNGI;
         PLANT.corner = CornerType.PLANT;
@@ -24,6 +27,9 @@ public enum ResourceType {
         INSECT.corner = CornerType.INSECT;
     }
 
+    /**
+     * @return the corresponding {@link CornerType}.
+     */
     public CornerType mappedCorner() {
         return corner;
     }

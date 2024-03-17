@@ -42,45 +42,45 @@ public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
     }
 
     /**
-     * TODO write doc
-     * @param other
-     * @return
+     * Calculates the component-based difference of the two positions.
+     * @param other The other position.
+     * @return the difference of the two positions.
      */
     public Position getOffset(Position other) {
         return new Position(other.x - x, other.y - y);
     }
 
     /**
-     * TODO write doc
-     * @param other
-     * @return
+     * Checks whether the given point is in the top left corner of <code>this</code>.
+     * @param other The point to compare.
+     * @return <code>true</code> if other is in the top left corner, <code>false</code> otherwise.
      */
     public boolean neighbourIsTopLeft(Position other) {
         return getOffset(other).equals(new Position(-1, 1));
     }
 
     /**
-     * TODO write doc
-     * @param other
-     * @return
+     * Checks whether the given point is in the top right corner of <code>this</code>.
+     * @param other The point to compare.
+     * @return <code>true</code> if other is in the top right corner, <code>false</code> otherwise.
      */
     public boolean neighbourIsTopRight(Position other) {
         return getOffset(other).equals(new Position(1, 1));
     }
 
     /**
-     * TODO write doc
-     * @param other
-     * @return
+     * Checks whether the given point is in the bottom right corner of <code>this</code>.
+     * @param other The point to compare.
+     * @return <code>true</code> if other is in the bottom right corner, <code>false</code> otherwise.
      */
     public boolean neighbourIsBottomRight(Position other) {
         return getOffset(other).equals(new Position(1, -1));
     }
 
     /**
-     * TODO write doc
-     * @param other
-     * @return
+     * Checks whether the given point is in the bottom left corner of <code>this</code>.
+     * @param other The point to compare.
+     * @return <code>true</code> if other is in the bottom left corner, <code>false</code> otherwise.
      */
     public boolean neighbourIsBottomLeft(Position other) {
         return getOffset(other).equals(new Position(-1, -1));
@@ -115,5 +115,10 @@ public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
         int result = x;
         result = 31 * result + y;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Position{x = %d, y = %d}", x, y);
     }
 }

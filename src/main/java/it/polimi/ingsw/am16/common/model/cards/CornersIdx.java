@@ -1,7 +1,7 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
 /**
- * TODO write doc
+ * Enum that contains the types of corner of a card. Used to avoid hard-coded indices.
  */
 public enum CornersIdx{
     TOP_LEFT,

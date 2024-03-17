@@ -3,7 +3,7 @@ package it.polimi.ingsw.am16.common.model.cards;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * TODO write doc
+ * Enum that includes the types of sides of a card.
  */
 public enum SideType {
     @JsonProperty("front")

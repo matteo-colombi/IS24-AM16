@@ -4,7 +4,6 @@ import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
-import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.model.players.PlayerModel;
 import it.polimi.ingsw.am16.common.util.Position;
@@ -24,7 +23,7 @@ public interface GameModel {
     /**
      * Adds a new player into the game. The number of players cannot exceed numPlayers.
      * @param username The player's username.
-     * @throws UnexpectedActionException TODO write
+     * @throws UnexpectedActionException Thrown if the game is already full, if the game has already started, or if a player with the given username is already present in the game.
      */
     void addPlayer(String username) throws UnexpectedActionException;
 
@@ -35,8 +34,7 @@ public interface GameModel {
     int getNumPlayers();
 
     /**
-     * TODO write doc
-     * @return
+     * @return The number of players who joined the game.
      */
     int getCurrentPlayerCount();
 
@@ -59,8 +57,8 @@ public interface GameModel {
     List<Integer> getWinnerIds();
 
     /**
-     * TODO write doc
-     * @throws UnexpectedActionException
+     * Initializes the game by drawing the common gold and resource cards, and distributing the starter cards to the players.
+     * @throws UnexpectedActionException Thrown if the game was already initialized, or if the game hasn't reached the required number of players.
      */
     void initializeGame() throws UnexpectedActionException;
 
@@ -68,7 +66,7 @@ public interface GameModel {
      * Lets the player choose the side of their starter card. It can be either front or back.
      * @param playerId The player's ID.
      * @param side The card's side.
-     * @throws UnexpectedActionException TODO write doc
+     * @throws UnexpectedActionException Thrown if the game has already started, hence all players should have already chosen their starter card side.
      */
     void setPlayerStarterSide(int playerId, SideType side) throws UnexpectedActionException;
 
@@ -76,13 +74,12 @@ public interface GameModel {
      * Sets the color of a player.
      * @param playerId The player's ID.
      * @param color The color a player chose.
-     * @throws UnexpectedActionException
+     * @throws UnexpectedActionException Thrown if the game has already started, hence all the players should have already chosen their color, or if the given color has already been chosen by another player.
      */
     void setPlayerColor(int playerId, PlayerColor color) throws UnexpectedActionException;
 
     /**
-     * TODO write doc
-     * @return
+     * @return A {@link List} containing all the colors that are still available for a player to choose.
      */
     List<PlayerColor> getAvailableColors();
 
@@ -99,8 +96,8 @@ public interface GameModel {
     boolean allPlayersChoseColor();
 
     /**
-     * TODO write doc
-     * @throws UnexpectedActionException
+     * Draws the common objective cards and distributes the personal objectives to the players.
+     * This method should only be called after everyone has chosen their starter card side and color.
      */
     void initializeObjectives() throws UnexpectedActionException;
 
@@ -108,8 +105,8 @@ public interface GameModel {
      * Sets the chosen objective card for a specific player.
      * @param playerId The player's ID.
      * @param objectiveCard The chosen objective card.
-     * @throws UnknownObjectiveCardException Thrown when the objective card is unknown.
-     * @throws UnexpectedActionException TODO write doc
+     * @throws UnknownObjectiveCardException Thrown when the given objective card is not in the player's objective card options.
+     * @throws UnexpectedActionException Thrown if the objectives have not yet been distributed, or the game has already started, or the given player has already chosen their objective.
      */
     void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) throws UnknownObjectiveCardException, UnexpectedActionException;
 
@@ -120,8 +117,8 @@ public interface GameModel {
     boolean allPlayersChoseObjective();
 
     /**
-     * TODO write
-     * @throws UnexpectedActionException
+     * Starts the game by choosing the starting player and distributing the resource and gold cards.
+     * @throws UnexpectedActionException Thrown if the game has already been started, or if not all players have chosen their objective card.
      */
     void startGame() throws UnexpectedActionException;
 
@@ -132,7 +129,7 @@ public interface GameModel {
      * @param side The chosen card's side.
      * @param newCardPos The position of the card.
      * @throws IllegalMoveException Thrown if the player made an illegal move.
-     * @throws UnexpectedActionException TODO write
+     * @throws UnexpectedActionException Thrown if this method is called before the game has been started.
      */
     void placeCard(int playerId, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException, UnexpectedActionException;
 
@@ -140,30 +137,30 @@ public interface GameModel {
      * Lets the player draw a card. A card can be drawn from the deck or from the currently visible cards.
      * @param playerId The player's ID.
      * @param drawType The place a player wants to draw a card from.
-     * @throws UnexpectedActionException TODO write
+     * @throws UnexpectedActionException Thrown if this method is called before the game has been started.
      */
     void drawCard(int playerId, DrawType drawType) throws UnexpectedActionException;
 
     /**
-     * TODO write doc
+     * Advances the turn to the next player.
+     * @throws UnexpectedActionException Thrown if the game not started yet, or if it has already ended.
      */
     void advanceTurn() throws UnexpectedActionException;
 
     /**
-     *
-     * @return Whether the game switched to the {@link GameState}<code>.FINAL_ROUND</code> state.
+     * @return Whether the game is ready to enter the final round.
      */
     boolean checkFinalRound();
 
     /**
-     * TODO write doc
-     * @throws UnexpectedActionException
+     * Triggers the game to enter the final round, if it is ready to do so; otherwise, this method does nothing.
+     * @throws UnexpectedActionException Thrown if the game has not started yet, or if it has already ended.
      */
     void triggerFinalRound() throws UnexpectedActionException;
 
     /**
-     * TODO write doc
-     * @throws UnexpectedActionException
+     * Ends the current game and evaluates the objective points of the players. Then, it selects a winner.
+     * @throws UnexpectedActionException Thrown if the game has not yet entered its final round, or if it has already ended.
      */
     void endGame() throws UnexpectedActionException;
 
@@ -192,20 +189,17 @@ public interface GameModel {
     ResourceCard[] getCommonResourceCards();
 
     /**
-     * TODO write doc
-     * @return
+     * @return the game's state.
      */
     GameState getState();
 
     /**
-     * TODO write doc
-     * @return
+     * @return the type of the card on top of the resource deck. This information should be visible to the players.
      */
     ResourceType getResourceDeckTopType();
 
     /**
-     * TODO write doc
-     * @return
+     * @return the type of the card on top of the gold deck. This information should be visible to the player.
      */
     ResourceType getGoldDeckTopType();
 }

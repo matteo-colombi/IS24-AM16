@@ -1,12 +1,12 @@
 package it.polimi.ingsw.am16.common.exceptions;
 
 /**
- * Exception for handling illegal moves that reached the model
+ * Exception for handling illegal moves that reached the model.
  */
 public class IllegalMoveException extends Exception{
     /**
-     * TODO
-     * @param message error message for the exception to display
+     * Construct a new IllegalMoveException with the given message.
+     * @param message the error message.
      */
     public IllegalMoveException(String message) {
         super(message);

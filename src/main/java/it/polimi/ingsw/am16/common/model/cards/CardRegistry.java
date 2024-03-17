@@ -30,7 +30,7 @@ public class CardRegistry {
         if (initialized)
             return false;
 
-        CornerType.bindToResources();
+        CornerType.bindToResourcesAndObjects();
         ObjectType.bindToCorners();
         ResourceType.bindToCorners();
 

@@ -32,7 +32,7 @@ public class Game implements GameModel {
     private final ResourceCard[] commonResourceCards;
     private GameState state;
     private final Player[] players;
-    private List<PlayerColor> availableColors;
+    private final List<PlayerColor> availableColors;
 
     /**
      * Creates a game, initializing its ID as well as its number of players to a chosen value, its
@@ -53,7 +53,7 @@ public class Game implements GameModel {
         this.commonObjectiveCards = new ObjectiveCard[2];
         this.commonGoldCards = new GoldCard[2];
         this.commonResourceCards = new ResourceCard[2];
-        this.state = GameState.INIT;
+        this.state = GameState.JOINING;
         this.players = new Player[numPlayers];
         this.currentPlayerCount = 0;
         this.availableColors = new ArrayList<>(List.of(PlayerColor.values()));
@@ -71,7 +71,7 @@ public class Game implements GameModel {
     /**
      * Adds a new player into the game. The number of players cannot exceed numPlayers.
      * @param username The player's username.
-     * @throws UnexpectedActionException TODO write doc
+     * @throws UnexpectedActionException Thrown if the game is already full, if the game has already started, or if a player with the given username is already present in the game.
      */
     @Override
     public void addPlayer(String username) throws UnexpectedActionException {
@@ -99,7 +99,6 @@ public class Game implements GameModel {
     }
 
     /**
-     *
      * @return The number of players who joined the game.
      */
     @Override
@@ -143,11 +142,12 @@ public class Game implements GameModel {
     }
 
     /**
-     * TODO write doc
+     * Initializes the game by drawing the common gold and resource cards, and distributing the starter cards to the players.
+     * @throws UnexpectedActionException Thrown if the game was already initialized, or if the game hasn't reached the required number of players.
      */
     @Override
     public void initializeGame() throws UnexpectedActionException {
-        if (state != GameState.INIT)
+        if (state != GameState.JOINING)
             throw new UnexpectedActionException("Game already started");
         if (currentPlayerCount != numPlayers)
             throw new UnexpectedActionException("Missing players");
@@ -179,6 +179,7 @@ public class Game implements GameModel {
      * Lets the player choose the side of their starter card. It can be either front or back.
      * @param playerId The player's ID.
      * @param side The card's side.
+     * @throws UnexpectedActionException Thrown if the game has already started, hence all players should have already chosen their starter card side.
      */
     @Override
     public void setPlayerStarterSide(int playerId, SideType side) throws UnexpectedActionException {
@@ -192,24 +193,22 @@ public class Game implements GameModel {
      * Sets the color of a player.
      * @param playerId The player's ID.
      * @param color The color a player chose.
+     * @throws UnexpectedActionException Thrown if the game has already started, hence all the players should have already chosen their color, or if the given color has already been chosen by another player.
      */
     @Override
     public void setPlayerColor(int playerId, PlayerColor color) throws UnexpectedActionException {
         if (state != GameState.INIT)
             throw new UnexpectedActionException("Game already started");
 
-        for (Player player : players) {
-            if (player.getPlayerColor() == color)
-                throw new UnexpectedActionException("Color already chosen");
-        }
+        if (!availableColors.contains(color))
+            throw new UnexpectedActionException("Color already chosen");
 
         players[playerId].setColor(color);
         availableColors.remove(color);
     }
 
     /**
-     *
-     * @return
+     * @return A {@link List} containing all the colors that are still available for a player to choose.
      */
     @Override
     public List<PlayerColor> getAvailableColors() {
@@ -245,7 +244,8 @@ public class Game implements GameModel {
     }
 
     /**
-     * TODO write doc
+     * Draws the common objective cards and distributes the personal objectives to the players.
+     * This method should only be called after everyone has chosen their starter card side and color.
      */
     @Override
     public void initializeObjectives() {
@@ -285,10 +285,15 @@ public class Game implements GameModel {
      * Sets the chosen objective card for a specific player.
      * @param playerId The player's ID.
      * @param objectiveCard The chosen objective card.
-     * @throws UnknownObjectiveCardException Thrown when the objective card is unknown.
+     * @throws UnknownObjectiveCardException Thrown when the given objective card is not in the player's objective card options.
+     * @throws UnexpectedActionException Thrown if the objectives have not yet been distributed, or the game has already started, or the given player has already chosen their objective.
      */
     @Override
-    public void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) throws UnknownObjectiveCardException {
+    public void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) throws UnknownObjectiveCardException, UnexpectedActionException {
+        if (state != GameState.INIT)
+            throw new UnexpectedActionException("Objectives not yet distributed, or game already started");
+        if (players[playerId].getPersonalObjective() != null)
+            throw new UnexpectedActionException("Player already chose their objective");
         players[playerId].setObjectiveCard(objectiveCard);
     }
 
@@ -308,8 +313,8 @@ public class Game implements GameModel {
     }
 
     /**
-     * //TODO write doc
-     * @throws UnexpectedActionException
+     * Starts the game by choosing the starting player and distributing the resource and gold cards.
+     * @throws UnexpectedActionException Thrown if the game has already been started, or if not all players have chosen their objective card.
      */
     @Override
     public void startGame() throws UnexpectedActionException {
@@ -339,7 +344,7 @@ public class Game implements GameModel {
      * @param side The chosen card's side.
      * @param newCardPos The position of the card.
      * @throws IllegalMoveException Thrown if the player made an illegal move.
-     * @throws UnexpectedActionException TODO write doc
+     * @throws UnexpectedActionException Thrown if this method is called before the game has been started.
      */
     @Override
     public void placeCard(int playerId, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException, UnexpectedActionException {
@@ -351,6 +356,7 @@ public class Game implements GameModel {
      * Lets the player draw a card. A card can be drawn from the deck or from the currently visible cards.
      * @param playerId The player's ID.
      * @param drawType The place a player wants to draw a card from.
+     * @throws UnexpectedActionException Thrown if this method is called before the game has been started.
      */
     @Override
     public void drawCard(int playerId, DrawType drawType) throws UnexpectedActionException {
@@ -381,6 +387,10 @@ public class Game implements GameModel {
         }
     }
 
+    /**
+     * Advances the turn to the next player.
+     * @throws UnexpectedActionException Thrown if the game not started yet, or if it has already ended.
+     */
     @Override
     public void advanceTurn() throws UnexpectedActionException {
         if (state != GameState.STARTED && state != GameState.FINAL_ROUND)
@@ -391,8 +401,7 @@ public class Game implements GameModel {
     }
 
     /**
-     *
-     * @return Whether the game switched to the "End Game" state.
+     * @return Whether the game is ready to enter the final round.
      */
     @Override
     public boolean checkFinalRound() {
@@ -419,7 +428,8 @@ public class Game implements GameModel {
     }
 
     /**
-     * TODO write doc
+     * Triggers the game to enter the final round, if it is ready to do so; otherwise, this method does nothing.
+     * @throws UnexpectedActionException Thrown if the game has not started yet, or if it has already ended.
      */
     @Override
     public void triggerFinalRound() throws UnexpectedActionException {
@@ -430,12 +440,12 @@ public class Game implements GameModel {
     }
 
     /**
-     * TODO write doc
-     * @throws UnexpectedActionException
+     * Ends the current game and evaluates the objective points of the players. Then, it selects a winner.
+     * @throws UnexpectedActionException Thrown if the game has not yet entered its final round, or if it has already ended.
      */
     @Override
     public void endGame() throws UnexpectedActionException {
-        if (state != GameState.FINAL_ROUND) throw new UnexpectedActionException("Final round not triggered yet");
+        if (state != GameState.FINAL_ROUND) throw new UnexpectedActionException("Final round not triggered yet, or game already ended");
         state = GameState.ENDED;
         evaluateObjectivePoints();
         selectWinners();
@@ -518,8 +528,7 @@ public class Game implements GameModel {
     }
 
     /**
-     * TODO write doc
-     * @return
+     * @return the game's state.
      */
     @Override
     public GameState getState() {
@@ -527,8 +536,7 @@ public class Game implements GameModel {
     }
 
     /**
-     * TODO write doc
-     * @return
+     * @return the type of the card on top of the resource deck. This information should be visible to the players.
      */
     @Override
     public ResourceType getResourceDeckTopType() {
@@ -536,8 +544,7 @@ public class Game implements GameModel {
     }
 
     /**
-     * TODO write doc
-     * @return
+     * @return the type of the card on top of the gold deck. This information should be visible to the player.
      */
     @Override
     public ResourceType getGoldDeckTopType() {
