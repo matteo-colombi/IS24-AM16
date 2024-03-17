@@ -1,5 +1,136 @@
 {
   "fungiCards" : [
+    {
+      "name" : "gold_fungi_1",
+      "frontSide" : "fungiFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {"fungi" : 2, "animal" : 1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "quill",
+        "sideType" : "back",
+        "corners" : ["blocked", "empty", "quill", "empty"]
+      },
+      "type" : "fungi"
+    },
+    {
+      "name" : "gold_fungi_2",
+      "frontSide" : "fungiFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {"fungi" : 2, "plant" : 1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "inkwell",
+        "sideType" : "back",
+        "corners" : ["empty", "inkwell", "empty", "blocked"]
+      },
+
+      "type" : "fungi"
+    },
+    {
+      "name" : "gold_fungi_3",
+      "frontSide" : "fungiFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {"fungi" : 2, "insect" : 1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "quill",
+        "sideType" : "back",
+        "corners" : ["manuscript", "empty", "blocked", "empty"]
+      },
+      "type" : "fungi"
+    },
+    {
+      "name" : "gold_fungi_4",
+      "frontSide" : "fungiFront",
+      "backSide" : {
+        "points" : 2,
+        "cost" : {"fungi" : 3, "animal" : 1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "corners_covered",
+        "sideType" : "back",
+        "corners" : ["empty", "empty", "empty", "blocked"]
+      },
+      "type" : "fungi"
+    },
+    {
+      "name" : "gold_fungi_5",
+      "frontSide" : "fungiFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {"fungi" : 3, "plant" : 1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "corners_covered",
+        "sideType" : "back",
+        "corners" : ["empty", "empty", "blocked", "empty"]
+      },
+      "type" : "fungi"
+    },
+    {
+      "name" : "gold_fungi_6",
+      "frontSide" : "fungiFront",
+      "backSide" : {
+        "points" : 1,
+        "cost" : {"fungi" : 3, "insect" : 1},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "corners_covered",
+        "sideType" : "back",
+        "corners" : ["empty", "blocked", "blocked", "empty"]
+      },
+      "type" : "fungi"
+    },
+    {
+      "name" : "gold_fungi_7",
+      "frontSide" : "fungiFront",
+      "backSide" : {
+        "points" : 3,
+        "cost" : {"fungi" : 3},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "blocked", "blocked", "inkwell"]
+      },
+      "type" : "fungi"
+    },
+    {
+      "name" : "gold_fungi_8",
+      "frontSide" : "fungiFront",
+      "backSide" : {
+        "points" : 3,
+        "cost" : {"fungi" : 3},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["quill", "empty", "blocked", "blocked"]
+      },
+      "type" : "fungi"
+    },
+    {
+      "name" : "gold_fungi_9",
+      "frontSide" : "fungiFront",
+      "backSide" : {
+        "points" : 3,
+        "cost" : {"fungi" : 3},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["blocked", "manuscript", "empty", "blocked"]
+      },
+      "type" : "fungi"
+    },
+    {
+      "name" : "gold_fungi_10",
+      "frontSide" : "fungiFront",
+      "backSide" : {
+        "points" : 5,
+        "cost" : {"fungi" : 5},
+        "permanentResourcesGiven" : {},
+        "pointMultiplierPolicy" : "static",
+        "sideType" : "back",
+        "corners" : ["empty", "blocked", "blocked", "empty"]
+      },
+      "type" : "fungi"
+    }
 
   ],
   "plantCards" : [
