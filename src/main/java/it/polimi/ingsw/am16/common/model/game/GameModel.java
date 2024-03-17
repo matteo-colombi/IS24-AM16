@@ -1,12 +1,12 @@
 package it.polimi.ingsw.am16.common.model.game;
 
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
+import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.model.players.PlayerModel;
 import it.polimi.ingsw.am16.common.util.Position;
-import javafx.geometry.Side;
 
 import java.util.List;
 
@@ -18,19 +18,26 @@ public interface GameModel {
      *
      * @return The game's ID.
      */
-    String getid();
+    String getId();
 
     /**
      * Adds a new player into the game. The number of players cannot exceed numPlayers.
      * @param username The player's username.
+     * @throws UnexpectedActionException TODO write
      */
-    void addPlayer(String username);
+    void addPlayer(String username) throws UnexpectedActionException;
 
     /**
      *
      * @return The non-variable number of players expected to play the game.
      */
     int getNumPlayers();
+
+    /**
+     * TODO write doc
+     * @return
+     */
+    int getCurrentPlayerCount();
 
     /**
      *
@@ -51,36 +58,26 @@ public interface GameModel {
     List<Integer> getWinnerIds();
 
     /**
-     *
-     * @return Whether the game has reached the "End Game" state.
+     * TODO write doc
+     * @throws UnexpectedActionException
      */
-    boolean getIsEndGame();
-
-    void initializeGame();
-
-    /**
-     * Draws two gold cards and two resource cards. The players can see them and choose to draw them.
-     */
-    void drawCommonCards();
-
-    /**
-     * Draws numPlayers starter cards and gives one to each player.
-     */
-    void drawStarterCards();
+    void initializeGame() throws UnexpectedActionException;
 
     /**
      * Lets the player choose the side of their starter card. It can be either front or back.
      * @param playerId The player's ID.
      * @param side The card's side.
+     * @throws UnexpectedActionException TODO write doc
      */
-    void setPlayerStarterSide(int playerId, SideType side);
+    void setPlayerStarterSide(int playerId, SideType side) throws UnexpectedActionException;
 
     /**
      * Sets the color of a player.
      * @param playerId The player's ID.
      * @param color The color a player chose.
+     * @throws UnexpectedActionException
      */
-    void setPlayerColor(int playerId, PlayerColor color);
+    void setPlayerColor(int playerId, PlayerColor color) throws UnexpectedActionException;
 
     /**
      *
@@ -95,27 +92,19 @@ public interface GameModel {
     boolean allPlayersChoseColor();
 
     /**
-     * Distributes two resource cards and a gold card so that the game can start.
+     * TODO write doc
+     * @throws UnexpectedActionException
      */
-    void distributeCards();
-
-    /**
-     * Draws two objective cards, every player can see them.
-     */
-    void drawCommonObjectives();
-
-    /**
-     * Gives every player two objective cards.
-     */
-    void distributePersonalObjectives();
+    void initializeObjectives() throws UnexpectedActionException;
 
     /**
      * Sets the chosen objective card for a specific player.
      * @param playerId The player's ID.
      * @param objectiveCard The chosen objective card.
      * @throws UnknownObjectiveCardException Thrown when the objective card is unknown.
+     * @throws UnexpectedActionException TODO write doc
      */
-    void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) throws UnknownObjectiveCardException;
+    void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) throws UnknownObjectiveCardException, UnexpectedActionException;
 
     /**
      *
@@ -123,14 +112,11 @@ public interface GameModel {
      */
     boolean allPlayersChoseObjective();
 
-
-    void startGame();
-
     /**
-     * Chooses the starting player randomly.
-     * @return The starting player's ID.
+     * TODO write
+     * @throws UnexpectedActionException
      */
-    int chooseStartingPlayer();
+    void startGame() throws UnexpectedActionException;
 
     /**
      * Lets a player place a card.
@@ -139,34 +125,40 @@ public interface GameModel {
      * @param side The chosen card's side.
      * @param newCardPos The position of the card.
      * @throws IllegalMoveException Thrown if the player made an illegal move.
+     * @throws UnexpectedActionException TODO write
      */
-    void placeCard(int playerId, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException;
+    void placeCard(int playerId, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException, UnexpectedActionException;
 
     /**
      * Lets the player draw a card. A card can be drawn from the deck or from the currently visible cards.
      * @param playerId The player's ID.
      * @param drawType The place a player wants to draw a card from.
+     * @throws UnexpectedActionException TODO write
      */
-    void drawCard(int playerId, DrawType drawType);
+    void drawCard(int playerId, DrawType drawType) throws UnexpectedActionException;
+
+    /**
+     * TODO write doc
+     */
+    void advanceTurn() throws UnexpectedActionException;
 
     /**
      *
-     * @return Whether the game switched to the "End Game" state.
+     * @return Whether the game switched to the {@link GameState}<code>.FINAL_ROUND</code> state.
      */
-    boolean checkEndGame();
+    boolean checkFinalRound();
 
     /**
-     * Evaluates every player's points earned by fulfilling the objective cards' (both common and personal) requests.
+     * TODO write doc
+     * @throws UnexpectedActionException
      */
-    void evaluateObjectivePoints();
-
-
-    void endGame();
+    void triggerFinalRound() throws UnexpectedActionException;
 
     /**
-     * Chooses the winner(s) of the game.
+     * TODO write doc
+     * @throws UnexpectedActionException
      */
-    void selectWinners();
+    void endGame() throws UnexpectedActionException;
 
     /**
      *
@@ -191,4 +183,10 @@ public interface GameModel {
      * @return The visible and drawable resource cards.
      */
     ResourceCard[] getCommonResourceCards();
+
+    /**
+     * TODO write doc
+     * @return
+     */
+    GameState getState();
 }

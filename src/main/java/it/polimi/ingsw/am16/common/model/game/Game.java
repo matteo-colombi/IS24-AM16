@@ -1,13 +1,13 @@
 package it.polimi.ingsw.am16.common.model.game;
 
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
+import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.cards.decks.*;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.model.players.PlayerModel;
-import it.polimi.ingsw.am16.common.model.players.hand.Hand;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.util.RNG;
 
@@ -20,21 +20,19 @@ import java.util.List;
 public class Game implements GameModel {
     private final String id;
     private final int numPlayers;
+    private int currentPlayerCount;
     private int activePlayer;
     private int startingPlayer;
-    private List<Integer> winnerIds;
-    private boolean isEndGame;
-    private ObjectiveCardsDeck objectiveCardsDeck;
-    private StarterCardsDeck starterCardsDeck;
-    private GoldCardsDeck goldCardsDeck;
-    private ResourceCardsDeck resourceCardsDeck;
-    private ObjectiveCard[] commonObjectiveCards;
-    private GoldCard[] commonGoldCards;
-    private ResourceCard[] commonResourceCards;
+    private final List<Integer> winnerIds;
+    private final ObjectiveCardsDeck objectiveCardsDeck;
+    private final StarterCardsDeck starterCardsDeck;
+    private final GoldCardsDeck goldCardsDeck;
+    private final ResourceCardsDeck resourceCardsDeck;
+    private final ObjectiveCard[] commonObjectiveCards;
+    private final GoldCard[] commonGoldCards;
+    private final ResourceCard[] commonResourceCards;
     private GameState state;
-    private Player[] players;
-    private int currentPlayerCount;
-
+    private final Player[] players;
 
     /**
      * Creates a game, initializing its ID as well as its number of players to a chosen value, its
@@ -48,7 +46,6 @@ public class Game implements GameModel {
         this.startingPlayer = -1;
         this.activePlayer = -1;
         this.winnerIds = new ArrayList<>();
-        this.isEndGame = false;
         this.objectiveCardsDeck = DeckFactory.getObjectiveCardsDeck();
         this.starterCardsDeck = DeckFactory.getStarterCardsDeck();
         this.goldCardsDeck = DeckFactory.getGoldCardsDeck();
@@ -66,21 +63,25 @@ public class Game implements GameModel {
      * @return The game's ID.
      */
     @Override
-    public String getid() {
+    public String getId() {
         return id;
     }
 
     /**
      * Adds a new player into the game. The number of players cannot exceed numPlayers.
      * @param username The player's username.
+     * @throws UnexpectedActionException TODO write doc
      */
     @Override
-    public void addPlayer(String username) {
-        if(getCurrentPlayerCount() < getNumPlayers()) {
-            Player player = new Player(getCurrentPlayerCount(), username);
-            players[getCurrentPlayerCount()] = player;
-            setCurrentPlayerCount(getCurrentPlayerCount() + 1);
-        }
+    public void addPlayer(String username) throws UnexpectedActionException {
+        if (getCurrentPlayerCount() >= getNumPlayers())
+            throw new UnexpectedActionException("Maximum player count reached");
+        if (state != GameState.INIT)
+            throw new UnexpectedActionException("Game already started");
+
+        Player player = new Player(getCurrentPlayerCount(), username);
+        players[getCurrentPlayerCount()] = player;
+        setCurrentPlayerCount(getCurrentPlayerCount() + 1); //FIXME for real?
     }
 
     /**
@@ -96,6 +97,7 @@ public class Game implements GameModel {
      *
      * @return The number of players who joined the game.
      */
+    @Override
     public int getCurrentPlayerCount(){
         return currentPlayerCount;
     }
@@ -104,7 +106,7 @@ public class Game implements GameModel {
      * Updates the number of players who joined the game.
      * @param currentPlayerCount The number of players who joined the game.
      */
-    public void setCurrentPlayerCount(int currentPlayerCount){
+    private void setCurrentPlayerCount(int currentPlayerCount){
         this.currentPlayerCount = currentPlayerCount;
     }
 
@@ -136,25 +138,22 @@ public class Game implements GameModel {
     }
 
     /**
-     *
-     * @return Whether the game has reached the "End Game" state.
+     * TODO write doc
      */
     @Override
-    public boolean getIsEndGame() {
-        return isEndGame;
-    }
-
-    // TODO
-    @Override
-    public void initializeGame() {
-
+    public void initializeGame() throws UnexpectedActionException {
+        if (state != GameState.INIT)
+            throw new UnexpectedActionException("Game already started");
+        if (currentPlayerCount != numPlayers)
+            throw new UnexpectedActionException("Missing players");
+        drawCommonCards();
+        drawStarterCards();
     }
 
     /**
      * Draws two gold cards and two resource cards. The players can see them and choose to draw them.
      */
-    @Override
-    public void drawCommonCards() {
+    private void drawCommonCards() {
         commonResourceCards[0] = resourceCardsDeck.drawCard();
         commonResourceCards[1] = resourceCardsDeck.drawCard();
         commonGoldCards[0] = goldCardsDeck.drawCard();
@@ -165,8 +164,7 @@ public class Game implements GameModel {
     /**
      * Draws numPlayers starter cards and gives one to each player.
      */
-    @Override
-    public void drawStarterCards() {
+    private void drawStarterCards() {
         for (int i = 0; i < numPlayers; i++) {
            players[i].setStarterCard(starterCardsDeck.drawCard());
         }
@@ -179,11 +177,7 @@ public class Game implements GameModel {
      */
     @Override
     public void setPlayerStarterSide(int playerId, SideType side) {
-        for(int i = 0; i < numPlayers; i++) {
-            if(players[i].getPlayerId() == playerId) {
-                players[i].chooseStarterCardSide(side);
-            }
-        }
+        players[playerId].chooseStarterCardSide(side);
     }
 
     /**
@@ -193,11 +187,7 @@ public class Game implements GameModel {
      */
     @Override
     public void setPlayerColor(int playerId, PlayerColor color) {
-        for(int i = 0; i < numPlayers; i++) {
-            if(players[i].getPlayerId() == playerId) {
-                players[i].setColor(color);
-            }
-        }
+        players[playerId].setColor(color);
     }
 
     /**
@@ -229,10 +219,18 @@ public class Game implements GameModel {
     }
 
     /**
-     * Distributes two resource cards and a gold card so that the game can start.
+     * TODO write doc
      */
     @Override
-    public void distributeCards() {
+    public void initializeObjectives() {
+        drawCommonObjectives();
+        distributePersonalObjectives();
+    }
+
+    /**
+     * Distributes two resource cards and a gold card so that the game can start.
+     */
+    private void distributeCards() {
         for(int i = 0; i < numPlayers; i++) {
             players[i].giveCard(resourceCardsDeck.drawCard());
             players[i].giveCard(resourceCardsDeck.drawCard());
@@ -243,8 +241,7 @@ public class Game implements GameModel {
     /**
      * Draws two objective cards, every player can see them.
      */
-    @Override
-    public void drawCommonObjectives() {
+    private void drawCommonObjectives() {
         commonObjectiveCards[0] = objectiveCardsDeck.drawCard();
         commonObjectiveCards[1] = objectiveCardsDeck.drawCard();
     }
@@ -252,8 +249,7 @@ public class Game implements GameModel {
     /**
      * Gives every player two objective cards.
      */
-    @Override
-    public void distributePersonalObjectives() {
+    private void distributePersonalObjectives() {
         for(int i = 0; i < numPlayers; i++) {
             players[i].giveObjectiveOptions(objectiveCardsDeck.drawCard(), objectiveCardsDeck.drawCard());
         }
@@ -267,12 +263,7 @@ public class Game implements GameModel {
      */
     @Override
     public void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) throws UnknownObjectiveCardException {
-        for(int i = 0; i < numPlayers; i++) {
-            if(players[i].getPlayerId() == playerId) {
-                players[i].setObjectiveCard(objectiveCard);
-            }
-        }
-        //TODO how do we catch that exception?
+        players[playerId].setObjectiveCard(objectiveCard);
     }
 
 
@@ -293,15 +284,17 @@ public class Game implements GameModel {
     // TODO
     @Override
     public void startGame() {
-
+        startingPlayer = chooseStartingPlayer();
+        activePlayer = startingPlayer;
+        state = GameState.STARTED;
+        distributeCards();
     }
 
     /**
      * Chooses the starting player randomly.
      * @return The starting player's ID.
      */
-    @Override
-    public int chooseStartingPlayer() {
+    private int chooseStartingPlayer() {
         return RNG.getRNG().nextInt(numPlayers);
     }
 
@@ -312,14 +305,12 @@ public class Game implements GameModel {
      * @param side The chosen card's side.
      * @param newCardPos The position of the card.
      * @throws IllegalMoveException Thrown if the player made an illegal move.
+     * @throws UnexpectedActionException TODO write doc
      */
     @Override
-    public void placeCard(int playerId, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException {
-        for(int i = 0; i < numPlayers; i++) {
-            if(players[i].getPlayerId() == playerId) {
-                players[i].playCard(placedCard, side, newCardPos);
-            }
-        }
+    public void placeCard(int playerId, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException, UnexpectedActionException {
+        if (state != GameState.STARTED) throw new UnexpectedActionException("Game not started");
+        players[playerId].playCard(placedCard, side, newCardPos);
     }
 
     /**
@@ -328,35 +319,41 @@ public class Game implements GameModel {
      * @param drawType The place a player wants to draw a card from.
      */
     @Override
-    public void drawCard(int playerId, DrawType drawType) {
-        for(int i = 0; i < numPlayers; i++) {
-            if(players[i].getPlayerId() == playerId) {
-                switch (drawType) {
-                    case GOLD_1 -> {
-                        players[i].giveCard(commonGoldCards[0]);
-                        commonGoldCards[0] = goldCardsDeck.drawCard();
-                    }
-                    case GOLD_2 -> {
-                        players[i].giveCard(commonGoldCards[1]);
-                        commonGoldCards[1] = goldCardsDeck.drawCard();
-                    }
-                    case GOLD_DECK -> {
-                        players[i].giveCard(goldCardsDeck.drawCard());
-                    }
-                    case RESOURCE_1 -> {
-                        players[i].giveCard(commonResourceCards[0]);
-                        commonResourceCards[0] = resourceCardsDeck.drawCard();
-                    }
-                    case RESOURCE_2 -> {
-                        players[i].giveCard(commonResourceCards[1]);
-                        commonResourceCards[1] = resourceCardsDeck.drawCard();
-                    }
-                    case RESOURCE_DECK -> {
-                        players[i].giveCard(resourceCardsDeck.drawCard());
-                    }
-                }
+    public void drawCard(int playerId, DrawType drawType) throws UnexpectedActionException {
+        if (state != GameState.STARTED) throw new UnexpectedActionException("Game not started");
+        switch (drawType) {
+            case GOLD_1 -> {
+                players[playerId].giveCard(commonGoldCards[0]);
+                commonGoldCards[0] = goldCardsDeck.drawCard();
+            }
+            case GOLD_2 -> {
+                players[playerId].giveCard(commonGoldCards[1]);
+                commonGoldCards[1] = goldCardsDeck.drawCard();
+            }
+            case GOLD_DECK -> {
+                players[playerId].giveCard(goldCardsDeck.drawCard());
+            }
+            case RESOURCE_1 -> {
+                players[playerId].giveCard(commonResourceCards[0]);
+                commonResourceCards[0] = resourceCardsDeck.drawCard();
+            }
+            case RESOURCE_2 -> {
+                players[playerId].giveCard(commonResourceCards[1]);
+                commonResourceCards[1] = resourceCardsDeck.drawCard();
+            }
+            case RESOURCE_DECK -> {
+                players[playerId].giveCard(resourceCardsDeck.drawCard());
             }
         }
+    }
+
+    @Override
+    public void advanceTurn() throws UnexpectedActionException {
+        if (state != GameState.STARTED && state != GameState.FINAL_ROUND)
+            throw new UnexpectedActionException("Game has not started or has already ended");
+
+        activePlayer++;
+        activePlayer %= numPlayers;
     }
 
     /**
@@ -364,9 +361,12 @@ public class Game implements GameModel {
      * @return Whether the game switched to the "End Game" state.
      */
     @Override
-    public boolean checkEndGame() {
+    public boolean checkFinalRound() {
+        if (resourceCardsDeck.isEmpty() && goldCardsDeck.isEmpty())
+            return true;
+
         for(int i = 0; i < numPlayers; i++){
-            if(players[i].getGamePoints() >= 20 || (resourceCardsDeck.isEmpty() && goldCardsDeck.isEmpty())) {
+            if(players[i].getGamePoints() >= 20) {
                 return true;
             }
         }
@@ -376,8 +376,7 @@ public class Game implements GameModel {
     /**
      * Evaluates every player's points earned by fulfilling the objective cards' (both common and personal) requests.
      */
-    @Override
-    public void evaluateObjectivePoints() {
+    private void evaluateObjectivePoints() {
         for(int i = 0; i < numPlayers; i++) {
             players[i].evaluateCommonObjective(getCommonObjectiveCards()[0]);
             players[i].evaluateCommonObjective(getCommonObjectiveCards()[1]);
@@ -385,17 +384,33 @@ public class Game implements GameModel {
         }
     }
 
-    //TODO
+    /**
+     * TODO write doc
+     */
     @Override
-    public void endGame() {
+    public void triggerFinalRound() throws UnexpectedActionException {
+        if (state != GameState.STARTED) throw new UnexpectedActionException("Game has not started or already ended");
+        if (!checkFinalRound()) return;
 
+        state = GameState.FINAL_ROUND;
+    }
+
+    /**
+     * TODO write doc
+     * @throws UnexpectedActionException
+     */
+    @Override
+    public void endGame() throws UnexpectedActionException {
+        if (state != GameState.FINAL_ROUND) throw new UnexpectedActionException("Final round not triggered yet");
+        state = GameState.ENDED;
+        evaluateObjectivePoints();
+        selectWinners();
     }
 
     /**
      * Chooses the winner(s) of the game.
      */
-    @Override
-    public void selectWinners() {
+    private void selectWinners() {
         int tmpPoints = 0;
         int tmpId = -1;
         int tmpObjPoints = 0;
@@ -447,8 +462,7 @@ public class Game implements GameModel {
      */
     @Override
     public ObjectiveCard[] getCommonObjectiveCards() {
-        ObjectiveCard[] tmp = commonObjectiveCards.clone();
-        return tmp;
+        return commonObjectiveCards.clone();
     }
 
     /**
@@ -457,8 +471,7 @@ public class Game implements GameModel {
      */
     @Override
     public GoldCard[] getCommonGoldCards() {
-        GoldCard[] tmp = commonGoldCards.clone();
-        return tmp;
+        return commonGoldCards.clone();
     }
 
     /**
@@ -467,11 +480,16 @@ public class Game implements GameModel {
      */
     @Override
     public ResourceCard[] getCommonResourceCards() {
-        ResourceCard[] tmp = commonResourceCards.clone();
-        return tmp;
+        return commonResourceCards.clone();
     }
 
-
-
+    /**
+     * TODO write doc
+     * @return
+     */
+    @Override
+    public GameState getState() {
+        return state;
+    }
 }
 

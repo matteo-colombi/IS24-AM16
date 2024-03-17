@@ -2,7 +2,6 @@ package it.polimi.ingsw.am16.common.model.cards;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.polimi.ingsw.am16.common.exceptions.UninitializedCardRegistryException;
 import it.polimi.ingsw.am16.common.util.FilePaths;
 
 import java.io.File;
@@ -134,8 +133,6 @@ public class CardRegistry {
      * @return An unmodifiable {@link List<ObjectiveCard>}.
      */
     public static List<ObjectiveCard> getObjectiveCards() {
-        if (!initialized)
-            throw new UninitializedCardRegistryException("The card registry must be initialized");
         return objectiveCards;
     }
 
@@ -144,8 +141,6 @@ public class CardRegistry {
      * @return An unmodifiable {@link List<StarterCard>}.
      */
     public static List<StarterCard> getStarterCards() {
-        if (!initialized)
-            throw new UninitializedCardRegistryException("The card registry must be initialized");
         return starterCards;
     }
 
@@ -154,8 +149,6 @@ public class CardRegistry {
      * @return An unmodifiable {@link List} of {@link GoldCard}.
      */
     public static List<GoldCard> getGoldCards() {
-        if (!initialized)
-            throw new UninitializedCardRegistryException("The card registry must be initialized");
         return goldCards;
     }
 
@@ -164,8 +157,6 @@ public class CardRegistry {
      * @return An unmodifiable {@link List} of {@link ResourceCard}.
      */
     public static List<ResourceCard> getResourceCards() {
-        if (!initialized)
-            throw new UninitializedCardRegistryException("The card registry must be initialized");
         return resourceCards;
     }
 }
