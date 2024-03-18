@@ -75,18 +75,18 @@ public class Game implements GameModel {
      */
     @Override
     public void addPlayer(String username) throws UnexpectedActionException {
-        if (getCurrentPlayerCount() >= getNumPlayers())
+        if (currentPlayerCount >= numPlayers)
             throw new UnexpectedActionException("Maximum player count reached");
-        if (state != GameState.INIT)
+        if (state != GameState.JOINING)
             throw new UnexpectedActionException("Game already started");
         for(Player player : players) {
             if (player != null && player.getUsername().equals(username))
                 throw new UnexpectedActionException("Player already present");
         }
 
-        Player player = new Player(getCurrentPlayerCount(), username);
-        players[getCurrentPlayerCount()] = player;
-        setCurrentPlayerCount(getCurrentPlayerCount() + 1); //FIXME for real?
+        Player player = new Player(currentPlayerCount, username);
+        players[currentPlayerCount] = player;
+        currentPlayerCount++;
     }
 
     /**
@@ -104,14 +104,6 @@ public class Game implements GameModel {
     @Override
     public int getCurrentPlayerCount(){
         return currentPlayerCount;
-    }
-
-    /**
-     * Updates the number of players who joined the game.
-     * @param currentPlayerCount The number of players who joined the game.
-     */
-    private void setCurrentPlayerCount(int currentPlayerCount){
-        this.currentPlayerCount = currentPlayerCount;
     }
 
     /**
@@ -151,6 +143,8 @@ public class Game implements GameModel {
             throw new UnexpectedActionException("Game already started");
         if (currentPlayerCount != numPlayers)
             throw new UnexpectedActionException("Missing players");
+
+        state = GameState.INIT;
         drawCommonCards();
         drawStarterCards();
     }
@@ -171,7 +165,7 @@ public class Game implements GameModel {
      */
     private void drawStarterCards() {
         for (int i = 0; i < numPlayers; i++) {
-           players[i].setStarterCard(starterCardsDeck.drawCard());
+           players[i].giveStarterCard(starterCardsDeck.drawCard());
         }
     }
 
@@ -421,8 +415,8 @@ public class Game implements GameModel {
      */
     private void evaluateObjectivePoints() {
         for(int i = 0; i < numPlayers; i++) {
-            players[i].evaluateCommonObjective(getCommonObjectiveCards()[0]);
-            players[i].evaluateCommonObjective(getCommonObjectiveCards()[1]);
+            players[i].evaluateCommonObjectives(getCommonObjectiveCards()[0]);
+            players[i].evaluateCommonObjectives(getCommonObjectiveCards()[1]);
             players[i].evaluatePersonalObjective();
         }
     }
