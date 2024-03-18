@@ -24,11 +24,10 @@ public final class StarterCard extends BoardCard {
 
     @Override
     public String toString() {
-        return "\nStarterCard{" +
+        return "StarterCard{" +
                 "name=" + getName() + ", " +
-                "frontSide=" + getFrontSide() + ", " +
-                "backSide=" + getBackSide() + ", " +
-                "type=" + getType() +
+                "frontSide=" + getFrontSide().getCorners() + ", " +
+                "backSide={" + getBackSide().getPermanentResourcesGiven() + ", " + getBackSide().getCorners() + "}, " +
                 "}";
     }
 }

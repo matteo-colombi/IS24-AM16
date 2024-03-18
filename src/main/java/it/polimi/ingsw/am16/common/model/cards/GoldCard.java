@@ -26,7 +26,7 @@ public final class GoldCard extends PlayableCard {
 
     @Override
     public String toString() {
-        return "\nGoldCard{" +
+        return "GoldCard{" +
                 "name="+getName() + ", " +
                 "frontSide="+getFrontSide() + ", " +
                 "backSide="+getBackSide() + ", " +

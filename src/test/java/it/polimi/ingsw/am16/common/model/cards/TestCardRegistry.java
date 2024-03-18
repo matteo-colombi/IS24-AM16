@@ -35,7 +35,7 @@ public class TestCardRegistry {
         assertEquals(102, totalCards);
 
         /*
-            Check that all the card names are correct
+            Check that all the card names are correct. Check all types are correct.
          */
         int i = 1;
         for(StarterCard card : CardRegistry.getStarterCards()) {
@@ -48,9 +48,9 @@ public class TestCardRegistry {
             if (i >= 1 && i <= 8) {
                 assertEquals("objective_pattern_" + i, objectiveCard.getName());
             } else if (i >= 9 && i <= 12) {
-                assertEquals("objective_resource_" + i, objectiveCard.getName());
+                assertEquals("objective_resources_" + (i-8), objectiveCard.getName());
             } else if (i >= 13 && i <= 16) {
-                assertEquals("objective_object" + i, objectiveCard.getName());
+                assertEquals("objective_object_" + (i-12), objectiveCard.getName());
             } else {
                 fail();
             }
@@ -58,19 +58,28 @@ public class TestCardRegistry {
         }
         List<ResourceCard> resourceCards = CardRegistry.getResourceCards();
         List<GoldCard> goldCards = CardRegistry.getGoldCards();
+
         for(i = 1; i <= resourceCards.size(); i++) {
             if (i >= 1 && i <= 10) {
-                assertEquals("resource_fungi_1", resourceCards.get(i).getName());
-                assertEquals("gold_fungi_1", goldCards.get(i).getName());
+                assertEquals("resource_fungi_" + i, resourceCards.get(i-1).getName());
+                assertEquals("gold_fungi_" + i, goldCards.get(i-1).getName());
+                assertEquals(ResourceType.FUNGI, resourceCards.get(i-1).getType());
+                assertEquals(ResourceType.FUNGI, goldCards.get(i-1).getType());
             } else if (i >= 11 && i <= 20) {
-                assertEquals("resource_plant_1", resourceCards.get(i).getName());
-                assertEquals("gold_plant_1", goldCards.get(i).getName());
+                assertEquals("resource_plant_" + (i-10), resourceCards.get(i-1).getName());
+                assertEquals("gold_plant_" + (i-10), goldCards.get(i-1).getName());
+                assertEquals(ResourceType.PLANT, resourceCards.get(i-1).getType());
+                assertEquals(ResourceType.PLANT, goldCards.get(i-1).getType());
             } else if (i >= 21 && i <= 30) {
-                assertEquals("resource_animal_1", resourceCards.get(i).getName());
-                assertEquals("gold_animal_1", goldCards.get(i).getName());
+                assertEquals("resource_animal_" + (i-20), resourceCards.get(i-1).getName());
+                assertEquals("gold_animal_" + (i-20), goldCards.get(i-1).getName());
+                assertEquals(ResourceType.ANIMAL, resourceCards.get(i-1).getType());
+                assertEquals(ResourceType.ANIMAL, goldCards.get(i-1).getType());
             } else if (i >= 31 && i <= 40) {
-                assertEquals("resource_insect_1", resourceCards.get(i).getName());
-                assertEquals("gold_insect_1", goldCards.get(i).getName());
+                assertEquals("resource_insect_" + (i-30), resourceCards.get(i-1).getName());
+                assertEquals("gold_insect_" + (i-30), goldCards.get(i-1).getName());
+                assertEquals(ResourceType.INSECT, resourceCards.get(i-1).getType());
+                assertEquals(ResourceType.INSECT, goldCards.get(i-1).getType());
             } else {
                 fail();
             }

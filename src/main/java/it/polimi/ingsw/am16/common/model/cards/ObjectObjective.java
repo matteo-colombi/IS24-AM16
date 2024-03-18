@@ -48,7 +48,7 @@ public final class ObjectObjective extends ObjectiveCard {
 
     @Override
     public String toString() {
-        return "\nObjectObjective{" +
+        return "ObjectObjective{" +
                 "name=" + getName() + ", " +
                 "points=" + getPoints() + ", " +
                 "objectsRequired=" + objectsRequired +

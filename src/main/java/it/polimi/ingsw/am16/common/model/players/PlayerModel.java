@@ -54,11 +54,17 @@ public interface PlayerModel {
      */
     HandModel getHand();
 
-
+    /**
+     * @return The player's personal objective, or <code>null</code> if the player has yet to choose their objective.
+     */
     ObjectiveCard getPersonalObjective();
 
     /**
-     *
+     * @return The player's starter card, regardless of whether they have already chosen the side to use.
+     */
+    StarterCard getStarterCard();
+
+    /**
      * @return The player's board state, giving access only to its non-modifier methods
      */
     PlayAreaModel getPlayArea();

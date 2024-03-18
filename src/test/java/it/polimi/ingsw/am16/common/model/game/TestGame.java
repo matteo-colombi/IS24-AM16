@@ -43,9 +43,9 @@ public class TestGame {
 
         System.out.println("\nPlayer starter cards:");
         System.out.println("xLorde:");
-        System.out.println(xLorde.getPlayArea().getField().get(new Position(0, 0)));
+        System.out.println(xLorde.getStarterCard());
         System.out.println("l2c:");
-        System.out.println(xLorde.getPlayArea().getField().get(new Position(0, 0)));
+        System.out.println(xLorde.getStarterCard());
 
         game.setPlayerStarterSide(0, SideType.FRONT);
         game.setPlayerStarterSide(1, SideType.BACK);

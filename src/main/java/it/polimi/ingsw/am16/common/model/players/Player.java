@@ -119,6 +119,14 @@ public class Player implements PlayerModel {
     }
 
     /**
+     * @return The player's starter card, regardless of whether they have already chosen the side to use.
+     */
+    @Override
+    public StarterCard getStarterCard() {
+        return starterCard;
+    }
+
+    /**
      *
      * @return The player's hand, giving access only to its non-modifier methods
      */

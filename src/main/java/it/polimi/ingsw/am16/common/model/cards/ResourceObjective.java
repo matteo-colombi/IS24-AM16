@@ -42,7 +42,7 @@ public final class ResourceObjective extends ObjectiveCard {
 
     @Override
     public String toString() {
-        return "\nResourceObjective{" +
+        return "ResourceObjective{" +
                 "name=" + getName() + ", " +
                 "points=" + getPoints() + ", " +
                 "resourceType=" + type + ", " +

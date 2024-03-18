@@ -88,7 +88,7 @@ public final class PatternObjective extends ObjectiveCard {
 
     @Override
     public String toString() {
-        return "\nPatternObjective{" +
+        return "PatternObjective{" +
                 "name=" + getName() + ", " +
                 "points=" + getPoints() + ", " +
                 "pattern=" + pattern +
