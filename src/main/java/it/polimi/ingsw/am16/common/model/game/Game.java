@@ -75,7 +75,7 @@ public class Game implements GameModel {
      */
     @Override
     public void addPlayer(String username) throws UnexpectedActionException {
-        if (currentPlayerCount >= numPlayers)
+        if (getCurrentPlayerCount() >= getNumPlayers())
             throw new UnexpectedActionException("Maximum player count reached");
         if (state != GameState.INIT)
             throw new UnexpectedActionException("Game already started");
@@ -84,9 +84,9 @@ public class Game implements GameModel {
                 throw new UnexpectedActionException("Player already present");
         }
 
-        Player player = new Player(currentPlayerCount, username);
-        players[currentPlayerCount] = player;
-        currentPlayerCount++;
+        Player player = new Player(getCurrentPlayerCount(), username);
+        players[getCurrentPlayerCount()] = player;
+        setCurrentPlayerCount(getCurrentPlayerCount() + 1); //FIXME for real?
     }
 
     /**
@@ -104,6 +104,14 @@ public class Game implements GameModel {
     @Override
     public int getCurrentPlayerCount(){
         return currentPlayerCount;
+    }
+
+    /**
+     * Updates the number of players who joined the game.
+     * @param currentPlayerCount The number of players who joined the game.
+     */
+    private void setCurrentPlayerCount(int currentPlayerCount){
+        this.currentPlayerCount = currentPlayerCount;
     }
 
     /**
@@ -163,7 +171,7 @@ public class Game implements GameModel {
      */
     private void drawStarterCards() {
         for (int i = 0; i < numPlayers; i++) {
-           players[i].giveStarterCard(starterCardsDeck.drawCard());
+           players[i].setStarterCard(starterCardsDeck.drawCard());
         }
     }
 
@@ -413,8 +421,8 @@ public class Game implements GameModel {
      */
     private void evaluateObjectivePoints() {
         for(int i = 0; i < numPlayers; i++) {
-            players[i].evaluateCommonObjectives(getCommonObjectiveCards()[0]);
-            players[i].evaluateCommonObjectives(getCommonObjectiveCards()[1]);
+            players[i].evaluateCommonObjective(getCommonObjectiveCards()[0]);
+            players[i].evaluateCommonObjective(getCommonObjectiveCards()[1]);
             players[i].evaluatePersonalObjective();
         }
     }

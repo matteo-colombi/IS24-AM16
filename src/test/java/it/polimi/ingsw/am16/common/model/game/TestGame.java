@@ -42,7 +42,10 @@ public class TestGame {
         HandModel l2cHand = l2c.getHand();
 
         System.out.println("\nPlayer starter cards:");
-        Arrays.stream(game.getPlayers()).forEach(p -> System.out.println(p.getStarterCard().toString()));
+        System.out.println("xLorde:");
+        System.out.println(xLorde.getPlayArea().getField().get(new Position(0, 0)));
+        System.out.println("l2c:");
+        System.out.println(xLorde.getPlayArea().getField().get(new Position(0, 0)));
 
         game.setPlayerStarterSide(0, SideType.FRONT);
         game.setPlayerStarterSide(1, SideType.BACK);
