@@ -48,7 +48,7 @@ public class TestPatternObjective {
         assertEquals(ResourceType.FUNGI, fungiCard.getType());
         assertEquals(ResourceType.INSECT, insectCard.getType());
 
-        testPlayer.setStarterCard(starterCard);
+        testPlayer.giveStarterCard(starterCard);
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,1));
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,2));
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(3,3));
@@ -57,7 +57,7 @@ public class TestPatternObjective {
 
         testPlayer = new Player(0, "testPlayer");
 
-        testPlayer.setStarterCard(starterCard);
+        testPlayer.giveStarterCard(starterCard);
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,-1));
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-2,-2));
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-3,-3));
@@ -66,7 +66,7 @@ public class TestPatternObjective {
 
         testPlayer = new Player(0, "testPlayer");
 
-        testPlayer.setStarterCard(starterCard);
+        testPlayer.giveStarterCard(starterCard);
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-2,0));
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,1));
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(0,2));
@@ -81,7 +81,7 @@ public class TestPatternObjective {
 
         testPlayer = new Player(0, "testPlayer");
 
-        testPlayer.setStarterCard(starterCard);
+        testPlayer.giveStarterCard(starterCard);
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-2,-2));
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,-1));
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,1));
@@ -95,7 +95,7 @@ public class TestPatternObjective {
 
         testPlayer = new Player(0, "testPlayer");
 
-        testPlayer.setStarterCard(starterCard);
+        testPlayer.giveStarterCard(starterCard);
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,1));
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,2));
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(3,3));
@@ -107,7 +107,7 @@ public class TestPatternObjective {
 
         testPlayer = new Player(0, "testPlayer");
 
-        testPlayer.setStarterCard(starterCard);
+        testPlayer.giveStarterCard(starterCard);
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-3,3));
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-2,2));
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,1));
@@ -116,7 +116,7 @@ public class TestPatternObjective {
 
         testPlayer = new Player(0, "testPlayer");
 
-        testPlayer.setStarterCard(starterCard);
+        testPlayer.giveStarterCard(starterCard);
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-3,3));
         testPlayer.playCard(insectCard, SideType.FRONT, new Position(-2,2));
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,1));
@@ -125,7 +125,7 @@ public class TestPatternObjective {
 
         testPlayer = new Player(0, "testPlayer");
 
-        testPlayer.setStarterCard(starterCard);
+        testPlayer.giveStarterCard(starterCard);
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,1));
         testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,2));
         testPlayer.playCard(insectCard, SideType.FRONT, new Position(3,3));
@@ -134,7 +134,7 @@ public class TestPatternObjective {
 
         testPlayer = new Player(0, "testPlayer");
 
-        testPlayer.setStarterCard(starterCard);
+        testPlayer.giveStarterCard(starterCard);
         testPlayer.playCard(insectCard, SideType.FRONT, new Position(1,1));
         testPlayer.playCard(insectCard, SideType.FRONT, new Position(2,2));
         testPlayer.playCard(insectCard, SideType.FRONT, new Position(3,3));

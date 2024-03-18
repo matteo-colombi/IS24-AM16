@@ -24,12 +24,13 @@ public class CardRegistry {
 
     /**
      * Initializes the card registry with all the existing cards. The cards are taken from
-     * TODO specify where the card details are taken from.
+     * the paths specified in {@link FilePaths}.
      */
     public static boolean initializeRegistry() {
         if (initialized)
             return false;
 
+        //FIXME maybe move this somewhere else where it makes more sense
         CornerType.bindToResourcesAndObjects();
         ObjectType.bindToCorners();
         ResourceType.bindToCorners();

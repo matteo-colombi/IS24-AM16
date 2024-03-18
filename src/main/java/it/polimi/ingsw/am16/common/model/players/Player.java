@@ -7,7 +7,6 @@ import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.model.cards.StarterCard;
 import it.polimi.ingsw.am16.common.model.players.hand.Hand;
-import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.model.game.Game;
 
@@ -109,15 +108,6 @@ public class Player implements PlayerModel {
     }
 
     /**
-     * TODO write doc
-     * @return
-     */
-    @Override
-    public StarterCard getStarterCard() {
-        return starterCard;
-    }
-
-    /**
      *
      * @return The player's personal objective card
      */
@@ -131,7 +121,7 @@ public class Player implements PlayerModel {
      * @return The player's hand, giving access only to its non-modifier methods
      */
     @Override
-    public HandModel getHand() {
+    public Hand getHand() {
         return hand;
     }
 
@@ -172,6 +162,10 @@ public class Player implements PlayerModel {
         return choseObjectiveCard;
     }
 
+    /**
+     * @return whether the player has already chosen their color.
+     */
+    @Override
     public boolean getChoseColor() {
         return choseColor;
     }
@@ -238,7 +232,7 @@ public class Player implements PlayerModel {
      * Gives the player their starter card.
      * @param starterCard The given starter card
      */
-    public void setStarterCard(StarterCard starterCard) {
+    public void giveStarterCard(StarterCard starterCard) {
         this.starterCard = starterCard;
     }
 
@@ -272,7 +266,7 @@ public class Player implements PlayerModel {
      * @param commonObjective The objective card to evaluate
      * @return The earned points from said objective
      */
-    public void evaluateCommonObjective(ObjectiveCard commonObjective) {
+    public void evaluateCommonObjectives(ObjectiveCard commonObjective) {
         this.currObjectivePoints += commonObjective.evaluatePoints(this.playArea);
     }
 

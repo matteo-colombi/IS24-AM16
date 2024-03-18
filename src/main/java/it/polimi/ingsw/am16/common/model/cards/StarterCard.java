@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Class used to model starter cards.
  */
-public class StarterCard extends BoardCard {
+public final class StarterCard extends BoardCard {
     /**
      * Constructs a new starter card with the given name and sides.
      * @param name The card's name
