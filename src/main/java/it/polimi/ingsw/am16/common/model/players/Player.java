@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class to handle players in a game. A player has a unique id for identification and a username. <br>
+ * Class to handle players in a game.
+ * A player has a unique id for identification and a username. <br>
+ * Each player will manage a playing area and their hand of playable cards
  *
  */
 public class Player implements PlayerModel {
@@ -262,9 +264,9 @@ public class Player implements PlayerModel {
 
     /**
      * Evaluates the total amount of points gathered by completing a common objective card
-     * (links the {@link Game} and {@link PlayArea} objects).
+     * (links the {@link Game} and {@link PlayArea} objects), thus increasing
+     * the player's current objective points.
      * @param commonObjective The objective card to evaluate
-     * @return The earned points from said objective
      */
     public void evaluateCommonObjectives(ObjectiveCard commonObjective) {
         this.currObjectivePoints += commonObjective.evaluatePoints(this.playArea);
@@ -272,8 +274,9 @@ public class Player implements PlayerModel {
 
     /**
      * Evaluates the total amount of points gathered by completing the player's personal
-     * objective (links the {@link Game} and {@link PlayArea} objects).
-     * @return The earned points from said objective
+     * objective (links the {@link Game} and {@link PlayArea} objects), thus increasing
+     * the player's current objective points.
+     *
      */
     public void evaluatePersonalObjective() {
         this.currObjectivePoints +=  this.personalObjective.evaluatePoints(this.playArea);
