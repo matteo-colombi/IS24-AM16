@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.function.Function;
 
 /**
- * Class containing information about the card.
+ * Class containing information about a card's side.
  */
 public class CardSide {
     private final int points;
@@ -87,8 +87,7 @@ public class CardSide {
         private final Function<PlayArea, Integer> policy;
 
         /**
-         * Set the policy.
-         *
+         * Constructs a new PointMultiplierPolicy with the given function.
          * @param policy The policy to be applied.
          */
         PointMultiplierPolicy(Function<PlayArea, Integer> policy) {
@@ -99,7 +98,7 @@ public class CardSide {
          * Evaluates the policy based on <code>playArea</code> data.
          *
          * @param playArea The player's play area.
-         * @return The scored points.
+         * @return The multiplier for the card's points.
          */
         public int evaluate(PlayArea playArea) {
             return policy.apply(playArea);
@@ -107,13 +106,13 @@ public class CardSide {
     }
 
     /**
-     * Creates a card side by reading data from a JSON file.
+     * Creates a new card side.
      *
      * @param points                  The base points scored when the card is played.
      * @param cost                    The resources needed to play the card.
      * @param permanentResourcesGiven The permanent resources given by the card.
      * @param pointMultiplierPolicy   The policy to use to multiply the base points.
-     * @param side                    The side of the card.
+     * @param side                    The side type (front or back) of the card.
      * @param corners                 The corners of this card. Must be in the order TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT.
      */
     @JsonCreator
@@ -149,41 +148,42 @@ public class CardSide {
     }
 
     /**
-     * @return The card points.
+     * @return The card's base points.
      */
     public int getPoints() {
         return points;
     }
 
     /**
-     * @return The card cost.
+     * @return The card's cost.
      */
     public Map<ResourceType, Integer> getCost() {
         return cost;
     }
 
     /**
-     * @return The card permanent resources.
+     * @return The card's permanent resources.
      */
     public Map<ResourceType, Integer> getPermanentResourcesGiven() {
         return permanentResourcesGiven;
     }
 
     /**
-     * @return The card side.
+     * @return The card's side type.
      */
     public SideType getSide() {
         return side;
     }
 
     /**
-     * @return The card corners.
+     * @return The card's corners.
      */
     public Map<CornersIdx, CornerType> getCorners() {
         return corners;
     }
 
     /**
+     * Calculates the points given by this card upon placement in the given <code>playArea</code>.
      * @param playArea The player's play area.
      * @return The awarded points.
      */

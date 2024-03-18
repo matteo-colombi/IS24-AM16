@@ -151,7 +151,7 @@ public class Player implements PlayerModel {
      */
     @Override
     public List<ObjectiveCard> getPersonalObjectiveOptions() {
-        return new ArrayList<>(possiblePersonalObjectives);
+        return List.copyOf(possiblePersonalObjectives);
     }
 
     /**

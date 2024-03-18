@@ -7,8 +7,8 @@ import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
 import java.util.List;
 
 /**
- * Interface to give external classes access to Player-type objects. It contains all the methods
- * a player is supposed to show to the outside
+ * Interface to give external classes access to {@link Player}-type objects. It contains all the methods
+ * a player is supposed to show to the outside.
  */
 public interface PlayerModel {
     /**

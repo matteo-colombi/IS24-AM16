@@ -53,7 +53,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * @return The amount of each resource in the play area.
+     * @return A map containing the amounts of each resource in the play area.
      */
     public Map<ResourceType, Integer> getResourceCounts() {
         Map<ResourceType, Integer> resourceCounts = new EnumMap<>(ResourceType.class);
@@ -69,7 +69,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * @return The amount of each object in the play area.
+     * @return A map containing the amounts of each object in the play area.
      */
     public Map<ObjectType, Integer> getObjectCounts() {
         Map<ObjectType, Integer> objectCounts = new EnumMap<>(ObjectType.class);
@@ -84,21 +84,21 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * @return The X coordinate of the left-most played card.
+     * @return The x-coordinate of the left-most played card.
      */
     public int getMinX() {
         return minX;
     }
 
     /**
-     * @return The X coordinate of the right-most played card.
+     * @return The x-coordinate of the right-most played card.
      */
     public int getMaxX() {
         return maxX;
     }
 
     /**
-     * @return The Y coordinate of the down-most played card.
+     * @return The y-coordinate of the down-most played card.
      */
     public int getMinY() {
         return minY;
@@ -116,7 +116,8 @@ public class PlayArea implements PlayAreaModel {
     //region Local Methods
 
     /**
-     * Places the starter card at the origin (0; 0) of the play area and updates the amount of resources.
+     * Places the starter card at the origin (0, 0) of the play area and updates the amounts of resources.
+     * If the starter card was already placed, this method does nothing.
      *
      * @param starterCard The starter card chosen by the player.
      * @param side        The visible side of the starter card.
@@ -132,12 +133,13 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * Places the played card at the given position of the play area, updates the amount of resources and objects,
+     * Places the played card at the given position of the play area, updates the amounts of resources and objects,
      * updates the bounds and awards points to the player.
      *
      * @param playedCard         The card chosen by the player.
      * @param side               The visible side of the card.
      * @param playedCardPosition The position chosen by the player to place the card.
+     * @throws IllegalMoveException Thrown if the move is not permitted. The check is done using <code>checkLegalMove(...)</code>.
      */
     public void playCard(PlayableCard playedCard, SideType side, Position playedCardPosition) throws IllegalMoveException {
         if (!checkLegalMove(playedCard, side, playedCardPosition))
@@ -172,7 +174,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * Updates the amount of resources and objects by following these three steps: <br>
+     * Updates the amounts of resources and objects by following these three steps: <br>
      * - increases the resources and objects that are in the corners of the new card; <br>
      * - increases the resources that are permanent in the new card; <br>
      * - decrements the resources and objects that have been hidden by the new card.
@@ -232,7 +234,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * Updates the bounds
+     * Updates the bounds of the play area.
      *
      * @param playedCardPosition The position chosen by the player to place the card.
      */
@@ -248,7 +250,7 @@ public class PlayArea implements PlayAreaModel {
     //region PlayAreaModel
 
     /**
-     * @return The placement order of the cards
+     * @return A {@link List} containing the {@link Position}s of the cards in the order they were placed in.
      */
     @Override
     public List<Position> getPlacementOrder() {
@@ -256,7 +258,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * @return The player's field
+     * @return The player's field.
      */
     @Override
     public Map<Position, BoardCard> getField() {
@@ -264,7 +266,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * @return The visible side of the cards
+     * @return The visible side of the cards.
      */
     @Override
     public Map<BoardCard, CardSide> getActiveSides() {
@@ -280,7 +282,7 @@ public class PlayArea implements PlayAreaModel {
      * @param playedCard         The card chosen by the player.
      * @param side               The visible side of the card.
      * @param playedCardPosition The position chosen by the player to place the card.
-     * @return True if the move is legal otherwise returns False.
+     * @return <code>true</code> if the move is legal otherwise returns <code>false</code>.
      */
     @Override
     public boolean checkLegalMove(PlayableCard playedCard, SideType side, Position playedCardPosition) {
