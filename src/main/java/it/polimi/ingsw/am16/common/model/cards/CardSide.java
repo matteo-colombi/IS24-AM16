@@ -9,10 +9,9 @@ import java.util.*;
 import java.util.function.Function;
 
 /**
- * DOCME: write documentation
+ * Class containing information about the card.
  */
 public class CardSide {
-    // DOCME: implement
     private final int points;
     private final Map<ResourceType, Integer> cost;
     private final Map<ResourceType, Integer> permanentResourcesGiven;
@@ -21,7 +20,7 @@ public class CardSide {
     private final Map<CornersIdx, CornerType> corners;
 
     /**
-     * DOCME: write documentation
+     * Enum containing the existing policies to award points.
      */
     enum PointMultiplierPolicy {
         /**
@@ -88,17 +87,19 @@ public class CardSide {
         private final Function<PlayArea, Integer> policy;
 
         /**
-         * DOCME: write documentation
-         * @param policy
+         * Set the policy.
+         *
+         * @param policy The policy to be applied.
          */
         PointMultiplierPolicy(Function<PlayArea, Integer> policy) {
             this.policy = policy;
         }
 
         /**
-         * DOCME: write documentation
-         * @param playArea
-         * @return
+         * Evaluates the policy based on <code>playArea</code> data.
+         *
+         * @param playArea The player's play area.
+         * @return The scored points.
          */
         public int evaluate(PlayArea playArea) {
             return policy.apply(playArea);
@@ -106,13 +107,14 @@ public class CardSide {
     }
 
     /**
+     * Creates a card side by reading data from a JSON file.
      *
-     * @param points
-     * @param cost
-     * @param permanentResourcesGiven
-     * @param pointMultiplierPolicy
-     * @param side
-     * @param corners The corners of this card. Must be in the order TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT.
+     * @param points                  The base points scored when the card is played.
+     * @param cost                    The resources needed to play the card.
+     * @param permanentResourcesGiven The permanent resources given by the card.
+     * @param pointMultiplierPolicy   The policy to use to multiply the base points.
+     * @param side                    The side of the card.
+     * @param corners                 The corners of this card. Must be in the order TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT.
      */
     @JsonCreator
     CardSide(
@@ -147,49 +149,43 @@ public class CardSide {
     }
 
     /**
-     * DOCME: write doc
-     * @return
+     * @return The card points.
      */
     public int getPoints() {
         return points;
     }
 
     /**
-     * DOCME: write doc
-     * @return
+     * @return The card cost.
      */
     public Map<ResourceType, Integer> getCost() {
         return cost;
     }
 
     /**
-     * DOCME: write doc
-     * @return
+     * @return The card permanent resources.
      */
     public Map<ResourceType, Integer> getPermanentResourcesGiven() {
         return permanentResourcesGiven;
     }
 
     /**
-     * DOCME: write doc
-     * @return
+     * @return The card side.
      */
     public SideType getSide() {
         return side;
     }
 
     /**
-     * DOCME: write doc
-     * @return
+     * @return The card corners.
      */
     public Map<CornersIdx, CornerType> getCorners() {
         return corners;
     }
 
     /**
-     * DOCME: write doc
-     * @param playArea
-     * @return
+     * @param playArea The player's play area.
+     * @return The awarded points.
      */
     public int getAwardedPoints(PlayArea playArea) {
         return points * pointMultiplierPolicy.evaluate(playArea);
@@ -211,6 +207,7 @@ public class CardSide {
 
     /**
      * Returns a previously added {@link CardSide}, given the name. Used to allow reuse of identical CardSides in different cards.
+     *
      * @param name The name of the side to retrieve.
      * @return the side with the given name, or <code>null</code> if there is no such side.
      */
@@ -221,7 +218,8 @@ public class CardSide {
 
     /**
      * Adds a {@link CardSide} with the given name to a common side registry. Used to allow reuse of identical CardSides in different cards.
-     * @param name The name of the side to add to the registry.
+     *
+     * @param name     The name of the side to add to the registry.
      * @param cardSide The CardSide to add to the registry.
      */
     static void addCommonSide(String name, CardSide cardSide) {

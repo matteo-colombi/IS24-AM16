@@ -7,7 +7,7 @@ import it.polimi.ingsw.am16.common.util.Position;
 import java.util.*;
 
 /**
- * DOCME: write documentation
+ * Class representing the player's play area. Contains info about card placement and resource/object counts.
  */
 public class PlayArea implements PlayAreaModel {
     private final Player player;
@@ -21,6 +21,11 @@ public class PlayArea implements PlayAreaModel {
     private int minY;
     private int maxY;
 
+    /**
+     * Creates a play area, initializing its player, its other attributes are set to standard values.
+     *
+     * @param player The player who owns the play area.
+     */
     public PlayArea(Player player) {
         this.player = player;
         this.cardCount = 0;
@@ -33,17 +38,23 @@ public class PlayArea implements PlayAreaModel {
         this.minY = 0;
         this.maxY = 0;
 
-        for(CornerType cornerType : CornerType.values()) {
+        for (CornerType cornerType : CornerType.values()) {
             resourceAndObjectCounts.put(cornerType, 0);
         }
     }
 
     //region Local Getter and Setter
 
+    /**
+     * @return How many cards have already been played.
+     */
     public int getCardCount() {
         return cardCount;
     }
 
+    /**
+     * @return The amount of each resource in the play area.
+     */
     public Map<ResourceType, Integer> getResourceCounts() {
         Map<ResourceType, Integer> resourceCounts = new EnumMap<>(ResourceType.class);
 
@@ -57,6 +68,9 @@ public class PlayArea implements PlayAreaModel {
         return resourceCounts;
     }
 
+    /**
+     * @return The amount of each object in the play area.
+     */
     public Map<ObjectType, Integer> getObjectCounts() {
         Map<ObjectType, Integer> objectCounts = new EnumMap<>(ObjectType.class);
 
@@ -69,18 +83,30 @@ public class PlayArea implements PlayAreaModel {
         return objectCounts;
     }
 
+    /**
+     * @return The X coordinate of the left-most played card.
+     */
     public int getMinX() {
         return minX;
     }
 
+    /**
+     * @return The X coordinate of the right-most played card.
+     */
     public int getMaxX() {
         return maxX;
     }
 
+    /**
+     * @return The Y coordinate of the down-most played card.
+     */
     public int getMinY() {
         return minY;
     }
 
+    /**
+     * @return The Y coordinate of the up-most played card.
+     */
     public int getMaxY() {
         return maxY;
     }
@@ -90,10 +116,10 @@ public class PlayArea implements PlayAreaModel {
     //region Local Methods
 
     /**
-     * DOCME: write documentation
+     * Places the starter card at the origin (0; 0) of the play area and updates the amount of resources.
      *
-     * @param starterCard
-     * @param side
+     * @param starterCard The starter card chosen by the player.
+     * @param side        The visible side of the starter card.
      */
     public void setStarterCard(StarterCard starterCard, SideType side) {
         Position starterPosition = new Position(0, 0);
@@ -102,22 +128,23 @@ public class PlayArea implements PlayAreaModel {
             return;
 
         updateField(starterCard, side, starterPosition);
-        updateCounts(starterCard, side, starterPosition);
+        updateCounts(starterCard, starterPosition);
     }
 
     /**
-     * DOCME: write documentation
+     * Places the played card at the given position of the play area, updates the amount of resources and objects,
+     * updates the bounds and awards points to the player.
      *
-     * @param playedCard
-     * @param side
-     * @param playedCardPosition
+     * @param playedCard         The card chosen by the player.
+     * @param side               The visible side of the card.
+     * @param playedCardPosition The position chosen by the player to place the card.
      */
     public void playCard(PlayableCard playedCard, SideType side, Position playedCardPosition) throws IllegalMoveException {
         if (!checkLegalMove(playedCard, side, playedCardPosition))
             throw new IllegalMoveException("Illegal move");
 
         updateField(playedCard, side, playedCardPosition);
-        updateCounts(playedCard, side, playedCardPosition);
+        updateCounts(playedCard, playedCardPosition);
         updateBounds(playedCardPosition);
 
         CardSide activeSide = activeSides.get(playedCard);
@@ -127,42 +154,51 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * DOCME: write documentation
+     * Increases the card count, adds the new position to the placement order list,
+     * maps the played card to the position and the visible side to the card.
      *
-     * @param playedCard
-     * @param side
-     * @param playedCardPosition
+     * @param playedCard         The card chosen by the player.
+     * @param side               The visible side of the card.
+     * @param playedCardPosition The position chosen by the player to place the card.
      */
     private void updateField(BoardCard playedCard, SideType side, Position playedCardPosition) {
+        CardSide activeSide = playedCard.getCardSideBySideType(side);
+
         cardCount++;
 
         cardPlacementOrder.add(playedCardPosition);
         field.put(playedCardPosition, playedCard);
-        activeSides.put(playedCard, playedCard.getCardSideBySideType(side));
+        activeSides.put(playedCard, activeSide);
     }
 
     /**
-     * DOCME: write documentation
+     * Updates the amount of resources and objects by following these three steps: <br>
+     * - increases the resources and objects that are in the corners of the new card; <br>
+     * - increases the resources that are permanent in the new card; <br>
+     * - decrements the resources and objects that have been hidden by the new card.
      *
-     * @param playedCard
-     * @param side
-     * @param playedCardPosition
+     * @param playedCard         The card chosen by the player.
+     * @param playedCardPosition The position chosen by the player to place the card.
      */
-    private void updateCounts(BoardCard playedCard, SideType side, Position playedCardPosition) {
+    private void updateCounts(BoardCard playedCard, Position playedCardPosition) {
         CardSide activeSide = activeSides.get(playedCard);
 
         // increases the resources and objects that are in the corners of the new card
         for (CornerType corner : activeSide.getCorners().values()) {
             if (corner == CornerType.BLOCKED || corner == CornerType.EMPTY)
                 continue;
+
             resourceAndObjectCounts.merge(corner, 1, Integer::sum);
         }
 
         // increases the resources that are permanent in the new card
-        for (Map.Entry<ResourceType, Integer> entry : activeSide.getPermanentResourcesGiven().entrySet()) {
-            CornerType mappedCorner = entry.getKey().mappedCorner();
+        Map<ResourceType, Integer> permanentResourcesGiven = activeSide.getPermanentResourcesGiven();
 
-            resourceAndObjectCounts.merge(mappedCorner, entry.getValue(), Integer::sum);
+        for (ResourceType resource : permanentResourcesGiven.keySet()) {
+            CornerType mappedCorner = resource.mappedCorner();
+            Integer resourceCounts = permanentResourcesGiven.get(resource);
+
+            resourceAndObjectCounts.merge(mappedCorner, resourceCounts, Integer::sum);
         }
 
         // decrements the resources and objects that have been hidden by the new card
@@ -178,7 +214,6 @@ public class PlayArea implements PlayAreaModel {
             if (playedCardPosition.neighbourIsTopLeft(neighbourPosition)) {
                 corner = corners.get(CornersIdx.BOTTOM_RIGHT);
             } else if (playedCardPosition.neighbourIsTopRight(neighbourPosition)) {
-                System.out.println("è entrato in neighbour is top right");
                 corner = corners.get(CornersIdx.BOTTOM_LEFT);
             } else if (playedCardPosition.neighbourIsBottomRight(neighbourPosition)) {
                 corner = corners.get(CornersIdx.TOP_LEFT);
@@ -197,9 +232,9 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * DOCME: write documentation
+     * Updates the bounds
      *
-     * @param playedCardPosition
+     * @param playedCardPosition The position chosen by the player to place the card.
      */
     private void updateBounds(Position playedCardPosition) {
         minX = Math.min(minX, playedCardPosition.x());
@@ -213,9 +248,7 @@ public class PlayArea implements PlayAreaModel {
     //region PlayAreaModel
 
     /**
-     * DOCME: write documentation
-     *
-     * @return
+     * @return The placement order of the cards
      */
     @Override
     public List<Position> getPlacementOrder() {
@@ -223,9 +256,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * DOCME: write documentation
-     *
-     * @return
+     * @return The player's field
      */
     @Override
     public Map<Position, BoardCard> getField() {
@@ -233,9 +264,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * DOCME: write documentation
-     *
-     * @return
+     * @return The visible side of the cards
      */
     @Override
     public Map<BoardCard, CardSide> getActiveSides() {
@@ -243,18 +272,21 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * DOCME: write documentation
+     * Checks whether a move is legal or not by following these three steps: <br>
+     * - checks if the playedCard has been placed isolated from the rest of the field; <br>
+     * - checks if the playedCard has been placed over a blocked corner; <br>
+     * - checks if the playedCard cost is satisfied.
      *
-     * @param playedCard
-     * @param side
-     * @param playedCardPosition
-     * @return
+     * @param playedCard         The card chosen by the player.
+     * @param side               The visible side of the card.
+     * @param playedCardPosition The position chosen by the player to place the card.
+     * @return True if the move is legal otherwise returns False.
      */
     @Override
     public boolean checkLegalMove(PlayableCard playedCard, SideType side, Position playedCardPosition) {
         List<Position> neighboursPositions = playedCardPosition.getNeighbours();
 
-        // check if the playedCard has been placed isolated from the rest of the field
+        // checks if the playedCard has been placed isolated from the rest of the field
         boolean isIsolated = true;
 
         for (Position neighbourPosition : neighboursPositions) {
@@ -267,7 +299,7 @@ public class PlayArea implements PlayAreaModel {
         if (isIsolated)
             return false;
 
-        // check if the playedCard has been placed over a blocked corner
+        // checks if the playedCard has been placed over a blocked corner
         for (Position neighbourPosition : neighboursPositions) {
             if (!field.containsKey(neighbourPosition))
                 continue;
@@ -295,7 +327,7 @@ public class PlayArea implements PlayAreaModel {
             }
         }
 
-        // check if the playedCard cost is satisfied
+        // checks if the playedCard cost is satisfied
         CardSide cardSide = playedCard.getCardSideBySideType(side);
         Map<ResourceType, Integer> cardCost = cardSide.getCost();
 
