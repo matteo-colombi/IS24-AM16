@@ -77,7 +77,7 @@ public class Game implements GameModel {
     public void addPlayer(String username) throws UnexpectedActionException {
         if (getCurrentPlayerCount() >= getNumPlayers())
             throw new UnexpectedActionException("Maximum player count reached");
-        if (state != GameState.JOINING)
+        if (state != GameState.INIT)
             throw new UnexpectedActionException("Game already started");
         for(Player player : players) {
             if (player != null && player.getUsername().equals(username))
@@ -86,7 +86,7 @@ public class Game implements GameModel {
 
         Player player = new Player(getCurrentPlayerCount(), username);
         players[getCurrentPlayerCount()] = player;
-        setCurrentPlayerCount(getCurrentPlayerCount() + 1); //FIXME for real? YES.
+        setCurrentPlayerCount(getCurrentPlayerCount() + 1); //FIXME for real?
     }
 
     /**
@@ -151,8 +151,6 @@ public class Game implements GameModel {
             throw new UnexpectedActionException("Game already started");
         if (currentPlayerCount != numPlayers)
             throw new UnexpectedActionException("Missing players");
-
-        state = GameState.INIT;
         drawCommonCards();
         drawStarterCards();
     }

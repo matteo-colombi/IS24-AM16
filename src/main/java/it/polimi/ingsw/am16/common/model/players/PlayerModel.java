@@ -82,9 +82,8 @@ public interface PlayerModel {
     boolean getChosePersonalObjective();
 
     /**
-     * TODO write doc
-     * @return
+     * @return whether the player has already chosen their color.
      */
-    StarterCard getStarterCard();
+    boolean getChoseColor();
 }
 

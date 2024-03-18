@@ -1,7 +1,7 @@
 package it.polimi.ingsw.am16.common.model.players;
 
 /**
- * TODO write doc
+ * Enum that contains the player's color options.
  */
 public enum PlayerColor {
     RED,

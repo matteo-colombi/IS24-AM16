@@ -210,9 +210,9 @@ public class CardSide {
     private static final Map<String, CardSide> commonSides = new HashMap<>();
 
     /**
-     * DOCME: write doc
-     * @param name
-     * @return
+     * Returns a previously added {@link CardSide}, given the name. Used to allow reuse of identical CardSides in different cards.
+     * @param name The name of the side to retrieve.
+     * @return the side with the given name, or <code>null</code> if there is no such side.
      */
     @JsonCreator
     static CardSide commonSidesFactory(String name) {
@@ -220,9 +220,9 @@ public class CardSide {
     }
 
     /**
-     * DOCME: write doc
-     * @param name
-     * @param cardSide
+     * Adds a {@link CardSide} with the given name to a common side registry. Used to allow reuse of identical CardSides in different cards.
+     * @param name The name of the side to add to the registry.
+     * @param cardSide The CardSide to add to the registry.
      */
     static void addCommonSide(String name, CardSide cardSide) {
         commonSides.put(name, cardSide);
