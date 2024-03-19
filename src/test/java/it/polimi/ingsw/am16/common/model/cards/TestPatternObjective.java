@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
+import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.util.Position;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ public class TestPatternObjective {
     private Player testPlayer;
 
     @Test
-    public void testPatternObjective() throws IllegalMoveException {
+    public void testPatternObjective() throws IllegalMoveException, NoStarterCardException {
         // Creating some objects used in the test.
         initialize();
 
@@ -36,7 +37,7 @@ public class TestPatternObjective {
         testPlayer = new Player(0, "testPlayer");
     }
 
-    public void testObjective1() throws IllegalMoveException {
+    private void testObjective1() throws IllegalMoveException, NoStarterCardException {
         objective = objectiveCards.getFirst();
         assertEquals("objective_pattern_1", objective.getName());
 
