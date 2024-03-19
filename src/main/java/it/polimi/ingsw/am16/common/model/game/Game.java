@@ -342,7 +342,7 @@ public class Game implements GameModel {
      */
     @Override
     public void placeCard(int playerId, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException, UnexpectedActionException {
-        if (state != GameState.STARTED) throw new UnexpectedActionException("Game not started");
+        if (state != GameState.STARTED && state != GameState.FINAL_ROUND) throw new UnexpectedActionException("Game not started");
         players[playerId].playCard(placedCard, side, newCardPos);
     }
 

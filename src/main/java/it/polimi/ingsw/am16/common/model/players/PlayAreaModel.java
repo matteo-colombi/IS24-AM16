@@ -1,9 +1,6 @@
 package it.polimi.ingsw.am16.common.model.players;
 
-import it.polimi.ingsw.am16.common.model.cards.BoardCard;
-import it.polimi.ingsw.am16.common.model.cards.CardSide;
-import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
-import it.polimi.ingsw.am16.common.model.cards.SideType;
+import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.util.List;
@@ -39,4 +36,14 @@ public interface PlayAreaModel {
      * @return <code>true</code> if the move is legal otherwise returns <code>false</code>.
      */
     boolean checkLegalMove(PlayableCard playedCard, SideType side, Position playedCardPosition);
+
+    /**
+     * @return A map containing the amounts of each resource in the play area.
+     */
+    Map<ResourceType, Integer> getResourceCounts();
+
+    /**
+     * @return A map containing the amounts of each object in the play area.
+     */
+    Map<ObjectType, Integer> getObjectCounts();
 }

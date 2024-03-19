@@ -55,6 +55,7 @@ public class PlayArea implements PlayAreaModel {
     /**
      * @return A map containing the amounts of each resource in the play area.
      */
+    @Override
     public Map<ResourceType, Integer> getResourceCounts() {
         Map<ResourceType, Integer> resourceCounts = new EnumMap<>(ResourceType.class);
 
@@ -71,6 +72,7 @@ public class PlayArea implements PlayAreaModel {
     /**
      * @return A map containing the amounts of each object in the play area.
      */
+    @Override
     public Map<ObjectType, Integer> getObjectCounts() {
         Map<ObjectType, Integer> objectCounts = new EnumMap<>(ObjectType.class);
 

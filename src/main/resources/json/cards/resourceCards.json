@@ -61,7 +61,7 @@
         "permanentResourcesGiven" : {},
         "pointMultiplierPolicy" : "static",
         "sideType" : "back",
-        "corners" : ["blocked", "plant", "fungi", "quill"]
+        "corners" : ["blocked", "quill", "fungi", "plant"]
       },
       "type" : "fungi"
     },

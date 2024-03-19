@@ -41,7 +41,8 @@ public final class ObjectObjective extends ObjectiveCard {
     public int evaluatePoints(PlayArea playArea) {
         int multiplier = Integer.MAX_VALUE;
         for(ObjectType object : playArea.getObjectCounts().keySet()) {
-            multiplier = Math.min(multiplier, playArea.getObjectCounts().get(object) / objectsRequired.get(object));
+            if (objectsRequired.get(object) != 0)
+                multiplier = Math.min(multiplier, playArea.getObjectCounts().get(object) / objectsRequired.get(object));
         }
         return getPoints()*multiplier;
     }

@@ -14,7 +14,7 @@ import java.util.List;
 public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
     private static final int numNeighbours = 4;
     private static final int[] xDisplacements = {-1, 1, 1, -1};
-    private static final int[] yDisplacements = {-1, -1, 1, 1};
+    private static final int[] yDisplacements = {1, 1, -1, -1};
 
     /**
      * Gives the 4 Positions of this Position's neighbours, diagonally from each corner.
