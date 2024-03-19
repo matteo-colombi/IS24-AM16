@@ -10,6 +10,7 @@ import java.util.Random;
 public class RNG extends Random {
 
     private static RNG instance = null;
+    private static final char[] symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
 
     /**
      * Instantiates the RNG with the given seed.
@@ -43,5 +44,17 @@ public class RNG extends Random {
             instance = new RNG(System.nanoTime());
         }
         return instance;
+    }
+
+    public synchronized String nextAlphNumString(int length) {
+        if (instance == null) instance = new RNG(System.nanoTime());
+
+        if (length < 1) throw new IllegalArgumentException("Length must be at least 1");
+
+        StringBuilder builder = new StringBuilder();
+        for(int i = 0; i<length; i++)
+            builder.append(symbols[instance.nextInt(symbols.length)]);
+
+        return builder.toString();
     }
 }
