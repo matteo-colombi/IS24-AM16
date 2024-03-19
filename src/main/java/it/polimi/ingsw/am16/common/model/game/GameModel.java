@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.common.model.game;
 
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
+import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
@@ -68,7 +69,7 @@ public interface GameModel {
      * @param side The card's side.
      * @throws UnexpectedActionException Thrown if the game has already started, hence all players should have already chosen their starter card side.
      */
-    void setPlayerStarterSide(int playerId, SideType side) throws UnexpectedActionException;
+    void setPlayerStarterSide(int playerId, SideType side) throws UnexpectedActionException, NoStarterCardException;
 
     /**
      * Sets the color of a player.

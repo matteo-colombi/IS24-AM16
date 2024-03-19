@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.common.model.players;
 
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
+import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
@@ -265,9 +266,13 @@ public class Player implements PlayerModel {
      * been made (links the {@link Game} and {@link PlayArea} objects).
      * @param side The chosen side
      */
-    public void chooseStarterCardSide(SideType side) {
-        playArea.setStarterCard(this.starterCard, side);
-        this.choseStarterCardSide = true;
+    public void chooseStarterCardSide(SideType side) throws NoStarterCardException {
+        if(this.starterCard != null){
+            playArea.setStarterCard(this.starterCard, side);
+            this.choseStarterCardSide = true;
+        } else {
+            throw new NoStarterCardException("Player has no starter card");
+        }
     }
 
     /**

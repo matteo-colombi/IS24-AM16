@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.common.model.game;
 
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
+import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
@@ -176,7 +177,7 @@ public class Game implements GameModel {
      * @throws UnexpectedActionException Thrown if the game has already started, hence all players should have already chosen their starter card side.
      */
     @Override
-    public void setPlayerStarterSide(int playerId, SideType side) throws UnexpectedActionException {
+    public void setPlayerStarterSide(int playerId, SideType side) throws UnexpectedActionException, NoStarterCardException {
         if (state != GameState.INIT)
             throw new UnexpectedActionException("Game already started");
 

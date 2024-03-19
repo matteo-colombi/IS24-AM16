@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.common.model.game;
 
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
+import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestGame {
 
     @Test
-    public void testGame() throws UnexpectedActionException, UnknownObjectiveCardException, IllegalMoveException {
+    public void testGame() throws UnexpectedActionException, UnknownObjectiveCardException, IllegalMoveException, NoStarterCardException {
         CardRegistry.initializeRegistry();
         RNG.setRNGSeed(0);
 
