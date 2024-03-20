@@ -506,7 +506,7 @@
       "name" : "gold_insect_9",
       "frontSide" : "insectFront",
       "backSide" : {
-        "points" : 1,
+        "points" : 3,
         "cost" : {"insect" : 3},
         "permanentResourcesGiven" : {},
         "pointMultiplierPolicy" : "static",
