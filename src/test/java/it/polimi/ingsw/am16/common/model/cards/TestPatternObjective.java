@@ -50,9 +50,9 @@ public class TestPatternObjective {
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,1));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,2));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(3,3));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(1,1));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(2,2));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(3,3));
 
         assertEquals(2, objective.evaluatePoints(testPlayer.getPlayArea()));
 
@@ -60,9 +60,9 @@ public class TestPatternObjective {
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,-1));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-2,-2));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-3,-3));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(-1,-1));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(-2,-2));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(-3,-3));
 
         assertEquals(2, objective.evaluatePoints(testPlayer.getPlayArea()));
 
@@ -70,15 +70,15 @@ public class TestPatternObjective {
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,1));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-2,0));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(0,2));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,3));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,4));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(-1,1));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(-2,0));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(0,2));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(1,3));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(2,4));
 
         assertEquals(2, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(3,5));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(3,5));
 
         assertEquals(4, objective.evaluatePoints(testPlayer.getPlayArea()));
 
@@ -86,14 +86,14 @@ public class TestPatternObjective {
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,1));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,-1));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-2,-2));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,2));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(1,1));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(-1,-1));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(-2,-2));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(2,2));
 
         assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(3,3));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(3,3));
 
         assertEquals(2, objective.evaluatePoints(testPlayer.getPlayArea()));
 
@@ -101,12 +101,12 @@ public class TestPatternObjective {
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,1));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,2));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(3,3));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(0,2));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,3));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,4));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(1,1));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(2,2));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(3,3));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(0,2));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(1,3));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(2,4));
 
         assertEquals(4, objective.evaluatePoints(testPlayer.getPlayArea()));
 
@@ -114,9 +114,9 @@ public class TestPatternObjective {
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,1));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-2,2));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-3,3));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(-1,1));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(-2,2));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(-3,3));
 
         assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
 
@@ -124,9 +124,9 @@ public class TestPatternObjective {
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-1,1));
-        testPlayer.playCard(insectCard, SideType.FRONT, new Position(-2,2));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(-3,3));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(-1,1));
+        testPlayer.playCard(insectCard, SideType.BACK, new Position(-2,2));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(-3,3));
 
         assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
 
@@ -134,9 +134,9 @@ public class TestPatternObjective {
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(1,1));
-        testPlayer.playCard(fungiCard, SideType.FRONT, new Position(2,2));
-        testPlayer.playCard(insectCard, SideType.FRONT, new Position(3,3));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(1,1));
+        testPlayer.playCard(fungiCard, SideType.BACK, new Position(2,2));
+        testPlayer.playCard(insectCard, SideType.BACK, new Position(3,3));
 
         assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
 
@@ -144,9 +144,9 @@ public class TestPatternObjective {
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
-        testPlayer.playCard(insectCard, SideType.FRONT, new Position(1,1));
-        testPlayer.playCard(insectCard, SideType.FRONT, new Position(2,2));
-        testPlayer.playCard(insectCard, SideType.FRONT, new Position(3,3));
+        testPlayer.playCard(insectCard, SideType.BACK, new Position(1,1));
+        testPlayer.playCard(insectCard, SideType.BACK, new Position(2,2));
+        testPlayer.playCard(insectCard, SideType.BACK, new Position(3,3));
 
         assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
     }

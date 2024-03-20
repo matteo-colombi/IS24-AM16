@@ -37,7 +37,7 @@ public class CardRegistry {
 
         mapper = new ObjectMapper();
         try{
-            initializePlayableCardsFrontSides();
+            initializePlayableCardsBackSides();
             initializeResourceCards();
             initializeGoldCards();
             initializeStarterCards();
@@ -58,17 +58,17 @@ public class CardRegistry {
     }
 
     /**
-     * Loads the fronts of Resource and Gold cards, which are common to all these cards.
-     * The JSON file is taken from {@link FilePaths}<code>.PLAYABLE_CARDS_FRONT_SIDES_JSON</code>.
+     * Loads the backs of Resource and Gold cards, which are common to all these cards.
+     * The JSON file is taken from {@link FilePaths}<code>.PLAYABLE_CARDS_BACK_SIDES_JSON</code>.
      * @throws IOException If the JSON file is not found.
      */
-    private static void initializePlayableCardsFrontSides() throws IOException {
-        File f = new File(FilePaths.PLAYABLE_CARDS_FRONT_SIDES_JSON);
+    private static void initializePlayableCardsBackSides() throws IOException {
+        File f = new File(FilePaths.PLAYABLE_CARDS_BACK_SIDES_JSON);
         JsonNode root = mapper.readTree(f);
-        CardSide.addCommonSide("fungiFront", mapper.readValue(root.get("fungiFront").toString(), CardSide.class));
-        CardSide.addCommonSide("plantFront", mapper.readValue(root.get("plantFront").toString(), CardSide.class));
-        CardSide.addCommonSide("animalFront", mapper.readValue(root.get("animalFront").toString(), CardSide.class));
-        CardSide.addCommonSide("insectFront", mapper.readValue(root.get("insectFront").toString(), CardSide.class));
+        CardSide.addCommonSide("fungiBack", mapper.readValue(root.get("fungiBack").toString(), CardSide.class));
+        CardSide.addCommonSide("plantBack", mapper.readValue(root.get("plantBack").toString(), CardSide.class));
+        CardSide.addCommonSide("animalBack", mapper.readValue(root.get("animalBack").toString(), CardSide.class));
+        CardSide.addCommonSide("insectBack", mapper.readValue(root.get("insectBack").toString(), CardSide.class));
     }
 
     /**

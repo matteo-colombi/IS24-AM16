@@ -28,7 +28,7 @@ public final class FilePaths {
     /**
      * The path for the JSON file containing the information for the front sides of all Playable Cards (Resource and Gold Cards).
      */
-    public static final String PLAYABLE_CARDS_FRONT_SIDES_JSON = CARDS_JSON + "/playableCardFrontSides.json";
+    public static final String PLAYABLE_CARDS_BACK_SIDES_JSON = CARDS_JSON + "/playableCardBackSides.json";
 
     /**
      * The path for the JSON file containing Resource Card information.

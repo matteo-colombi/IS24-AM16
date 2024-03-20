@@ -25,7 +25,7 @@ public class TestPlayArea {
         ResourceCard plantResource = CardRegistry.getResourceCards().get(10);
 
         // check that you can't place isolated cards (no starting card yet)
-        assertThrows(IllegalMoveException.class, () -> playArea.playCard(plantResource, SideType.FRONT, new Position(0, 0)));
+        assertThrows(IllegalMoveException.class, () -> playArea.playCard(plantResource, SideType.BACK, new Position(0, 0)));
         assertEquals(0, playArea.getMinX());
         assertEquals(0, playArea.getMaxX());
         assertEquals(0, playArea.getMinY());
@@ -45,13 +45,13 @@ public class TestPlayArea {
         assertThrows(UnsupportedOperationException.class, () -> playArea.getField().put(new Position(1, 1), plantResource));
 
         // check that you can't place a card on a blocked corner
-        assertThrows(IllegalMoveException.class, () -> playArea.playCard(plantResource, SideType.BACK, new Position(1, -1)));
+        assertThrows(IllegalMoveException.class, () -> playArea.playCard(plantResource, SideType.FRONT, new Position(1, -1)));
 
         // check that you can't place a card for which you don't have the resources
         final GoldCard finalGoldCard = CardRegistry.getGoldCards().get(9);
-        assertThrows(IllegalMoveException.class, () -> playArea.playCard(finalGoldCard, SideType.BACK, new Position(1, 1)));
+        assertThrows(IllegalMoveException.class, () -> playArea.playCard(finalGoldCard, SideType.FRONT, new Position(1, 1)));
 
-        playArea.playCard(plantResource, SideType.BACK, new Position(-1, 1));
+        playArea.playCard(plantResource, SideType.FRONT, new Position(-1, 1));
 
         Map<ResourceType, Integer> resourceCounts = playArea.getResourceCounts();
         Map<ObjectType, Integer> objectCounts = playArea.getObjectCounts();
@@ -64,14 +64,14 @@ public class TestPlayArea {
         GoldCard goldCard = CardRegistry.getGoldCards().get(10);
 
         ResourceCard animalCard = CardRegistry.getResourceCards().get(26);
-        playArea.playCard(animalCard, SideType.BACK, new Position(0, 2));
+        playArea.playCard(animalCard, SideType.FRONT, new Position(0, 2));
 
         objectCounts = playArea.getObjectCounts();
 
         // check that objects are counted correctly
         assertEquals(1, objectCounts.get(ObjectType.QUILL));
 
-        playArea.playCard(goldCard, SideType.BACK, new Position(-2, 2));
+        playArea.playCard(goldCard, SideType.FRONT, new Position(-2, 2));
 
         resourceCounts = playArea.getResourceCounts();
         objectCounts = playArea.getObjectCounts();
@@ -92,13 +92,13 @@ public class TestPlayArea {
         ResourceCard fungiResource = CardRegistry.getResourceCards().getFirst();
 
         // check that you can't place an isolated card (with starter card this time)
-        assertThrows(IllegalMoveException.class, () -> playArea.playCard(fungiResource, SideType.BACK, new Position(5, -33)));
+        assertThrows(IllegalMoveException.class, () -> playArea.playCard(fungiResource, SideType.FRONT, new Position(5, -33)));
 
         animalCard = CardRegistry.getResourceCards().get(21);
-        playArea.playCard(animalCard, SideType.BACK, new Position(-1, 3));
+        playArea.playCard(animalCard, SideType.FRONT, new Position(-1, 3));
 
         goldCard = CardRegistry.getGoldCards().get(25);
-        playArea.playCard(goldCard, SideType.BACK, new Position(1, 1));
+        playArea.playCard(goldCard, SideType.FRONT, new Position(1, 1));
 
         // check that points were awarded correctly
         assertEquals(6, p.getGamePoints());
@@ -106,13 +106,13 @@ public class TestPlayArea {
 
         // check that you can't place a card off the "accepted" grid
         final ResourceCard finalAnimalCard = animalCard;
-        assertThrows(IllegalMoveException.class, () -> playArea.playCard(finalAnimalCard, SideType.FRONT, new Position(1, 2)));
+        assertThrows(IllegalMoveException.class, () -> playArea.playCard(finalAnimalCard, SideType.BACK, new Position(1, 2)));
 
         animalCard = CardRegistry.getResourceCards().get(20);
-        playArea.playCard(animalCard, SideType.FRONT, new Position(0, 4));
+        playArea.playCard(animalCard, SideType.BACK, new Position(0, 4));
 
         GoldCard omegaAnimalCard = CardRegistry.getGoldCards().get(29);
-        playArea.playCard(omegaAnimalCard, SideType.BACK, new Position(1, 5));
+        playArea.playCard(omegaAnimalCard, SideType.FRONT, new Position(1, 5));
 
         // check that points were awarded correctly
         assertEquals(11, p.getGamePoints());
