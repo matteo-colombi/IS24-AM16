@@ -139,8 +139,9 @@ public interface GameModel {
      * @param playerId The player's ID.
      * @param drawType The place a player wants to draw a card from.
      * @throws UnexpectedActionException Thrown if this method is called before the game has been started.
+     * @throws IllegalMoveException Thrown if a draw is attempted from an empty deck, or from an empty common card slot.
      */
-    void drawCard(int playerId, DrawType drawType) throws UnexpectedActionException;
+    void drawCard(int playerId, DrawType drawType) throws UnexpectedActionException, IllegalMoveException;
 
     /**
      * Advances the turn to the next player.
