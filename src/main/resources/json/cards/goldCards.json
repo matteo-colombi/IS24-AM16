@@ -34,7 +34,7 @@
         "points" : 1,
         "cost" : {"fungi" : 2, "insect" : 1},
         "permanentResourcesGiven" : {},
-        "pointMultiplierPolicy" : "quill",
+        "pointMultiplierPolicy" : "manuscript",
         "sideType" : "back",
         "corners" : ["manuscript", "empty", "blocked", "empty"]
       },
@@ -57,7 +57,7 @@
       "name" : "gold_fungi_5",
       "frontSide" : "fungiFront",
       "backSide" : {
-        "points" : 1,
+        "points" : 2,
         "cost" : {"fungi" : 3, "plant" : 1},
         "permanentResourcesGiven" : {},
         "pointMultiplierPolicy" : "corners_covered",
@@ -70,12 +70,12 @@
       "name" : "gold_fungi_6",
       "frontSide" : "fungiFront",
       "backSide" : {
-        "points" : 1,
+        "points" : 2,
         "cost" : {"fungi" : 3, "insect" : 1},
         "permanentResourcesGiven" : {},
         "pointMultiplierPolicy" : "corners_covered",
         "sideType" : "back",
-        "corners" : ["empty", "blocked", "blocked", "empty"]
+        "corners" : ["empty", "blocked", "empty", "empty"]
       },
       "type" : "fungi"
     },

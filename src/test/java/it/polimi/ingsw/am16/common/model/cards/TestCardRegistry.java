@@ -3,7 +3,6 @@ package it.polimi.ingsw.am16.common.model.cards;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,7 +11,7 @@ public class TestCardRegistry {
     @Test
     public void testCardRegistry() {
         // This test does not guarantee that all the cards in the registry are actually correct.
-        // All it does is check that the names and amounts are correct.
+        // All it does is check that the names, amounts and types are correct.
 
         assertTrue(CardRegistry.initializeRegistry());
 
