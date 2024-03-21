@@ -240,7 +240,7 @@
     {
       "name" : "gold_plant_9",
       "frontSide" : {
-        "points" : 1,
+        "points" : 3,
         "cost" : {"plant" : 3},
         "permanentResourcesGiven" : {},
         "pointMultiplierPolicy" : "static",
