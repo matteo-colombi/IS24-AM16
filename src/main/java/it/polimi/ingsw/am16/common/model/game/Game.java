@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am16.common.model.game;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
@@ -75,7 +76,7 @@ public class Game implements GameModel {
      * @throws UnexpectedActionException Thrown if the game is already full, if the game has already started, or if a player with the given username is already present in the game.
      */
     @Override
-    public void addPlayer(String username) throws UnexpectedActionException {
+    public int addPlayer(String username) throws UnexpectedActionException {
         if (currentPlayerCount >= numPlayers)
             throw new UnexpectedActionException("Maximum player count reached");
         if (state != GameState.JOINING)
@@ -88,6 +89,7 @@ public class Game implements GameModel {
         Player player = new Player(currentPlayerCount, username);
         players[currentPlayerCount] = player;
         currentPlayerCount++;
+        return currentPlayerCount-1;
     }
 
     /**
@@ -553,6 +555,7 @@ public class Game implements GameModel {
      * @return the type of the card on top of the resource deck. This information should be visible to the players.
      */
     @Override
+    @JsonIgnore
     public ResourceType getResourceDeckTopType() {
         return resourceCardsDeck.peekTop().getType();
     }
@@ -561,8 +564,41 @@ public class Game implements GameModel {
      * @return the type of the card on top of the gold deck. This information should be visible to the player.
      */
     @Override
+    @JsonIgnore
     public ResourceType getGoldDeckTopType() {
         return goldCardsDeck.peekTop().getType();
+    }
+
+    /**
+     * DOCME
+     * @return
+     */
+    public GoldCardsDeck getGoldCardsDeck() {
+        return goldCardsDeck;
+    }
+
+    /**
+     * DOCME
+     * @return
+     */
+    public ResourceCardsDeck getResourceCardsDeck() {
+        return resourceCardsDeck;
+    }
+
+    /**
+     * DOCME
+     * @return
+     */
+    public ObjectiveCardsDeck getObjectiveCardsDeck() {
+        return objectiveCardsDeck;
+    }
+
+    /**
+     * DOCME
+     * @return
+     */
+    public StarterCardsDeck getStarterCardsDeck() {
+        return starterCardsDeck;
     }
 }
 

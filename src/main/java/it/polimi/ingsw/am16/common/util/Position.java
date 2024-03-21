@@ -1,7 +1,14 @@
 package it.polimi.ingsw.am16.common.util;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +28,7 @@ public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
      *
      * @return List of the neighbours.
      */
+    @JsonIgnore
     public List<Position> getNeighbours() {
         List<Position> neighbours = new ArrayList<>();
 
@@ -120,5 +128,27 @@ public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
     @Override
     public String toString() {
         return String.format("Position{x = %d, y = %d}", x, y);
+    }
+
+    /**
+     * DOCME
+     */
+    public static class PositionSerializer extends JsonSerializer<Position> {
+        private ObjectMapper mapper = new ObjectMapper();
+
+        /**
+         * DOCME
+         * @param value Value to serialize; can <b>not</b> be null.
+         * @param gen Generator used to output resulting Json content
+         * @param serializers Provider that can be used to get serializers for
+         *   serializing Objects value contains, if any.
+         * @throws IOException
+         */
+        @Override
+        public void serialize(Position value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            StringWriter writer = new StringWriter();
+            mapper.writeValue(writer, value);
+            gen.writeFieldName(writer.toString());
+        }
     }
 }

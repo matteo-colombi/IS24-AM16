@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am16.common.model.players;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
@@ -106,6 +107,7 @@ public class Player implements PlayerModel {
      * their completion of the objectives
      */
     @Override
+    @JsonIgnore
     public int getTotalPoints() {
         return currGamePoints + currObjectivePoints;
     }

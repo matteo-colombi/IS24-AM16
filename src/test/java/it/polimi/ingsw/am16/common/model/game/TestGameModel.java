@@ -53,11 +53,15 @@ public class TestGameModel {
         game.setPlayerStarterSide(0, SideType.BACK);
         game.setPlayerStarterSide(1, SideType.BACK);
 
+        assertTrue(game.allPlayersChoseStarterSide());
+
         game.setPlayerColor(0, PlayerColor.BLUE);
 
         assertThrows(UnexpectedActionException.class, () -> game.setPlayerColor(1, PlayerColor.BLUE));
 
         game.setPlayerColor(1, PlayerColor.RED);
+
+        assertTrue(game.allPlayersChoseColor());
 
         game.initializeObjectives();
 
@@ -68,6 +72,8 @@ public class TestGameModel {
 
         game.setPlayerObjective(1, l2c.getPersonalObjectiveOptions().get(0));
         game.setPlayerObjective(0, xLorde.getPersonalObjectiveOptions().get(0));
+
+        assertTrue(game.allPlayersChoseObjective());
 
         game.startGame();
 

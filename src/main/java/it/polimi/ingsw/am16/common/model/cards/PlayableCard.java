@@ -1,5 +1,7 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Class used to model the card's that can be given to the player to play during the game.
  */

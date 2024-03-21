@@ -1,5 +1,12 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+
+import java.io.IOException;
+
 /**
  * Class used to model the cards that can be placed on the player's board.
  */
@@ -26,6 +33,7 @@ public abstract class BoardCard extends Card {
     /**
      * @return The card's front side.
      */
+    @JsonIgnore
     public CardSide getFrontSide() {
         return frontSide;
     }
@@ -33,6 +41,7 @@ public abstract class BoardCard extends Card {
     /**
      * @return The card's back side.
      */
+    @JsonIgnore
     public CardSide getBackSide() {
         return backSide;
     }
@@ -41,6 +50,7 @@ public abstract class BoardCard extends Card {
      * Returns the card's type.
      * @return The card's type. Returns <code>null</code> if this is a starter card.
      */
+    @JsonIgnore
     public ResourceType getType() {
         return type;
     }
@@ -55,5 +65,23 @@ public abstract class BoardCard extends Card {
             return getFrontSide();
 
         return getBackSide();
+    }
+
+    /**
+     * DOCME
+     */
+    public static class BoardCardSerializer extends JsonSerializer<BoardCard> {
+        /**
+         * DOCME
+         * @param value Value to serialize; can <b>not</b> be null.
+         * @param gen Generator used to output resulting Json content
+         * @param serializers Provider that can be used to get serializers for
+         *   serializing Objects value contains, if any.
+         * @throws IOException
+         */
+        @Override
+        public void serialize(BoardCard value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            gen.writeFieldName(value.getName());
+        }
     }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.util.Position;
@@ -150,6 +151,7 @@ public class CardSide {
     /**
      * @return The card's base points.
      */
+    @JsonIgnore
     public int getPoints() {
         return points;
     }
@@ -157,6 +159,7 @@ public class CardSide {
     /**
      * @return The card's cost.
      */
+    @JsonIgnore
     public Map<ResourceType, Integer> getCost() {
         return cost;
     }
@@ -164,6 +167,7 @@ public class CardSide {
     /**
      * @return The card's permanent resources.
      */
+    @JsonIgnore
     public Map<ResourceType, Integer> getPermanentResourcesGiven() {
         return permanentResourcesGiven;
     }
@@ -178,6 +182,7 @@ public class CardSide {
     /**
      * @return The card's corners.
      */
+    @JsonIgnore
     public Map<CornersIdx, CornerType> getCorners() {
         return corners;
     }
@@ -187,6 +192,7 @@ public class CardSide {
      * @param playArea The player's play area.
      * @return The awarded points.
      */
+    @JsonIgnore
     public int getAwardedPoints(PlayArea playArea) {
         return points * pointMultiplierPolicy.evaluate(playArea);
     }

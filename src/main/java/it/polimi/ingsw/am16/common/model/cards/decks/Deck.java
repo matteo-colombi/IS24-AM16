@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am16.common.model.cards.decks;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.polimi.ingsw.am16.common.model.cards.Card;
 import it.polimi.ingsw.am16.common.util.RNG;
 
@@ -76,6 +77,7 @@ public abstract class Deck<T extends Card> {
     /**
      * @return The number of cards present in the deck.
      */
+    @JsonIgnore
     public int getDeckSize() {
         return cards.size();
     }
@@ -84,6 +86,7 @@ public abstract class Deck<T extends Card> {
      * Checks if the deck has run out of cards.
      * @return <code>true</code> if the deck is empty, <code>false</code> otherwise.
      */
+    @JsonIgnore
     public boolean isEmpty() {
         return cards.isEmpty();
     }

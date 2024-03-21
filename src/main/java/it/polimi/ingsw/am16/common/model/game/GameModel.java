@@ -24,9 +24,10 @@ public interface GameModel {
     /**
      * Adds a new player into the game. The number of players cannot exceed numPlayers.
      * @param username The player's username.
+     * @return The newly added player's id.
      * @throws UnexpectedActionException Thrown if the game is already full, if the game has already started, or if a player with the given username is already present in the game.
      */
-    void addPlayer(String username) throws UnexpectedActionException;
+    int addPlayer(String username) throws UnexpectedActionException;
 
     /**
      *

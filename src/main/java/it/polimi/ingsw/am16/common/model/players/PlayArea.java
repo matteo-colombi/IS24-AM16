@@ -1,5 +1,7 @@
 package it.polimi.ingsw.am16.common.model.players;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.util.Position;
@@ -14,7 +16,9 @@ public class PlayArea implements PlayAreaModel {
     private int cardCount;
     private final Map<CornerType, Integer> resourceAndObjectCounts;
     private final List<Position> cardPlacementOrder;
+    @JsonSerialize(keyUsing = Position.PositionSerializer.class)
     private final Map<Position, BoardCard> field;
+    @JsonSerialize(keyUsing = BoardCard.BoardCardSerializer.class)
     private final Map<BoardCard, CardSide> activeSides;
     private int minX;
     private int maxX;
@@ -56,6 +60,7 @@ public class PlayArea implements PlayAreaModel {
      * @return A map containing the amounts of each resource in the play area.
      */
     @Override
+    @JsonIgnore
     public Map<ResourceType, Integer> getResourceCounts() {
         Map<ResourceType, Integer> resourceCounts = new EnumMap<>(ResourceType.class);
 
@@ -73,6 +78,7 @@ public class PlayArea implements PlayAreaModel {
      * @return A map containing the amounts of each object in the play area.
      */
     @Override
+    @JsonIgnore
     public Map<ObjectType, Integer> getObjectCounts() {
         Map<ObjectType, Integer> objectCounts = new EnumMap<>(ObjectType.class);
 
@@ -83,6 +89,14 @@ public class PlayArea implements PlayAreaModel {
         }
 
         return objectCounts;
+    }
+
+    /**
+     * DOCME
+     * @return
+     */
+    public Map<CornerType, Integer> getResourceAndObjectCounts() {
+        return resourceAndObjectCounts;
     }
 
     /**
@@ -225,7 +239,6 @@ public class PlayArea implements PlayAreaModel {
                 corner = corners.get(CornersIdx.TOP_RIGHT);
             }
 
-            // sono sicuro che diventi un tipo tra quelli disponibili ma non si sa mai
             assert corner != null;
 
             if (corner == CornerType.BLOCKED || corner == CornerType.EMPTY)
@@ -288,6 +301,10 @@ public class PlayArea implements PlayAreaModel {
      */
     @Override
     public boolean checkLegalMove(PlayableCard playedCard, SideType side, Position playedCardPosition) {
+        //checks if the position is already occupied
+        if (field.containsKey(playedCardPosition))
+            return false;
+
         List<Position> neighboursPositions = playedCardPosition.getNeighbours();
 
         // checks if the playedCard has been placed isolated from the rest of the field

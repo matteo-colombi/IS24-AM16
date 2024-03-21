@@ -1,5 +1,7 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
@@ -32,6 +34,7 @@ public abstract class ObjectiveCard extends Card {
     /**
      * @return The points given by this card.
      */
+    @JsonIgnore
     public int getPoints() {
         return points;
     }
