@@ -19,6 +19,10 @@ public class CardRegistry {
     private static List<GoldCard> goldCards;
     private static List<ResourceCard> resourceCards;
     private static ObjectMapper mapper;
+    private static Map<String, ObjectiveCard> objectiveCardsMap;
+    private static Map<String, StarterCard> starterCardsMap;
+    private static Map<String, GoldCard> goldCardsMap;
+    private static Map<String, ResourceCard> resourceCardsMap;
 
     private CardRegistry() {}
 
@@ -58,6 +62,14 @@ public class CardRegistry {
     }
 
     /**
+     * DOCME
+     * @return
+     */
+    public static boolean isInitialized() {
+        return initialized;
+    }
+
+    /**
      * Loads the backs of Resource and Gold cards, which are common to all these cards.
      * The JSON file is taken from {@link FilePaths}<code>.PLAYABLE_CARDS_BACK_SIDES_JSON</code>.
      * @throws IOException If the JSON file is not found.
@@ -89,6 +101,10 @@ public class CardRegistry {
         allResourceCards.addAll(List.of(animalResourceCards));
         allResourceCards.addAll(List.of(insectResourceCards));
         resourceCards = Collections.unmodifiableList(allResourceCards);
+        resourceCardsMap = new HashMap<>();
+        for(ResourceCard card : resourceCards) {
+            resourceCardsMap.put(card.getName(), card);
+        }
     }
 
     /**
@@ -109,6 +125,10 @@ public class CardRegistry {
         allGoldCards.addAll(List.of(animalGoldCards));
         allGoldCards.addAll(List.of(insectGoldCards));
         goldCards = Collections.unmodifiableList(allGoldCards);
+        goldCardsMap = new HashMap<>();
+        for(GoldCard card : goldCards) {
+            goldCardsMap.put(card.getName(), card);
+        }
     }
 
     /**
@@ -120,6 +140,10 @@ public class CardRegistry {
         File f = new File(FilePaths.STARTER_CARDS_JSON);
         JsonNode root = mapper.readTree(f);
         starterCards = List.of(mapper.readValue(root.get("starterCards").toString(), StarterCard[].class));
+        starterCardsMap = new HashMap<>();
+        for(StarterCard card : starterCards) {
+            starterCardsMap.put(card.getName(), card);
+        }
     }
 
     /**
@@ -131,6 +155,10 @@ public class CardRegistry {
         File f = new File(FilePaths.OBJECTIVE_CARDS_JSON);
         JsonNode root = mapper.readTree(f);
         objectiveCards = List.of(mapper.readValue(root.get("objectiveCards").toString(), ObjectiveCard[].class));
+        objectiveCardsMap = new HashMap<>();
+        for(ObjectiveCard card : objectiveCards) {
+            objectiveCardsMap.put(card.getName(), card);
+        }
     }
 
     /**
@@ -163,5 +191,41 @@ public class CardRegistry {
      */
     public static List<ResourceCard> getResourceCards() {
         return resourceCards;
+    }
+
+    /**
+     * DOCME
+     * @param name
+     * @return
+     */
+    public static ObjectiveCard getObjectiveCardFromName(String name) {
+        return objectiveCardsMap.get(name);
+    }
+
+    /**
+     * DOCME
+     * @param name
+     * @return
+     */
+    public static StarterCard getStarterCardFromName(String name) {
+        return starterCardsMap.get(name);
+    }
+
+    /**
+     * DOCME
+     * @param name
+     * @return
+     */
+    public static GoldCard getGoldCardFromName(String name) {
+        return goldCardsMap.get(name);
+    }
+
+    /**
+     * DOCME
+     * @param name
+     * @return
+     */
+    public static ResourceCard getResourceCardFromName(String name) {
+        return resourceCardsMap.get(name);
     }
 }
