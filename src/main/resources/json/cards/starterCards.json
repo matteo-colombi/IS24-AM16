@@ -17,8 +17,7 @@
         "pointMultiplierPolicy" : "static",
         "sideType" : "back",
         "corners" : ["empty", "plant", "empty", "insect"]
-      },
-      "type" : null
+      }
     },
     {
       "name" : "starter_2",
@@ -37,8 +36,7 @@
         "pointMultiplierPolicy" : "static",
         "sideType" : "back",
         "corners" : ["animal", "empty", "fungi", "empty"]
-      },
-      "type" : null
+      }
     },
     {
       "name" : "starter_3",
@@ -57,8 +55,7 @@
         "pointMultiplierPolicy" : "static",
         "sideType" : "back",
         "corners" : ["empty", "empty", "empty", "empty"]
-      },
-      "type" : null
+      }
     },
     {
       "name" : "starter_4",
@@ -77,8 +74,7 @@
         "pointMultiplierPolicy" : "static",
         "sideType" : "back",
         "corners" : ["empty", "empty", "empty", "empty"]
-      },
-      "type" : null
+      }
     },
     {
       "name" : "starter_5",
@@ -97,8 +93,7 @@
         "pointMultiplierPolicy" : "static",
         "sideType" : "back",
         "corners" : ["empty", "empty", "blocked", "blocked"]
-      },
-      "type" : null
+      }
     },
     {
       "name" : "starter_6",
@@ -117,8 +112,7 @@
         "pointMultiplierPolicy" : "static",
         "sideType" : "back",
         "corners" : ["empty", "empty", "blocked", "blocked"]
-      },
-      "type" : null
+      }
     }
   ]
 }
