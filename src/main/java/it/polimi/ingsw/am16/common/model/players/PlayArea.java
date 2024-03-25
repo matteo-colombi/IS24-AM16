@@ -26,7 +26,7 @@ public class PlayArea implements PlayAreaModel {
     private int cardCount;
     private final Map<CornerType, Integer> resourceAndObjectCounts;
     private final List<Position> cardPlacementOrder;
-    @JsonSerialize(keyUsing = Position.PositionSerializer.class)
+    @JsonSerialize(keyUsing = Position.Serializer.class)
     private final Map<Position, BoardCard> field;
     @JsonSerialize(keyUsing = BoardCard.BoardCardSerializer.class, contentUsing = CardSide.Serializer.class)
     private final Map<BoardCard, CardSide> activeSides;
@@ -71,7 +71,7 @@ public class PlayArea implements PlayAreaModel {
         this.cardPlacementOrder = cardPlacementOrder;
         this.field = field;
         Map<BoardCard, CardSide> activeSides = new HashMap<>();
-        activeSideTypes.forEach((key, value) -> activeSides.put(key, key.getCardSideBySideType(value)));
+        activeSideTypes.forEach((card, value) -> activeSides.put(card, card.getCardSideBySideType(value)));
         this.activeSides = activeSides;
         this.minX = minX;
         this.maxX = maxX;
@@ -425,15 +425,21 @@ public class PlayArea implements PlayAreaModel {
         @Override
         public PlayArea deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
             JsonNode playAreaNode = p.getCodec().readTree(p);
+
             int cardCount = playAreaNode.get("cardCount").asInt();
+
             TypeReference<HashMap<CornerType, Integer>> typeReferenceResObjCounts = new TypeReference<>(){};
             Map<CornerType, Integer> resourceAndObjectCounts = mapper.readValue(playAreaNode.get("resourceAndObjectCounts").toString(), typeReferenceResObjCounts);
+
             TypeReference<ArrayList<Position>> typeReferenceCardPlacementOrder = new TypeReference<>() {};
             List<Position> cardPlacementOrder = mapper.readValue(playAreaNode.get("placementOrder").toString(), typeReferenceCardPlacementOrder);
+
             TypeReference<HashMap<Position, BoardCard>> typeReferenceField = new TypeReference<>() {};
             Map<Position, BoardCard> field = mapper.readValue(playAreaNode.get("field").toString(), typeReferenceField);
+
             TypeReference<HashMap<BoardCard, SideType>> typeReferenceActiveSides = new TypeReference<>() {};
             Map<BoardCard, SideType> activeSideTypes = mapper.readValue(playAreaNode.get("activeSides").toString(), typeReferenceActiveSides);
+
             int minX = playAreaNode.get("minX").asInt();
             int maxX = playAreaNode.get("maxX").asInt();
             int minY = playAreaNode.get("minY").asInt();

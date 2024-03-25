@@ -39,12 +39,6 @@ public final class ObjectObjective extends ObjectiveCard {
     }
 
     /**
-     * DOCME
-     * @param name
-     * @return
-     */
-
-    /**
      * Calculates the points given by this card based on the objects visible on the player's board.
      * @param playArea The player's play area, including the board state.
      * @return The points given by this card based on the objects visible on the player's board
@@ -69,7 +63,7 @@ public final class ObjectObjective extends ObjectiveCard {
     }
 
     /**
-     * DOCME
+     * Deserializer class for {@link ObjectObjective}. Used to handle different deserialization logic based on whether the {@link CardRegistry} has already been initialized.
      */
     public static class Deserializer extends StdDeserializer<ObjectObjective> {
 
@@ -80,14 +74,14 @@ public final class ObjectObjective extends ObjectiveCard {
         }
 
         /**
-         * DOCME
+         * Deserializes the {@link ObjectObjective}, returning the instance already present in the {@link CardRegistry} if it has already been initialized.
          * @param p Parsed used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *
-         * @return
-         * @throws IOException
-         * @throws JacksonException
+         * @return The deserialized {@link ObjectObjective}.
+         * @throws IOException Thrown if an exception occurs when reading from the input data.
+         * @throws JacksonException Thrown if an exception occurs during JSON parsing.
          */
         @Override
         public ObjectObjective deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {

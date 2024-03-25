@@ -60,7 +60,7 @@ public final class ResourceObjective extends ObjectiveCard {
     }
 
     /**
-     * DOCME
+     * Deserializer class for {@link ResourceObjective}. Used to handle different deserialization logic based on whether the {@link CardRegistry} has already been initialized.
      */
     public static class Deserializer extends StdDeserializer<ResourceObjective> {
 
@@ -71,14 +71,14 @@ public final class ResourceObjective extends ObjectiveCard {
         }
 
         /**
-         * DOCME
+         * Deserializes the {@link ResourceObjective}, returning the instance already present in the {@link CardRegistry} if it has already been initialized.
          * @param p Parsed used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *
-         * @return
-         * @throws IOException
-         * @throws JacksonException
+         * @return The deserialized {@link ResourceObjective}.
+         * @throws IOException Thrown if an exception occurs when reading from the input data.
+         * @throws JacksonException Thrown if an exception occurs during JSON parsing.
          */
         @Override
         public ResourceObjective deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {

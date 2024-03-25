@@ -14,15 +14,15 @@ import java.util.List;
 public class StarterCardsDeck extends Deck<StarterCard> {
 
     /**
-     * DOCME
+     * Constructs a new empty StarterCardsDeck.
      */
     public StarterCardsDeck() {
         super();
     }
 
     /**
-     * DOCME
-     * @param cards
+     * Constructs a new StarterCardsDeck with the given cards.
+     * @param cards The cards to insert in the new StarterCardsDeck.
      */
     @JsonCreator
     public StarterCardsDeck(@JsonProperty("cards") StarterCard[] cards) {

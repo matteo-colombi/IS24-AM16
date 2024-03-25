@@ -13,15 +13,15 @@ import java.util.List;
 public class GoldCardsDeck extends Deck<GoldCard> {
 
     /**
-     * DOCME
+     * Constructs a new empty GoldCardsDeck.
      */
     public GoldCardsDeck() {
         super();
     }
 
     /**
-     * DOCME
-     * @param cards
+     * Constructs a new GoldCardsDeck with the given cards.
+     * @param cards The cards to insert in the new GoldCardsDeck.
      */
     @JsonCreator
     public GoldCardsDeck(@JsonProperty("cards") GoldCard[] cards) {

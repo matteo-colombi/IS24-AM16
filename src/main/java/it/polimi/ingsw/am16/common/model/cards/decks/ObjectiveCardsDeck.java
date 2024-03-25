@@ -14,15 +14,15 @@ import java.util.List;
 public class ObjectiveCardsDeck extends Deck<ObjectiveCard> {
 
     /**
-     * DOCME
+     * Constructs a new empty ObjectiveCardsDeck.
      */
     public ObjectiveCardsDeck() {
         super();
     }
 
     /**
-     * DOCME
-     * @param cards
+     * Constructs a new ObjectiveCardsDeck with the given cards.
+     * @param cards The cards to insert in the new ObjectiveCardsDeck.
      */
     @JsonCreator
     public ObjectiveCardsDeck(@JsonProperty("cards") ObjectiveCard[] cards) {

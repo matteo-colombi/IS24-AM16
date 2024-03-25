@@ -134,7 +134,7 @@ public final class PatternObjective extends ObjectiveCard {
     }
 
     /**
-     * DOCME
+     * Deserializer class for {@link PatternObjective}. Used to handle different deserialization logic based on whether the {@link CardRegistry} has already been initialized.
      */
     public static class Deserializer extends StdDeserializer<PatternObjective> {
 
@@ -145,14 +145,14 @@ public final class PatternObjective extends ObjectiveCard {
         }
 
         /**
-         * DOCME
+         * Deserializes the {@link PatternObjective}, returning the instance already present in the {@link CardRegistry} if it has already been initialized.
          * @param p Parsed used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *
-         * @return
-         * @throws IOException
-         * @throws JacksonException
+         * @return The deserialized {@link PatternObjective}.
+         * @throws IOException Thrown if an exception occurs when reading from the input data.
+         * @throws JacksonException Thrown if an exception occurs during JSON parsing.
          */
         @Override
         public PatternObjective deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {

@@ -36,7 +36,7 @@ public final class StarterCard extends BoardCard {
     }
 
     /**
-     * DOCME
+     * Deserializer class for {@link StarterCard}. Used to handle different deserialization logic based on whether the {@link CardRegistry} has already been initialized.
      */
     static class Deserializer extends StdDeserializer<StarterCard> {
 
@@ -47,14 +47,14 @@ public final class StarterCard extends BoardCard {
         }
 
         /**
-         * DOCME
+         * Deserializes the {@link StarterCard}, returning the instance already present in the {@link CardRegistry} if it has already been initialized.
          * @param p Parsed used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *
-         * @return
-         * @throws IOException
-         * @throws JacksonException
+         * @return The deserialized {@link StarterCard}.
+         * @throws IOException Thrown if an exception occurs when reading from the input data.
+         * @throws JacksonException Thrown if an exception occurs during JSON parsing.
          */
         @Override
         public StarterCard deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
