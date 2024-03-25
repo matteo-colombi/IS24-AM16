@@ -29,7 +29,7 @@ public abstract class PlayableCard extends BoardCard {
     }
 
     /**
-     * DOCME
+     * Custom deserializer for {@link PlayableCard}. Used to deserialize these cards when they are already in the {@link CardRegistry}.
      */
     public static class Deserializer extends StdDeserializer<PlayableCard> {
 
@@ -40,14 +40,14 @@ public abstract class PlayableCard extends BoardCard {
         }
 
         /**
-         * DOCME
+         * Deserializes a {@link PlayableCard} from the given JSON. This deserializer calls the deserializers for {@link ResourceCard} and {@link GoldCard}.
          * @param p Parsed used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *
-         * @return
-         * @throws IOException
-         * @throws JacksonException
+         * @return The deserialized {@link PlayableCard}.
+         * @throws IOException Thrown if an exception occurs when reading from the input data, or if the given card does not conform to the naming standards.
+         * @throws JacksonException Thrown if an exception occurs during JSON parsing.
          */
         @Override
         public PlayableCard deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {

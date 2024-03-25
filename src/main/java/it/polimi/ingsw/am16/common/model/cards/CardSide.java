@@ -1,12 +1,9 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.util.Position;
@@ -234,7 +231,7 @@ public class CardSide {
     }
 
     /**
-     * DOCME
+     * Custom serializer for {@link CardSide}, used when saving a player's playing field. This serializer only saves the side type ("front" or "back").
      */
     public static class Serializer extends StdSerializer<CardSide> {
         protected Serializer() {
@@ -242,12 +239,12 @@ public class CardSide {
         }
 
         /**
-         * DOCME
+         * Serializes the given {@link CardSide} by extracting only the side type.
          * @param value Value to serialize; can <b>not</b> be null.
          * @param gen Generator used to output resulting Json content
          * @param provider Provider that can be used to get serializers for
          *   serializing Objects value contains, if any.
-         * @throws IOException
+         * @throws IOException Thrown if an exception occurs when reading from the input data.
          */
         @Override
         public void serialize(CardSide value, JsonGenerator gen, SerializerProvider provider) throws IOException {

@@ -65,28 +65,21 @@ public class Player implements PlayerModel {
     }
 
     /**
-     * DOCME
-     * @param playerId
-     * @param username
-     * @param currGamePoints
-     * @param currObjectivePoints
-     * @param personalObjective
-     * @param possiblePersonalObjectives
-     * @param starterCard
-     * @param color
-     * @param hand
-     * @param choseStarterCardSide
-     * @param choseObjectiveCard
-     * @param choseColor
-     * @param cardCount
-     * @param resourceAndObjectCounts
-     * @param cardPlacementOrder
-     * @param field
-     * @param activeSides
-     * @param minX
-     * @param maxX
-     * @param minY
-     * @param maxY
+     * Constructs a new Player with the given attributes. Used when reloading players from a game save file.
+     * This constructor is private because it should only be used by {@link Player.Deserializer}
+     * @param playerId The player's id.
+     * @param username The player's username.
+     * @param currGamePoints The player's current game points, which are points that are scored throughout the game.
+     * @param currObjectivePoints The player's objective points, tallied up at the end of the game.
+     * @param personalObjective The player's personal objective.
+     * @param possiblePersonalObjectives The choices given to the player for the personal objective.
+     * @param starterCard The player's starter card.
+     * @param color The player's color.
+     * @param hand The player's hand, containing the cards currently playable by the player.
+     * @param playArea The player's play area, containing information on the cards placed by the player, and the resources and objects currently visible.
+     * @param choseStarterCardSide Whether the player has already chosen their starter card's side.
+     * @param choseObjectiveCard Whether the player has already chosen their objective.
+     * @param choseColor Whether the player has already chosen their color.
      */
     private Player(
             int playerId,
@@ -396,7 +389,7 @@ public class Player implements PlayerModel {
     }
 
     /**
-     * DOCME
+     * Custom deserializer for {@link Player}, used for reloading player data from a game save file.
      */
     public static class Deserializer extends StdDeserializer<Player> {
 
@@ -407,14 +400,14 @@ public class Player implements PlayerModel {
         }
 
         /**
-         * DOCME
+         * Deserializes the {@link Player} from the given JSON.
          * @param p Parsed used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *
-         * @return
-         * @throws IOException
-         * @throws JacksonException
+         * @return The deserialized player.
+         * @throws IOException Thrown if an exception occurs when reading from the input data.
+         * @throws JacksonException Thrown if an exception occurs during JSON parsing.
          */
         @Override
         public Player deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {

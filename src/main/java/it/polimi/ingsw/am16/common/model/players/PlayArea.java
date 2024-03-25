@@ -37,8 +37,6 @@ public class PlayArea implements PlayAreaModel {
 
     /**
      * Creates a play area, initializing its player, its other attributes are set to standard values.
-     *
-     * @param player The player who owns the play area.
      */
     public PlayArea() {
         this.cardCount = 0;
@@ -56,6 +54,19 @@ public class PlayArea implements PlayAreaModel {
         }
     }
 
+    /**
+     * Constructs a new PlayArea object, setting all the attributes to the ones given as parameters.
+     * This constructor is private because it should only be used by {@link PlayArea.Deserializer}.
+     * @param cardCount The PlayArea's card count.
+     * @param resourceAndObjectCounts The {@link Map} containing all the resources and objects currently visible on the player's field.
+     * @param cardPlacementOrder The {@link List} containing the {@link Position}s in of the placed cards, in the order they were placed in.
+     * @param field The player's play field.
+     * @param activeSideTypes The {@link Map} containing which side every card was played on.
+     * @param minX The minimum x-coordinate of a card in the player's play field.
+     * @param maxX The maximum x-coordinate of a card in the player's play field.
+     * @param minY The minimum y-coordinate of a card in the player's play field.
+     * @param maxY The maximum y-coordinate of a card in the player's play field.
+     */
     private PlayArea(
             int cardCount,
             Map<CornerType, Integer> resourceAndObjectCounts,
@@ -124,8 +135,7 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
-     * DOCME
-     * @return
+     * @return The {@link Map} containing the resources and objects currently visible on the player's field.
      */
     public Map<CornerType, Integer> getResourceAndObjectCounts() {
         return resourceAndObjectCounts;
@@ -402,7 +412,7 @@ public class PlayArea implements PlayAreaModel {
     //region Serializer
 
     /**
-     * DOCME
+     * Custom deserializer for {@link PlayArea}. Used for reloading a saved game from JSON.
      */
     static class Deserializer extends StdDeserializer<PlayArea> {
 
@@ -413,14 +423,14 @@ public class PlayArea implements PlayAreaModel {
         }
 
         /**
-         * DOCME
-         * @param p Parsed used for reading JSON content
+         * Deserializes the {@link PlayArea} from the given JSON.
+         * @param p Parser used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *
-         * @return
-         * @throws IOException
-         * @throws JacksonException
+         * @return The deserialized {@link PlayArea}.
+         * @throws IOException Thrown if an exception occurs when reading from the input data.
+         * @throws JacksonException Thrown if an exception occurs during JSON parsing.
          */
         @Override
         public PlayArea deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {

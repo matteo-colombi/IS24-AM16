@@ -8,13 +8,15 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
+import it.polimi.ingsw.am16.common.model.players.PlayArea;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Class used to model the cards that can be placed on the player's board.
  */
-@JsonDeserialize(using = BoardCard.Deserializer.class, keyUsing = BoardCard.BoardCardKeyDeserializer.class)
+@JsonDeserialize(using = BoardCard.Deserializer.class, keyUsing = BoardCard.KeyDeserializer.class)
 public abstract class BoardCard extends Card {
 
     private final CardSide frontSide;
@@ -73,19 +75,19 @@ public abstract class BoardCard extends Card {
     }
 
     /**
-     * DOCME
+     * Custom serializer for {@link BoardCard}. Used to serialize these cards for saving game fields in {@link PlayArea}.
      */
     public static class BoardCardSerializer extends JsonSerializer<BoardCard> {
 
         private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
 
         /**
-         * DOCME
+         * Serializes a {@link BoardCard}. This serializer writes only the card's name.
          * @param value Value to serialize; can <b>not</b> be null.
          * @param gen Generator used to output resulting Json content
          * @param serializers Provider that can be used to get serializers for
          *   serializing Objects value contains, if any.
-         * @throws IOException
+         * @throws IOException Thrown if an exception occurs when writing the serialized data.
          */
         @Override
         public void serialize(BoardCard value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
@@ -94,7 +96,7 @@ public abstract class BoardCard extends Card {
     }
 
     /**
-     * DOCME
+     * Custom deserializer for {@link BoardCard}. Used to deserialize these cards from games salved in JSON format.
      */
     public static class Deserializer extends StdDeserializer<BoardCard> {
 
@@ -105,14 +107,14 @@ public abstract class BoardCard extends Card {
         }
 
         /**
-         * DOCME
+         * Deserializes the given {@link BoardCard} from JSON. This deserializer calls the deserializers for {@link PlayableCard} and {@link StarterCard}.
          * @param p Parsed used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *
-         * @return
-         * @throws IOException
-         * @throws JacksonException
+         * @return The deserialized {@link BoardCard}.
+         * @throws IOException Thrown if an exception occurs when reading from the input data.
+         * @throws JacksonException Thrown if an exception occurs during JSON parsing.
          */
         @Override
         public BoardCard deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
@@ -126,18 +128,18 @@ public abstract class BoardCard extends Card {
     }
 
     /**
-     * DOCME
+     * Custom key deserializer for {@link BoardCard}s used in {@link Map}s.
      */
-    public static class BoardCardKeyDeserializer extends KeyDeserializer {
+    public static class KeyDeserializer extends com.fasterxml.jackson.databind.KeyDeserializer {
 
         private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
 
         /**
-         * DOCME
-         * @param key
-         * @param ctxt
-         * @return
-         * @throws IOException
+         * Deserializes the card using the standard {@link BoardCard} deserializer.
+         * @param key The key to deserialize.
+         * @param ctxt Context that can be used to access information about this deserialization activity.
+         * @return The deserialized {@link BoardCard}.
+         * @throws IOException Thrown if an exception occurs while writing the serialized data.
          */
         @Override
         public BoardCard deserializeKey(String key, DeserializationContext ctxt) throws IOException {

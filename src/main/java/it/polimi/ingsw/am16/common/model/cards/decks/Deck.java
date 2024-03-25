@@ -53,7 +53,7 @@ public abstract class Deck<T extends Card> {
 
     /**
      * Adds the given card to the bottom of the deck.
-     * @param card
+     * @param card The card to be added to the deck.
      */
     public void addCard(T card) {
         cards.add(card);
@@ -107,6 +107,11 @@ public abstract class Deck<T extends Card> {
         this.cards.addAll(cards);
     }
 
+    /**
+     * Checks equality with the given object.
+     * @param o The object to compare to.
+     * @return <code>true</code> if the given object is a Deck and if it contains the same cards as <code>this</code>.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

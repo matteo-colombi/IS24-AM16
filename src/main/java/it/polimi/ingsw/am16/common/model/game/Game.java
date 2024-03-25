@@ -570,32 +570,28 @@ public class Game implements GameModel {
     }
 
     /**
-     * DOCME
-     * @return
+     * @return The deck of gold cards.
      */
     public GoldCardsDeck getGoldCardsDeck() {
         return goldCardsDeck;
     }
 
     /**
-     * DOCME
-     * @return
+     * @return The deck of resource cards.
      */
     public ResourceCardsDeck getResourceCardsDeck() {
         return resourceCardsDeck;
     }
 
     /**
-     * DOCME
-     * @return
+     * @return The deck of objective cards.
      */
     public ObjectiveCardsDeck getObjectiveCardsDeck() {
         return objectiveCardsDeck;
     }
 
     /**
-     * DOCME
-     * @return
+     * @return The deck of starter cards.
      */
     public StarterCardsDeck getStarterCardsDeck() {
         return starterCardsDeck;

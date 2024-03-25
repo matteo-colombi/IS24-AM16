@@ -30,6 +30,11 @@ public class Hand implements HandModel{
         this.cards = new ArrayList<>();
     }
 
+    /**
+     * Constructs a new hand and populates it with the given cards.
+     * This constructor is private because it should only be used by {@link Hand.Deserializer}.
+     * @param cards The cards to populate the hand with.
+     */
     private Hand(PlayableCard[] cards) {
         this.cards = new ArrayList<>(List.of(cards));
     }

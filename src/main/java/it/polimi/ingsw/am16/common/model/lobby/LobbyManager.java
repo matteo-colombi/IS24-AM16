@@ -53,38 +53,49 @@ public class LobbyManager {
 
     /**
      * Saves all the current games in this {@link LobbyManager} to the given directory.
-     * @param directoryPath The directory path to save the lobbies to.
+     * @param directoryPath The directory path to save the games to.
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored") //Suppressing because we only want to create a new file if it doesn't exist, but write to it regardless of whether it exists or not.
     public void saveGames(String directoryPath) throws IOException {
         for(String id : games.keySet()) {
             File f = new File(directoryPath + "/" + id + ".json");
             f.createNewFile();
-            saveLobby(id, f);
+            saveGame(id, f);
         }
     }
 
     /**
      * Loads all the games in the given directory.
-     * @param directoryPath The directory path to load the lobbies from.
+     * @param directoryPath The directory path to load the games from.
      */
     public void loadGames(String directoryPath) throws IOException {
-        //TODO implement
+        File dir = new File(directoryPath);
+        if (!dir.exists()) throw new IOException("Save file directory doesn't exist: " + directoryPath);
+
+        File[] gameFiles = dir.listFiles();
+
+        if (gameFiles == null) throw new IOException("Invalid directory: " + directoryPath);
+
+        for(File f : gameFiles) {
+            loadGame(f);
+        }
     }
 
     /**
-     * Saves the given lobby to the given file.
-     * @param id The lobby to save to memory.
+     * Saves the given game to the given file.
+     * @param id The game to save to memory.
      * @param saveFile The file to save the lobby to.
      */
-    private void saveLobby(String id, File saveFile) throws IOException {
+    private void saveGame(String id, File saveFile) throws IOException {
         mapper.writeValue(saveFile, games.get(id));
     }
 
     /**
-     * Loads a lobby from the given {@link File}.
-     * @param saveFile The file to load the lobby from.
+     * Loads a game from the given {@link File}.
+     * @param saveFile The file to load the game from.
      */
-    private void loadLobby(File saveFile) throws IOException {
-        //TODO implement
+    private void loadGame(File saveFile) throws IOException {
+        Game game = mapper.readValue(saveFile, Game.class);
+        games.put(game.getId(), game);
     }
 }

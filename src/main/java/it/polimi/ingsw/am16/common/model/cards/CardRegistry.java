@@ -62,8 +62,7 @@ public class CardRegistry {
     }
 
     /**
-     * DOCME
-     * @return
+     * @return <code>true</code> if the card registry has already been initialized, <code>false</code> otherwise.
      */
     public static boolean isInitialized() {
         return initialized;
