@@ -14,15 +14,15 @@ import java.util.List;
 public class ResourceCardsDeck extends Deck<ResourceCard> {
 
     /**
-     * DOCME
+     * Constructs a new empty ResourceCardsDeck.
      */
     public ResourceCardsDeck() {
         super();
     }
 
     /**
-     * DOCME
-     * @param cards
+     * Constructs a new ResourceCardsDeck with the given cards.
+     * @param cards The cards to insert in the new ResourceCardsDeck.
      */
     @JsonCreator
     public ResourceCardsDeck(@JsonProperty("cards") ResourceCard[] cards) {

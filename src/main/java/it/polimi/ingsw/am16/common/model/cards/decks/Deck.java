@@ -99,8 +99,8 @@ public abstract class Deck<T extends Card> {
     }
 
     /**
-     * DOCME
-     * @param cards
+     * Constructs a new Deck with the cards given.
+     * @param cards The cards to insert in the new Deck.
      */
     protected void setCards(List<T> cards) {
         this.cards.clear();

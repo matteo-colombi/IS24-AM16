@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
  * @param x x-coordinate of the point.
  * @param y y-coordinate of the point.
  */
-@JsonDeserialize(keyUsing = Position.PositionKeyDeserializer.class)
+@JsonDeserialize(keyUsing = Position.KeyDeserializer.class)
 public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
     private static final int numNeighbours = 4;
     private static final int[] xDisplacements = {-1, 1, 1, -1};
@@ -131,43 +130,39 @@ public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
     }
 
     /**
-     * DOCME
+     * Serializer for {@link Position}.
      */
-    public static class PositionSerializer extends JsonSerializer<Position> {
+    public static class Serializer extends JsonSerializer<Position> {
 
         private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
 
         /**
-         * DOCME
+         * Serializes a {@link Position} object, including only its coordinates.
          * @param value Value to serialize; can <b>not</b> be null.
          * @param gen Generator used to output resulting Json content
          * @param serializers Provider that can be used to get serializers for
          *   serializing Objects value contains, if any.
-         * @throws IOException
+         * @throws IOException Thrown if an exception occurs while writing the serialized data.
          */
         @Override
         public void serialize(Position value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            //StringWriter writer = new StringWriter();
-            //mapper.writeValue(writer, value);
             gen.writeFieldName(mapper.writeValueAsString(value));
-            //mapper.writeValue(gen, value);
-            //gen.writeFieldName(writer.toString());
         }
     }
 
     /**
-     * DOCME
+     * Deserializer for {@link Position} when used as keys for a {@link java.util.Map}.
      */
-    public static class PositionKeyDeserializer extends KeyDeserializer {
+    public static class KeyDeserializer extends com.fasterxml.jackson.databind.KeyDeserializer {
 
         private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
 
         /**
-         * DOCME
-         * @param key
-         * @param ctxt
-         * @return
-         * @throws IOException
+         * Deserializes the position using the standard {@link Position} deserializer.
+         * @param key The key to deserialize.
+         * @param ctxt Context that can be used to access information about this deserialization activity.
+         * @return The deserialized {@link Position}.
+         * @throws IOException Thrown if an exception occurs while writing the serialized data.
          */
         @Override
         public Position deserializeKey(String key, DeserializationContext ctxt) throws IOException {

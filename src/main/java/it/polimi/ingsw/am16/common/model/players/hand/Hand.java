@@ -1,8 +1,6 @@
 package it.polimi.ingsw.am16.common.model.players.hand;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -12,10 +10,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
+import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -86,7 +84,7 @@ public class Hand implements HandModel{
     }
 
     /**
-     * DOCME
+     * Curstom deserializer for {@link Hand}. Used to reload entire hands from JSON files.
      */
     public static class Deserializer extends StdDeserializer<Hand> {
 
@@ -97,14 +95,14 @@ public class Hand implements HandModel{
         }
 
         /**
-         * DOCME
+         * Deserializes a {@link Hand}, loading all the cards back from the given JSON. This method assumes that the {@link CardRegistry} has already been initialized.
          * @param p Parsed used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *
-         * @return
-         * @throws IOException
-         * @throws JacksonException
+         * @return The deserialized {@link Hand}
+         * @throws IOException Thrown if an exception occurs when reading from the input data.
+         * @throws JacksonException Thrown if an exception occurs during JSON parsing.
          */
         @Override
         public Hand deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {

@@ -42,7 +42,7 @@ public final class GoldCard extends PlayableCard {
     }
 
     /**
-     * DOCME
+     * Deserializer class for {@link GoldCard}. Used to handle different deserialization logic based on whether the {@link CardRegistry} has already been initialized.
      */
     static class Deserializer extends StdDeserializer<GoldCard> {
 
@@ -53,14 +53,14 @@ public final class GoldCard extends PlayableCard {
         }
 
         /**
-         * DOCME
+         * Deserializes the {@link GoldCard}, returning the instance already present in the {@link CardRegistry} if it has already been initialized.
          * @param p Parsed used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *
-         * @return
-         * @throws IOException
-         * @throws JacksonException
+         * @return The deserialized {@link GoldCard}.
+         * @throws IOException Thrown if an exception occurs when reading from the input data.
+         * @throws JacksonException Thrown if an exception occurs during JSON parsing.
          */
         @Override
         public GoldCard deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {

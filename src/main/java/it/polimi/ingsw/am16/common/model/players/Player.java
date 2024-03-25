@@ -422,21 +422,27 @@ public class Player implements PlayerModel {
 
             // Deserialize player attributes
             int playerId = node.get("playerId").asInt();
+
             String username = node.get("username").asText();
+
             int currGamePoints = node.get("gamePoints").asInt();
             int currObjectivePoints = node.get("objectivePoints").asInt();
+
+            TypeReference<ArrayList<ObjectiveCard>> typeReferencePossiblePersonalObjectives = new TypeReference<>() {};
+            List<ObjectiveCard> possiblePersonalObjectives = mapper.readValue(node.get("personalObjectiveOptions").toString(), typeReferencePossiblePersonalObjectives);
             ObjectiveCard personalObjective = mapper.readValue(node.get("personalObjective").toString(), ObjectiveCard.class);
+
             StarterCard starterCard = mapper.readValue(node.get("starterCard").toString(), StarterCard.class);
+
             PlayerColor color = mapper.readValue(node.get("playerColor").toString(), PlayerColor.class);
+
             Hand hand = mapper.readValue(node.get("hand").toString(), Hand.class);
+
             PlayArea playArea = mapper.readValue(node.get("playArea").toString(), PlayArea.class);
+
             boolean choseStarterCardSide = node.get("choseStarterCardSide").asBoolean();
             boolean choseObjectiveCard = node.get("chosePersonalObjective").asBoolean();
             boolean choseColor = node.get("choseColor").asBoolean();
-            TypeReference<ArrayList<ObjectiveCard>> typeReferencePossiblePersonalObjectives = new TypeReference<>() {};
-            List<ObjectiveCard> possiblePersonalObjectives = mapper.readValue(node.get("personalObjectiveOptions").toString(), typeReferencePossiblePersonalObjectives);
-
-            // Deserialize play area attributes
 
             return new Player(
                     playerId,
