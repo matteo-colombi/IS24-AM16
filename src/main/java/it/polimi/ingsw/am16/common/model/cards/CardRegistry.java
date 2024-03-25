@@ -3,6 +3,7 @@ package it.polimi.ingsw.am16.common.model.cards;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.am16.common.util.FilePaths;
+import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,12 +14,12 @@ import java.util.*;
  */
 public class CardRegistry {
 
+    private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
     private static boolean initialized = false;
     private static List<ObjectiveCard> objectiveCards;
     private static List<StarterCard> starterCards;
     private static List<GoldCard> goldCards;
     private static List<ResourceCard> resourceCards;
-    private static ObjectMapper mapper;
     private static Map<String, ObjectiveCard> objectiveCardsMap;
     private static Map<String, StarterCard> starterCardsMap;
     private static Map<String, GoldCard> goldCardsMap;
@@ -39,7 +40,6 @@ public class CardRegistry {
         ObjectType.bindToCorners();
         ResourceType.bindToCorners();
 
-        mapper = new ObjectMapper();
         try{
             initializePlayableCardsBackSides();
             initializeResourceCards();

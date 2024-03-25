@@ -97,4 +97,28 @@ public abstract class Deck<T extends Card> {
     public List<T> getCards() {
         return cards;
     }
+
+    /**
+     * DOCME
+     * @param cards
+     */
+    protected void setCards(List<T> cards) {
+        this.cards.clear();
+        this.cards.addAll(cards);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Deck<?> deck = (Deck<?>) o;
+
+        return cards.equals(deck.cards);
+    }
+
+    @Override
+    public int hashCode() {
+        return cards.hashCode();
+    }
 }

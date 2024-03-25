@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
 
@@ -45,7 +46,7 @@ public final class GoldCard extends PlayableCard {
      */
     static class Deserializer extends StdDeserializer<GoldCard> {
 
-        private static final ObjectMapper mapper = new ObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
 
         protected Deserializer() {
             super(GoldCard.class);

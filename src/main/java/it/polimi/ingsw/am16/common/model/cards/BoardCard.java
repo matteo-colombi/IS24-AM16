@@ -1,15 +1,20 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
 
 /**
  * Class used to model the cards that can be placed on the player's board.
  */
+@JsonDeserialize(using = BoardCard.Deserializer.class, keyUsing = BoardCard.BoardCardKeyDeserializer.class)
 public abstract class BoardCard extends Card {
 
     private final CardSide frontSide;
@@ -71,6 +76,9 @@ public abstract class BoardCard extends Card {
      * DOCME
      */
     public static class BoardCardSerializer extends JsonSerializer<BoardCard> {
+
+        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+
         /**
          * DOCME
          * @param value Value to serialize; can <b>not</b> be null.
@@ -81,7 +89,59 @@ public abstract class BoardCard extends Card {
          */
         @Override
         public void serialize(BoardCard value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            gen.writeFieldName(value.getName());
+            gen.writeFieldName(mapper.writeValueAsString(value));
+        }
+    }
+
+    /**
+     * DOCME
+     */
+    public static class Deserializer extends StdDeserializer<BoardCard> {
+
+        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+
+        protected Deserializer() {
+            super(BoardCard.class);
+        }
+
+        /**
+         * DOCME
+         * @param p Parsed used for reading JSON content
+         * @param ctxt Context that can be used to access information about
+         *   this deserialization activity.
+         *
+         * @return
+         * @throws IOException
+         * @throws JacksonException
+         */
+        @Override
+        public BoardCard deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+            JsonNode node = p.getCodec().readTree(p);
+            String name = node.get("name").asText();
+            if (name.contains("starter")) {
+                return mapper.readValue(node.toString(), StarterCard.class);
+            }
+            return mapper.readValue(node.toString(), PlayableCard.class);
+        }
+    }
+
+    /**
+     * DOCME
+     */
+    public static class BoardCardKeyDeserializer extends KeyDeserializer {
+
+        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+
+        /**
+         * DOCME
+         * @param key
+         * @param ctxt
+         * @return
+         * @throws IOException
+         */
+        @Override
+        public BoardCard deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+            return mapper.readValue(key, BoardCard.class);
         }
     }
 }

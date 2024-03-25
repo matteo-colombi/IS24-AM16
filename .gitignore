@@ -32,4 +32,8 @@ build/
 /.mvn/
 mvnw
 mvnw.cmd
+
+#Custom added
 AM16.iml
+/src/test/resources/testSaves/
+/src/test/resources/json/

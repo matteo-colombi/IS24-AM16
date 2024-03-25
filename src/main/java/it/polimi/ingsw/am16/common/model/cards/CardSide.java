@@ -3,9 +3,15 @@ package it.polimi.ingsw.am16.common.model.cards;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.util.Position;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
 
@@ -17,7 +23,7 @@ public class CardSide {
     private final Map<ResourceType, Integer> cost;
     private final Map<ResourceType, Integer> permanentResourcesGiven;
     private final PointMultiplierPolicy pointMultiplierPolicy;
-    private final SideType side;
+    private final SideType sideType;
     private final Map<CornersIdx, CornerType> corners;
 
     /**
@@ -113,7 +119,7 @@ public class CardSide {
      * @param cost                    The resources needed to play the card.
      * @param permanentResourcesGiven The permanent resources given by the card.
      * @param pointMultiplierPolicy   The policy to use to multiply the base points.
-     * @param side                    The side type (front or back) of the card.
+     * @param sideType                    The side type (front or back) of the card.
      * @param corners                 The corners of this card. Must be in the order TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT.
      */
     @JsonCreator
@@ -122,7 +128,7 @@ public class CardSide {
             @JsonProperty("cost") EnumMap<ResourceType, Integer> cost,
             @JsonProperty("permanentResourcesGiven") EnumMap<ResourceType, Integer> permanentResourcesGiven,
             @JsonProperty("pointMultiplierPolicy") PointMultiplierPolicy pointMultiplierPolicy,
-            @JsonProperty("sideType") SideType side,
+            @JsonProperty("sideType") SideType sideType,
             @JsonProperty("corners") CornerType[] corners) {
         this.points = points;
 
@@ -139,7 +145,7 @@ public class CardSide {
         this.permanentResourcesGiven = Collections.unmodifiableMap(permanentResourcesGiven);
 
         this.pointMultiplierPolicy = pointMultiplierPolicy;
-        this.side = side;
+        this.sideType = sideType;
 
         this.corners = new EnumMap<>(CornersIdx.class);
         this.corners.put(CornersIdx.TOP_LEFT, corners[CornersIdx.TOP_LEFT.ordinal()]);
@@ -151,7 +157,6 @@ public class CardSide {
     /**
      * @return The card's base points.
      */
-    @JsonIgnore
     public int getPoints() {
         return points;
     }
@@ -159,7 +164,6 @@ public class CardSide {
     /**
      * @return The card's cost.
      */
-    @JsonIgnore
     public Map<ResourceType, Integer> getCost() {
         return cost;
     }
@@ -167,7 +171,6 @@ public class CardSide {
     /**
      * @return The card's permanent resources.
      */
-    @JsonIgnore
     public Map<ResourceType, Integer> getPermanentResourcesGiven() {
         return permanentResourcesGiven;
     }
@@ -175,14 +178,13 @@ public class CardSide {
     /**
      * @return The card's side type.
      */
-    public SideType getSide() {
-        return side;
+    public SideType getSideType() {
+        return sideType;
     }
 
     /**
      * @return The card's corners.
      */
-    @JsonIgnore
     public Map<CornersIdx, CornerType> getCorners() {
         return corners;
     }
@@ -192,7 +194,6 @@ public class CardSide {
      * @param playArea The player's play area.
      * @return The awarded points.
      */
-    @JsonIgnore
     public int getAwardedPoints(PlayArea playArea) {
         return points * pointMultiplierPolicy.evaluate(playArea);
     }
@@ -204,7 +205,7 @@ public class CardSide {
                 ", cost=" + cost +
                 ", permanentResourcesGiven=" + permanentResourcesGiven +
                 ", pointMultiplierPolicy=" + pointMultiplierPolicy +
-                ", side=" + side +
+                ", side=" + sideType +
                 ", corners=" + corners +
                 '}';
     }
@@ -230,5 +231,27 @@ public class CardSide {
      */
     static void addCommonSide(String name, CardSide cardSide) {
         commonSides.put(name, cardSide);
+    }
+
+    /**
+     * DOCME
+     */
+    public static class Serializer extends StdSerializer<CardSide> {
+        protected Serializer() {
+            super(CardSide.class);
+        }
+
+        /**
+         * DOCME
+         * @param value Value to serialize; can <b>not</b> be null.
+         * @param gen Generator used to output resulting Json content
+         * @param provider Provider that can be used to get serializers for
+         *   serializing Objects value contains, if any.
+         * @throws IOException
+         */
+        @Override
+        public void serialize(CardSide value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+            provider.findValueSerializer(SideType.class).serialize(value.getSideType(), gen, provider);
+        }
     }
 }

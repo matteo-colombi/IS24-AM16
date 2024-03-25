@@ -1,24 +1,34 @@
 package it.polimi.ingsw.am16.common.model.players;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
  * Class representing the player's play area. Contains info about card placement and resource/object counts.
  */
+@JsonDeserialize(using = PlayArea.Deserializer.class)
 public class PlayArea implements PlayAreaModel {
-    private final Player player;
     private int cardCount;
     private final Map<CornerType, Integer> resourceAndObjectCounts;
     private final List<Position> cardPlacementOrder;
     @JsonSerialize(keyUsing = Position.PositionSerializer.class)
     private final Map<Position, BoardCard> field;
-    @JsonSerialize(keyUsing = BoardCard.BoardCardSerializer.class)
+    @JsonSerialize(keyUsing = BoardCard.BoardCardSerializer.class, contentUsing = CardSide.Serializer.class)
     private final Map<BoardCard, CardSide> activeSides;
     private int minX;
     private int maxX;
@@ -30,8 +40,7 @@ public class PlayArea implements PlayAreaModel {
      *
      * @param player The player who owns the play area.
      */
-    public PlayArea(Player player) {
-        this.player = player;
+    public PlayArea() {
         this.cardCount = 0;
         this.resourceAndObjectCounts = new EnumMap<>(CornerType.class);
         this.cardPlacementOrder = new ArrayList<>();
@@ -45,6 +54,29 @@ public class PlayArea implements PlayAreaModel {
         for (CornerType cornerType : CornerType.values()) {
             resourceAndObjectCounts.put(cornerType, 0);
         }
+    }
+
+    private PlayArea(
+            int cardCount,
+            Map<CornerType, Integer> resourceAndObjectCounts,
+            List<Position> cardPlacementOrder,
+            Map<Position, BoardCard> field,
+            Map<BoardCard, SideType> activeSideTypes,
+            int minX,
+            int maxX,
+            int minY,
+            int maxY) {
+        this.cardCount = cardCount;
+        this.resourceAndObjectCounts = resourceAndObjectCounts;
+        this.cardPlacementOrder = cardPlacementOrder;
+        this.field = field;
+        Map<BoardCard, CardSide> activeSides = new HashMap<>();
+        activeSideTypes.forEach((key, value) -> activeSides.put(key, key.getCardSideBySideType(value)));
+        this.activeSides = activeSides;
+        this.minX = minX;
+        this.maxX = maxX;
+        this.minY = minY;
+        this.maxY = maxY;
     }
 
     //region Local Getter and Setter
@@ -164,12 +196,14 @@ public class PlayArea implements PlayAreaModel {
         updateField(playedCard, side, playedCardPosition);
         updateCounts(playedCard, playedCardPosition);
         updateBounds(playedCardPosition);
-
-        CardSide activeSide = activeSides.get(playedCard);
-        int awardedPoints = activeSide.getAwardedPoints(this);
-
-        player.addGamePoints(awardedPoints);
     }
+
+    public int awardGamePoints(PlayableCard playedCard) {
+        CardSide activeSide = activeSides.get(playedCard);
+
+        return activeSide.getAwardedPoints(this);
+    }
+
 
     /**
      * Increases the card count, adds the new position to the placement order list,
@@ -284,6 +318,7 @@ public class PlayArea implements PlayAreaModel {
      * @return The visible side of the cards.
      */
     @Override
+    @JsonIgnore
     public Map<BoardCard, CardSide> getActiveSides() {
         return Map.copyOf(activeSides);
     }
@@ -360,6 +395,52 @@ public class PlayArea implements PlayAreaModel {
         }
 
         return true;
+    }
+
+    //endregion
+
+    //region Serializer
+
+    /**
+     * DOCME
+     */
+    static class Deserializer extends StdDeserializer<PlayArea> {
+
+        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+
+        public Deserializer() {
+            super(PlayArea.class);
+        }
+
+        /**
+         * DOCME
+         * @param p Parsed used for reading JSON content
+         * @param ctxt Context that can be used to access information about
+         *   this deserialization activity.
+         *
+         * @return
+         * @throws IOException
+         * @throws JacksonException
+         */
+        @Override
+        public PlayArea deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+            JsonNode playAreaNode = p.getCodec().readTree(p);
+            int cardCount = playAreaNode.get("cardCount").asInt();
+            TypeReference<HashMap<CornerType, Integer>> typeReferenceResObjCounts = new TypeReference<>(){};
+            Map<CornerType, Integer> resourceAndObjectCounts = mapper.readValue(playAreaNode.get("resourceAndObjectCounts").toString(), typeReferenceResObjCounts);
+            TypeReference<ArrayList<Position>> typeReferenceCardPlacementOrder = new TypeReference<>() {};
+            List<Position> cardPlacementOrder = mapper.readValue(playAreaNode.get("placementOrder").toString(), typeReferenceCardPlacementOrder);
+            TypeReference<HashMap<Position, BoardCard>> typeReferenceField = new TypeReference<>() {};
+            Map<Position, BoardCard> field = mapper.readValue(playAreaNode.get("field").toString(), typeReferenceField);
+            TypeReference<HashMap<BoardCard, SideType>> typeReferenceActiveSides = new TypeReference<>() {};
+            Map<BoardCard, SideType> activeSideTypes = mapper.readValue(playAreaNode.get("activeSides").toString(), typeReferenceActiveSides);
+            int minX = playAreaNode.get("minX").asInt();
+            int maxX = playAreaNode.get("maxX").asInt();
+            int minY = playAreaNode.get("minY").asInt();
+            int maxY = playAreaNode.get("maxY").asInt();
+
+            return new PlayArea(cardCount, resourceAndObjectCounts, cardPlacementOrder, field, activeSideTypes, minX, maxX, minY, maxY);
+        }
     }
 
     //endregion

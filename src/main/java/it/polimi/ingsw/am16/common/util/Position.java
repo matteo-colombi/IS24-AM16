@@ -3,9 +3,8 @@ package it.polimi.ingsw.am16.common.util;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -18,6 +17,7 @@ import java.util.List;
  * @param x x-coordinate of the point.
  * @param y y-coordinate of the point.
  */
+@JsonDeserialize(keyUsing = Position.PositionKeyDeserializer.class)
 public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
     private static final int numNeighbours = 4;
     private static final int[] xDisplacements = {-1, 1, 1, -1};
@@ -134,7 +134,8 @@ public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
      * DOCME
      */
     public static class PositionSerializer extends JsonSerializer<Position> {
-        private ObjectMapper mapper = new ObjectMapper();
+
+        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
 
         /**
          * DOCME
@@ -146,9 +147,31 @@ public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
          */
         @Override
         public void serialize(Position value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            StringWriter writer = new StringWriter();
-            mapper.writeValue(writer, value);
-            gen.writeFieldName(writer.toString());
+            //StringWriter writer = new StringWriter();
+            //mapper.writeValue(writer, value);
+            gen.writeFieldName(mapper.writeValueAsString(value));
+            //mapper.writeValue(gen, value);
+            //gen.writeFieldName(writer.toString());
+        }
+    }
+
+    /**
+     * DOCME
+     */
+    public static class PositionKeyDeserializer extends KeyDeserializer {
+
+        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+
+        /**
+         * DOCME
+         * @param key
+         * @param ctxt
+         * @return
+         * @throws IOException
+         */
+        @Override
+        public Position deserializeKey(String key, DeserializationContext ctxt) throws IOException {
+            return mapper.readValue(key, Position.class);
         }
     }
 }

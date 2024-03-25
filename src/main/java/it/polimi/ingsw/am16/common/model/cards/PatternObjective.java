@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
+import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.io.IOException;
@@ -137,7 +138,7 @@ public final class PatternObjective extends ObjectiveCard {
      */
     public static class Deserializer extends StdDeserializer<PatternObjective> {
 
-        private static final ObjectMapper mapper = new ObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
 
         protected Deserializer() {
             super(PatternObjective.class);

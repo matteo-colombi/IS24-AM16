@@ -1,17 +1,24 @@
 package it.polimi.ingsw.am16.common.model.players;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
-import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
-import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
-import it.polimi.ingsw.am16.common.model.cards.SideType;
-import it.polimi.ingsw.am16.common.model.cards.StarterCard;
+import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.players.hand.Hand;
+import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.model.game.Game;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +28,7 @@ import java.util.List;
  * Each player will manage a playing area and their hand of playable cards
  *
  */
+@JsonDeserialize(using = Player.Deserializer.class)
 public class Player implements PlayerModel {
     private final int playerId;
     private final String username;
@@ -49,11 +57,65 @@ public class Player implements PlayerModel {
         this.currObjectivePoints = 0;
         this.possiblePersonalObjectives = new ArrayList<>();
         this.hand = new Hand();
-        this.playArea = new PlayArea(this);
+        this.playArea = new PlayArea();
         this.color = null;
         this.choseObjectiveCard = false;
         this.choseStarterCardSide = false;
         this.choseColor = false;
+    }
+
+    /**
+     * DOCME
+     * @param playerId
+     * @param username
+     * @param currGamePoints
+     * @param currObjectivePoints
+     * @param personalObjective
+     * @param possiblePersonalObjectives
+     * @param starterCard
+     * @param color
+     * @param hand
+     * @param choseStarterCardSide
+     * @param choseObjectiveCard
+     * @param choseColor
+     * @param cardCount
+     * @param resourceAndObjectCounts
+     * @param cardPlacementOrder
+     * @param field
+     * @param activeSides
+     * @param minX
+     * @param maxX
+     * @param minY
+     * @param maxY
+     */
+    private Player(
+            int playerId,
+            String username,
+            int currGamePoints,
+            int currObjectivePoints,
+            ObjectiveCard personalObjective,
+            List<ObjectiveCard> possiblePersonalObjectives,
+            StarterCard starterCard,
+            PlayerColor color,
+            Hand hand,
+            PlayArea playArea,
+            boolean choseStarterCardSide,
+            boolean choseObjectiveCard,
+            boolean choseColor
+    ) {
+        this.playerId = playerId;
+        this.username = username;
+        this.currGamePoints = currGamePoints;
+        this.currObjectivePoints = currObjectivePoints;
+        this.personalObjective = personalObjective;
+        this.possiblePersonalObjectives = possiblePersonalObjectives;
+        this.starterCard = starterCard;
+        this.color = color;
+        this.hand = hand;
+        this.playArea = playArea;
+        this.choseStarterCardSide = choseStarterCardSide;
+        this.choseObjectiveCard = choseObjectiveCard;
+        this.choseColor = choseColor;
     }
 
     /**
@@ -227,6 +289,7 @@ public class Player implements PlayerModel {
      */
     public void playCard(PlayableCard card, SideType side, Position newCardPos) throws IllegalMoveException {
         this.playArea.playCard(card, side, newCardPos);
+        this.currGamePoints += this.playArea.awardGamePoints(card);
         hand.removeCard(card);
     }
 
@@ -330,5 +393,65 @@ public class Player implements PlayerModel {
     @Override
     public int hashCode() {
         return playerId;
+    }
+
+    /**
+     * DOCME
+     */
+    public static class Deserializer extends StdDeserializer<Player> {
+
+        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+
+        protected Deserializer() {
+            super(Player.class);
+        }
+
+        /**
+         * DOCME
+         * @param p Parsed used for reading JSON content
+         * @param ctxt Context that can be used to access information about
+         *   this deserialization activity.
+         *
+         * @return
+         * @throws IOException
+         * @throws JacksonException
+         */
+        @Override
+        public Player deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+            JsonNode node  = p.getCodec().readTree(p);
+
+            // Deserialize player attributes
+            int playerId = node.get("playerId").asInt();
+            String username = node.get("username").asText();
+            int currGamePoints = node.get("gamePoints").asInt();
+            int currObjectivePoints = node.get("objectivePoints").asInt();
+            ObjectiveCard personalObjective = mapper.readValue(node.get("personalObjective").toString(), ObjectiveCard.class);
+            StarterCard starterCard = mapper.readValue(node.get("starterCard").toString(), StarterCard.class);
+            PlayerColor color = mapper.readValue(node.get("playerColor").toString(), PlayerColor.class);
+            Hand hand = mapper.readValue(node.get("hand").toString(), Hand.class);
+            PlayArea playArea = mapper.readValue(node.get("playArea").toString(), PlayArea.class);
+            boolean choseStarterCardSide = node.get("choseStarterCardSide").asBoolean();
+            boolean choseObjectiveCard = node.get("chosePersonalObjective").asBoolean();
+            boolean choseColor = node.get("choseColor").asBoolean();
+            TypeReference<ArrayList<ObjectiveCard>> typeReferencePossiblePersonalObjectives = new TypeReference<>() {};
+            List<ObjectiveCard> possiblePersonalObjectives = mapper.readValue(node.get("personalObjectiveOptions").toString(), typeReferencePossiblePersonalObjectives);
+
+            // Deserialize play area attributes
+
+            return new Player(
+                    playerId,
+                    username,
+                    currGamePoints,
+                    currObjectivePoints,
+                    personalObjective,
+                    possiblePersonalObjectives,
+                    starterCard,
+                    color,
+                    hand,
+                    playArea,
+                    choseStarterCardSide,
+                    choseObjectiveCard,
+                    choseColor);
+        }
     }
 }

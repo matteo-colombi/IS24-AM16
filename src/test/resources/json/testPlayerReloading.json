@@ -1,0 +1,85 @@
+{
+  "playerId": 5,
+  "username": "matteo",
+  "personalObjective": {
+    "objectiveType": "pattern",
+    "name": "objective_pattern_5"
+  },
+  "starterCard": {
+    "name": "starter_3"
+  },
+  "hand": {
+    "cards": [
+      {
+        "name": "resource_fungi_6"
+      },
+      {
+        "name": "gold_animal_2"
+      }
+    ]
+  },
+  "playArea": {
+    "cardCount": 3,
+    "resourceAndObjectCounts": {
+      "animal": 1,
+      "plant": 1,
+      "insect": 1,
+      "fungi": 1,
+      "inkwell": 0,
+      "manuscript": 0,
+      "quill": 0,
+      "empty": 0,
+      "blocked": 0
+    },
+    "field": {
+      "{\"x\":1,\"y\":1}": {
+        "name": "resource_animal_10"
+      },
+      "{\"x\":-1,\"y\":1}": {
+        "name": "gold_insect_4"
+      },
+      "{\"x\":0,\"y\":0}": {
+        "name": "starter_3"
+      }
+    },
+    "activeSides": {
+      "{\"name\":\"resource_animal_10\"}": "front",
+      "{\"name\":\"starter_3\"}": "back",
+      "{\"name\":\"gold_insect_4\"}": "back"
+    },
+    "minX": -1,
+    "maxX": 1,
+    "minY": 0,
+    "maxY": 1,
+    "placementOrder": [
+      {
+        "x": 0,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": -1,
+        "y": 1
+      }
+    ]
+  },
+  "choseStarterCardSide": true,
+  "choseColor": true,
+  "personalObjectiveOptions": [
+    {
+      "objectiveType": "resource",
+      "name": "objective_resources_2"
+    },
+    {
+      "objectiveType": "pattern",
+      "name": "objective_pattern_5"
+    }
+  ],
+  "chosePersonalObjective": true,
+  "playerColor": "red",
+  "gamePoints": 7,
+  "objectivePoints": 2
+}
