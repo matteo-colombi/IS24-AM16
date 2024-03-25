@@ -194,36 +194,36 @@ public class CardRegistry {
     }
 
     /**
-     * DOCME
-     * @param name
-     * @return
+     *
+     * @param name The name of the requested objective card.
+     * @return The objective card with said name.
      */
     public static ObjectiveCard getObjectiveCardFromName(String name) {
         return objectiveCardsMap.get(name);
     }
 
     /**
-     * DOCME
-     * @param name
-     * @return
+     *
+     * @param name The name of the requested starter card.
+     * @return The starter card with said name.
      */
     public static StarterCard getStarterCardFromName(String name) {
         return starterCardsMap.get(name);
     }
 
     /**
-     * DOCME
-     * @param name
-     * @return
+     *
+     * @param name The name of the requested gold card.
+     * @return The gold card with said name.
      */
     public static GoldCard getGoldCardFromName(String name) {
         return goldCardsMap.get(name);
     }
 
     /**
-     * DOCME
-     * @param name
-     * @return
+     *
+     * @param name The name of the requested resource card.
+     * @return The resource card with said name.
      */
     public static ResourceCard getResourceCardFromName(String name) {
         return resourceCardsMap.get(name);

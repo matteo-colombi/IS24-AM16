@@ -365,7 +365,7 @@ public class Player implements PlayerModel {
      * @param color The chosen color
      */
     public void setColor(PlayerColor color){
-        if(this.color == null){
+        if(!this.choseColor){
             this.color = color;
             this.choseColor = true;
         }
