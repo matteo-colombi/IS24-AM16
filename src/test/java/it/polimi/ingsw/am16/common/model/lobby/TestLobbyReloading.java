@@ -8,6 +8,7 @@ import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.model.game.Game;
 import it.polimi.ingsw.am16.common.model.game.GameModel;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.util.FilePaths;
 import it.polimi.ingsw.am16.common.util.RNG;
 import org.junit.jupiter.api.Test;
 
@@ -34,11 +35,11 @@ public class TestLobbyReloading {
         game.setPlayerColor(1, PlayerColor.RED);
         game.initializeObjectives();
         game.setPlayerObjective(0, game.getPlayers()[0].getPersonalObjectiveOptions().getFirst());
-        lobbyManager.saveGames("src/test/resources/testSaves");
+        lobbyManager.saveGames(FilePaths.SAVE_DIRECTORY);
 
         lobbyManager = new LobbyManager();
 
-        lobbyManager.loadGames("src/test/resources/testSaves");
+        lobbyManager.loadGames(FilePaths.SAVE_DIRECTORY);
         System.out.println(lobbyManager.getGameIds());
         GameModel reloadedGame = lobbyManager.getGame("YQNL04");
 

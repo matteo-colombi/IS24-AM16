@@ -50,4 +50,9 @@ public final class FilePaths {
      */
     public static final String STARTER_CARDS_JSON = CARDS_JSON + "/starterCards.json";
 
+    /**
+     * The path for the directory where save files should be put.
+     */
+    public static final String SAVE_DIRECTORY = System.getProperty("user.home") + "/codexSaves";
+
 }

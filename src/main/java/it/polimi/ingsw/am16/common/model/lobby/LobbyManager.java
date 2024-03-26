@@ -73,6 +73,8 @@ public class LobbyManager {
      */
     @SuppressWarnings("ResultOfMethodCallIgnored") //Suppressing because we only want to create a new file if it doesn't exist, but write to it regardless of whether it exists or not.
     public void saveGames(String directoryPath) throws IOException {
+        File dir = new File(directoryPath);
+        dir.mkdirs();
         for(String id : games.keySet()) {
             File f = new File(directoryPath + "/" + id + ".json");
             f.createNewFile();
