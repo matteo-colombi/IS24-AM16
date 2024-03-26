@@ -4,7 +4,7 @@ package it.polimi.ingsw.am16.common.util;
  * Class that contains all the static paths for resources.
  */
 public final class FilePaths {
-    private FilePaths() {};
+    private FilePaths() {}
     /**
      * The main path for resources.
      */

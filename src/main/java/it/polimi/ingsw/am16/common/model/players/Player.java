@@ -113,6 +113,7 @@ public class Player implements PlayerModel {
         this.choseStarterCardSide = choseStarterCardSide;
         this.choseObjectiveCard = choseObjectiveCard;
         this.choseColor = choseColor;
+        //FIXME maybe reload from JSON that as well
         this.chat = new Chat(username);
     }
 

@@ -99,7 +99,7 @@ public abstract class Deck<T extends Card> {
     }
 
     /**
-     * Constructs a new Deck with the cards given.
+     * Clears the deck of the existing cards and populates it with the given cards.
      * @param cards The cards to insert in the new Deck.
      */
     protected void setCards(List<T> cards) {

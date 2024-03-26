@@ -61,6 +61,13 @@ public interface PlayerModel {
     ObjectiveCard getPersonalObjective();
 
     /**
+     *
+     * @return The player's two objective cards from which they'll choose their personal
+     * objective
+     */
+    List<ObjectiveCard> getPersonalObjectiveOptions();
+
+    /**
      * @return The player's starter card, regardless of whether they have already chosen the side to use.
      */
     StarterCard getStarterCard();
@@ -69,13 +76,6 @@ public interface PlayerModel {
      * @return The player's board state, giving access only to its non-modifier methods
      */
     PlayAreaModel getPlayArea();
-
-    /**
-     *
-     * @return The player's two objective cards from which they'll choose their personal
-     * objective
-     */
-    List<ObjectiveCard> getPersonalObjectiveOptions();
 
     /**
      *
@@ -95,8 +95,7 @@ public interface PlayerModel {
     boolean getChoseColor();
 
     /**
-     * DOCME
-     * @return
+     * @return The player's ChatModel interface, used to interact with the lobby chat.
      */
     ChatModel getChat();
 }

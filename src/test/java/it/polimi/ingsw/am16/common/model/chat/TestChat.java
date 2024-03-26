@@ -10,9 +10,9 @@ class TestChat {
     void testChat() {
         ChatManager manager = new ChatManager();
 
-        ChatModel chatAldo = new Chat("Aldo");
-        ChatModel chatGiovanni = new Chat("Giovanni42");
-        ChatModel chatGiacomo = new Chat("xXGiacomoXx");
+        Chat chatAldo = new Chat("Aldo");
+        Chat chatGiovanni = new Chat("Giovanni42");
+        Chat chatGiacomo = new Chat("xXGiacomoXx");
         chatAldo.subscribe(manager);
         chatGiacomo.subscribe(manager);
         chatGiovanni.subscribe(manager);

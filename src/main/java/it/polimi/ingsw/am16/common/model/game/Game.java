@@ -574,36 +574,39 @@ public class Game implements GameModel {
     }
 
     /**
-     * @return The deck of gold cards.
+     * @return The deck of gold cards. Used for JSON serialization.
      */
+    @SuppressWarnings("unused") //Suppressing because this method is being used by the JSON serializer.
     public GoldCardsDeck getGoldCardsDeck() {
         return goldCardsDeck;
     }
 
     /**
-     * @return The deck of resource cards.
+     * @return The deck of resource cards. Used for JSON serialization.
      */
+    @SuppressWarnings("unused") //Suppressing because this method is being used by the JSON serializer.
     public ResourceCardsDeck getResourceCardsDeck() {
         return resourceCardsDeck;
     }
 
     /**
-     * @return The deck of objective cards.
+     * @return The deck of objective cards. Used for JSON serialization
      */
+    @SuppressWarnings("unused") //Suppressing because this method is being used by the JSON serializer.
     public ObjectiveCardsDeck getObjectiveCardsDeck() {
         return objectiveCardsDeck;
     }
 
     /**
-     * @return The deck of starter cards.
+     * @return The deck of starter cards. Used for JSON serialization.
      */
+    @SuppressWarnings("unused") //Suppressing because this method is being used by the JSON serializer.
     public StarterCardsDeck getStarterCardsDeck() {
         return starterCardsDeck;
     }
 
     /**
-     * DOCME
-     * @return
+     * @return The {@link ChatManager} for this game.
      */
     public ChatManager getChatManager() {
         return chatManager;

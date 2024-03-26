@@ -5,17 +5,17 @@ import java.util.Date;
 import java.util.Set;
 
 /**
- * DOCME
- * @param senderUsername
- * @param receiverUsernames
- * @param text
- * @param timestamp
+ * Record that holds all the information about a chat message.
+ * @param senderUsername The user who sent the message.
+ * @param receiverUsernames The users the message was sent to.
+ * @param text The message's body text.
+ * @param timestamp The timestamp when this message was sent.
  */
 public record ChatMessage(String senderUsername, Set<String> receiverUsernames, String text, Date timestamp) {
 
     /**
-     * DOCME
-     * @return
+     * Formats the message in a user-friendly way, including the time when it was sent, the sender and the body.
+     * @return The formatted message.
      */
     @Override
     public String toString() {
