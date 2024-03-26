@@ -1,6 +1,14 @@
 package it.polimi.ingsw.am16.common.model.game;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
@@ -11,14 +19,17 @@ import it.polimi.ingsw.am16.common.model.chat.ChatManager;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.model.players.PlayerModel;
+import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.util.RNG;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
  * Class to handle game(s). A game has a unique alphanumeric id and a non-variable number of players.
  */
+@JsonDeserialize(using = Game.Deserializer.class)
 public class Game implements GameModel {
     private final String id;
     private final int numPlayers;
@@ -62,6 +73,63 @@ public class Game implements GameModel {
         this.currentPlayerCount = 0;
         this.availableColors = new ArrayList<>(List.of(PlayerColor.values()));
         this.chatManager = new ChatManager();
+    }
+
+    /**
+     * Constructs a new game with all the given attributes. Used for deserializing from JSON.
+     * @param id The game's id.
+     * @param numPlayers The number of players expected in this game.
+     * @param currentPlayerCount The current number of players in this game.
+     * @param activePlayer The currently active player in this game.
+     * @param startingPlayer The starting player for this game.
+     * @param winnerIds The list of players who have won this game.
+     * @param objectiveCardsDeck The deck of objective cards used for this game.
+     * @param starterCardsDeck The deck of starter cards used for this game.
+     * @param goldCardsDeck The deck of gold cards used for this game.
+     * @param resourceCardsDeck The deck of resource cards used for this game.
+     * @param commonObjectiveCards The common objectives for this game.
+     * @param commonGoldCards The common gold cards from which the players can choose to draw from.
+     * @param commonResourceCards The common resource cards from which the players can choose to draw from.
+     * @param state The game's state.
+     * @param players The players for this game.
+     * @param availableColors The currently available colors from which players can choose.
+     * @param chatManager The game's chat manager.
+     */
+    private Game(
+            String id,
+            int numPlayers,
+            int currentPlayerCount,
+            int activePlayer,
+            int startingPlayer,
+            List<Integer> winnerIds,
+            ObjectiveCardsDeck objectiveCardsDeck,
+            StarterCardsDeck starterCardsDeck,
+            GoldCardsDeck goldCardsDeck,
+            ResourceCardsDeck resourceCardsDeck,
+            ObjectiveCard[] commonObjectiveCards,
+            GoldCard[] commonGoldCards,
+            ResourceCard[] commonResourceCards,
+            GameState state,
+            Player[] players,
+            List<PlayerColor> availableColors,
+            ChatManager chatManager) {
+        this.id = id;
+        this.numPlayers = numPlayers;
+        this.currentPlayerCount = currentPlayerCount;
+        this.activePlayer = activePlayer;
+        this.startingPlayer = startingPlayer;
+        this.winnerIds = winnerIds;
+        this.objectiveCardsDeck = objectiveCardsDeck;
+        this.starterCardsDeck = starterCardsDeck;
+        this.goldCardsDeck = goldCardsDeck;
+        this.resourceCardsDeck = resourceCardsDeck;
+        this.commonObjectiveCards = commonObjectiveCards;
+        this.commonGoldCards = commonGoldCards;
+        this.commonResourceCards = commonResourceCards;
+        this.state = state;
+        this.players = players;
+        this.availableColors = availableColors;
+        this.chatManager = chatManager;
     }
 
     /**
@@ -608,8 +676,87 @@ public class Game implements GameModel {
     /**
      * @return The {@link ChatManager} for this game.
      */
+    @JsonIgnore
     public ChatManager getChatManager() {
         return chatManager;
+    }
+
+    /**
+     * Deserializer used to reload a game from a JSON file.
+     */
+    public static class Deserializer extends StdDeserializer<Game> {
+
+        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+
+        protected Deserializer() {
+            super(Game.class);
+        }
+
+        /**
+         * Reloads a {@link Game} object from the given JSON.
+         * @param p Parsed used for reading JSON content
+         * @param ctxt Context that can be used to access information about
+         *   this deserialization activity.
+         *
+         * @return The deserialized {@link Game}.
+         * @throws IOException Thrown if an exception occurs when reading from the input data.
+         * @throws JacksonException Thrown if an exception occurs during JSON parsing.
+         */
+        @Override
+        public Game deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
+            JsonNode node = p.getCodec().readTree(p);
+
+            String id = node.get("id").asText();
+
+            int numPlayers = node.get("numPlayers").asInt();
+            int currentPlayerCount = node.get("currentPlayerCount").asInt();
+            int activePlayer = node.get("activePlayer").asInt();
+            int startingPlayer = node.get("startingPlayer").asInt();
+
+            TypeReference<ArrayList<Integer>> winnerIdsTypeRef = new TypeReference<>() {};
+            List<Integer> winnerIds = mapper.readValue(node.get("winnerIds").toString(), winnerIdsTypeRef);
+
+            ObjectiveCardsDeck objectiveCardsDeck = mapper.readValue(node.get("objectiveCardsDeck").toString(), ObjectiveCardsDeck.class);
+            StarterCardsDeck starterCardsDeck = mapper.readValue(node.get("starterCardsDeck").toString(), StarterCardsDeck.class);
+            GoldCardsDeck goldCardsDeck = mapper.readValue(node.get("goldCardsDeck").toString(), GoldCardsDeck.class);
+            ResourceCardsDeck resourceCardsDeck = mapper.readValue(node.get("resourceCardsDeck").toString(), ResourceCardsDeck.class);
+
+            ObjectiveCard[] commonObjectiveCards = mapper.readValue(node.get("commonObjectiveCards").toString(), ObjectiveCard[].class);
+            GoldCard[] commonGoldCards = mapper.readValue(node.get("commonGoldCards").toString(), GoldCard[].class);
+            ResourceCard[] commonResourceCards = mapper.readValue(node.get("commonResourceCards").toString(), ResourceCard[].class);
+
+            GameState state = mapper.readValue(node.get("state").toString(), GameState.class);
+
+            Player[] players = mapper.readValue(node.get("players").toString(), Player[].class);
+
+            TypeReference<ArrayList<PlayerColor>> availableColorsTypeRef = new TypeReference<>() {};
+            List<PlayerColor> availableColors = mapper.readValue(node.get("availableColors").toString(), availableColorsTypeRef);
+
+            ChatManager chatManager = new ChatManager();
+            for(Player player : players) {
+                player.getChat().subscribe(chatManager);
+            }
+
+            return new Game(
+                    id,
+                    numPlayers,
+                    currentPlayerCount,
+                    activePlayer,
+                    startingPlayer,
+                    winnerIds,
+                    objectiveCardsDeck,
+                    starterCardsDeck,
+                    goldCardsDeck,
+                    resourceCardsDeck,
+                    commonObjectiveCards,
+                    commonGoldCards,
+                    commonResourceCards,
+                    state,
+                    players,
+                    availableColors,
+                    chatManager
+            );
+        }
     }
 }
 

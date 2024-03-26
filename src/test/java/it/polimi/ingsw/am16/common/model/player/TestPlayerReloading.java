@@ -6,6 +6,8 @@ import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
+import it.polimi.ingsw.am16.common.model.chat.Chat;
+import it.polimi.ingsw.am16.common.model.chat.ChatManager;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -37,6 +40,13 @@ public class TestPlayerReloading {
         player.giveCard(CardRegistry.getResourceCardFromName("resource_animal_10"));
         player.playCard(CardRegistry.getResourceCardFromName("resource_animal_10"), SideType.FRONT, new Position(1, 1));
         player.playCard(CardRegistry.getGoldCardFromName("gold_insect_4"), SideType.BACK, new Position(-1, 1));
+        ChatManager manager = new ChatManager();
+        Player fakePlayer = new Player(5, "L2C");
+        fakePlayer.getChat().subscribe(manager);
+        player.getChat().subscribe(manager);
+        fakePlayer.getChat().sendMessage("I am a message from fakePlayer");
+        player.getChat().sendMessage("This is a chat message!!!", Set.of("L2C", "xLorde"));
+        player.getChat().sendMessage("This is another chat message!");
 
         mapper.writeValue(f, player);
 
@@ -64,6 +74,7 @@ public class TestPlayerReloading {
         assertEquals(player.getPlayArea().getMaxX(), reloadedPlayer.getPlayArea().getMaxX());
         assertEquals(player.getPlayArea().getMinY(), reloadedPlayer.getPlayArea().getMinY());
         assertEquals(player.getPlayArea().getMaxY(), reloadedPlayer.getPlayArea().getMaxY());
-
+        assertEquals(player.getChat().getUsername(), reloadedPlayer.getChat().getUsername());
+        assertEquals(player.getChat().getMessages(), reloadedPlayer.getChat().getMessages());
     }
 }

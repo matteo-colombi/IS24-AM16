@@ -98,7 +98,8 @@ public class Player implements PlayerModel {
             PlayArea playArea,
             boolean choseStarterCardSide,
             boolean choseObjectiveCard,
-            boolean choseColor
+            boolean choseColor,
+            Chat chat
     ) {
         this.playerId = playerId;
         this.username = username;
@@ -113,8 +114,7 @@ public class Player implements PlayerModel {
         this.choseStarterCardSide = choseStarterCardSide;
         this.choseObjectiveCard = choseObjectiveCard;
         this.choseColor = choseColor;
-        //FIXME maybe reload from JSON that as well
-        this.chat = new Chat(username);
+        this.chat = chat;
     }
 
     /**
@@ -447,6 +447,8 @@ public class Player implements PlayerModel {
             boolean choseObjectiveCard = node.get("chosePersonalObjective").asBoolean();
             boolean choseColor = node.get("choseColor").asBoolean();
 
+            Chat chat = mapper.readValue(node.get("chat").toString(), Chat.class);
+
             return new Player(
                     playerId,
                     username,
@@ -460,7 +462,8 @@ public class Player implements PlayerModel {
                     playArea,
                     choseStarterCardSide,
                     choseObjectiveCard,
-                    choseColor);
+                    choseColor,
+                    chat);
         }
     }
 }

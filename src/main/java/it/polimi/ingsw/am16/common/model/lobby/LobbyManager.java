@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Class to manage multiple games.
@@ -43,12 +44,27 @@ public class LobbyManager {
     }
 
     /**
+     * Removes the game with the given id from the lobby manager, if present.
+     * @param id The id of the game to remove.
+     */
+    public void removeGame(String id) {
+        games.remove(id);
+    }
+
+    /**
      * Retrieves the lobby with the given id.
      * @param id The lobby's id.
      * @return The lobby with the given id.
      */
     public GameModel getGame(String id) {
         return games.get(id);
+    }
+
+    /**
+     * @return A {@link Set} containing all the current ids of games.
+     */
+    public Set<String> getGameIds() {
+        return games.keySet();
     }
 
     /**

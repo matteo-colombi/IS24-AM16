@@ -45,6 +45,9 @@ public class ChatManager {
             if (chats.containsKey(username))
                 chats.get(username).receiveMessage(message);
         }
+        if (!receiverUsernames.contains(senderUsername)) {
+            chats.get(senderUsername).receiveMessage(message);
+        }
     }
 
     /**
