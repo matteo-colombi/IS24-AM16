@@ -33,7 +33,7 @@ public class CardRegistry {
      */
     public static boolean initializeRegistry() {
         if (initialized)
-            return false;
+            return true;
 
         //FIXME maybe move this somewhere else where it makes more sense
         CornerType.bindToResourcesAndObjects();

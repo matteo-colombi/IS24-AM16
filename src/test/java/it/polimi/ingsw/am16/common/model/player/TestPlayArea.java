@@ -70,7 +70,7 @@ public class TestPlayArea {
         // check that objects are counted correctly
         assertEquals(1, objectCounts.get(ObjectType.QUILL));
 
-        playArea.playCard(goldCard, SideType.FRONT, new Position(-2, 2));
+        p.playCard(goldCard, SideType.FRONT, new Position(-2, 2));
 
         resourceCounts = playArea.getResourceCounts();
         objectCounts = playArea.getObjectCounts();
@@ -94,10 +94,10 @@ public class TestPlayArea {
         assertThrows(IllegalMoveException.class, () -> playArea.playCard(fungiResource, SideType.FRONT, new Position(5, -33)));
 
         animalCard = CardRegistry.getResourceCards().get(21);
-        playArea.playCard(animalCard, SideType.FRONT, new Position(-1, 3));
+        p.playCard(animalCard, SideType.FRONT, new Position(-1, 3));
 
         goldCard = CardRegistry.getGoldCards().get(25);
-        playArea.playCard(goldCard, SideType.FRONT, new Position(1, 1));
+        p.playCard(goldCard, SideType.FRONT, new Position(1, 1));
 
         // check that points were awarded correctly
         assertEquals(6, p.getGamePoints());
@@ -108,10 +108,10 @@ public class TestPlayArea {
         assertThrows(IllegalMoveException.class, () -> playArea.playCard(finalAnimalCard, SideType.BACK, new Position(1, 2)));
 
         animalCard = CardRegistry.getResourceCards().get(20);
-        playArea.playCard(animalCard, SideType.BACK, new Position(0, 4));
+        p.playCard(animalCard, SideType.BACK, new Position(0, 4));
 
         GoldCard omegaAnimalCard = CardRegistry.getGoldCards().get(29);
-        playArea.playCard(omegaAnimalCard, SideType.FRONT, new Position(1, 5));
+        p.playCard(omegaAnimalCard, SideType.FRONT, new Position(1, 5));
 
         // check that points were awarded correctly
         assertEquals(11, p.getGamePoints());
