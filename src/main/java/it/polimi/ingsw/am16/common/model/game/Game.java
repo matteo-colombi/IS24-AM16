@@ -7,6 +7,7 @@ import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.cards.decks.*;
+import it.polimi.ingsw.am16.common.model.chat.ChatManager;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.model.players.PlayerModel;
@@ -35,6 +36,7 @@ public class Game implements GameModel {
     private GameState state;
     private final Player[] players;
     private final List<PlayerColor> availableColors;
+    private final ChatManager chatManager;
 
     /**
      * Creates a game, initializing its ID as well as its number of players to a chosen value, its
@@ -59,6 +61,7 @@ public class Game implements GameModel {
         this.players = new Player[numPlayers];
         this.currentPlayerCount = 0;
         this.availableColors = new ArrayList<>(List.of(PlayerColor.values()));
+        this.chatManager = new ChatManager();
     }
 
     /**
@@ -87,6 +90,7 @@ public class Game implements GameModel {
         }
 
         Player player = new Player(currentPlayerCount, username);
+        player.getChat().subscribe(chatManager);
         players[currentPlayerCount] = player;
         currentPlayerCount++;
         return currentPlayerCount-1;
@@ -595,6 +599,14 @@ public class Game implements GameModel {
      */
     public StarterCardsDeck getStarterCardsDeck() {
         return starterCardsDeck;
+    }
+
+    /**
+     * DOCME
+     * @return
+     */
+    public ChatManager getChatManager() {
+        return chatManager;
     }
 }
 

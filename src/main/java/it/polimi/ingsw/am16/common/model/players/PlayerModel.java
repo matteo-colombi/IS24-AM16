@@ -2,6 +2,7 @@ package it.polimi.ingsw.am16.common.model.players;
 
 import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
 import it.polimi.ingsw.am16.common.model.cards.StarterCard;
+import it.polimi.ingsw.am16.common.model.chat.ChatModel;
 import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
 
 import java.util.List;
@@ -92,5 +93,11 @@ public interface PlayerModel {
      * @return whether the player has already chosen their color.
      */
     boolean getChoseColor();
+
+    /**
+     * DOCME
+     * @return
+     */
+    ChatModel getChat();
 }
 

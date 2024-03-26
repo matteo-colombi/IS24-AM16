@@ -13,6 +13,8 @@ import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.chat.Chat;
+import it.polimi.ingsw.am16.common.model.chat.ChatManager;
 import it.polimi.ingsw.am16.common.model.players.hand.Hand;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
@@ -43,6 +45,7 @@ public class Player implements PlayerModel {
     private boolean choseStarterCardSide;
     private boolean choseObjectiveCard;
     private boolean choseColor;
+    private final Chat chat;
 
     /**
      * Creates a new player, initializing their ID and username to a chosen value, and their
@@ -62,6 +65,7 @@ public class Player implements PlayerModel {
         this.choseObjectiveCard = false;
         this.choseStarterCardSide = false;
         this.choseColor = false;
+        this.chat = new Chat(username);
     }
 
     /**
@@ -109,6 +113,7 @@ public class Player implements PlayerModel {
         this.choseStarterCardSide = choseStarterCardSide;
         this.choseObjectiveCard = choseObjectiveCard;
         this.choseColor = choseColor;
+        this.chat = new Chat(username);
     }
 
     /**
@@ -362,6 +367,10 @@ public class Player implements PlayerModel {
             this.color = color;
             this.choseColor = true;
         }
+    }
+
+    public Chat getChat() {
+        return chat;
     }
 
     /**
