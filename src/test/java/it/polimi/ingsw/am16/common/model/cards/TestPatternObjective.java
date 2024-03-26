@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestPatternObjective {
 
+    private CardRegistry registry;
     private List<ObjectiveCard> objectiveCards;
     private ObjectiveCard objective;
     private StarterCard starterCard;
@@ -27,11 +28,11 @@ public class TestPatternObjective {
     }
 
     public void initialize() {
-        CardRegistry.initializeRegistry();
+        registry = CardRegistry.getRegistry();
 
-        objectiveCards = CardRegistry.getObjectiveCards();
+        objectiveCards = registry.getObjectiveCards();
 
-        starterCard = CardRegistry.getStarterCards().getFirst();
+        starterCard = registry.getStarterCards().getFirst();
         assertEquals("starter_1", starterCard.getName());
 
         testPlayer = new Player(0, "testPlayer");
@@ -43,8 +44,8 @@ public class TestPatternObjective {
 
         assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        PlayableCard fungiCard = CardRegistry.getResourceCards().getFirst();
-        PlayableCard insectCard = CardRegistry.getResourceCards().get(30);
+        PlayableCard fungiCard = registry.getResourceCards().getFirst();
+        PlayableCard insectCard = registry.getResourceCards().get(30);
         assertEquals(ResourceType.FUNGI, fungiCard.getType());
         assertEquals(ResourceType.INSECT, insectCard.getType());
 

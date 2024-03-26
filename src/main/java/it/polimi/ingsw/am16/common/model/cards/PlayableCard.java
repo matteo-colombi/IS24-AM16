@@ -33,7 +33,7 @@ public abstract class PlayableCard extends BoardCard {
      */
     public static class Deserializer extends StdDeserializer<PlayableCard> {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         protected Deserializer() {
             super(PlayableCard.class);

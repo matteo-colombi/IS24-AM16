@@ -79,7 +79,7 @@ public abstract class BoardCard extends Card {
      */
     public static class BoardCardSerializer extends JsonSerializer<BoardCard> {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         /**
          * Serializes a {@link BoardCard}. This serializer writes only the card's name.
@@ -100,7 +100,7 @@ public abstract class BoardCard extends Card {
      */
     public static class Deserializer extends StdDeserializer<BoardCard> {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         protected Deserializer() {
             super(BoardCard.class);
@@ -132,7 +132,7 @@ public abstract class BoardCard extends Card {
      */
     public static class KeyDeserializer extends com.fasterxml.jackson.databind.KeyDeserializer {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         /**
          * Deserializes the card using the standard {@link BoardCard} deserializer.

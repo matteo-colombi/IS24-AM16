@@ -20,7 +20,7 @@ public class TestLobbyReloading {
 
     @Test
     public void testLobby() throws UnexpectedActionException, NoStarterCardException, UnknownObjectiveCardException, IOException {
-        CardRegistry.initializeRegistry();
+        CardRegistry.getRegistry();
         RNG.setRNGSeed(0);
         LobbyManager lobbyManager = new LobbyManager();
         String newId = lobbyManager.createGame(2);

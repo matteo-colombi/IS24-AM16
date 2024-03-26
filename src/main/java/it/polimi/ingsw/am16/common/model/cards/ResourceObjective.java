@@ -59,7 +59,7 @@ public final class ResourceObjective extends ObjectiveCard {
      */
     public static class Deserializer extends StdDeserializer<ResourceObjective> {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         protected Deserializer() {
             super(ResourceObjective.class);
@@ -80,7 +80,7 @@ public final class ResourceObjective extends ObjectiveCard {
             JsonNode node = p.getCodec().readTree(p);
             String name = node.get("name").asText();
             if (CardRegistry.isInitialized()) {
-                return (ResourceObjective) CardRegistry.getObjectiveCardFromName(name);
+                return (ResourceObjective) CardRegistry.getRegistry().getObjectiveCardFromName(name);
             }
             int points = node.get("points").asInt();
             ResourceType type = mapper.readValue(node.get("resourceType").toString(), ResourceType.class);

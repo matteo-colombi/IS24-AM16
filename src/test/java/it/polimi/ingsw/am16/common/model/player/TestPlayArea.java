@@ -16,12 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class TestPlayArea {
     @Test
     public void testPlayArea() throws IllegalMoveException, UnknownObjectiveCardException {
-        CardRegistry.initializeRegistry();
+        CardRegistry registry = CardRegistry.getRegistry();
 
         Player p = new Player(0, "cornerable");
         PlayArea playArea = p.getPlayArea();
 
-        ResourceCard plantResource = CardRegistry.getResourceCards().get(10);
+        ResourceCard plantResource = registry.getResourceCards().get(10);
 
         // check that you can't place isolated cards (no starting card yet)
         assertThrows(IllegalMoveException.class, () -> playArea.playCard(plantResource, SideType.BACK, new Position(0, 0)));
@@ -30,7 +30,7 @@ public class TestPlayArea {
         assertEquals(0, playArea.getMinY());
         assertEquals(0, playArea.getMaxY());
 
-        StarterCard starter = CardRegistry.getStarterCards().get(4);
+        StarterCard starter = registry.getStarterCards().get(4);
         playArea.setStarterCard(starter, SideType.BACK);
         assertEquals(0, playArea.getMinX());
         assertEquals(0, playArea.getMaxX());
@@ -47,7 +47,7 @@ public class TestPlayArea {
         assertThrows(IllegalMoveException.class, () -> playArea.playCard(plantResource, SideType.FRONT, new Position(1, -1)));
 
         // check that you can't place a card for which you don't have the resources
-        final GoldCard finalGoldCard = CardRegistry.getGoldCards().get(9);
+        final GoldCard finalGoldCard = registry.getGoldCards().get(9);
         assertThrows(IllegalMoveException.class, () -> playArea.playCard(finalGoldCard, SideType.FRONT, new Position(1, 1)));
 
         playArea.playCard(plantResource, SideType.FRONT, new Position(-1, 1));
@@ -60,9 +60,9 @@ public class TestPlayArea {
         assertEquals(1, resourceCounts.get(ResourceType.ANIMAL));
         assertEquals(1, resourceCounts.get(ResourceType.INSECT));
 
-        GoldCard goldCard = CardRegistry.getGoldCards().get(10);
+        GoldCard goldCard = registry.getGoldCards().get(10);
 
-        ResourceCard animalCard = CardRegistry.getResourceCards().get(26);
+        ResourceCard animalCard = registry.getResourceCards().get(26);
         playArea.playCard(animalCard, SideType.FRONT, new Position(0, 2));
 
         objectCounts = playArea.getObjectCounts();
@@ -88,15 +88,15 @@ public class TestPlayArea {
         assertEquals(0, objectCounts.get(ObjectType.MANUSCRIPT));
         assertEquals(0, objectCounts.get(ObjectType.INKWELL));
 
-        ResourceCard fungiResource = CardRegistry.getResourceCards().getFirst();
+        ResourceCard fungiResource = registry.getResourceCards().getFirst();
 
         // check that you can't place an isolated card (with starter card this time)
         assertThrows(IllegalMoveException.class, () -> playArea.playCard(fungiResource, SideType.FRONT, new Position(5, -33)));
 
-        animalCard = CardRegistry.getResourceCards().get(21);
+        animalCard = registry.getResourceCards().get(21);
         p.playCard(animalCard, SideType.FRONT, new Position(-1, 3));
 
-        goldCard = CardRegistry.getGoldCards().get(25);
+        goldCard = registry.getGoldCards().get(25);
         p.playCard(goldCard, SideType.FRONT, new Position(1, 1));
 
         // check that points were awarded correctly
@@ -107,10 +107,10 @@ public class TestPlayArea {
         final ResourceCard finalAnimalCard = animalCard;
         assertThrows(IllegalMoveException.class, () -> playArea.playCard(finalAnimalCard, SideType.BACK, new Position(1, 2)));
 
-        animalCard = CardRegistry.getResourceCards().get(20);
+        animalCard = registry.getResourceCards().get(20);
         p.playCard(animalCard, SideType.BACK, new Position(0, 4));
 
-        GoldCard omegaAnimalCard = CardRegistry.getGoldCards().get(29);
+        GoldCard omegaAnimalCard = registry.getGoldCards().get(29);
         p.playCard(omegaAnimalCard, SideType.FRONT, new Position(1, 5));
 
         // check that points were awarded correctly

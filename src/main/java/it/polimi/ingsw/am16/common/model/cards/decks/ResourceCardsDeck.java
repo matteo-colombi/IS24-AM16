@@ -34,6 +34,6 @@ public class ResourceCardsDeck extends Deck<ResourceCard> {
      */
     @Override
     public void initialize() {
-        addCards(CardRegistry.getResourceCards());
+        addCards(CardRegistry.getRegistry().getResourceCards());
     }
 }

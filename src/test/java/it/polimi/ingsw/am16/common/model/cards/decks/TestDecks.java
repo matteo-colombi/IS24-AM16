@@ -15,7 +15,7 @@ public class TestDecks {
 
     @Test
     public void testDecks() {
-        CardRegistry.initializeRegistry();
+        CardRegistry.getRegistry();
         testResourceDeck(DeckFactory.getResourceCardsDeck());
         testGoldDeck(DeckFactory.getGoldCardsDeck());
         testObjectiveDeck(DeckFactory.getObjectiveCardsDeck());

@@ -10,62 +10,62 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Contains all the cards present in the game.
+ * Singleton object that contains all the cards present in the game.
  */
 public class CardRegistry {
 
-    private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
-    private static boolean initialized = false;
-    private static List<ObjectiveCard> objectiveCards;
-    private static List<StarterCard> starterCards;
-    private static List<GoldCard> goldCards;
-    private static List<ResourceCard> resourceCards;
-    private static Map<String, ObjectiveCard> objectiveCardsMap;
-    private static Map<String, StarterCard> starterCardsMap;
-    private static Map<String, GoldCard> goldCardsMap;
-    private static Map<String, ResourceCard> resourceCardsMap;
+    private static CardRegistry instance = null;
 
-    private CardRegistry() {}
+    private final ObjectMapper mapper = JsonMapper.getObjectMapper();
+    private List<ObjectiveCard> objectiveCards;
+    private List<StarterCard> starterCards;
+    private List<GoldCard> goldCards;
+    private List<ResourceCard> resourceCards;
+    private Map<String, ObjectiveCard> objectiveCardsMap;
+    private Map<String, StarterCard> starterCardsMap;
+    private Map<String, GoldCard> goldCardsMap;
+    private Map<String, ResourceCard> resourceCardsMap;
+
+    /**
+     * @return The registry instance.
+     */
+    public static CardRegistry getRegistry() {
+        if (instance == null) {
+            try {
+                instance = new CardRegistry();
+            } catch (IOException e) {
+                System.err.println("Error initializing card registry: IOException");
+            }
+        }
+        return instance;
+    }
+
+    private CardRegistry() throws IOException {
+        initializeRegistry();
+    }
+
+    /**
+     * @return Whether the card registry has already been initialized.
+     */
+    public static boolean isInitialized() {
+        return instance != null;
+    }
 
     /**
      * Initializes the card registry with all the existing cards. The cards are taken from
      * the paths specified in {@link FilePaths}.
      */
-    public static boolean initializeRegistry() {
-        if (initialized)
-            return true;
-
+    private void initializeRegistry() throws IOException {
         //FIXME maybe move this somewhere else where it makes more sense
         CornerType.bindToResourcesAndObjects();
         ObjectType.bindToCorners();
         ResourceType.bindToCorners();
 
-        try{
-            initializePlayableCardsBackSides();
-            initializeResourceCards();
-            initializeGoldCards();
-            initializeStarterCards();
-            initializeObjectiveCards();
-            initialized = true;
-            return true;
-        } catch (IOException e) {
-            //TODO Log the error
-            e.printStackTrace();
-            initialized = false;
-            return false;
-        } catch (Exception e) {
-            //TODO Log the error
-            e.printStackTrace();
-            initialized = false;
-            return false;
-        }
-    }
-
-    /**
-     * @return <code>true</code> if the card registry has already been initialized, <code>false</code> otherwise.
-     */
-    public static boolean isInitialized() {
-        return initialized;
+        initializePlayableCardsBackSides();
+        initializeResourceCards();
+        initializeGoldCards();
+        initializeStarterCards();
+        initializeObjectiveCards();
     }
 
     /**
@@ -73,7 +73,7 @@ public class CardRegistry {
      * The JSON file is taken from {@link FilePaths}<code>.PLAYABLE_CARDS_BACK_SIDES_JSON</code>.
      * @throws IOException If the JSON file is not found.
      */
-    private static void initializePlayableCardsBackSides() throws IOException {
+    private void initializePlayableCardsBackSides() throws IOException {
         File f = new File(FilePaths.PLAYABLE_CARDS_BACK_SIDES_JSON);
         JsonNode root = mapper.readTree(f);
         CardSide.addCommonSide("fungiBack", mapper.readValue(root.get("fungiBack").toString(), CardSide.class));
@@ -87,7 +87,7 @@ public class CardRegistry {
      * The JSON file is taken from {@link FilePaths}<code>.RESOURCE_CARDS_JSON</code>.
      * @throws IOException If the JSON file is not found.
      */
-    private static void initializeResourceCards() throws IOException {
+    private void initializeResourceCards() throws IOException {
         File f = new File(FilePaths.RESOURCE_CARDS_JSON);
         JsonNode root = mapper.readTree(f);
         ResourceCard[] fungiResourceCards = mapper.readValue(root.get("fungiCards").toString(), ResourceCard[].class);
@@ -111,7 +111,7 @@ public class CardRegistry {
      * The JSON file is taken from {@link FilePaths}<code>.GOLD_CARDS_JSON</code>.
      * @throws IOException If the JSON file is not found.
      */
-    private static void initializeGoldCards() throws IOException {
+    private void initializeGoldCards() throws IOException {
         File f = new File(FilePaths.GOLD_CARDS_JSON);
         JsonNode root = mapper.readTree(f);
         GoldCard[] fungiGoldCards = mapper.readValue(root.get("fungiCards").toString(), GoldCard[].class);
@@ -135,7 +135,7 @@ public class CardRegistry {
      * The JSON file is taken from {@link FilePaths}<code>.STARTER_CARDS_JSON</code>.
      * @throws IOException If the JSON file is not found.
      */
-    private static void initializeStarterCards() throws IOException {
+    private void initializeStarterCards() throws IOException {
         File f = new File(FilePaths.STARTER_CARDS_JSON);
         JsonNode root = mapper.readTree(f);
         starterCards = List.of(mapper.readValue(root.get("starterCards").toString(), StarterCard[].class));
@@ -150,7 +150,7 @@ public class CardRegistry {
      * The JSON file is taken from {@link FilePaths}<code>.OBJECTIVE_CARDS_JSON</code>.
      * @throws IOException If the JSON file is not found.
      */
-    private static void initializeObjectiveCards() throws IOException {
+    private void initializeObjectiveCards() throws IOException {
         File f = new File(FilePaths.OBJECTIVE_CARDS_JSON);
         JsonNode root = mapper.readTree(f);
         objectiveCards = List.of(mapper.readValue(root.get("objectiveCards").toString(), ObjectiveCard[].class));
@@ -164,7 +164,7 @@ public class CardRegistry {
      * Returns an unmodifiable list of all the Objective Cards in the game.
      * @return An unmodifiable {@link List<ObjectiveCard>}.
      */
-    public static List<ObjectiveCard> getObjectiveCards() {
+    public List<ObjectiveCard> getObjectiveCards() {
         return objectiveCards;
     }
 
@@ -172,7 +172,7 @@ public class CardRegistry {
      * Returns an unmodifiable list of all the Starter Cards in the game.
      * @return An unmodifiable {@link List<StarterCard>}.
      */
-    public static List<StarterCard> getStarterCards() {
+    public List<StarterCard> getStarterCards() {
         return starterCards;
     }
 
@@ -180,7 +180,7 @@ public class CardRegistry {
      * Returns an unmodifiable list of all the Gold Cards in the game.
      * @return An unmodifiable {@link List} of {@link GoldCard}.
      */
-    public static List<GoldCard> getGoldCards() {
+    public List<GoldCard> getGoldCards() {
         return goldCards;
     }
 
@@ -188,7 +188,7 @@ public class CardRegistry {
      * Returns an unmodifiable list of all the Resource Cards in the game.
      * @return An unmodifiable {@link List} of {@link ResourceCard}.
      */
-    public static List<ResourceCard> getResourceCards() {
+    public List<ResourceCard> getResourceCards() {
         return resourceCards;
     }
 
@@ -197,7 +197,7 @@ public class CardRegistry {
      * @param name The name of the requested objective card.
      * @return The objective card with said name.
      */
-    public static ObjectiveCard getObjectiveCardFromName(String name) {
+    public ObjectiveCard getObjectiveCardFromName(String name) {
         return objectiveCardsMap.get(name);
     }
 
@@ -206,7 +206,7 @@ public class CardRegistry {
      * @param name The name of the requested starter card.
      * @return The starter card with said name.
      */
-    public static StarterCard getStarterCardFromName(String name) {
+    public StarterCard getStarterCardFromName(String name) {
         return starterCardsMap.get(name);
     }
 
@@ -215,7 +215,7 @@ public class CardRegistry {
      * @param name The name of the requested gold card.
      * @return The gold card with said name.
      */
-    public static GoldCard getGoldCardFromName(String name) {
+    public GoldCard getGoldCardFromName(String name) {
         return goldCardsMap.get(name);
     }
 
@@ -224,7 +224,7 @@ public class CardRegistry {
      * @param name The name of the requested resource card.
      * @return The resource card with said name.
      */
-    public static ResourceCard getResourceCardFromName(String name) {
+    public ResourceCard getResourceCardFromName(String name) {
         return resourceCardsMap.get(name);
     }
 }

@@ -118,7 +118,7 @@ public class Chat implements ChatModel {
      */
     public static class Deserializer extends StdDeserializer<Chat> {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         public Deserializer() {
             super(Chat.class);

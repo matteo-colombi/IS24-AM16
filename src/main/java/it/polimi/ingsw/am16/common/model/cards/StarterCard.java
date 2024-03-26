@@ -40,7 +40,7 @@ public final class StarterCard extends BoardCard {
      */
     static class Deserializer extends StdDeserializer<StarterCard> {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         protected Deserializer() {
             super(StarterCard.class);
@@ -61,7 +61,7 @@ public final class StarterCard extends BoardCard {
             JsonNode node = p.getCodec().readTree(p);
             String name = node.get("name").asText();
             if (CardRegistry.isInitialized()) {
-                return CardRegistry.getStarterCardFromName(name);
+                return CardRegistry.getRegistry().getStarterCardFromName(name);
             }
             CardSide frontSide = mapper.readValue(node.get("frontSide").toString(), CardSide.class);
             CardSide backSide = mapper.readValue(node.get("backSide").toString(), CardSide.class);

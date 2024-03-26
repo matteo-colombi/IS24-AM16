@@ -34,6 +34,6 @@ public class StarterCardsDeck extends Deck<StarterCard> {
      */
     @Override
     public void initialize() {
-        addCards(CardRegistry.getStarterCards());
+        addCards(CardRegistry.getRegistry().getStarterCards());
     }
 }

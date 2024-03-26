@@ -13,14 +13,14 @@ public class TestResourceObjective {
 
     @Test
     public void testResourceObjective() throws NoStarterCardException, UnknownObjectiveCardException, IllegalMoveException {
-        CardRegistry.initializeRegistry();
+        CardRegistry registry = CardRegistry.getRegistry();
 
-        ObjectiveCard obj1 = CardRegistry.getObjectiveCards().get(8);
-        ObjectiveCard obj2 = CardRegistry.getObjectiveCards().get(9);
-        ObjectiveCard obj3 = CardRegistry.getObjectiveCards().get(10);
-        ObjectiveCard obj4 = CardRegistry.getObjectiveCards().get(11);
+        ObjectiveCard obj1 = registry.getObjectiveCards().get(8);
+        ObjectiveCard obj2 = registry.getObjectiveCards().get(9);
+        ObjectiveCard obj3 = registry.getObjectiveCards().get(10);
+        ObjectiveCard obj4 = registry.getObjectiveCards().get(11);
 
-        StarterCard starter = CardRegistry.getStarterCards().getFirst();
+        StarterCard starter = registry.getStarterCards().getFirst();
 
         Player pObj1 = new Player(0, "testPlayer");
         Player pObj2 = new Player(0, "testPlayer");
@@ -45,10 +45,10 @@ public class TestResourceObjective {
         pObj4.setObjectiveCard(obj4);
 
 
-        PlayableCard withFungi = CardRegistry.getResourceCards().getFirst();
-        PlayableCard withPlant = CardRegistry.getResourceCards().get(10);
-        PlayableCard withAnimal = CardRegistry.getResourceCards().get(20);
-        PlayableCard withInsect = CardRegistry.getResourceCards().get(30);
+        PlayableCard withFungi = registry.getResourceCards().getFirst();
+        PlayableCard withPlant = registry.getResourceCards().get(10);
+        PlayableCard withAnimal = registry.getResourceCards().get(20);
+        PlayableCard withInsect = registry.getResourceCards().get(30);
 
         assertEquals(0, pObj1.getObjectivePoints());
 

@@ -6,10 +6,10 @@ import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
-import it.polimi.ingsw.am16.common.model.chat.Chat;
 import it.polimi.ingsw.am16.common.model.chat.ChatManager;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
 import org.junit.jupiter.api.Test;
 
@@ -23,28 +23,39 @@ public class TestPlayerReloading {
 
     @Test
     void testPlayerReloading() throws NoStarterCardException, UnknownObjectiveCardException, IllegalMoveException, IOException {
-        CardRegistry.initializeRegistry();
-        ObjectMapper mapper = new ObjectMapper();
+        CardRegistry registry = CardRegistry.getRegistry();
+        ObjectMapper mapper = JsonMapper.getObjectMapper();
+
         File f = new File("src/test/resources/json/testPlayerReloading.json");
+
         Player player = new Player(5, "matteo");
-        player.giveStarterCard(CardRegistry.getStarterCardFromName("starter_3"));
+
+        player.giveStarterCard(registry.getStarterCardFromName("starter_3"));
         player.setColor(PlayerColor.RED);
         player.chooseStarterCardSide(SideType.BACK);
-        player.giveObjectiveOptions(CardRegistry.getObjectiveCardFromName("objective_resources_2"), CardRegistry.getObjectiveCardFromName("objective_pattern_5"));
-        player.setObjectiveCard(CardRegistry.getObjectiveCardFromName("objective_pattern_5"));
+
+        player.giveObjectiveOptions(registry.getObjectiveCardFromName("objective_resources_2"), registry.getObjectiveCardFromName("objective_pattern_5"));
+        player.setObjectiveCard(registry.getObjectiveCardFromName("objective_pattern_5"));
+
         player.addGamePoints(6);
         player.addObjectivePoints(2);
-        player.giveCard(CardRegistry.getResourceCardFromName("resource_fungi_6"));
-        player.giveCard(CardRegistry.getGoldCardFromName("gold_animal_2"));
-        player.giveCard(CardRegistry.getGoldCardFromName("gold_insect_4"));
-        player.giveCard(CardRegistry.getResourceCardFromName("resource_animal_10"));
-        player.playCard(CardRegistry.getResourceCardFromName("resource_animal_10"), SideType.FRONT, new Position(1, 1));
-        player.playCard(CardRegistry.getGoldCardFromName("gold_insect_4"), SideType.BACK, new Position(-1, 1));
+
+        player.giveCard(registry.getResourceCardFromName("resource_fungi_6"));
+        player.giveCard(registry.getGoldCardFromName("gold_animal_2"));
+        player.giveCard(registry.getGoldCardFromName("gold_insect_4"));
+        player.giveCard(registry.getResourceCardFromName("resource_animal_10"));
+
+        player.playCard(registry.getResourceCardFromName("resource_animal_10"), SideType.FRONT, new Position(1, 1));
+        player.playCard(registry.getGoldCardFromName("gold_insect_4"), SideType.BACK, new Position(-1, 1));
+
         ChatManager manager = new ChatManager();
+
         Player fakePlayer = new Player(5, "L2C");
         fakePlayer.getChat().subscribe(manager);
         player.getChat().subscribe(manager);
+
         fakePlayer.getChat().sendMessage("I am a message from fakePlayer");
+
         player.getChat().sendMessage("This is a chat message!!!", Set.of("L2C", "xLorde"));
         player.getChat().sendMessage("This is another chat message!");
 

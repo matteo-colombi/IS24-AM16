@@ -43,7 +43,7 @@ public final class GoldCard extends PlayableCard {
      */
     static class Deserializer extends StdDeserializer<GoldCard> {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         protected Deserializer() {
             super(GoldCard.class);
@@ -64,7 +64,7 @@ public final class GoldCard extends PlayableCard {
             JsonNode node = p.getCodec().readTree(p);
             String name = node.get("name").asText();
             if (CardRegistry.isInitialized()) {
-                return CardRegistry.getGoldCardFromName(name);
+                return CardRegistry.getRegistry().getGoldCardFromName(name);
             }
             CardSide frontSide = mapper.readValue(node.get("frontSide").toString(), CardSide.class);
             CardSide backSide = mapper.readValue(node.get("backSide").toString(), CardSide.class);

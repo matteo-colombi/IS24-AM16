@@ -2,14 +2,16 @@ package it.polimi.ingsw.am16.common.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public enum JsonMapper {
-    INSTANCE;
+public class JsonMapper {
 
-    JsonMapper() {}
+    private static ObjectMapper instance = null;
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private JsonMapper() { }
 
-    public ObjectMapper getObjectMapper() {
-        return mapper;
+    public static ObjectMapper getObjectMapper() {
+        if(instance == null) {
+            instance = new ObjectMapper();
+        }
+        return instance;
     }
 }

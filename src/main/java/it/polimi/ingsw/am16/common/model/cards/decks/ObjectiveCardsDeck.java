@@ -34,6 +34,6 @@ public class ObjectiveCardsDeck extends Deck<ObjectiveCard> {
      */
     @Override
     public void initialize() {
-        addCards(CardRegistry.getObjectiveCards());
+        addCards(CardRegistry.getRegistry().getObjectiveCards());
     }
 }

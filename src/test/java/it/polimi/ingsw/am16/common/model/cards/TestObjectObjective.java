@@ -13,14 +13,14 @@ public class TestObjectObjective {
 
     @Test
     public void testObjectObjective() throws NoStarterCardException, IllegalMoveException, UnknownObjectiveCardException {
-        CardRegistry.initializeRegistry();
+        CardRegistry registry = CardRegistry.getRegistry();
 
-        ObjectiveCard obj1 = CardRegistry.getObjectiveCards().get(12);
-        ObjectiveCard obj2 = CardRegistry.getObjectiveCards().get(13);
-        ObjectiveCard obj3 = CardRegistry.getObjectiveCards().get(14);
-        ObjectiveCard obj4 = CardRegistry.getObjectiveCards().get(15);
+        ObjectiveCard obj1 = registry.getObjectiveCards().get(12);
+        ObjectiveCard obj2 = registry.getObjectiveCards().get(13);
+        ObjectiveCard obj3 = registry.getObjectiveCards().get(14);
+        ObjectiveCard obj4 = registry.getObjectiveCards().get(15);
 
-        StarterCard starter = CardRegistry.getStarterCards().getFirst();
+        StarterCard starter = registry.getStarterCards().getFirst();
 
         Player pObj1 = new Player(0, "testPlayer");
         Player pObj2 = new Player(0, "testPlayer");
@@ -45,9 +45,9 @@ public class TestObjectObjective {
         pObj4.setObjectiveCard(obj4);
 
 
-        PlayableCard withQuill = CardRegistry.getResourceCards().get(34);
-        PlayableCard withManuscript = CardRegistry.getResourceCards().get(35);
-        PlayableCard withInkwell = CardRegistry.getResourceCards().get(36);
+        PlayableCard withQuill = registry.getResourceCards().get(34);
+        PlayableCard withManuscript = registry.getResourceCards().get(35);
+        PlayableCard withInkwell = registry.getResourceCards().get(36);
 
         assertEquals(0, pObj1.getObjectivePoints());
 

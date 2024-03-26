@@ -23,7 +23,7 @@ public class TestGameModel {
 
     @Test
     public void testGame() throws UnexpectedActionException, UnknownObjectiveCardException, IllegalMoveException, NoStarterCardException {
-        CardRegistry.initializeRegistry();
+        CardRegistry.getRegistry();
         RNG.setRNGSeed(51);
 
         game = new Game("69xD420", 2);

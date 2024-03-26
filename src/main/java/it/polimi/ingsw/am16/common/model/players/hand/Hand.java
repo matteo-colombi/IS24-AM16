@@ -93,7 +93,7 @@ public class Hand implements HandModel{
      */
     public static class Deserializer extends StdDeserializer<Hand> {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         protected Deserializer() {
             super(Hand.class);

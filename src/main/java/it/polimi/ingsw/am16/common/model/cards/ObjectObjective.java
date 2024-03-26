@@ -67,7 +67,7 @@ public final class ObjectObjective extends ObjectiveCard {
      */
     public static class Deserializer extends StdDeserializer<ObjectObjective> {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         protected Deserializer() {
             super(ObjectObjective.class);
@@ -88,7 +88,7 @@ public final class ObjectObjective extends ObjectiveCard {
             JsonNode node = p.getCodec().readTree(p);
             String name = node.get("name").asText();
             if (CardRegistry.isInitialized()) {
-                return (ObjectObjective) CardRegistry.getObjectiveCardFromName(name);
+                return (ObjectObjective) CardRegistry.getRegistry().getObjectiveCardFromName(name);
             }
             int points = node.get("points").asInt();
             TypeReference<HashMap<ObjectType,Integer>> typeRef = new TypeReference<>() {};

@@ -34,6 +34,6 @@ public class GoldCardsDeck extends Deck<GoldCard> {
      */
     @Override
     public void initialize() {
-        addCards(CardRegistry.getGoldCards());
+        addCards(CardRegistry.getRegistry().getGoldCards());
     }
 }

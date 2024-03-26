@@ -416,7 +416,7 @@ public class PlayArea implements PlayAreaModel {
      */
     static class Deserializer extends StdDeserializer<PlayArea> {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         public Deserializer() {
             super(PlayArea.class);

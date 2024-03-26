@@ -19,7 +19,7 @@ public class LobbyManager {
 
     private static final int LOBBY_ID_LENGTH = 6;
     private final Map<String, Game> games;
-    private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+    private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
     /**
      * Constructs a new Lobby Manager which contains no lobbies.
@@ -44,7 +44,7 @@ public class LobbyManager {
     }
 
     /**
-     * Removes the game with the given id from the lobby manager, if present.
+     * Removes the game with the given id from the lobby manager, if present; does nothing if the game with the given id does not exist in this manager.
      * @param id The id of the game to remove.
      */
     public void removeGame(String id) {

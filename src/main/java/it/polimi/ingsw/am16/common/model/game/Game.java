@@ -686,7 +686,7 @@ public class Game implements GameModel {
      */
     public static class Deserializer extends StdDeserializer<Game> {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         protected Deserializer() {
             super(Game.class);

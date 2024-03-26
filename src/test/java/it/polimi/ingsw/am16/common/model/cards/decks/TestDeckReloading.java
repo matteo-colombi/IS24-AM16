@@ -13,7 +13,7 @@ public class TestDeckReloading {
     @Test
     public void testDeckReloading() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        CardRegistry.initializeRegistry();
+        CardRegistry.getRegistry();
         File f = new File("src/test/resources/json/testDeckSave.json");
 
         ObjectiveCardsDeck objectiveDeck = DeckFactory.getObjectiveCardsDeck();

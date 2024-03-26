@@ -13,23 +13,23 @@ public class TestCardRegistry {
         // This test does not guarantee that all the cards in the registry are actually correct.
         // All it does is check that the names, amounts and types are correct.
 
-        assertTrue(CardRegistry.initializeRegistry());
-
+        CardRegistry registry = CardRegistry.getRegistry();
+        
         /*
             Check that the total amount of cards is correct.
          */
         int totalCards = 0;
-        assertEquals(40, CardRegistry.getResourceCards().size());
-        totalCards += CardRegistry.getResourceCards().size();
+        assertEquals(40, registry.getResourceCards().size());
+        totalCards += registry.getResourceCards().size();
 
-        assertEquals(40, CardRegistry.getGoldCards().size());
-        totalCards += CardRegistry.getGoldCards().size();
+        assertEquals(40, registry.getGoldCards().size());
+        totalCards += registry.getGoldCards().size();
 
-        assertEquals(16, CardRegistry.getObjectiveCards().size());
-        totalCards += CardRegistry.getObjectiveCards().size();
+        assertEquals(16, registry.getObjectiveCards().size());
+        totalCards += registry.getObjectiveCards().size();
 
-        assertEquals(6, CardRegistry.getStarterCards().size());
-        totalCards += CardRegistry.getStarterCards().size();
+        assertEquals(6, registry.getStarterCards().size());
+        totalCards += registry.getStarterCards().size();
 
         assertEquals(102, totalCards);
 
@@ -37,13 +37,13 @@ public class TestCardRegistry {
             Check that all the card names are correct. Check all types are correct.
          */
         int i = 1;
-        for(StarterCard card : CardRegistry.getStarterCards()) {
+        for(StarterCard card : registry.getStarterCards()) {
             assertEquals("starter_" + i, card.getName());
             assertNull(card.getType());
             i++;
         }
         i = 1;
-        for(ObjectiveCard objectiveCard : CardRegistry.getObjectiveCards()) {
+        for(ObjectiveCard objectiveCard : registry.getObjectiveCards()) {
             if (i >= 1 && i <= 8) {
                 assertEquals("objective_pattern_" + i, objectiveCard.getName());
             } else if (i >= 9 && i <= 12) {
@@ -55,8 +55,8 @@ public class TestCardRegistry {
             }
             i++;
         }
-        List<ResourceCard> resourceCards = CardRegistry.getResourceCards();
-        List<GoldCard> goldCards = CardRegistry.getGoldCards();
+        List<ResourceCard> resourceCards = registry.getResourceCards();
+        List<GoldCard> goldCards = registry.getGoldCards();
 
         for(i = 1; i <= resourceCards.size(); i++) {
             if (i >= 1 && i <= 10) {

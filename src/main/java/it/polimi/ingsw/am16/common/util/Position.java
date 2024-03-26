@@ -134,7 +134,7 @@ public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
      */
     public static class Serializer extends JsonSerializer<Position> {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         /**
          * Serializes a {@link Position} object, including only its coordinates.
@@ -155,7 +155,7 @@ public record Position(@JsonProperty("x") int x, @JsonProperty("y") int y) {
      */
     public static class KeyDeserializer extends com.fasterxml.jackson.databind.KeyDeserializer {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         /**
          * Deserializes the position using the standard {@link Position} deserializer.

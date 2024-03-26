@@ -403,7 +403,7 @@ public class Player implements PlayerModel {
      */
     public static class Deserializer extends StdDeserializer<Player> {
 
-        private static final ObjectMapper mapper = JsonMapper.INSTANCE.getObjectMapper();
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         protected Deserializer() {
             super(Player.class);
