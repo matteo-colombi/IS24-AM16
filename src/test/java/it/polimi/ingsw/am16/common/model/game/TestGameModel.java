@@ -337,7 +337,7 @@ public class TestGameModel {
 
     private void printCommonResourceCards() {
         System.out.println("Common resource cards: ");
-        for(ResourceCard card : game.getCommonResourceCards()) {
+        for(PlayableCard card : game.getCommonResourceCards()) {
             System.out.println(card);
         }
         System.out.println();
@@ -345,7 +345,7 @@ public class TestGameModel {
 
     private void printCommonGoldCards() {
         System.out.println("Common gold cards: ");
-        for(GoldCard card : game.getCommonGoldCards()) {
+        for(PlayableCard card : game.getCommonGoldCards()) {
             System.out.println(card);
         }
         System.out.println();

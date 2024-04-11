@@ -15,6 +15,7 @@ public class TestDeckReloading {
         ObjectMapper mapper = new ObjectMapper();
         CardRegistry.getRegistry();
         File f = new File("src/test/resources/json/testDeckSave.json");
+        f.createNewFile();
 
         ObjectiveCardsDeck objectiveDeck = DeckFactory.getObjectiveCardsDeck();
         mapper.writeValue(f, objectiveDeck);

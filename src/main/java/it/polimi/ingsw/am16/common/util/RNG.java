@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am16.common.util;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -56,5 +57,9 @@ public class RNG extends Random {
             builder.append(symbols[instance.nextInt(symbols.length)]);
 
         return builder.toString();
+    }
+
+    public synchronized <T> T randomFromList(List<T> list) {
+        return list.get(this.nextInt(list.size()));
     }
 }

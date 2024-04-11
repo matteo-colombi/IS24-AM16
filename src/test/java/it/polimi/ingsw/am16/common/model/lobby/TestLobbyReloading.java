@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TestLobbyReloading {
 
     @Test
-    public void testLobby() throws UnexpectedActionException, NoStarterCardException, UnknownObjectiveCardException, IOException {
+    public void testLobby() throws UnexpectedActionException, NoStarterCardException, UnknownObjectiveCardException, IOException, InterruptedException {
         CardRegistry.getRegistry();
         RNG.setRNGSeed(0);
         LobbyManager lobbyManager = new LobbyManager();
@@ -37,6 +37,8 @@ public class TestLobbyReloading {
         game.setPlayerObjective(0, game.getPlayers()[0].getPersonalObjectiveOptions().getFirst());
         lobbyManager.saveGames(FilePaths.SAVE_DIRECTORY);
 
+        Thread.sleep(500); // This is to ensure that the writing operations are done
+
         lobbyManager = new LobbyManager();
 
         lobbyManager.loadGames(FilePaths.SAVE_DIRECTORY);
@@ -45,7 +47,7 @@ public class TestLobbyReloading {
 
         assertEquals(game.getId(), reloadedGame.getId());
         assertEquals(game.getNumPlayers(), reloadedGame.getNumPlayers());
-        assertEquals(game.getCurrentPlayerCount(), reloadedGame.getCurrentPlayerCount());
+        assertEquals(0, reloadedGame.getCurrentPlayerCount());
         assertEquals(game.getActivePlayer(), reloadedGame.getActivePlayer());
         assertEquals(game.getStartingPlayer(), reloadedGame.getStartingPlayer());
         assertEquals(game.getWinnerIds(), reloadedGame.getWinnerIds());

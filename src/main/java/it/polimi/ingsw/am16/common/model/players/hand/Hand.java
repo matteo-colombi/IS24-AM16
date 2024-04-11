@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
+import it.polimi.ingsw.am16.common.model.cards.PlayableCardType;
+import it.polimi.ingsw.am16.common.model.cards.ResourceType;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 
@@ -65,6 +67,26 @@ public class Hand implements HandModel{
     @Override
     public PlayableCard getCard(int index){
         return this.cards.get(index);
+    }
+
+    /**
+     * DOCME
+     * @param index
+     * @return
+     */
+    @Override
+    public ResourceType getResourceType(int index) {
+        return getCard(index).getType();
+    }
+
+    /**
+     * DOCME
+     * @param index
+     * @return
+     */
+    @Override
+    public PlayableCardType getCardType(int index) {
+        return getCard(index).getPlayableCardType();
     }
 
     /**

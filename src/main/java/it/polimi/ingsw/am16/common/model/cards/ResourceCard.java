@@ -25,7 +25,7 @@ public final class ResourceCard extends PlayableCard {
      * @param type The card's resource type.
      */
     public ResourceCard(String name, CardSide frontSide, CardSide backSide, ResourceType type) {
-        super(name, frontSide, backSide, type);
+        super(name, frontSide, backSide, type, PlayableCardType.RESOURCE);
     }
 
     @Override

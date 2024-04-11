@@ -25,7 +25,7 @@ public final class GoldCard extends PlayableCard {
      * @param type The card's resource type.
      */
     public GoldCard(String name, CardSide frontSide, CardSide backSide, ResourceType type) {
-        super(name, frontSide, backSide, type);
+        super(name, frontSide, backSide, type, PlayableCardType.GOLD);
     }
 
     @Override

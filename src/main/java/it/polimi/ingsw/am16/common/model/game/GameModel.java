@@ -41,6 +41,11 @@ public interface GameModel {
     int getCurrentPlayerCount();
 
     /**
+     * Increments the current player count. Used to handle reconnections after a server crash.
+     */
+    void incrementCurrentPlayerCount();
+
+    /**
      *
      * @return The id of the player who has to finish their turn.
      */
@@ -96,6 +101,11 @@ public interface GameModel {
      * @return Whether all the players have chosen their color.
      */
     boolean allPlayersChoseColor();
+
+    /**
+     * Distributes two resource cards and a gold card so that the game can start.
+     */
+    void distributeCards();
 
     /**
      * Draws the common objective cards and distributes the personal objectives to the players.
@@ -183,18 +193,23 @@ public interface GameModel {
      *
      * @return The visible and drawable gold cards.
      */
-    GoldCard[] getCommonGoldCards();
+    PlayableCard[] getCommonGoldCards();
 
     /**
      *
      * @return The visible and drawable resource cards.
      */
-    ResourceCard[] getCommonResourceCards();
+    PlayableCard[] getCommonResourceCards();
 
     /**
      * @return the game's state.
      */
     GameState getState();
+
+    /**
+     * @return whether the players are rejoining after a server crash.
+     */
+    boolean isRejoiningAfterCrash();
 
     /**
      * @return the type of the card on top of the resource deck. This information should be visible to the players.
@@ -205,4 +220,9 @@ public interface GameModel {
      * @return the type of the card on top of the gold deck. This information should be visible to the player.
      */
     ResourceType getGoldDeckTopType();
+
+    /**
+     * @return an array containing the ids of the players in the order in which they play.
+     */
+    int[] getTurnOrder();
 }

@@ -42,9 +42,10 @@ public class Game implements GameModel {
     private final GoldCardsDeck goldCardsDeck;
     private final ResourceCardsDeck resourceCardsDeck;
     private final ObjectiveCard[] commonObjectiveCards;
-    private final GoldCard[] commonGoldCards;
-    private final ResourceCard[] commonResourceCards;
+    private final PlayableCard[] commonGoldCards;
+    private final PlayableCard[] commonResourceCards;
     private GameState state;
+    private boolean rejoiningAfterCrash;
     private final Player[] players;
     private final List<PlayerColor> availableColors;
     private final ChatManager chatManager;
@@ -66,9 +67,10 @@ public class Game implements GameModel {
         this.goldCardsDeck = DeckFactory.getGoldCardsDeck();
         this.resourceCardsDeck = DeckFactory.getResourceCardsDeck();
         this.commonObjectiveCards = new ObjectiveCard[2];
-        this.commonGoldCards = new GoldCard[2];
-        this.commonResourceCards = new ResourceCard[2];
+        this.commonGoldCards = new PlayableCard[2];
+        this.commonResourceCards = new PlayableCard[2];
         this.state = GameState.JOINING;
+        this.rejoiningAfterCrash = false;
         this.players = new Player[numPlayers];
         this.currentPlayerCount = 0;
         this.availableColors = new ArrayList<>(List.of(PlayerColor.values()));
@@ -79,7 +81,6 @@ public class Game implements GameModel {
      * Constructs a new game with all the given attributes. Used for deserializing from JSON.
      * @param id The game's id.
      * @param numPlayers The number of players expected in this game.
-     * @param currentPlayerCount The current number of players in this game.
      * @param activePlayer The currently active player in this game.
      * @param startingPlayer The starting player for this game.
      * @param winnerIds The list of players who have won this game.
@@ -98,7 +99,6 @@ public class Game implements GameModel {
     private Game(
             String id,
             int numPlayers,
-            int currentPlayerCount,
             int activePlayer,
             int startingPlayer,
             List<Integer> winnerIds,
@@ -107,15 +107,15 @@ public class Game implements GameModel {
             GoldCardsDeck goldCardsDeck,
             ResourceCardsDeck resourceCardsDeck,
             ObjectiveCard[] commonObjectiveCards,
-            GoldCard[] commonGoldCards,
-            ResourceCard[] commonResourceCards,
+            PlayableCard[] commonGoldCards,
+            PlayableCard[] commonResourceCards,
             GameState state,
             Player[] players,
             List<PlayerColor> availableColors,
             ChatManager chatManager) {
         this.id = id;
         this.numPlayers = numPlayers;
-        this.currentPlayerCount = currentPlayerCount;
+        this.currentPlayerCount = 0;
         this.activePlayer = activePlayer;
         this.startingPlayer = startingPlayer;
         this.winnerIds = winnerIds;
@@ -127,6 +127,7 @@ public class Game implements GameModel {
         this.commonGoldCards = commonGoldCards;
         this.commonResourceCards = commonResourceCards;
         this.state = state;
+        this.rejoiningAfterCrash = true;
         this.players = players;
         this.availableColors = availableColors;
         this.chatManager = chatManager;
@@ -177,8 +178,17 @@ public class Game implements GameModel {
      * @return The number of players who joined the game.
      */
     @Override
+    @JsonIgnore
     public int getCurrentPlayerCount(){
         return currentPlayerCount;
+    }
+
+    /**
+     * Increments the current player count. Used to handle reconnections after a server crash.
+     */
+    @Override
+    public void incrementCurrentPlayerCount() {
+        currentPlayerCount++;
     }
 
     /**
@@ -214,14 +224,16 @@ public class Game implements GameModel {
      */
     @Override
     public void initializeGame() throws UnexpectedActionException {
-        if (state != GameState.JOINING)
+        if (state != GameState.JOINING && !rejoiningAfterCrash)
             throw new UnexpectedActionException("Game already started");
         if (currentPlayerCount != numPlayers)
             throw new UnexpectedActionException("Missing players");
-
-        state = GameState.INIT;
-        drawCommonCards();
-        drawStarterCards();
+        if (!rejoiningAfterCrash) {
+            state = GameState.INIT;
+            drawCommonCards();
+            drawStarterCards();
+        }
+        rejoiningAfterCrash = false;
     }
 
     /**
@@ -325,7 +337,8 @@ public class Game implements GameModel {
     /**
      * Distributes two resource cards and a gold card so that the game can start.
      */
-    private void distributeCards() {
+    @Override
+    public void distributeCards() {
         for(int i = 0; i < numPlayers; i++) {
             players[i].giveCard(resourceCardsDeck.drawCard());
             players[i].giveCard(resourceCardsDeck.drawCard());
@@ -395,7 +408,6 @@ public class Game implements GameModel {
         startingPlayer = chooseStartingPlayer();
         activePlayer = startingPlayer;
         state = GameState.STARTED;
-        distributeCards();
     }
 
     /**
@@ -438,6 +450,9 @@ public class Game implements GameModel {
 
                 players[playerId].giveCard(commonGoldCards[0]);
                 commonGoldCards[0] = goldCardsDeck.drawCard();
+                if (commonGoldCards[0] == null) {
+                    commonGoldCards[0] = resourceCardsDeck.drawCard();
+                }
             }
             case GOLD_2 -> {
                 if(commonGoldCards[1] == null)
@@ -445,6 +460,9 @@ public class Game implements GameModel {
 
                 players[playerId].giveCard(commonGoldCards[1]);
                 commonGoldCards[1] = goldCardsDeck.drawCard();
+                if (commonGoldCards[1] == null) {
+                    commonGoldCards[1] = resourceCardsDeck.drawCard();
+                }
             }
             case GOLD_DECK -> {
                 if(goldCardsDeck.isEmpty())
@@ -458,6 +476,9 @@ public class Game implements GameModel {
 
                 players[playerId].giveCard(commonResourceCards[0]);
                 commonResourceCards[0] = resourceCardsDeck.drawCard();
+                if (commonResourceCards[0] == null) {
+                    commonResourceCards[0] = goldCardsDeck.drawCard();
+                }
             }
             case RESOURCE_2 -> {
                 if(commonResourceCards[1] == null)
@@ -465,6 +486,9 @@ public class Game implements GameModel {
 
                 players[playerId].giveCard(commonResourceCards[1]);
                 commonResourceCards[1] = resourceCardsDeck.drawCard();
+                if (commonResourceCards[1] == null) {
+                    commonResourceCards[1] = goldCardsDeck.drawCard();
+                }
             }
             case RESOURCE_DECK -> {
                 if(resourceCardsDeck.isEmpty())
@@ -602,7 +626,7 @@ public class Game implements GameModel {
      * @return The visible and drawable gold cards.
      */
     @Override
-    public GoldCard[] getCommonGoldCards() {
+    public PlayableCard[] getCommonGoldCards() {
         return commonGoldCards.clone();
     }
 
@@ -611,7 +635,7 @@ public class Game implements GameModel {
      * @return The visible and drawable resource cards.
      */
     @Override
-    public ResourceCard[] getCommonResourceCards() {
+    public PlayableCard[] getCommonResourceCards() {
         return commonResourceCards.clone();
     }
 
@@ -621,6 +645,15 @@ public class Game implements GameModel {
     @Override
     public GameState getState() {
         return state;
+    }
+
+    /**
+     * @return whether the players are rejoining after a server crash.
+     */
+    @Override
+    @JsonIgnore
+    public boolean isRejoiningAfterCrash() {
+        return rejoiningAfterCrash;
     }
 
     /**
@@ -639,6 +672,19 @@ public class Game implements GameModel {
     @JsonIgnore
     public ResourceType getGoldDeckTopType() {
         return goldCardsDeck.peekTop().getType();
+    }
+
+    /**
+     * @return an array containing the ids of the players in the order in which they play.
+     */
+    @Override
+    @JsonIgnore
+    public int[] getTurnOrder() {
+        int[] turnOrder = new int[numPlayers];
+        for(int id = 0; id < numPlayers; id++) {
+            turnOrder[id] = (id + startingPlayer) % numPlayers;
+        }
+        return turnOrder;
     }
 
     /**
@@ -709,7 +755,6 @@ public class Game implements GameModel {
             String id = node.get("id").asText();
 
             int numPlayers = node.get("numPlayers").asInt();
-            int currentPlayerCount = node.get("currentPlayerCount").asInt();
             int activePlayer = node.get("activePlayer").asInt();
             int startingPlayer = node.get("startingPlayer").asInt();
 
@@ -722,8 +767,8 @@ public class Game implements GameModel {
             ResourceCardsDeck resourceCardsDeck = mapper.readValue(node.get("resourceCardsDeck").toString(), ResourceCardsDeck.class);
 
             ObjectiveCard[] commonObjectiveCards = mapper.readValue(node.get("commonObjectiveCards").toString(), ObjectiveCard[].class);
-            GoldCard[] commonGoldCards = mapper.readValue(node.get("commonGoldCards").toString(), GoldCard[].class);
-            ResourceCard[] commonResourceCards = mapper.readValue(node.get("commonResourceCards").toString(), ResourceCard[].class);
+            PlayableCard[] commonGoldCards = mapper.readValue(node.get("commonGoldCards").toString(), PlayableCard[].class);
+            PlayableCard[] commonResourceCards = mapper.readValue(node.get("commonResourceCards").toString(), PlayableCard[].class);
 
             GameState state = mapper.readValue(node.get("state").toString(), GameState.class);
 
@@ -740,7 +785,6 @@ public class Game implements GameModel {
             return new Game(
                     id,
                     numPlayers,
-                    currentPlayerCount,
                     activePlayer,
                     startingPlayer,
                     winnerIds,

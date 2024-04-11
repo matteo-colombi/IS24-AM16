@@ -11,44 +11,9 @@ import java.util.List;
  * Interface to give external classes access to {@link Player}-type objects. It contains all the methods
  * a player is supposed to show to the outside.
  */
-public interface PlayerModel {
-    /**
-     * @return The player's username.
-     */
-    String getUsername();
+public interface PlayerModel extends RestrictedPlayerModel {
 
-    /**
-     *
-     * @return The player's in-game color
-     */
-    PlayerColor getPlayerColor();
-
-    /**
-     *
-     * @return The player's ID
-     */
-    int getPlayerId();
-
-    /**
-     *
-     * @return The total points the player got at the end of the game, after evaluating
-     * their completion of the objectives
-     */
-    int getTotalPoints();
-
-    /**
-     *
-     * @return The player's points gathered by placing cards on the board
-     */
-    int getGamePoints();
-
-    /**
-     *
-     * @return The player's points gathered by fulfilling conditions on their personal
-     * objective and the common objectives of the game
-     */
-    int getObjectivePoints();
-
+    @Override
     /**
      *
      * @return The player's hand, giving access only to its non-modifier methods
@@ -73,11 +38,6 @@ public interface PlayerModel {
     StarterCard getStarterCard();
 
     /**
-     * @return The player's board state, giving access only to its non-modifier methods
-     */
-    PlayAreaModel getPlayArea();
-
-    /**
      *
      * @return whether the player has chosen which side of their starter card to display
      */
@@ -98,5 +58,10 @@ public interface PlayerModel {
      * @return The player's ChatModel interface, used to interact with the lobby chat.
      */
     ChatModel getChat();
+
+    /**
+     * @return whether the player is connected.
+     */
+    boolean isConnected();
 }
 

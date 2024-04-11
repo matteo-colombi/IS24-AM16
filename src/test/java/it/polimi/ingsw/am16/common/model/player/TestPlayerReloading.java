@@ -37,9 +37,6 @@ public class TestPlayerReloading {
         player.giveObjectiveOptions(registry.getObjectiveCardFromName("objective_resources_2"), registry.getObjectiveCardFromName("objective_pattern_5"));
         player.setObjectiveCard(registry.getObjectiveCardFromName("objective_pattern_5"));
 
-        player.addGamePoints(6);
-        player.addObjectivePoints(2);
-
         player.giveCard(registry.getResourceCardFromName("resource_fungi_6"));
         player.giveCard(registry.getGoldCardFromName("gold_animal_2"));
         player.giveCard(registry.getGoldCardFromName("gold_insect_4"));

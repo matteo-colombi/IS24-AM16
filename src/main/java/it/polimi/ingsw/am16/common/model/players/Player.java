@@ -46,6 +46,7 @@ public class Player implements PlayerModel {
     private boolean choseObjectiveCard;
     private boolean choseColor;
     private final Chat chat;
+    private boolean isConnected;
 
     /**
      * Creates a new player, initializing their ID and username to a chosen value, and their
@@ -66,6 +67,7 @@ public class Player implements PlayerModel {
         this.choseStarterCardSide = false;
         this.choseColor = false;
         this.chat = new Chat(username);
+        this.isConnected = true;
     }
 
     /**
@@ -115,6 +117,7 @@ public class Player implements PlayerModel {
         this.choseObjectiveCard = choseObjectiveCard;
         this.choseColor = choseColor;
         this.chat = chat;
+        this.isConnected = false;
     }
 
     /**
@@ -245,22 +248,6 @@ public class Player implements PlayerModel {
     }
 
     /**
-     * Increases the amount of points gathered by placing a card on the board.
-     * @param points The amount of points earned in an action
-     */
-    public void addGamePoints(int points) {
-        currGamePoints += points;
-    }
-
-    /**
-     * Increases the amount of points gathered by evaluating the objectives.
-     * @param points The amount of points earned in an action
-     */
-    public void addObjectivePoints(int points) {
-        currObjectivePoints += points;
-    }
-
-    /**
      * Adds a card to the player's hand. This should be triggered at the end of each of
      * the player's turns to replace the card just placed beforehand.
      * @param card The card to be added
@@ -372,6 +359,14 @@ public class Player implements PlayerModel {
 
     public Chat getChat() {
         return chat;
+    }
+
+    /**
+     * @return whether the player is connected.
+     */
+    @Override
+    public boolean isConnected() {
+        return isConnected;
     }
 
     /**

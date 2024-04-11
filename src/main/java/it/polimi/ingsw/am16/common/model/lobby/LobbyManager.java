@@ -1,16 +1,27 @@
 package it.polimi.ingsw.am16.common.model.lobby;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.am16.common.model.game.Game;
 import it.polimi.ingsw.am16.common.model.game.GameModel;
+import it.polimi.ingsw.am16.common.util.FilePaths;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.RNG;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class to manage multiple games.
@@ -76,9 +87,7 @@ public class LobbyManager {
         File dir = new File(directoryPath);
         dir.mkdirs();
         for(String id : games.keySet()) {
-            File f = new File(directoryPath + "/" + id + ".json");
-            f.createNewFile();
-            saveGame(id, f);
+            saveGame(id);
         }
     }
 
@@ -94,26 +103,55 @@ public class LobbyManager {
 
         if (gameFiles == null) throw new IOException("Invalid directory: " + directoryPath);
 
-        for(File f : gameFiles) {
-            loadGame(f);
+        try(ExecutorService service = Executors.newFixedThreadPool(4)) {
+            for(final File f : gameFiles) {
+                service.submit(() -> loadGame(f));
+            }
+            if(!service.awaitTermination(200L * gameFiles.length, TimeUnit.MILLISECONDS)) {
+                throw new RuntimeException("Couldn't reload games from memory: timeout expired.");
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+
+
     }
 
     /**
      * Saves the given game to the given file.
      * @param id The game to save to memory.
-     * @param saveFile The file to save the lobby to.
      */
-    private void saveGame(String id, File saveFile) throws IOException {
-        mapper.writeValue(saveFile, games.get(id));
+    public void saveGame(final String id) {
+        String savedGame = null;
+        try {
+            savedGame = mapper.writeValueAsString(games.get(id));
+        } catch (JsonProcessingException e) {
+            System.out.printf("Failed to serialize save game data for game %s.\n", id);
+        }
+
+        final String finalSavedGame = savedGame;
+        new Thread(() -> {
+            File saveFile = new File(String.format("%s/%s.json", FilePaths.SAVE_DIRECTORY, id));
+
+            try (PrintWriter writer = new PrintWriter(saveFile)) {
+                writer.print(finalSavedGame);
+                writer.flush();
+            } catch (IOException e) {
+                System.out.printf("Failed to write save game data for game %s.\n", id);
+            }
+        }).start();
     }
 
     /**
      * Loads a game from the given {@link File}.
      * @param saveFile The file to load the game from.
      */
-    private void loadGame(File saveFile) throws IOException {
-        Game game = mapper.readValue(saveFile, Game.class);
-        games.put(game.getId(), game);
+    private void loadGame(File saveFile) {
+        try {
+            Game game = mapper.readValue(saveFile, Game.class);
+            games.put(game.getId(), game);
+        } catch (IOException e) {
+            System.out.printf("Couldn't reload game from file %s.\n", saveFile.getPath());
+        }
     }
 }

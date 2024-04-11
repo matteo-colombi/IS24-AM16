@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -17,6 +18,8 @@ import java.io.IOException;
 @JsonDeserialize(using = PlayableCard.Deserializer.class)
 public abstract class PlayableCard extends BoardCard {
 
+    private PlayableCardType playableCardType;
+
     /**
      * Constructs a new playable card with the given name, sides and of the given resource type.
      * @param name The card's name.
@@ -24,8 +27,18 @@ public abstract class PlayableCard extends BoardCard {
      * @param backSide The card's back side.
      * @param type The card's resource type.
      */
-    public PlayableCard(String name, CardSide frontSide, CardSide backSide, ResourceType type) {
+    public PlayableCard(String name, CardSide frontSide, CardSide backSide, ResourceType type, PlayableCardType playableCardType) {
         super(name, frontSide, backSide, type);
+        this.playableCardType = playableCardType;
+    }
+
+    /**
+     * DOCME
+     * @return
+     */
+    @JsonIgnore
+    public PlayableCardType getPlayableCardType() {
+        return playableCardType;
     }
 
     /**
@@ -53,6 +66,7 @@ public abstract class PlayableCard extends BoardCard {
         public PlayableCard deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
             JsonNode node = p.getCodec().readTree(p);
             String name = node.get("name").asText();
+
             if (name.contains("resource")) {
                 return mapper.readValue(node.toString(), ResourceCard.class);
             } else if (name.contains("gold")){

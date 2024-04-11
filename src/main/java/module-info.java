@@ -6,6 +6,7 @@ module it.polimi.ingsw.am16 {
     requires com.fasterxml.jackson.databind;
 
     requires org.controlsfx.controls;
+    requires java.rmi;
 
     opens it.polimi.ingsw.am16 to javafx.fxml;
     opens it.polimi.ingsw.am16.common.model.cards to com.fasterxml.jackson.databind;
