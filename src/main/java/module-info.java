@@ -11,7 +11,7 @@ module it.polimi.ingsw.am16 {
     opens it.polimi.ingsw.am16 to javafx.fxml;
     opens it.polimi.ingsw.am16.common.model.cards to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.am16.common.util to com.fasterxml.jackson.databind;
-    opens it.polimi.ingsw.am16.common.model.lobby to com.fasterxml.jackson.databind;
+    opens it.polimi.ingsw.am16.server.lobby to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.am16.common.model.game to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.am16.common.model.players to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.am16.common.model.players.hand to com.fasterxml.jackson.databind;

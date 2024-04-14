@@ -70,26 +70,6 @@ public class Hand implements HandModel{
     }
 
     /**
-     * DOCME
-     * @param index
-     * @return
-     */
-    @Override
-    public ResourceType getResourceType(int index) {
-        return getCard(index).getType();
-    }
-
-    /**
-     * DOCME
-     * @param index
-     * @return
-     */
-    @Override
-    public PlayableCardType getCardType(int index) {
-        return getCard(index).getPlayableCardType();
-    }
-
-    /**
      * Removes the given card from the Hand. This method does nothing if the given card is not present in the hand.
      * @param card The card to remove.
      */
@@ -103,6 +83,16 @@ public class Hand implements HandModel{
      */
     public void addCard(PlayableCard card) {
         this.cards.add(card);
+    }
+
+    @Override
+    @JsonIgnore
+    public RestrictedHand getRestrictedVersion() {
+        RestrictedHand restrictedHand = new RestrictedHand();
+        for(PlayableCard card : cards) {
+            restrictedHand.addCard(card.getType(), card.getPlayableCardType());
+        }
+        return restrictedHand;
     }
 
     @Override

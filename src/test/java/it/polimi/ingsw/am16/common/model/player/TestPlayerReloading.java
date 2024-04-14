@@ -51,10 +51,10 @@ public class TestPlayerReloading {
         fakePlayer.getChat().subscribe(manager);
         player.getChat().subscribe(manager);
 
-        fakePlayer.getChat().sendMessage("I am a message from fakePlayer");
+        manager.sendMessage("L2C", "I am a message from fakePlayer");
 
-        player.getChat().sendMessage("This is a chat message!!!", Set.of("L2C", "xLorde"));
-        player.getChat().sendMessage("This is another chat message!");
+        manager.sendMessage("L2C", "This is a chat message!!!", Set.of("L2C", "xLorde"));
+        manager.sendMessage("L2C", "This is another chat message!");
 
         mapper.writeValue(f, player);
 

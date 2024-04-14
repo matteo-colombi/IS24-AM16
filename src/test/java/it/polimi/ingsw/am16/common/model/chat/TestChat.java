@@ -17,11 +17,11 @@ class TestChat {
         chatGiacomo.subscribe(manager);
         chatGiovanni.subscribe(manager);
 
-        chatAldo.sendMessage("Miiiiiiiiiiiiiiiiiii", Set.of("xXGiacomoXx"));
+        manager.sendMessage("Aldo", "Miiiiiiiiiiiiiiiiiii", Set.of("xXGiacomoXx"));
 
-        chatGiovanni.sendMessage("Ascoltate PoretCast raga");
+        manager.sendMessage("Giovanni42", "Ascoltate PoretCast raga");
 
-        chatGiovanni.sendMessage("Ma siete scemi?", Set.of("Aldo", "L2C", "Giovanni42"));
+        manager.sendMessage("Giovanni42", "Ma siete scemi?", Set.of("Aldo", "L2C", "Giovanni42"));
 
         chatGiacomo.unsubscribe();
 

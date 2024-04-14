@@ -53,18 +53,23 @@ public class TestResourceObjective {
         assertEquals(0, pObj1.getObjectivePoints());
 
         //TEST the fungi one.
+        pObj1.giveCard(withFungi);
         pObj1.playCard(withFungi, SideType.BACK, new Position(1, 1));
 
         pObj1.evaluatePersonalObjective();
 
         assertEquals(0, pObj1.getObjectivePoints());
 
+        pObj1.giveCard(withFungi);
         pObj1.playCard(withFungi, SideType.BACK, new Position(2, 2));
 
         pObj1.evaluatePersonalObjective();
 
         assertEquals(2, pObj1.getObjectivePoints());
 
+        pObj1.giveCard(withFungi);
+        pObj1.giveCard(withFungi);
+        pObj1.giveCard(withFungi);
         pObj1.playCard(withFungi, SideType.BACK, new Position(3, 3));
         pObj1.playCard(withFungi, SideType.BACK, new Position(4, 4));
         pObj1.playCard(withFungi, SideType.BACK, new Position(5, 5));
@@ -74,6 +79,8 @@ public class TestResourceObjective {
         assertEquals(6, pObj1.getObjectivePoints());
 
         //TEST the plant one.
+        pObj2.giveCard(withPlant);
+        pObj2.giveCard(withPlant);
         pObj2.playCard(withPlant, SideType.BACK, new Position(1, 1));
         pObj2.playCard(withPlant, SideType.BACK, new Position(2, 2));
 
@@ -81,12 +88,16 @@ public class TestResourceObjective {
 
         assertEquals(0, pObj2.getObjectivePoints());
 
+        pObj2.giveCard(withPlant);
         pObj2.playCard(withPlant, SideType.BACK, new Position(3, 3));
 
         pObj2.evaluatePersonalObjective();
 
         assertEquals(2, pObj2.getObjectivePoints());
 
+        pObj2.giveCard(withPlant);
+        pObj2.giveCard(withPlant);
+        pObj2.giveCard(withPlant);
         pObj2.playCard(withPlant, SideType.BACK, new Position(4, 4));
         pObj2.playCard(withPlant, SideType.BACK, new Position(5, 5));
         pObj2.playCard(withPlant, SideType.BACK, new Position(6, 6));
@@ -96,18 +107,23 @@ public class TestResourceObjective {
         assertEquals(6, pObj2.getObjectivePoints());
 
         //TEST the animal one.
+        pObj3.giveCard(withAnimal);
         pObj3.playCard(withAnimal, SideType.BACK, new Position(1, 1));
 
         pObj3.evaluatePersonalObjective();
 
         assertEquals(0, pObj3.getObjectivePoints());
 
+        pObj3.giveCard(withAnimal);
         pObj3.playCard(withAnimal, SideType.BACK, new Position(2, 2));
 
         pObj3.evaluatePersonalObjective();
 
         assertEquals(2, pObj3.getObjectivePoints());
 
+        pObj3.giveCard(withAnimal);
+        pObj3.giveCard(withAnimal);
+        pObj3.giveCard(withAnimal);
         pObj3.playCard(withAnimal, SideType.BACK, new Position(3, 3));
         pObj3.playCard(withAnimal, SideType.BACK, new Position(4, 4));
         pObj3.playCard(withAnimal, SideType.BACK, new Position(5, 5));
@@ -117,18 +133,23 @@ public class TestResourceObjective {
         assertEquals(6, pObj3.getObjectivePoints());
 
         //TEST the insect one.
+        pObj4.giveCard(withInsect);
         pObj4.playCard(withInsect, SideType.BACK, new Position(1, 1));
 
         pObj4.evaluatePersonalObjective();
 
         assertEquals(0, pObj4.getObjectivePoints());
 
+        pObj4.giveCard(withInsect);
         pObj4.playCard(withInsect, SideType.BACK, new Position(2, 2));
 
         pObj4.evaluatePersonalObjective();
 
         assertEquals(2, pObj4.getObjectivePoints());
 
+        pObj4.giveCard(withInsect);
+        pObj4.giveCard(withInsect);
+        pObj4.giveCard(withInsect);
         pObj4.playCard(withInsect, SideType.BACK, new Position(3, 3));
         pObj4.playCard(withInsect, SideType.BACK, new Position(4, 4));
         pObj4.playCard(withInsect, SideType.BACK, new Position(5, 5));

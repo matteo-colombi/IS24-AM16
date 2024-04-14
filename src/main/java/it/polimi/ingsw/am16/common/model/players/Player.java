@@ -14,7 +14,6 @@ import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.Chat;
-import it.polimi.ingsw.am16.common.model.chat.ChatManager;
 import it.polimi.ingsw.am16.common.model.players.hand.Hand;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
@@ -67,7 +66,7 @@ public class Player implements PlayerModel {
         this.choseStarterCardSide = false;
         this.choseColor = false;
         this.chat = new Chat(username);
-        this.isConnected = true;
+        this.isConnected = false;
     }
 
     /**
@@ -274,6 +273,7 @@ public class Player implements PlayerModel {
      * @throws IllegalMoveException Thrown if the player made an illegal move
      */
     public void playCard(PlayableCard card, SideType side, Position newCardPos) throws IllegalMoveException {
+        if (!hand.getCards().contains(card)) throw new IllegalMoveException("No such card.");
         this.playArea.playCard(card, side, newCardPos);
         this.currGamePoints += this.playArea.awardGamePoints(card);
         hand.removeCard(card);
@@ -316,13 +316,15 @@ public class Player implements PlayerModel {
      * Sets the active side for the player's starter card, signaling that the choice has
      * been made (links the {@link Game} and {@link PlayArea} objects).
      * @param side The chosen side
+     * @throws NoStarterCardException If the player has no starter card to place (either not given yet, or already placed).
      */
     public void chooseStarterCardSide(SideType side) throws NoStarterCardException {
         if(this.starterCard != null){
             playArea.setStarterCard(this.starterCard, side);
             this.choseStarterCardSide = true;
+            this.starterCard = null;
         } else {
-            throw new NoStarterCardException("Player has no starter card");
+            throw new NoStarterCardException("Player has no starter card to place");
         }
     }
 
@@ -367,6 +369,14 @@ public class Player implements PlayerModel {
     @Override
     public boolean isConnected() {
         return isConnected;
+    }
+
+    /**
+     * @param isConnected Whether the player is connected or not.
+     */
+    @Override
+    public void setConnected(boolean isConnected) {
+        this.isConnected = isConnected;
     }
 
     /**

@@ -76,6 +76,7 @@ public class TestGameModel {
         assertTrue(game.allPlayersChoseObjective());
 
         game.startGame();
+        game.distributeCards();
 
         printCommonResourceCards();
         printCommonGoldCards();

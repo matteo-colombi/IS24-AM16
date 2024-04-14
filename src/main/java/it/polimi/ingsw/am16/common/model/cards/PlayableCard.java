@@ -33,8 +33,7 @@ public abstract class PlayableCard extends BoardCard {
     }
 
     /**
-     * DOCME
-     * @return
+     * @return The card's type (RESOURCE or GOLD).
      */
     @JsonIgnore
     public PlayableCardType getPlayableCardType() {

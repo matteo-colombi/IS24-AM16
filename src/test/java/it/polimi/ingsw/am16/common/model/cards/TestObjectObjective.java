@@ -52,6 +52,10 @@ public class TestObjectObjective {
         assertEquals(0, pObj1.getObjectivePoints());
 
         //TEST the objective with all three cards.
+        pObj1.giveCard(withQuill);
+        pObj1.giveCard(withManuscript);
+        pObj1.giveCard(withInkwell);
+        pObj1.giveCard(withInkwell);
         pObj1.playCard(withQuill, SideType.FRONT, new Position(1, -1));
         pObj1.playCard(withManuscript, SideType.FRONT, new Position(2, -2));
         pObj1.playCard(withInkwell, SideType.FRONT, new Position(3, -3));
@@ -61,6 +65,8 @@ public class TestObjectObjective {
 
         assertEquals(3, pObj1.getObjectivePoints());
 
+        pObj1.giveCard(withQuill);
+        pObj1.giveCard(withManuscript);
         pObj1.playCard(withQuill, SideType.FRONT, new Position(5, -1));
         pObj1.playCard(withManuscript, SideType.FRONT, new Position(6, -2));
 
@@ -69,6 +75,8 @@ public class TestObjectObjective {
         assertEquals(9, pObj1.getObjectivePoints());
 
         //TEST the manuscript objective
+        pObj2.giveCard(withQuill);
+        pObj2.giveCard(withQuill);
         pObj2.playCard(withQuill, SideType.FRONT, new Position(1, -1));
         pObj2.playCard(withQuill, SideType.FRONT, new Position(2, -2));
 
@@ -76,6 +84,8 @@ public class TestObjectObjective {
 
         assertEquals(0, pObj2.getObjectivePoints());
 
+        pObj2.giveCard(withManuscript);
+        pObj2.giveCard(withManuscript);
         pObj2.playCard(withManuscript, SideType.FRONT, new Position(3, -3));
         pObj2.playCard(withManuscript, SideType.FRONT, new Position(4, -4));
 
@@ -83,12 +93,14 @@ public class TestObjectObjective {
 
         assertEquals(2, pObj2.getObjectivePoints());
 
+        pObj2.giveCard(withManuscript);
         pObj2.playCard(withManuscript, SideType.FRONT, new Position(5, -5));
 
         pObj2.evaluatePersonalObjective();
 
         assertEquals(4, pObj2.getObjectivePoints());
 
+        pObj2.giveCard(withManuscript);
         pObj2.playCard(withManuscript, SideType.FRONT, new Position(6, -6));
 
         pObj2.evaluatePersonalObjective();
@@ -96,6 +108,8 @@ public class TestObjectObjective {
         assertEquals(8, pObj2.getObjectivePoints());
 
         // TEST the inkwell objective
+        pObj3.giveCard(withQuill);
+        pObj3.giveCard(withQuill);
         pObj3.playCard(withQuill, SideType.FRONT, new Position(1, -1));
         pObj3.playCard(withQuill, SideType.FRONT, new Position(2, -2));
 
@@ -103,6 +117,8 @@ public class TestObjectObjective {
 
         assertEquals(0, pObj3.getObjectivePoints());
 
+        pObj3.giveCard(withInkwell);
+        pObj3.giveCard(withInkwell);
         pObj3.playCard(withInkwell, SideType.FRONT, new Position(3, -3));
         pObj3.playCard(withInkwell, SideType.FRONT, new Position(4, -2));
 
@@ -110,12 +126,14 @@ public class TestObjectObjective {
 
         assertEquals(2, pObj3.getObjectivePoints());
 
+        pObj3.giveCard(withInkwell);
         pObj3.playCard(withInkwell, SideType.FRONT, new Position(5, -1));
 
         pObj3.evaluatePersonalObjective();
 
         assertEquals(4, pObj3.getObjectivePoints());
 
+        pObj3.giveCard(withInkwell);
         pObj3.playCard(withInkwell, SideType.FRONT, new Position(6, 0));
 
         pObj3.evaluatePersonalObjective();
@@ -123,6 +141,8 @@ public class TestObjectObjective {
         assertEquals(8, pObj3.getObjectivePoints());
 
         // TEST the quill objective
+        pObj4.giveCard(withManuscript);
+        pObj4.giveCard(withManuscript);
         pObj4.playCard(withManuscript, SideType.FRONT, new Position(1, 1));
         pObj4.playCard(withManuscript, SideType.FRONT, new Position(2, 2));
 
@@ -130,6 +150,8 @@ public class TestObjectObjective {
 
         assertEquals(0, pObj4.getObjectivePoints());
 
+        pObj4.giveCard(withQuill);
+        pObj4.giveCard(withQuill);
         pObj4.playCard(withQuill, SideType.FRONT, new Position(3, 1));
         pObj4.playCard(withQuill, SideType.FRONT, new Position(4, 0));
 
@@ -137,12 +159,14 @@ public class TestObjectObjective {
 
         assertEquals(2, pObj4.getObjectivePoints());
 
+        pObj4.giveCard(withQuill);
         pObj4.playCard(withQuill, SideType.FRONT, new Position(5, -1));
 
         pObj4.evaluatePersonalObjective();
 
         assertEquals(4, pObj4.getObjectivePoints());
 
+        pObj4.giveCard(withQuill);
         pObj4.playCard(withQuill, SideType.FRONT, new Position(6, -2));
 
         pObj4.evaluatePersonalObjective();

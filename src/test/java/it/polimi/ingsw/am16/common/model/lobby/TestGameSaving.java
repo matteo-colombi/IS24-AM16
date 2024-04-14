@@ -9,23 +9,26 @@ import it.polimi.ingsw.am16.common.model.game.Game;
 import it.polimi.ingsw.am16.common.model.game.GameModel;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.FilePaths;
+import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.RNG;
+import it.polimi.ingsw.am16.server.controller.GameController;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestLobbyReloading {
+public class TestGameSaving {
 
     @Test
     public void testLobby() throws UnexpectedActionException, NoStarterCardException, UnknownObjectiveCardException, IOException, InterruptedException {
         CardRegistry.getRegistry();
         RNG.setRNGSeed(0);
-        LobbyManager lobbyManager = new LobbyManager();
-        String newId = lobbyManager.createGame(2);
-        GameModel game = lobbyManager.getGame(newId);
+
+        Game game = new Game("ABCD", 2);
+
         game.addPlayer("leonardo");
         game.addPlayer("andrea");
         game.initializeGame();
@@ -35,15 +38,12 @@ public class TestLobbyReloading {
         game.setPlayerColor(1, PlayerColor.RED);
         game.initializeObjectives();
         game.setPlayerObjective(0, game.getPlayers()[0].getPersonalObjectiveOptions().getFirst());
-        lobbyManager.saveGames(FilePaths.SAVE_DIRECTORY);
 
-        Thread.sleep(500); // This is to ensure that the writing operations are done
+        String path = "src/test/resources/json/testSaves/ABCD.json";
 
-        lobbyManager = new LobbyManager();
+        JsonMapper.getObjectMapper().writeValue(new File(path), game);
 
-        lobbyManager.loadGames(FilePaths.SAVE_DIRECTORY);
-        System.out.println(lobbyManager.getGameIds());
-        GameModel reloadedGame = lobbyManager.getGame("YQNL04");
+        Game reloadedGame = JsonMapper.getObjectMapper().readValue(new File(path), Game.class);
 
         assertEquals(game.getId(), reloadedGame.getId());
         assertEquals(game.getNumPlayers(), reloadedGame.getNumPlayers());
@@ -60,11 +60,9 @@ public class TestLobbyReloading {
         assertEquals(game.getResourceDeckTopType(), reloadedGame.getResourceDeckTopType());
         assertEquals(game.getGoldDeckTopType(), reloadedGame.getGoldDeckTopType());
 
-        Game castedGame = (Game) game;
-        Game reloadedCastedGame = (Game) reloadedGame;
-        assertEquals(castedGame.getObjectiveCardsDeck(), reloadedCastedGame.getObjectiveCardsDeck());
-        assertEquals(castedGame.getStarterCardsDeck(), reloadedCastedGame.getStarterCardsDeck());
-        assertEquals(castedGame.getGoldCardsDeck(), reloadedCastedGame.getGoldCardsDeck());
-        assertEquals(castedGame.getResourceCardsDeck(), reloadedCastedGame.getResourceCardsDeck());
+        assertEquals(game.getObjectiveCardsDeck(), reloadedGame.getObjectiveCardsDeck());
+        assertEquals(game.getStarterCardsDeck(), reloadedGame.getStarterCardsDeck());
+        assertEquals(game.getGoldCardsDeck(), reloadedGame.getGoldCardsDeck());
+        assertEquals(game.getResourceCardsDeck(), reloadedGame.getResourceCardsDeck());
     }
 }

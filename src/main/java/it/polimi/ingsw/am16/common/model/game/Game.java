@@ -184,11 +184,13 @@ public class Game implements GameModel {
     }
 
     /**
-     * Increments the current player count. Used to handle reconnections after a server crash.
+     * @return whether all the players in this game are connected.
      */
-    @Override
-    public void incrementCurrentPlayerCount() {
-        currentPlayerCount++;
+    public boolean everybodyConnected() {
+        for(Player p : players) {
+            if (!p.isConnected()) return false;
+        }
+        return true;
     }
 
     /**
@@ -435,6 +437,7 @@ public class Game implements GameModel {
 
     /**
      * Lets the player draw a card. A card can be drawn from the deck or from the currently visible cards.
+     * If the card is drawn from one of the common cards, it is replaced with a card of the same type if available. If a card of the same type is not available, it is replaced with a card of the other type.
      * @param playerId The player's ID.
      * @param drawType The place a player wants to draw a card from.
      * @throws UnexpectedActionException Thrown if this method is called before the game has been started.
@@ -657,21 +660,25 @@ public class Game implements GameModel {
     }
 
     /**
-     * @return the type of the card on top of the resource deck. This information should be visible to the players.
+     * @return the type of the card on top of the resource deck, or null if the deck is empty. This information should be visible to the players.
      */
     @Override
     @JsonIgnore
     public ResourceType getResourceDeckTopType() {
-        return resourceCardsDeck.peekTop().getType();
+        ResourceCard card = resourceCardsDeck.peekTop();
+        if (card == null) return null;
+        return card.getType();
     }
 
     /**
-     * @return the type of the card on top of the gold deck. This information should be visible to the player.
+     * @return the type of the card on top of the gold deck, or null if the deck is empty. This information should be visible to the player.
      */
     @Override
     @JsonIgnore
     public ResourceType getGoldDeckTopType() {
-        return goldCardsDeck.peekTop().getType();
+        GoldCard card = goldCardsDeck.peekTop();
+        if (card == null) return null;
+        return card.getType();
     }
 
     /**
@@ -679,10 +686,10 @@ public class Game implements GameModel {
      */
     @Override
     @JsonIgnore
-    public int[] getTurnOrder() {
-        int[] turnOrder = new int[numPlayers];
+    public List<String> getTurnOrder() {
+        List<String> turnOrder = new ArrayList<>();
         for(int id = 0; id < numPlayers; id++) {
-            turnOrder[id] = (id + startingPlayer) % numPlayers;
+            turnOrder.add(players[(id + startingPlayer) % numPlayers].getUsername());
         }
         return turnOrder;
     }
@@ -720,11 +727,26 @@ public class Game implements GameModel {
     }
 
     /**
-     * @return The {@link ChatManager} for this game.
+     * Sends a new message to the given users.
+     * This method does nothing if the chat is not subscribed to any manager.
+     * @param text The message's body text.
+     * @param receiverUsernames The users to send this message to.
      */
-    @JsonIgnore
-    public ChatManager getChatManager() {
-        return chatManager;
+    @Override
+    public void sendChatMessage(String senderUsername, String text, Set<String> receiverUsernames) {
+        if (chatManager != null)
+            chatManager.sendMessage(senderUsername, text, receiverUsernames);
+    }
+
+    /**
+     * Sends a new message to all the users subscribed to this chat's chat manager.
+     * This method does nothing if the chat is not subscribed to any manager.
+     * @param text The message's body text.
+     */
+    @Override
+    public void sendChatMessage(String senderUsername, String text) {
+        if (chatManager != null)
+            chatManager.sendMessage(senderUsername, text);
     }
 
     /**
