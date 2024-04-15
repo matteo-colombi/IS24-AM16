@@ -1,0 +1,3982 @@
+﻿{
+    "resource_fungi_1": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║FUN║           ║   ║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "╠═══╗               ║",
+                "║FUN║               ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR           RRRRR",
+                "R                   R",
+                "RRRRR           RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR   RRRRR   RRRRR",
+                "R       R   R       R",
+                "RRRRR   RRRRR   RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "resource_fungi_2": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║FUN║           ║FUN║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "║               ╔═══╣",
+                "║               ║   ║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR           RRRRR",
+                "R                   R",
+                "RRRRR           RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR   RRRRR   RRRRR",
+                "R       R   R       R",
+                "RRRRR   RRRRR   RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "resource_fungi_3": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════════╗",
+                "║   ║               ║",
+                "╠═══╝               ║",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║FUN║           ║FUN║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR           RRRRR",
+                "R                   R",
+                "RRRRR           RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR   RRRRR   RRRRR",
+                "R       R   R       R",
+                "RRRRR   RRRRR   RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "resource_fungi_4": {
+        "front": {
+            "text": [
+                "╔═══════════════╦═══╗",
+                "║               ║FUN║",
+                "║               ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║   ║           ║FUN║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR           RRRRR",
+                "R                   R",
+                "RRRRR           RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR   RRRRR   RRRRR",
+                "R       R   R       R",
+                "RRRRR   RRRRR   RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "resource_fungi_5": {
+        "front": {
+            "text": [
+                "╔═══════════════╦═══╗",
+                "║               ║QUI║",
+                "║               ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║PLA║           ║FUN║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR           RRRRR",
+                "R                   R",
+                "RRRRR           RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR   RRRRR   RRRRR",
+                "R       R   R       R",
+                "RRRRR   RRRRR   RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "resource_fungi_6": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║INK║           ║FUN║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "║               ╔═══╣",
+                "║               ║ANI║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR           RRRRR",
+                "R                   R",
+                "RRRRR           RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR   RRRRR   RRRRR",
+                "R       R   R       R",
+                "RRRRR   RRRRR   RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "resource_fungi_7": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║FUN║           ║INS║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║MAN║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR           RRRRR",
+                "R                   R",
+                "RRRRR           RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR   RRRRR   RRRRR",
+                "R       R   R       R",
+                "RRRRR   RRRRR   RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "resource_fungi_8": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │  1  │  ║FUN║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗               ║",
+                "║   ║               ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR           RRRRR",
+                "R                   R",
+                "RRRRR           RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR   RRRRR   RRRRR",
+                "R       R   R       R",
+                "RRRRR   RRRRR   RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "resource_fungi_9": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║FUN║  │  1  │      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR           RRRRR",
+                "R                   R",
+                "RRRRR           RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR   RRRRR   RRRRR",
+                "R       R   R       R",
+                "RRRRR   RRRRR   RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "resource_fungi_10": {
+        "front": {
+            "text": [
+                "╔══════╦═════╦══╦═══╗",
+                "║      │  1  │  ║   ║",
+                "║      ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║FUN║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR           RRRRR",
+                "R                   R",
+                "RRRRR           RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   R           R   R",
+                "RRRRR   RRRRR   RRRRR",
+                "R       R   R       R",
+                "RRRRR   RRRRR   RRRRR",
+                "R   R           R   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "resource_plant_1": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║PLA║           ║   ║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "╠═══╗               ║",
+                "║PLA║               ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG           GGGGG",
+                "G                   G",
+                "GGGGG           GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG   GGGGG   GGGGG",
+                "G       G   G       G",
+                "GGGGG   GGGGG   GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "resource_plant_2": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║PLA║           ║PLA║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "║               ╔═══╣",
+                "║               ║   ║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG           GGGGG",
+                "G                   G",
+                "GGGGG           GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG   GGGGG   GGGGG",
+                "G       G   G       G",
+                "GGGGG   GGGGG   GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "resource_plant_3": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════════╗",
+                "║   ║               ║",
+                "╠═══╝               ║",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║PLA║           ║PLA║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG           GGGGG",
+                "G                   G",
+                "GGGGG           GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG   GGGGG   GGGGG",
+                "G       G   G       G",
+                "GGGGG   GGGGG   GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "resource_plant_4": {
+        "front": {
+            "text": [
+                "╔═══════════════╦═══╗",
+                "║               ║PLA║",
+                "║               ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║   ║           ║PLA║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG           GGGGG",
+                "G                   G",
+                "GGGGG           GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG   GGGGG   GGGGG",
+                "G       G   G       G",
+                "GGGGG   GGGGG   GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "resource_plant_5": {
+        "front": {
+            "text": [
+                "╔═══════════════╦═══╗",
+                "║               ║INS║",
+                "║               ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║QUI║           ║PLA║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG           GGGGG",
+                "G                   G",
+                "GGGGG           GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG   GGGGG   GGGGG",
+                "G       G   G       G",
+                "GGGGG   GGGGG   GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "resource_plant_6": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║FUN║           ║PLA║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "║               ╔═══╣",
+                "║               ║INK║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG           GGGGG",
+                "G                   G",
+                "GGGGG           GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG   GGGGG   GGGGG",
+                "G       G   G       G",
+                "GGGGG   GGGGG   GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "resource_plant_7": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════════╗",
+                "║MAN║               ║",
+                "╠═══╝               ║",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║PLA║           ║ANI║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG           GGGGG",
+                "G                   G",
+                "GGGGG           GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG   GGGGG   GGGGG",
+                "G       G   G       G",
+                "GGGGG   GGGGG   GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "resource_plant_8": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │  1  │  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗               ║",
+                "║PLA║               ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG           GGGGG",
+                "G                   G",
+                "GGGGG           GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG   GGGGG   GGGGG",
+                "G       G   G       G",
+                "GGGGG   GGGGG   GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "resource_plant_9": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │  1  │  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║               ╔═══╣",
+                "║               ║PLA║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG           GGGGG",
+                "G                   G",
+                "GGGGG           GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG   GGGGG   GGGGG",
+                "G       G   G       G",
+                "GGGGG   GGGGG   GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "resource_plant_10": {
+        "front": {
+            "text": [
+                "╔══════╦═════╦══╦═══╗",
+                "║      │  1  │  ║PLA║",
+                "║      ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG           GGGGG",
+                "G                   G",
+                "GGGGG           GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   G           G   G",
+                "GGGGG   GGGGG   GGGGG",
+                "G       G   G       G",
+                "GGGGG   GGGGG   GGGGG",
+                "G   G           G   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "resource_animal_1": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║ANI║           ║ANI║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "╠═══╗               ║",
+                "║   ║               ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB           BBBBB",
+                "B                   B",
+                "BBBBB           BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB   BBBBB   BBBBB",
+                "B       B   B       B",
+                "BBBBB   BBBBB   BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "resource_animal_2": {
+        "front": {
+            "text": [
+                "╔═══════════════╦═══╗",
+                "║               ║   ║",
+                "║               ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║ANI║           ║ANI║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB           BBBBB",
+                "B                   B",
+                "BBBBB           BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB   BBBBB   BBBBB",
+                "B       B   B       B",
+                "BBBBB   BBBBB   BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "resource_animal_3": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════════╗",
+                "║ANI║               ║",
+                "╠═══╝               ║",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║ANI║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB           BBBBB",
+                "B                   B",
+                "BBBBB           BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB   BBBBB   BBBBB",
+                "B       B   B       B",
+                "BBBBB   BBBBB   BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "resource_animal_4": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║ANI║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "║               ╔═══╣",
+                "║               ║ANI║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB           BBBBB",
+                "B                   B",
+                "BBBBB           BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB   BBBBB   BBBBB",
+                "B       B   B       B",
+                "BBBBB   BBBBB   BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "resource_animal_5": {
+        "front": {
+            "text": [
+                "╔═══════════════╦═══╗",
+                "║               ║INS║",
+                "║               ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║INK║           ║ANI║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB           BBBBB",
+                "B                   B",
+                "BBBBB           BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB   BBBBB   BBBBB",
+                "B       B   B       B",
+                "BBBBB   BBBBB   BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "resource_animal_6": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║PLA║           ║ANI║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "║               ╔═══╣",
+                "║               ║MAN║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB           BBBBB",
+                "B                   B",
+                "BBBBB           BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB   BBBBB   BBBBB",
+                "B       B   B       B",
+                "BBBBB   BBBBB   BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "resource_animal_7": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════════╗",
+                "║QUI║               ║",
+                "╠═══╝               ║",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║ANI║           ║FUN║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB           BBBBB",
+                "B                   B",
+                "BBBBB           BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB   BBBBB   BBBBB",
+                "B       B   B       B",
+                "BBBBB   BBBBB   BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "resource_animal_8": {
+        "front": {
+            "text": [
+                "╔══════╦═════╦══╦═══╗",
+                "║      │  1  │  ║   ║",
+                "║      ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║ANI║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB           BBBBB",
+                "B                   B",
+                "BBBBB           BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB   BBBBB   BBBBB",
+                "B       B   B       B",
+                "BBBBB   BBBBB   BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "resource_animal_9": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║   ║  │  1  │      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║   ║           ║ANI║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB           BBBBB",
+                "B                   B",
+                "BBBBB           BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB   BBBBB   BBBBB",
+                "B       B   B       B",
+                "BBBBB   BBBBB   BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "resource_animal_10": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │  1  │  ║ANI║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗               ║",
+                "║   ║               ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB           BBBBB",
+                "B                   B",
+                "BBBBB           BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   B           B   B",
+                "BBBBB   BBBBB   BBBBB",
+                "B       B   B       B",
+                "BBBBB   BBBBB   BBBBB",
+                "B   B           B   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "resource_insect_1": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║INS║           ║INS║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "╠═══╗               ║",
+                "║   ║               ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP           PPPPP",
+                "P                   P",
+                "PPPPP           PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP   PPPPP   PPPPP",
+                "P       P   P       P",
+                "PPPPP   PPPPP   PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "resource_insect_2": {
+        "front": {
+            "text": [
+                "╔═══════════════╦═══╗",
+                "║               ║   ║",
+                "║               ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║INS║           ║INS║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP           PPPPP",
+                "P                   P",
+                "PPPPP           PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP   PPPPP   PPPPP",
+                "P       P   P       P",
+                "PPPPP   PPPPP   PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "resource_insect_3": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════════╗",
+                "║INS║               ║",
+                "╠═══╝               ║",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║INS║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP           PPPPP",
+                "P                   P",
+                "PPPPP           PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP   PPPPP   PPPPP",
+                "P       P   P       P",
+                "PPPPP   PPPPP   PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "resource_insect_4": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║INS║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "║               ╔═══╣",
+                "║               ║INS║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP           PPPPP",
+                "P                   P",
+                "PPPPP           PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP   PPPPP   PPPPP",
+                "P       P   P       P",
+                "PPPPP   PPPPP   PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "resource_insect_5": {
+        "front": {
+            "text": [
+                "╔═══════════════╦═══╗",
+                "║               ║QUI║",
+                "║               ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║ANI║           ║INS║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP           PPPPP",
+                "P                   P",
+                "PPPPP           PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP   PPPPP   PPPPP",
+                "P       P   P       P",
+                "PPPPP   PPPPP   PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "resource_insect_6": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║MAN║           ║INS║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "║               ╔═══╣",
+                "║               ║FUN║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP           PPPPP",
+                "P                   P",
+                "PPPPP           PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP   PPPPP   PPPPP",
+                "P       P   P       P",
+                "PPPPP   PPPPP   PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "resource_insect_7": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║INS║           ║PLA║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "╠═══╗               ║",
+                "║INK║               ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP           PPPPP",
+                "P                   P",
+                "PPPPP           PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP   PPPPP   PPPPP",
+                "P       P   P       P",
+                "PPPPP   PPPPP   PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "resource_insect_8": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║INS║  │  1  │      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP           PPPPP",
+                "P                   P",
+                "PPPPP           PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP   PPPPP   PPPPP",
+                "P       P   P       P",
+                "PPPPP   PPPPP   PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "resource_insect_9": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │  1  │  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║               ╔═══╣",
+                "║               ║INS║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP           PPPPP",
+                "P                   P",
+                "PPPPP           PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP   PPPPP   PPPPP",
+                "P       P   P       P",
+                "PPPPP   PPPPP   PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "resource_insect_10": {
+        "front": {
+            "text": [
+                "╔══════╦═════╦══╦═══╗",
+                "║      │  1  │  ║INS║",
+                "║      ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP           PPPPP",
+                "P                   P",
+                "PPPPP           PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   P           P   P",
+                "PPPPP   PPPPP   PPPPP",
+                "P       P   P       P",
+                "PPPPP   PPPPP   PPPPP",
+                "P   P           P   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "gold_fungi_1": {
+        "front": {
+            "text": [
+                "╔══════╦═════╦══╦═══╗",
+                "║      │1 QUI│  ║   ║",
+                "║      ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗   2 FUN   ╔═══╣",
+                "║   ║   1 ANI   ║QUI║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y  Y     Y  Y   R",
+                "RYYYY  YYYYYYY  YYYYR",
+                "R                   R",
+                "RYYYY           YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y           Y   R",
+                "RYYYY   YYYYY   YYYYR",
+                "R       Y   Y       R",
+                "RYYYY   YYYYY   YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "gold_fungi_2": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │1 INK│  ║INK║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║       2 FUN   ╔═══╣",
+                "║       1 PLA   ║   ║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y  Y     Y  Y   R",
+                "RYYYY  YYYYYYY  YYYYR",
+                "R                   R",
+                "RYYYY           YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y           Y   R",
+                "RYYYY   YYYYY   YYYYR",
+                "R       Y   Y       R",
+                "RYYYY   YYYYY   YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "gold_fungi_3": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║MAN║  │1 MAN│  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗   2 FUN       ║",
+                "║   ║   1 INS       ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y  Y     Y  Y   R",
+                "RYYYY  YYYYYYY  YYYYR",
+                "R                   R",
+                "RYYYY           YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y           Y   R",
+                "RYYYY   YYYYY   YYYYR",
+                "R       Y   Y       R",
+                "RYYYY   YYYYY   YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "gold_fungi_4": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │2 COR│  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║       3 FUN   ╔═══╣",
+                "║       1 ANI   ║   ║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y  Y     Y  Y   R",
+                "RYYYY  YYYYYYY  YYYYR",
+                "R                   R",
+                "RYYYY           YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y           Y   R",
+                "RYYYY   YYYYY   YYYYR",
+                "R       Y   Y       R",
+                "RYYYY   YYYYY   YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "gold_fungi_5": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │2 COR│  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗   3 FUN       ║",
+                "║   ║   1 PLA       ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y  Y     Y  Y   R",
+                "RYYYY  YYYYYYY  YYYYR",
+                "R                   R",
+                "RYYYY           YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y           Y   R",
+                "RYYYY   YYYYY   YYYYR",
+                "R       Y   Y       R",
+                "RYYYY   YYYYY   YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "gold_fungi_6": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║   ║  │2 COR│      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗   3 FUN   ╔═══╣",
+                "║   ║   1 INS   ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y  Y     Y  Y   R",
+                "RYYYY  YYYYYYY  YYYYR",
+                "R                   R",
+                "RYYYY           YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y           Y   R",
+                "RYYYY   YYYYY   YYYYR",
+                "R       Y   Y       R",
+                "RYYYY   YYYYY   YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "gold_fungi_7": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║   ║  │  3  │      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗               ║",
+                "║INK║   3 FUN       ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y  Y     Y  Y   R",
+                "RYYYY  YYYYYYY  YYYYR",
+                "R                   R",
+                "RYYYY           YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y           Y   R",
+                "RYYYY   YYYYY   YYYYR",
+                "R       Y   Y       R",
+                "RYYYY   YYYYY   YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "gold_fungi_8": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║QUI║  │  3  │  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║                   ║",
+                "║       3 FUN       ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y  Y     Y  Y   R",
+                "RYYYY  YYYYYYY  YYYYR",
+                "R                   R",
+                "RYYYY           YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y           Y   R",
+                "RYYYY   YYYYY   YYYYR",
+                "R       Y   Y       R",
+                "RYYYY   YYYYY   YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "gold_fungi_9": {
+        "front": {
+            "text": [
+                "╔══════╦═════╦══╦═══╗",
+                "║      │  3  │  ║MAN║",
+                "║      ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║               ╔═══╣",
+                "║       3 FUN   ║   ║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y  Y     Y  Y   R",
+                "RYYYY  YYYYYYY  YYYYR",
+                "R                   R",
+                "RYYYY           YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y           Y   R",
+                "RYYYY   YYYYY   YYYYR",
+                "R       Y   Y       R",
+                "RYYYY   YYYYY   YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "gold_fungi_10": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║   ║  │  5  │      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗               ║",
+                "║   ║   5 FUN       ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y  Y     Y  Y   R",
+                "RYYYY  YYYYYYY  YYYYR",
+                "R                   R",
+                "RYYYY           YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "RRRRRRRRRRRRRRRRRRRRR",
+                "R   Y           Y   R",
+                "RYYYY   YYYYY   YYYYR",
+                "R       Y   Y       R",
+                "RYYYY   YYYYY   YYYYR",
+                "R   Y           Y   R",
+                "RRRRRRRRRRRRRRRRRRRRR"
+            ]
+        }
+    },
+    "gold_plant_1": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║QUI║  │1 QUI│  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗   2 PLA       ║",
+                "║   ║   1 INS       ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y  Y     Y  Y   G",
+                "GYYYY  YYYYYYY  YYYYG",
+                "G                   G",
+                "GYYYY           YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y           Y   G",
+                "GYYYY   YYYYY   YYYYG",
+                "G       Y   Y       G",
+                "GYYYY   YYYYY   YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "gold_plant_2": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │1 MAN│  ║MAN║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║       2 PLA   ╔═══╣",
+                "║       1 FUN   ║   ║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y  Y     Y  Y   G",
+                "GYYYY  YYYYYYY  YYYYG",
+                "G                   G",
+                "GYYYY           YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y           Y   G",
+                "GYYYY   YYYYY   YYYYG",
+                "G       Y   Y       G",
+                "GYYYY   YYYYY   YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "gold_plant_3": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║   ║  │1 INK│      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗   2 PLA   ╔═══╣",
+                "║INK║   1 ANI   ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y  Y     Y  Y   G",
+                "GYYYY  YYYYYYY  YYYYG",
+                "G                   G",
+                "GYYYY           YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y           Y   G",
+                "GYYYY   YYYYY   YYYYG",
+                "G       Y   Y       G",
+                "GYYYY   YYYYY   YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "gold_plant_4": {
+        "front": {
+            "text": [
+                "╔══════╦═════╦══╦═══╗",
+                "║      │2 COR│  ║   ║",
+                "║      ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗   3 PLA   ╔═══╣",
+                "║   ║   1 INS   ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y  Y     Y  Y   G",
+                "GYYYY  YYYYYYY  YYYYG",
+                "G                   G",
+                "GYYYY           YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y           Y   G",
+                "GYYYY   YYYYY   YYYYG",
+                "G       Y   Y       G",
+                "GYYYY   YYYYY   YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "gold_plant_5": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │2 COR│  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗   3 PLA       ║",
+                "║   ║   1 ANI       ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y  Y     Y  Y   G",
+                "GYYYY  YYYYYYY  YYYYG",
+                "G                   G",
+                "GYYYY           YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y           Y   G",
+                "GYYYY   YYYYY   YYYYG",
+                "G       Y   Y       G",
+                "GYYYY   YYYYY   YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "gold_plant_6": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║   ║  │2 COR│      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗   3 PLA   ╔═══╣",
+                "║   ║   1 FUN   ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y  Y     Y  Y   G",
+                "GYYYY  YYYYYYY  YYYYG",
+                "G                   G",
+                "GYYYY           YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y           Y   G",
+                "GYYYY   YYYYY   YYYYG",
+                "G       Y   Y       G",
+                "GYYYY   YYYYY   YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "gold_plant_7": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║   ║  │  3  │      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗               ║",
+                "║QUI║   3 PLA       ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y  Y     Y  Y   G",
+                "GYYYY  YYYYYYY  YYYYG",
+                "G                   G",
+                "GYYYY           YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y           Y   G",
+                "GYYYY   YYYYY   YYYYG",
+                "G       Y   Y       G",
+                "GYYYY   YYYYY   YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "gold_plant_8": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║MAN║  │  3  │  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║                   ║",
+                "║       3 PLA       ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y  Y     Y  Y   G",
+                "GYYYY  YYYYYYY  YYYYG",
+                "G                   G",
+                "GYYYY           YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y           Y   G",
+                "GYYYY   YYYYY   YYYYG",
+                "G       Y   Y       G",
+                "GYYYY   YYYYY   YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "gold_plant_9": {
+        "front": {
+            "text": [
+                "╔══════╦═════╦══╦═══╗",
+                "║      │  3  │  ║INK║",
+                "║      ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║               ╔═══╣",
+                "║       3 PLA   ║   ║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y  Y     Y  Y   G",
+                "GYYYY  YYYYYYY  YYYYG",
+                "G                   G",
+                "GYYYY           YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y           Y   G",
+                "GYYYY   YYYYY   YYYYG",
+                "G       Y   Y       G",
+                "GYYYY   YYYYY   YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "gold_plant_10": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │  5  │  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║                   ║",
+                "║       5 PLA       ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y  Y     Y  Y   G",
+                "GYYYY  YYYYYYY  YYYYG",
+                "G                   G",
+                "GYYYY           YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║PLA║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "GGGGGGGGGGGGGGGGGGGGG",
+                "G   Y           Y   G",
+                "GYYYY   YYYYY   YYYYG",
+                "G       Y   Y       G",
+                "GYYYY   YYYYY   YYYYG",
+                "G   Y           Y   G",
+                "GGGGGGGGGGGGGGGGGGGGG"
+            ]
+        }
+    },
+    "gold_animal_1": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║INK║  │1 INK│  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗   2 ANI       ║",
+                "║   ║   1 INS       ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y  Y     Y  Y   B",
+                "BYYYY  YYYYYYY  YYYYB",
+                "B                   B",
+                "BYYYY           YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y           Y   B",
+                "BYYYY   YYYYY   YYYYB",
+                "B       Y   Y       B",
+                "BYYYY   YYYYY   YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "gold_animal_2": {
+        "front": {
+            "text": [
+                "╔══════╦═════╦══╦═══╗",
+                "║      │1 MAN│  ║   ║",
+                "║      ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗   2 ANI   ╔═══╣",
+                "║   ║   1 PLA   ║MAN║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y  Y     Y  Y   B",
+                "BYYYY  YYYYYYY  YYYYB",
+                "B                   B",
+                "BYYYY           YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y           Y   B",
+                "BYYYY   YYYYY   YYYYB",
+                "B       Y   Y       B",
+                "BYYYY   YYYYY   YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "gold_animal_3": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║   ║  │1 QUI│      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗   2 ANI   ╔═══╣",
+                "║QUI║   1 FUN   ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y  Y     Y  Y   B",
+                "BYYYY  YYYYYYY  YYYYB",
+                "B                   B",
+                "BYYYY           YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y           Y   B",
+                "BYYYY   YYYYY   YYYYB",
+                "B       Y   Y       B",
+                "BYYYY   YYYYY   YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "gold_animal_4": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │2 COR│  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║       3 ANI   ╔═══╣",
+                "║       1 INS   ║   ║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y  Y     Y  Y   B",
+                "BYYYY  YYYYYYY  YYYYB",
+                "B                   B",
+                "BYYYY           YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y           Y   B",
+                "BYYYY   YYYYY   YYYYB",
+                "B       Y   Y       B",
+                "BYYYY   YYYYY   YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "gold_animal_5": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║   ║  │2 COR│      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗   3 ANI   ╔═══╣",
+                "║   ║   1 FUN   ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y  Y     Y  Y   B",
+                "BYYYY  YYYYYYY  YYYYB",
+                "B                   B",
+                "BYYYY           YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y           Y   B",
+                "BYYYY   YYYYY   YYYYB",
+                "B       Y   Y       B",
+                "BYYYY   YYYYY   YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "gold_animal_6": {
+        "front": {
+            "text": [
+                "╔══════╦═════╦══╦═══╗",
+                "║      │2 COR│  ║   ║",
+                "║      ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗   3 ANI   ╔═══╣",
+                "║   ║   1 PLA   ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y  Y     Y  Y   B",
+                "BYYYY  YYYYYYY  YYYYB",
+                "B                   B",
+                "BYYYY           YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y           Y   B",
+                "BYYYY   YYYYY   YYYYB",
+                "B       Y   Y       B",
+                "BYYYY   YYYYY   YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "gold_animal_7": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║   ║  │  3  │      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗               ║",
+                "║MAN║   3 ANI       ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y  Y     Y  Y   B",
+                "BYYYY  YYYYYYY  YYYYB",
+                "B                   B",
+                "BYYYY           YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y           Y   B",
+                "BYYYY   YYYYY   YYYYB",
+                "B       Y   Y       B",
+                "BYYYY   YYYYY   YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "gold_animal_8": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │  3  │  ║INK║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║                   ║",
+                "║       3 ANI       ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y  Y     Y  Y   B",
+                "BYYYY  YYYYYYY  YYYYB",
+                "B                   B",
+                "BYYYY           YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y           Y   B",
+                "BYYYY   YYYYY   YYYYB",
+                "B       Y   Y       B",
+                "BYYYY   YYYYY   YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "gold_animal_9": {
+        "front": {
+            "text": [
+                "╔══════╦═════╦══╦═══╗",
+                "║      │  3  │  ║   ║",
+                "║      ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║               ╔═══╣",
+                "║       3 ANI   ║QUI║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y  Y     Y  Y   B",
+                "BYYYY  YYYYYYY  YYYYB",
+                "B                   B",
+                "BYYYY           YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y           Y   B",
+                "BYYYY   YYYYY   YYYYB",
+                "B       Y   Y       B",
+                "BYYYY   YYYYY   YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "gold_animal_10": {
+        "front": {
+            "text": [
+                "╔══════╦═════╦══╦═══╗",
+                "║      │  5  │  ║   ║",
+                "║      ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║               ╔═══╣",
+                "║       5 ANI   ║   ║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y  Y     Y  Y   B",
+                "BYYYY  YYYYYYY  YYYYB",
+                "B                   B",
+                "BYYYY           YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║ANI║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "BBBBBBBBBBBBBBBBBBBBB",
+                "B   Y           Y   B",
+                "BYYYY   YYYYY   YYYYB",
+                "B       Y   Y       B",
+                "BYYYY   YYYYY   YYYYB",
+                "B   Y           Y   B",
+                "BBBBBBBBBBBBBBBBBBBBB"
+            ]
+        }
+    },
+    "gold_insect_1": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │1 QUI│  ║QUI║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║       2 INS   ╔═══╣",
+                "║       1 PLA   ║   ║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y  Y     Y  Y   P",
+                "PYYYY  YYYYYYY  YYYYP",
+                "P                   P",
+                "PYYYY           YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y           Y   P",
+                "PYYYY   YYYYY   YYYYP",
+                "P       Y   Y       P",
+                "PYYYY   YYYYY   YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "gold_insect_2": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║   ║  │1 MAN│      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗   2 INS   ╔═══╣",
+                "║MAN║   1 ANI   ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y  Y     Y  Y   P",
+                "PYYYY  YYYYYYY  YYYYP",
+                "P                   P",
+                "PYYYY           YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y           Y   P",
+                "PYYYY   YYYYY   YYYYP",
+                "P       Y   Y       P",
+                "PYYYY   YYYYY   YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "gold_insect_3": {
+        "front": {
+            "text": [
+                "╔══════╦═════╦══╦═══╗",
+                "║      │1 INK│  ║   ║",
+                "║      ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗   2 INS   ╔═══╣",
+                "║   ║   1 FUN   ║INK║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y  Y     Y  Y   P",
+                "PYYYY  YYYYYYY  YYYYP",
+                "P                   P",
+                "PYYYY           YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y           Y   P",
+                "PYYYY   YYYYY   YYYYP",
+                "P       Y   Y       P",
+                "PYYYY   YYYYY   YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "gold_insect_4": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │2 COR│  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║       3 INS   ╔═══╣",
+                "║       1 ANI   ║   ║",
+                "╚═══════════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y  Y     Y  Y   P",
+                "PYYYY  YYYYYYY  YYYYP",
+                "P                   P",
+                "PYYYY           YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y           Y   P",
+                "PYYYY   YYYYY   YYYYP",
+                "P       Y   Y       P",
+                "PYYYY   YYYYY   YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "gold_insect_5": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │2 COR│  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "╠═══╗   3 INS       ║",
+                "║   ║   1 PLA       ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y  Y     Y  Y   P",
+                "PYYYY  YYYYYYY  YYYYP",
+                "P                   P",
+                "PYYYY           YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y           Y   P",
+                "PYYYY   YYYYY   YYYYP",
+                "P       Y   Y       P",
+                "PYYYY   YYYYY   YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "gold_insect_6": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║   ║  │2 COR│      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗   3 INS   ╔═══╣",
+                "║   ║   1 FUN   ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y  Y     Y  Y   P",
+                "PYYYY  YYYYYYY  YYYYP",
+                "P                   P",
+                "PYYYY           YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y           Y   P",
+                "PYYYY   YYYYY   YYYYP",
+                "P       Y   Y       P",
+                "PYYYY   YYYYY   YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "gold_insect_7": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══════╗",
+                "║INK║  │  3  │      ║",
+                "╠═══╝  ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗               ║",
+                "║   ║   3 INS       ║",
+                "╚═══╩═══════════════╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y  Y     Y  Y   P",
+                "PYYYY  YYYYYYY  YYYYP",
+                "P                   P",
+                "PYYYY           YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y           Y   P",
+                "PYYYY   YYYYY   YYYYP",
+                "P       Y   Y       P",
+                "PYYYY   YYYYY   YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "gold_insect_8": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │  3  │  ║MAN║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║                   ║",
+                "║       3 INS       ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y  Y     Y  Y   P",
+                "PYYYY  YYYYYYY  YYYYP",
+                "P                   P",
+                "PYYYY           YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y           Y   P",
+                "PYYYY   YYYYY   YYYYP",
+                "P       Y   Y       P",
+                "PYYYY   YYYYY   YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "gold_insect_9": {
+        "front": {
+            "text": [
+                "╔══════╦═════╦══════╗",
+                "║      │  3  │      ║",
+                "║      ╚─────╝      ║",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║QUI║   3 INS   ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y  Y     Y  Y   P",
+                "PYYYY  YYYYYYY  YYYYP",
+                "P                   P",
+                "PYYYY           YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y           Y   P",
+                "PYYYY   YYYYY   YYYYP",
+                "P       Y   Y       P",
+                "PYYYY   YYYYY   YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "gold_insect_10": {
+        "front": {
+            "text": [
+                "╔═══╦══╦═════╦══╦═══╗",
+                "║   ║  │  5  │  ║   ║",
+                "╠═══╝  ╚─────╝  ╚═══╣",
+                "║                   ║",
+                "║                   ║",
+                "║       5 INS       ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y  Y     Y  Y   P",
+                "PYYYY  YYYYYYY  YYYYP",
+                "P                   P",
+                "PYYYY           YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "PPPPPPPPPPPPPPPPPPPPP",
+                "P   Y           Y   P",
+                "PYYYY   YYYYY   YYYYP",
+                "P       Y   Y       P",
+                "PYYYY   YYYYY   YYYYP",
+                "P   Y           Y   P",
+                "PPPPPPPPPPPPPPPPPPPPP"
+            ]
+        }
+    },
+    "starter_1": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║FUN║           ║PLA║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║INS║           ║ANI║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║           ║PLA║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║INS║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║INS║           ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        }
+    },
+    "starter_2": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║PLA║           ║ANI║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║FUN║           ║INS║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║ANI║           ║   ║",
+                "╠═══╝   ╔═══╗   ╚═══╣",
+                "║       ║FUN║       ║",
+                "╠═══╗   ╚═══╝   ╔═══╣",
+                "║   ║           ║FUN║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        }
+    },
+    "starter_3": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║INS║           ║ANI║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║FUN║           ║PLA║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║   ╔═══╗   ║   ║",
+                "╠═══╝   ║PLA║   ╚═══╣",
+                "║       ║   ║       ║",
+                "╠═══╗   ║FUN║   ╔═══╣",
+                "║   ║   ╚═══╝   ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        }
+    },
+    "starter_4": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║PLA║           ║INS║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║ANI║           ║FUN║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║   ╔═══╗   ║   ║",
+                "╠═══╝   ║ANI║   ╚═══╣",
+                "║       ║   ║       ║",
+                "╠═══╗   ║INS║   ╔═══╣",
+                "║   ║   ╚═══╝   ║   ║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        }
+    },
+    "starter_5": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║INS║           ║FUN║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║PLA║           ║ANI║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║   ╔═══╗   ║   ║",
+                "╠═══╝   ║ANI║   ╚═══╣",
+                "║       ║INS║       ║",
+                "║       ║PLA║       ║",
+                "║       ╚═══╝       ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        }
+    },
+    "starter_6": {
+        "front": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║FUN║           ║ANI║",
+                "╠═══╝           ╚═══╣",
+                "║                   ║",
+                "╠═══╗           ╔═══╣",
+                "║PLA║           ║INS║",
+                "╚═══╩═══════════╩═══╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": {
+            "text": [
+                "╔═══╦═══════════╦═══╗",
+                "║   ║   ╔═══╗   ║   ║",
+                "╠═══╝   ║PLA║   ╚═══╣",
+                "║       ║ANI║       ║",
+                "║       ║FUN║       ║",
+                "║       ╚═══╝       ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        }
+    },
+    "objective_pattern_1": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║              ███  ║",
+                "║   2       ███     ║",
+                "║        ███        ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "               RRR   ",
+                "            RRR      ",
+                "         RRR         ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_pattern_2": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║        ███        ║",
+                "║   2       ███     ║",
+                "║              ███  ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "         GGG         ",
+                "            GGG      ",
+                "               GGG   ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_pattern_3": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║              ███  ║",
+                "║   2       ███     ║",
+                "║        ███        ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "               BBB   ",
+                "            BBB      ",
+                "         BBB         ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_pattern_4": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║        ███        ║",
+                "║   2       ███     ║",
+                "║              ███  ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "         PPP         ",
+                "            PPP      ",
+                "               PPP   ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_pattern_5": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║          ███      ║",
+                "║   3      ███      ║",
+                "║             ███   ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "           RRR       ",
+                "           RRR       ",
+                "              GGG    ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_pattern_6": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║             ███   ║",
+                "║   3         ███   ║",
+                "║          ███      ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "              GGG    ",
+                "              GGG    ",
+                "           PPP       ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_pattern_7": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║             ███   ║",
+                "║   3      ███      ║",
+                "║          ███      ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "              RRR    ",
+                "           BBB       ",
+                "           BBB       ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_pattern_8": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║          ███      ║",
+                "║   3         ███   ║",
+                "║             ███   ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "           BBB       ",
+                "              PPP    ",
+                "              PPP    ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_resources_1": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║                   ║",
+                "║   2      3 FUN    ║",
+                "║                   ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_resources_2": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║                   ║",
+                "║   2      3 PLA    ║",
+                "║                   ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_resources_3": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║                   ║",
+                "║   2      3 ANI    ║",
+                "║                   ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_resources_4": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║                   ║",
+                "║   2      3 INS    ║",
+                "║                   ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_object_1": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║          1 QUI    ║",
+                "║   3      1 INK    ║",
+                "║          1 MAN    ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_object_2": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║                   ║",
+                "║   2      2 MAN    ║",
+                "║                   ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_object_3": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║                   ║",
+                "║   2      2 INK    ║",
+                "║                   ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    },
+    "objective_object_4": {
+        "front": {
+            "text": [
+                "╔═══════════════════╗",
+                "║                   ║",
+                "║                   ║",
+                "║   2      2 QUI    ║",
+                "║                   ║",
+                "║                   ║",
+                "╚═══════════════════╝"
+            ],
+            "color": [
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     ",
+                "                     "
+            ]
+        },
+        "back": null
+    }
+}

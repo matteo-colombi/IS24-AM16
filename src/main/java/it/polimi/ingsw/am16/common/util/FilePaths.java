@@ -16,6 +16,16 @@ public final class FilePaths {
     public static final String ASSETS = RESOURCES + "/assets";
 
     /**
+     * The path for assets for the command line interface.
+     */
+    public static final String CLI_ASSETS = ASSETS + "/cli";
+
+    /**
+     * The path for card assets for the command line interface.
+     */
+    public static final String CLI_CARDS = CLI_ASSETS + "/cliCards.json";
+
+    /**
      * The path for JSON files.
      */
     public static final String JSON = RESOURCES + "/json";
