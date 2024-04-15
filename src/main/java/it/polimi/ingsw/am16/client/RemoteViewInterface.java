@@ -104,6 +104,22 @@ public interface RemoteViewInterface extends Remote {
     void setPlayArea(String username, PlayAreaModel playArea) throws RemoteException;
 
     /**
+     * Sets a player's number of game points.
+     * @param whosePoints The username of the player whose points are being set.
+     * @param gamePoints The given player's number of game points.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    void setGamePoints(String whosePoints, int gamePoints) throws RemoteException;
+
+    /**
+     * Sets a player's number of objective points.
+     * @param whosePoints The username of the player whose points are being set.
+     * @param objectivePoints The given player's number of objective points.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    void setObjectivePoints(String whosePoints, int objectivePoints) throws RemoteException;
+
+    /**
      * Sets the common objectives for the game.
      * @param commonObjectives The common objectives. Should always contain 2 elements.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
@@ -173,7 +189,8 @@ public interface RemoteViewInterface extends Remote {
 
     /**
      * Tells the client that another client has disconnected. This ends the game, if it had started. If the game hadn't started already, the player is simply removed.
-     * @throws RemoteException
+     * @param whoDisconnected The username of the player who disconnected.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void signalDisconnection(String whoDisconnected) throws RemoteException;
 

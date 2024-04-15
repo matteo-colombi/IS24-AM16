@@ -187,18 +187,48 @@ public class VirtualView {
     }
 
     /**
-     * Communicates the play area of a player to the player with the given id.
-     * @param receiverPlayerId The player which this communication should be sent to.
+     * Communicates the play area of a player to all players in this VirtualView.
      * @param whosePlayArea The player whose play area is being sent.
      * @param playArea The play area.
      */
-    public void communicatePlayArea(int receiverPlayerId, String whosePlayArea, PlayAreaModel playArea) {
-        RemoteViewInterface userView = userViews.get(receiverPlayerId);
-        try {
-            userView.setPlayArea(whosePlayArea, playArea);
-        } catch (RemoteException e) {
-            //TODO handle it
-        }
+    public void communicatePlayArea(String whosePlayArea, PlayAreaModel playArea) {
+        userViews.values().forEach(userView -> {
+            try {
+                userView.setPlayArea(whosePlayArea, playArea);
+            } catch (RemoteException e) {
+                //TODO handle it
+            }
+        });
+    }
+
+    /**
+     * Communicate to all players the number of game points of the specified player.
+     * @param whosePoints The username of the player whose points are being given.
+     * @param gamePoints The given player's number of game points.
+     */
+    public void communicateGamePoints(String whosePoints, int gamePoints) {
+        userViews.values().forEach(userView -> {
+            try {
+                userView.setGamePoints(whosePoints, gamePoints);
+            } catch (RemoteException e) {
+                //TODO handle it
+            }
+        });
+    }
+
+    /**
+     * Communicate to all players the number of objective points of the specified player.
+     * @param whosePoints The username of the player whose points are being given.
+     * @param objectivePoints The given player's number of objective points.
+     */
+    public void communicateObjectivePoints(String whosePoints, int objectivePoints) {
+        userViews.values().forEach(userView -> {
+            try {
+                userView.setObjectivePoints(whosePoints, objectivePoints);
+            } catch (RemoteException e) {
+                //TODO handle it
+            }
+        });
     }
 
     /**

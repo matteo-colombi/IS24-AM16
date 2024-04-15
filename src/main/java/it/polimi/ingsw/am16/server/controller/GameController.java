@@ -132,7 +132,7 @@ public class GameController {
             return;
         }
 
-        virtualView.communicatePlayArea(playerId, game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getPlayArea());
+        virtualView.communicatePlayArea(game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getPlayArea());
         virtualView.redrawView(playerId);
 
         if (game.allPlayersChoseStarterSide()) {
@@ -208,13 +208,12 @@ public class GameController {
 
         for(PlayerModel player : game.getPlayers()) {
             virtualView.communicateHand(player.getPlayerId(), player.getHand());
-            virtualView.communicatePlayArea(player.getPlayerId(), player.getUsername(), player.getPlayArea());
+            virtualView.communicatePlayArea(player.getUsername(), player.getPlayArea());
             virtualView.communicatePersonalObjective(player.getPlayerId(), player.getPersonalObjective());
 
             for (PlayerModel player2 : game.getPlayers()) {
                 if (player2 != player) {
                     virtualView.communicateOtherHand(player2.getPlayerId(), player.getUsername(), player.getHand().getRestrictedVersion());
-                    virtualView.communicatePlayArea(player2.getPlayerId(), player.getUsername(), player.getPlayArea());
                 }
             }
 
@@ -388,16 +387,16 @@ public class GameController {
 
         hasPlacedCard = true;
 
-        virtualView.communicatePlayArea(playerId, game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getPlayArea());
+        virtualView.communicatePlayArea(game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getPlayArea());
+        virtualView.communicateGamePoints(game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getGamePoints());
         virtualView.communicateHand(playerId, game.getPlayers()[playerId].getHand());
         for(PlayerModel player : game.getPlayers()) {
             if (player.getPlayerId() != playerId) {
-                virtualView.communicatePlayArea(player.getPlayerId(), game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getPlayArea());
                 virtualView.communicateOtherHand(player.getPlayerId(), game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getHand().getRestrictedVersion());
                 virtualView.redrawView(player.getPlayerId());
             }
         }
-        virtualView.redrawView(playerId);
+        virtualView.redrawView();
 
         if (game.getState() == GameState.FINAL_ROUND) {
             turnManager();
@@ -459,6 +458,9 @@ public class GameController {
         }
 
         virtualView.communicateGameState(game.getState());
+        for(PlayerModel player : game.getPlayers()) {
+            virtualView.communicateObjectivePoints(player.getUsername(), player.getObjectivePoints());
+        }
         List<String> winnerUsernames = game.getWinnerIds().stream().map(id -> game.getPlayers()[id].getUsername()).toList();
         virtualView.communicateWinners(winnerUsernames);
         virtualView.redrawView();

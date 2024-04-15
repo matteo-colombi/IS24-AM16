@@ -95,6 +95,18 @@ public class TestRemoteViewImplementation implements RemoteViewInterface {
     }
 
     @Override
+    public void setGamePoints(String whosePoints, int gamePoints) throws RemoteException {
+        System.out.print("[" + this.username + "]: ");
+        System.out.println("Player " + whosePoints + "'s game points: " + gamePoints);
+    }
+
+    @Override
+    public void setObjectivePoints(String whosePoints, int gamePoints) throws RemoteException {
+        System.out.print("[" + this.username + "]: ");
+        System.out.println("Player " + whosePoints + "'s objective points: " + gamePoints);
+    }
+
+    @Override
     public void setCommonObjectives(ObjectiveCard[] commonObjectives) throws RemoteException {
         System.out.print("[" + username + "]: ");
         System.out.println("Common objectives: " + Arrays.toString(commonObjectives));
