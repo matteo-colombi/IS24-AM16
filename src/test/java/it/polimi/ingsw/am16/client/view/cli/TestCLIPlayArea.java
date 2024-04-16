@@ -36,10 +36,7 @@ public class TestCLIPlayArea {
         testPlayArea.playCard(CardRegistry.getRegistry().getResourceCardFromName("resource_plant_4"), SideType.FRONT, new Position(-1, 1));
         testPlayArea.playCard(CardRegistry.getRegistry().getResourceCardFromName("resource_animal_3"), SideType.FRONT, new Position(2, 2));
 
-        Map<BoardCard, SideType> converted = testPlayArea.getActiveSides().entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getSideType()));
-
-        CLIPlayArea otherCliPlayArea = new CLIPlayArea(testPlayArea.getPlacementOrder(), testPlayArea.getField(), converted);
+        CLIPlayArea otherCliPlayArea = new CLIPlayArea(testPlayArea.getPlacementOrder(), testPlayArea.getField(), testPlayArea.getActiveSides());
 
         otherCliPlayArea.printPlayArea();
 
