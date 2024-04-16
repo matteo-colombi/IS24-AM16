@@ -33,6 +33,15 @@ public abstract class PlayableCard extends BoardCard {
     }
 
     /**
+     * DOCME
+     * @return
+     */
+    @JsonIgnore
+    public RestrictedCard getRestrictedVersion() {
+        return new RestrictedCard(this.playableCardType, this.getType());
+    }
+
+    /**
      * @return The card's type (RESOURCE or GOLD).
      */
     @JsonIgnore

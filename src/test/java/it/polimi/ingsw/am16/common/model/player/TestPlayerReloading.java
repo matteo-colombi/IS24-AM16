@@ -6,11 +6,12 @@ import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
-import it.polimi.ingsw.am16.common.model.chat.ChatManager;
+import it.polimi.ingsw.am16.server.controller.ChatController;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
+import it.polimi.ingsw.am16.server.VirtualView;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -45,16 +46,16 @@ public class TestPlayerReloading {
         player.playCard(registry.getResourceCardFromName("resource_animal_10"), SideType.FRONT, new Position(1, 1));
         player.playCard(registry.getGoldCardFromName("gold_insect_4"), SideType.BACK, new Position(-1, 1));
 
-        ChatManager manager = new ChatManager();
+        ChatController chatController = new ChatController(new VirtualView());
 
         Player fakePlayer = new Player(5, "L2C");
-        fakePlayer.getChat().subscribe(manager);
-        player.getChat().subscribe(manager);
+        fakePlayer.getChat().subscribe(chatController);
+        player.getChat().subscribe(chatController);
 
-        manager.sendMessage("L2C", "I am a message from fakePlayer");
+        chatController.sendMessage("L2C", "I am a message from fakePlayer");
 
-        manager.sendMessage("L2C", "This is a chat message!!!", Set.of("L2C", "xLorde"));
-        manager.sendMessage("L2C", "This is another chat message!");
+        chatController.sendMessage("L2C", "This is a chat message!!!", Set.of("L2C", "xLorde"));
+        chatController.sendMessage("L2C", "This is another chat message!");
 
         mapper.writeValue(f, player);
 
@@ -82,6 +83,7 @@ public class TestPlayerReloading {
         assertEquals(player.getPlayArea().getMaxX(), reloadedPlayer.getPlayArea().getMaxX());
         assertEquals(player.getPlayArea().getMinY(), reloadedPlayer.getPlayArea().getMinY());
         assertEquals(player.getPlayArea().getMaxY(), reloadedPlayer.getPlayArea().getMaxY());
+        assertEquals(player.getChat().getPlayerId(), reloadedPlayer.getChat().getPlayerId());
         assertEquals(player.getChat().getUsername(), reloadedPlayer.getChat().getUsername());
         assertEquals(player.getChat().getMessages(), reloadedPlayer.getChat().getMessages());
     }

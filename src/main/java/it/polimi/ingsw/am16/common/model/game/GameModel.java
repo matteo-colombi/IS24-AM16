@@ -226,19 +226,4 @@ public interface GameModel {
      * @return an array containing the ids of the players in the order in which they play.
      */
     List<String> getTurnOrder();
-
-    /**
-     * Sends a new message to the given users.
-     * This method does nothing if the chat is not subscribed to any manager.
-     * @param text The message's body text.
-     * @param receiverUsernames The users to send this message to.
-     */
-    void sendChatMessage(String senderUsername, String text, Set<String> receiverUsernames);
-
-    /**
-     * Sends a new message to all the users subscribed to this chat's chat manager.
-     * This method does nothing if the chat is not subscribed to any manager.
-     * @param text The message's body text.
-     */
-    void sendChatMessage(String senderUsername, String text);
 }

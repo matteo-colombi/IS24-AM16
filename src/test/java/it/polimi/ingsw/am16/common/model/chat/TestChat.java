@@ -1,5 +1,7 @@
 package it.polimi.ingsw.am16.common.model.chat;
 
+import it.polimi.ingsw.am16.server.VirtualView;
+import it.polimi.ingsw.am16.server.controller.ChatController;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
@@ -8,11 +10,11 @@ class TestChat {
 
     @Test
     void testChat() {
-        ChatManager manager = new ChatManager();
+        ChatController manager = new ChatController(new VirtualView());
 
-        Chat chatAldo = new Chat("Aldo");
-        Chat chatGiovanni = new Chat("Giovanni42");
-        Chat chatGiacomo = new Chat("xXGiacomoXx");
+        Chat chatAldo = new Chat(1,"Aldo");
+        Chat chatGiovanni = new Chat(2, "Giovanni42");
+        Chat chatGiacomo = new Chat(3, "xXGiacomoXx");
         chatAldo.subscribe(manager);
         chatGiacomo.subscribe(manager);
         chatGiovanni.subscribe(manager);

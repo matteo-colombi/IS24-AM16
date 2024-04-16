@@ -17,6 +17,7 @@ import it.polimi.ingsw.am16.common.util.Position;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Class representing the player's play area. Contains info about card placement and resource/object counts.
@@ -144,6 +145,7 @@ public class PlayArea implements PlayAreaModel {
     /**
      * @return The x-coordinate of the left-most played card.
      */
+    @Override
     public int getMinX() {
         return minX;
     }
@@ -151,6 +153,7 @@ public class PlayArea implements PlayAreaModel {
     /**
      * @return The x-coordinate of the right-most played card.
      */
+    @Override
     public int getMaxX() {
         return maxX;
     }
@@ -158,6 +161,7 @@ public class PlayArea implements PlayAreaModel {
     /**
      * @return The y-coordinate of the down-most played card.
      */
+    @Override
     public int getMinY() {
         return minY;
     }
@@ -165,6 +169,7 @@ public class PlayArea implements PlayAreaModel {
     /**
      * @return The Y coordinate of the up-most played card.
      */
+    @Override
     public int getMaxY() {
         return maxY;
     }
@@ -329,12 +334,15 @@ public class PlayArea implements PlayAreaModel {
      */
     @Override
     @JsonIgnore
-    public Map<BoardCard, CardSide> getActiveSides() {
-        return Map.copyOf(activeSides);
+    public Map<BoardCard, SideType> getActiveSides() {
+        return activeSides.entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e->e.getValue().getSideType()));
     }
 
     /**
      * Checks whether a move is legal or not by following these three steps: <br>
+     * - checks if the position is already occupied
      * - checks if the playedCard has been placed isolated from the rest of the field; <br>
      * - checks if the playedCard has been placed over a blocked corner; <br>
      * - checks if the playedCard cost is satisfied.
@@ -346,7 +354,7 @@ public class PlayArea implements PlayAreaModel {
      */
     @Override
     public boolean checkLegalMove(PlayableCard playedCard, SideType side, Position playedCardPosition) {
-        //checks if the position is already occupied
+        // checks if the position is already occupied
         if (field.containsKey(playedCardPosition))
             return false;
 

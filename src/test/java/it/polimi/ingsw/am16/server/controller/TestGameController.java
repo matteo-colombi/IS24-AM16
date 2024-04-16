@@ -1,7 +1,6 @@
 package it.polimi.ingsw.am16.server.controller;
 
-import it.polimi.ingsw.am16.client.OtherTestRemoteViewImplementation;
-import it.polimi.ingsw.am16.client.view.RemoteViewInterface;
+import it.polimi.ingsw.am16.client.RemoteViewInterface;
 import it.polimi.ingsw.am16.client.TestRemoteViewImplementation;
 import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
@@ -12,6 +11,8 @@ import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.util.RNG;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+
 class TestGameController {
     @Test
     void testGameController() {
@@ -21,7 +22,7 @@ class TestGameController {
         GameController controller = LobbyManager.getGame(gameId);
 
         RemoteViewInterface xLordeInterface = new TestRemoteViewImplementation("xLorde");
-        RemoteViewInterface l2cInterface = new OtherTestRemoteViewImplementation("l2c");
+        RemoteViewInterface l2cInterface = new TestRemoteViewImplementation("l2c");
 
         int xLordeId = controller.createPlayer("xLorde");
         int l2cId = controller.createPlayer("l2c");
@@ -43,5 +44,8 @@ class TestGameController {
 
         controller.placeCard(l2cId, CardRegistry.getRegistry().getResourceCardFromName("resource_fungi_3"), SideType.BACK, new Position(1, 1));
         controller.drawCard(l2cId, DrawType.GOLD_DECK);
+
+        controller.sendChatMessage("xLorde", "Ciao leo!!!", Set.of("l2c"));
+        controller.sendChatMessage("l2c", "Ciao a tutti!");
     }
 }

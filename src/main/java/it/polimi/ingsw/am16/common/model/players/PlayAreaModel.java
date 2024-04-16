@@ -25,7 +25,7 @@ public interface PlayAreaModel {
     /**
      * @return The visible side of the cards.
      */
-    Map<BoardCard, CardSide> getActiveSides();
+    Map<BoardCard, SideType> getActiveSides();
 
     /**
      * Checks whether a move is legal or not.
@@ -46,4 +46,24 @@ public interface PlayAreaModel {
      * @return A map containing the amounts of each object in the play area.
      */
     Map<ObjectType, Integer> getObjectCounts();
+
+    /**
+     * @return The x-coordinate of the left-most played card.
+     */
+    int getMinX();
+
+    /**
+     * @return The x-coordinate of the right-most played card.
+     */
+    int getMaxX();
+
+    /**
+     * @return The y-coordinate of the down-most played card.
+     */
+    int getMinY();
+
+    /**
+     * @return The Y coordinate of the up-most played card.
+     */
+    int getMaxY();
 }
