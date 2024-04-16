@@ -1,4 +1,4 @@
-package it.polimi.ingsw.am16.client;
+package it.polimi.ingsw.am16.client.view;
 
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;

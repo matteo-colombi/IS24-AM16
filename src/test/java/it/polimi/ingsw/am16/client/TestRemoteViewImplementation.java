@@ -1,12 +1,10 @@
 package it.polimi.ingsw.am16.client;
 
+import it.polimi.ingsw.am16.client.view.RemoteViewInterface;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
-import it.polimi.ingsw.am16.common.model.chat.ChatModel;
 import it.polimi.ingsw.am16.common.model.game.GameState;
-import it.polimi.ingsw.am16.common.model.players.PlayAreaModel;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
-import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.rmi.RemoteException;
