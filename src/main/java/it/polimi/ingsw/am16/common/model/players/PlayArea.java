@@ -335,6 +335,7 @@ public class PlayArea implements PlayAreaModel {
 
     /**
      * Checks whether a move is legal or not by following these three steps: <br>
+     * - checks if the position is already occupied
      * - checks if the playedCard has been placed isolated from the rest of the field; <br>
      * - checks if the playedCard has been placed over a blocked corner; <br>
      * - checks if the playedCard cost is satisfied.
@@ -346,7 +347,7 @@ public class PlayArea implements PlayAreaModel {
      */
     @Override
     public boolean checkLegalMove(PlayableCard playedCard, SideType side, Position playedCardPosition) {
-        //checks if the position is already occupied
+        // checks if the position is already occupied
         if (field.containsKey(playedCardPosition))
             return false;
 

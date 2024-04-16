@@ -66,7 +66,11 @@ public class Hand implements HandModel{
      */
     @Override
     public PlayableCard getCard(int index){
-        return this.cards.get(index);
+        try {
+            return this.cards.get(index);
+        } catch (IndexOutOfBoundsException ignored) {
+            return null;
+        }
     }
 
     /**
