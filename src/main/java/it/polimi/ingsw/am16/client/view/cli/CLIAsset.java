@@ -2,6 +2,7 @@ package it.polimi.ingsw.am16.client.view.cli;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.polimi.ingsw.am16.common.model.cards.SideType;
 
 public class CLIAsset {
     private final CLIText front;
@@ -18,6 +19,12 @@ public class CLIAsset {
     }
 
     public CLIText getBack() {
+        return back;
+    }
+
+    public CLIText getSide(SideType sideType) {
+        if (sideType == SideType.FRONT)
+            return front;
         return back;
     }
 

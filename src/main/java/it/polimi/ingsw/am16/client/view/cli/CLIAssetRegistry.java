@@ -14,16 +14,20 @@ public class CLIAssetRegistry {
 
     private final Map<String, CLIAsset> cliCards;
 
-    private CLIAssetRegistry() throws IOException {
+    private CLIAssetRegistry() {
         TypeReference<HashMap<String, CLIAsset>> cliCardsTypeRef = new TypeReference<>() {};
         File f = new File(FilePaths.CLI_CARDS);
         if (!f.exists()) {
-            throw new IOException(FilePaths.CLI_CARDS + " does not exist!");
+            throw new RuntimeException(FilePaths.CLI_CARDS + " does not exist!");
         }
-        cliCards = JsonMapper.getObjectMapper().readValue(f, cliCardsTypeRef);
+        try {
+            cliCards = JsonMapper.getObjectMapper().readValue(f, cliCardsTypeRef);
+        } catch (IOException ignored) {
+            throw new RuntimeException("Unable to read cli cards!");
+        }
     }
 
-    public static CLIAssetRegistry getCLIAssetRegistry() throws IOException {
+    public static CLIAssetRegistry getCLIAssetRegistry() {
         if (instance == null) {
             instance = new CLIAssetRegistry();
         }
