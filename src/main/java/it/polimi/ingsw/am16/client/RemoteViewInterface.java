@@ -1,16 +1,15 @@
 package it.polimi.ingsw.am16.client;
 
 import it.polimi.ingsw.am16.common.model.cards.*;
-import it.polimi.ingsw.am16.common.model.chat.ChatModel;
+import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
-import it.polimi.ingsw.am16.common.model.players.PlayAreaModel;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
-import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
-import it.polimi.ingsw.am16.common.model.players.hand.RestrictedHand;
+import it.polimi.ingsw.am16.common.util.Position;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Interface that contains the methods used by the server to communicate with client views.
@@ -69,10 +68,11 @@ public interface RemoteViewInterface extends Remote {
 
     /**
      * Sets the player's color. If the player is still in the prompt because he didn't choose in time, the prompt is invalidated
+     * @param username The username whose color is being given.
      * @param color The color assigned to the player.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void setColor(PlayerColor color) throws RemoteException;
+    void setColor(String username, PlayerColor color) throws RemoteException;
 
     /**
      * Tells the client that the cards for the game are being drawn.
@@ -85,23 +85,65 @@ public interface RemoteViewInterface extends Remote {
      * @param hand The player's hand.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void setHand(HandModel hand) throws RemoteException;
+    void setHand(List<PlayableCard> hand) throws RemoteException;
 
     /**
-     * Sets the given player's {@link RestrictedHand}.
+     * DOCME
+     * @param card
+     * @throws RemoteException
+     */
+    void addCardToHand(PlayableCard card) throws RemoteException;
+
+    /**
+     * DOCME
+     * @param card
+     * @throws RemoteException
+     */
+    void removeCardFromHand(PlayableCard card) throws RemoteException;
+
+    /**
+     * Sets the given player's restricted hand.
      * @param username The username of the player whose hand is being given.
      * @param hand The restricted hand.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void setOtherHand(String username, RestrictedHand hand) throws RemoteException;
+    void setOtherHand(String username, List<RestrictedCard> hand) throws RemoteException;
 
     /**
-     * Sets the given player's play area.
-     * @param username The username of the player whose play area is being given.
-     * @param playArea The play area.
+     * DOCME
+     * @param username
+     * @param newCard
+     * @throws RemoteException
+     */
+    void addCardToOtherHand(String username, RestrictedCard newCard) throws RemoteException;
+
+    /**
+     * DOCME
+     * @param username
+     * @param cardToRemove
+     * @throws RemoteException
+     */
+    void removeCardFromOtherHand(String username, RestrictedCard cardToRemove) throws RemoteException;
+
+    /**
+     * DOCME
+     * @param username
+     * @param cardPlacementOrder
+     * @param field
+     * @param activeSides
+     * @throws RemoteException
+     */
+    void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) throws RemoteException;
+
+    /**
+     * Adds the given card to the given player's play area.
+     * @param username The username of the player who played the card.
+     * @param card The played card.
+     * @param side The card the new card was played on.
+     * @param pos The position where the new card was played.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void setPlayArea(String username, PlayAreaModel playArea) throws RemoteException;
+    void playCard(String username, BoardCard card, SideType side, Position pos) throws RemoteException;
 
     /**
      * Sets a player's number of game points.
@@ -162,11 +204,18 @@ public interface RemoteViewInterface extends Remote {
     void setWinners(List<String> winnerUsernames) throws RemoteException;
 
     /**
-     * Sets the chat for the player. Used to notify of new messages.
-     * @param chat The chat.
+     * Adds all the messages given to the player's chat.
+     * @param messages The chat messages to add.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void setChat(ChatModel chat) throws RemoteException;
+    void addMessages(List<ChatMessage> messages) throws RemoteException;
+
+    /**
+     * Adds the given message to the player's chat.
+     * @param message The new message.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    void addMessage(ChatMessage message) throws RemoteException;
 
     /**
      * Tells the client that an error has occured.

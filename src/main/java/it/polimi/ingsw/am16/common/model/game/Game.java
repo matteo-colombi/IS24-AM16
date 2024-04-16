@@ -15,7 +15,6 @@ import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.cards.decks.*;
-import it.polimi.ingsw.am16.common.model.chat.ChatManager;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.model.players.PlayerModel;
@@ -48,7 +47,6 @@ public class Game implements GameModel {
     private boolean rejoiningAfterCrash;
     private final Player[] players;
     private final List<PlayerColor> availableColors;
-    private final ChatManager chatManager;
 
     /**
      * Creates a game, initializing its ID as well as its number of players to a chosen value, its
@@ -74,7 +72,6 @@ public class Game implements GameModel {
         this.players = new Player[numPlayers];
         this.currentPlayerCount = 0;
         this.availableColors = new ArrayList<>(List.of(PlayerColor.values()));
-        this.chatManager = new ChatManager();
     }
 
     /**
@@ -94,7 +91,6 @@ public class Game implements GameModel {
      * @param state The game's state.
      * @param players The players for this game.
      * @param availableColors The currently available colors from which players can choose.
-     * @param chatManager The game's chat manager.
      */
     private Game(
             String id,
@@ -111,8 +107,7 @@ public class Game implements GameModel {
             PlayableCard[] commonResourceCards,
             GameState state,
             Player[] players,
-            List<PlayerColor> availableColors,
-            ChatManager chatManager) {
+            List<PlayerColor> availableColors) {
         this.id = id;
         this.numPlayers = numPlayers;
         this.currentPlayerCount = 0;
@@ -130,7 +125,6 @@ public class Game implements GameModel {
         this.rejoiningAfterCrash = true;
         this.players = players;
         this.availableColors = availableColors;
-        this.chatManager = chatManager;
     }
 
     /**
@@ -159,7 +153,6 @@ public class Game implements GameModel {
         }
 
         Player player = new Player(currentPlayerCount, username);
-        player.getChat().subscribe(chatManager);
         players[currentPlayerCount] = player;
         currentPlayerCount++;
         return currentPlayerCount-1;
@@ -727,29 +720,6 @@ public class Game implements GameModel {
     }
 
     /**
-     * Sends a new message to the given users.
-     * This method does nothing if the chat is not subscribed to any manager.
-     * @param text The message's body text.
-     * @param receiverUsernames The users to send this message to.
-     */
-    @Override
-    public void sendChatMessage(String senderUsername, String text, Set<String> receiverUsernames) {
-        if (chatManager != null)
-            chatManager.sendMessage(senderUsername, text, receiverUsernames);
-    }
-
-    /**
-     * Sends a new message to all the users subscribed to this chat's chat manager.
-     * This method does nothing if the chat is not subscribed to any manager.
-     * @param text The message's body text.
-     */
-    @Override
-    public void sendChatMessage(String senderUsername, String text) {
-        if (chatManager != null)
-            chatManager.sendMessage(senderUsername, text);
-    }
-
-    /**
      * Deserializer used to reload a game from a JSON file.
      */
     public static class Deserializer extends StdDeserializer<Game> {
@@ -799,11 +769,6 @@ public class Game implements GameModel {
             TypeReference<ArrayList<PlayerColor>> availableColorsTypeRef = new TypeReference<>() {};
             List<PlayerColor> availableColors = mapper.readValue(node.get("availableColors").toString(), availableColorsTypeRef);
 
-            ChatManager chatManager = new ChatManager();
-            for(Player player : players) {
-                player.getChat().subscribe(chatManager);
-            }
-
             return new Game(
                     id,
                     numPlayers,
@@ -819,8 +784,7 @@ public class Game implements GameModel {
                     commonResourceCards,
                     state,
                     players,
-                    availableColors,
-                    chatManager
+                    availableColors
             );
         }
     }

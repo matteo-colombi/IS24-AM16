@@ -89,10 +89,10 @@ public class TestGameModel {
 
         printHand(l2c);
 
-        assertThrows(IllegalMoveException.class, () -> game.placeCard(1, l2cHand.getCard(2), SideType.FRONT, new Position(1, 1)));
-        assertThrows(IllegalMoveException.class, () -> game.placeCard(1, l2cHand.getCard(1), SideType.FRONT, new Position(0, 1)));
+        assertThrows(IllegalMoveException.class, () -> game.placeCard(1, l2cHand.getCards().get(2), SideType.FRONT, new Position(1, 1)));
+        assertThrows(IllegalMoveException.class, () -> game.placeCard(1, l2cHand.getCards().get(1), SideType.FRONT, new Position(0, 1)));
 
-        game.placeCard(0, xLordeHand.getCard(0), SideType.FRONT, new Position(-1, 1));
+        game.placeCard(0, xLordeHand.getCards().get(0), SideType.FRONT, new Position(-1, 1));
 
         game.drawCard(0, DrawType.RESOURCE_DECK);
 
@@ -101,12 +101,12 @@ public class TestGameModel {
         game.advanceTurn();
         assertEquals(1, game.getActivePlayer());
 
-        game.placeCard(1, l2cHand.getCard(0), SideType.FRONT, new Position(-1, 1));
+        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(-1, 1));
         game.drawCard(1, DrawType.RESOURCE_2);
 
         assertEquals(1, l2c.getGamePoints());
 
-        game.placeCard(0, xLordeHand.getCard(0), SideType.FRONT, new Position(0, 2));
+        game.placeCard(0, xLordeHand.getCards().get(0), SideType.FRONT, new Position(0, 2));
 
         game.drawCard(0, DrawType.GOLD_DECK);
 
@@ -114,49 +114,49 @@ public class TestGameModel {
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCard(0), SideType.FRONT, new Position(1, 1));
+        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(1, 1));
         game.drawCard(1, DrawType.RESOURCE_2);
 
         printHand(l2c);
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCard(1), SideType.FRONT, new Position(1, 1));
+        game.placeCard(0, xLordeHand.getCards().get(1), SideType.FRONT, new Position(1, 1));
         game.drawCard(0, DrawType.RESOURCE_2);
 
         printHand(xLorde);
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCard(2), SideType.FRONT, new Position(0, 2));
+        game.placeCard(1, l2cHand.getCards().get(2), SideType.FRONT, new Position(0, 2));
         game.drawCard(1, DrawType.RESOURCE_DECK);
 
         printHand(l2c);
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCard(1), SideType.BACK, new Position(1, -1));
+        game.placeCard(0, xLordeHand.getCards().get(1), SideType.BACK, new Position(1, -1));
         game.drawCard(0, DrawType.RESOURCE_DECK);
 
         printHand(xLorde);
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCard(0), SideType.FRONT, new Position(1, 3));
+        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(1, 3));
         game.drawCard(1, DrawType.GOLD_DECK);
 
         printHand(l2c);
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCard(1), SideType.FRONT, new Position(2, 2));
+        game.placeCard(0, xLordeHand.getCards().get(1), SideType.FRONT, new Position(2, 2));
         game.drawCard(0, DrawType.RESOURCE_DECK);
 
         printHand(xLorde);
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCard(0), SideType.FRONT, new Position(0, 4));
+        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(0, 4));
         game.drawCard(1, DrawType.GOLD_2);
 
         printHand(l2c);
@@ -165,56 +165,56 @@ public class TestGameModel {
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCard(2), SideType.FRONT, new Position(2, -2));
+        game.placeCard(0, xLordeHand.getCards().get(2), SideType.FRONT, new Position(2, -2));
         game.drawCard(0, DrawType.RESOURCE_2);
 
         printCommonResourceCards();
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCard(0), SideType.FRONT, new Position(-2, 0));
+        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(-2, 0));
         game.drawCard(1, DrawType.RESOURCE_1);
 
         printCommonResourceCards();
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCard(2), SideType.FRONT, new Position(1, -3));
+        game.placeCard(0, xLordeHand.getCards().get(2), SideType.FRONT, new Position(1, -3));
         game.drawCard(0, DrawType.GOLD_1);
 
         printCommonGoldCards();
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCard(2), SideType.FRONT, new Position(-3, -1));
+        game.placeCard(1, l2cHand.getCards().get(2), SideType.FRONT, new Position(-3, -1));
         game.drawCard(1, DrawType.RESOURCE_DECK);
 
         printHand(l2c);
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCard(1), SideType.FRONT, new Position(3, -1));
+        game.placeCard(0, xLordeHand.getCards().get(1), SideType.FRONT, new Position(3, -1));
         game.drawCard(0, DrawType.GOLD_DECK);
 
         printHand(xLorde);
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCard(2), SideType.FRONT, new Position(-1, 5));
+        game.placeCard(1, l2cHand.getCards().get(2), SideType.FRONT, new Position(-1, 5));
         game.drawCard(1, DrawType.GOLD_DECK);
 
         printHand(l2c);
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCard(2), SideType.FRONT, new Position(2, -4));
+        game.placeCard(0, xLordeHand.getCards().get(2), SideType.FRONT, new Position(2, -4));
         game.drawCard(0, DrawType.GOLD_DECK);
 
         printHand(xLorde);
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCard(2), SideType.FRONT, new Position(-2, 2));
+        game.placeCard(1, l2cHand.getCards().get(2), SideType.FRONT, new Position(-2, 2));
         game.drawCard(1, DrawType.RESOURCE_DECK);
 
         printHand(l2c);
@@ -224,21 +224,21 @@ public class TestGameModel {
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCard(0), SideType.FRONT, new Position(3, 1));
+        game.placeCard(0, xLordeHand.getCards().get(0), SideType.FRONT, new Position(3, 1));
         game.drawCard(0, DrawType.GOLD_DECK);
 
         printHand(xLorde);
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCard(1), SideType.FRONT, new Position(-2, 4));
+        game.placeCard(1, l2cHand.getCards().get(1), SideType.FRONT, new Position(-2, 4));
         game.drawCard(1, DrawType.GOLD_DECK);
 
         printHand(l2c);
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCard(0), SideType.FRONT, new Position(2, 0));
+        game.placeCard(0, xLordeHand.getCards().get(0), SideType.FRONT, new Position(2, 0));
         game.drawCard(0, DrawType.GOLD_DECK);
 
         printHand(xLorde);
@@ -247,7 +247,7 @@ public class TestGameModel {
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCard(0), SideType.FRONT, new Position(-1, 3));
+        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(-1, 3));
         game.drawCard(1, DrawType.RESOURCE_DECK);
 
         printHand(l2c);
@@ -256,7 +256,7 @@ public class TestGameModel {
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCard(2), SideType.FRONT, new Position(-1, -1));
+        game.placeCard(0, xLordeHand.getCards().get(2), SideType.FRONT, new Position(-1, -1));
         game.drawCard(0, DrawType.GOLD_1);
 
         printCommonGoldCards();
@@ -265,14 +265,14 @@ public class TestGameModel {
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCard(0), SideType.FRONT, new Position(-3, 3));
+        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(-3, 3));
         game.drawCard(1, DrawType.GOLD_DECK);
 
         printHand(l2c);
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCard(1), SideType.FRONT, new Position(4, 2));
+        game.placeCard(0, xLordeHand.getCards().get(1), SideType.FRONT, new Position(4, 2));
         game.drawCard(0, DrawType.GOLD_DECK);
 
         printHand(xLorde);
@@ -283,7 +283,7 @@ public class TestGameModel {
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCard(0), SideType.FRONT, new Position(1, 5));
+        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(1, 5));
         game.drawCard(1, DrawType.GOLD_DECK);
 
         printHand(l2c);
@@ -297,13 +297,13 @@ public class TestGameModel {
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCard(0), SideType.FRONT, new Position(0, -2));
+        game.placeCard(0, xLordeHand.getCards().getFirst(), SideType.FRONT, new Position(0, -2));
 
         assertEquals(21, xLorde.getGamePoints());
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCard(1), SideType.FRONT, new Position(2, 0));
+        game.placeCard(1, l2cHand.getCards().get(1), SideType.FRONT, new Position(2, 0));
 
         assertEquals(27, l2c.getGamePoints());
 
@@ -330,8 +330,8 @@ public class TestGameModel {
         String name = playerModel.getUsername();
         HandModel hand = playerModel.getHand();
         System.out.println(name + " hand:");
-        for (int i = 0; i < hand.getSize(); i++) {
-            System.out.println(hand.getCard(i));
+        for (int i = 0; i < hand.getCards().size(); i++) {
+            System.out.println(hand.getCards().get(i));
         }
         System.out.println();
     }

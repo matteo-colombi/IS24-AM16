@@ -5,13 +5,11 @@ import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
-import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
-import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
-import it.polimi.ingsw.am16.common.model.cards.PlayableCardType;
-import it.polimi.ingsw.am16.common.model.cards.SideType;
+import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.model.game.GameModel;
 import it.polimi.ingsw.am16.common.model.game.GameState;
+import it.polimi.ingsw.am16.common.model.players.PlayAreaModel;
 import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.model.players.PlayerModel;
@@ -32,6 +30,7 @@ public class GameController {
     private boolean hasPlacedCard;
     private final GameModel game;
     private final VirtualView virtualView;
+    private final ChatController chatController;
 
     private Queue<PlayerModel> playerQueue = null;
 
@@ -44,6 +43,7 @@ public class GameController {
         this.hasPlacedCard = false;
         this.game = game;
         this.virtualView = new VirtualView();
+        this.chatController = new ChatController(this.virtualView);
     }
 
     /**
@@ -82,6 +82,10 @@ public class GameController {
         virtualView.addPlayer(players[playerId].getPlayerId(), userView, players[playerId].getUsername());
 
         players[playerId].setConnected(true);
+        if (game.isRejoiningAfterCrash()) {
+            virtualView.communicateNewMessages(playerId, players[playerId].getChat().getMessages());
+        }
+
         if (game.getCurrentPlayerCount() == game.getNumPlayers() && game.everybodyConnected()) {
             if (!game.isRejoiningAfterCrash()) {
                 initializingProcedures();
@@ -89,6 +93,8 @@ public class GameController {
                 restartingProcedures();
             }
         }
+
+        chatController.subscribe(players[playerId].getPlayerId(), players[playerId].getUsername(), players[playerId].getChat());
     }
 
     /**
@@ -120,6 +126,8 @@ public class GameController {
         if (playerId < 0 || playerId >= game.getCurrentPlayerCount())
             return;
 
+        StarterCard card = game.getPlayers()[playerId].getStarterCard();
+
         try {
             game.setPlayerStarterSide(playerId, starterSide);
         } catch (UnexpectedActionException e) {
@@ -131,8 +139,9 @@ public class GameController {
             e.printStackTrace();
             return;
         }
+        PlayAreaModel playArea = game.getPlayers()[playerId].getPlayArea();
 
-        virtualView.communicatePlayArea(game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getPlayArea());
+        virtualView.communicatePlayCard(game.getPlayers()[playerId].getUsername(), card, starterSide, new Position(0, 0));
         virtualView.redrawView(playerId);
 
         if (game.allPlayersChoseStarterSide()) {
@@ -189,7 +198,7 @@ public class GameController {
             e.printStackTrace();
             return;
         }
-        virtualView.communicateColor(playerId, color);
+        virtualView.communicateColor(game.getPlayers()[playerId].getUsername(), color);
         virtualView.redrawView(playerId);
         promptColor();
     }
@@ -207,8 +216,8 @@ public class GameController {
         virtualView.communicateTurnOrder(game.getTurnOrder());
 
         for(PlayerModel player : game.getPlayers()) {
-            virtualView.communicateHand(player.getPlayerId(), player.getHand());
-            virtualView.communicatePlayArea(player.getUsername(), player.getPlayArea());
+            virtualView.communicateHand(player.getPlayerId(), player.getHand().getCards());
+            virtualView.communicatePlayArea(player.getUsername(), player.getPlayArea().getPlacementOrder(), player.getPlayArea().getField(), player.getPlayArea().getActiveSides());
             virtualView.communicatePersonalObjective(player.getPlayerId(), player.getPersonalObjective());
 
             for (PlayerModel player2 : game.getPlayers()) {
@@ -217,6 +226,7 @@ public class GameController {
                 }
             }
 
+            virtualView.communicateNewMessages(player.getPlayerId(), player.getChat().getMessages());
         }
 
         //TODO maybe remove this?
@@ -242,7 +252,7 @@ public class GameController {
         game.distributeCards();
 
         for(PlayerModel player : game.getPlayers()) {
-            virtualView.communicateHand(player.getPlayerId(), player.getHand());
+            virtualView.communicateHand(player.getPlayerId(), player.getHand().getCards());
 
             for(PlayerModel player2 : game.getPlayers())
                 if (player2 != player)
@@ -283,8 +293,7 @@ public class GameController {
         try {
             game.setPlayerObjective(playerId, objectiveCard);
         } catch (UnknownObjectiveCardException e) {
-            //TODO handle it
-            e.printStackTrace();
+            //TODO handle it better?
             return;
         } catch (UnexpectedActionException e) {
             e.printStackTrace();
@@ -387,12 +396,12 @@ public class GameController {
 
         hasPlacedCard = true;
 
-        virtualView.communicatePlayArea(game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getPlayArea());
+        virtualView.communicatePlayCard(game.getPlayers()[playerId].getUsername(), card, side, newPos);
         virtualView.communicateGamePoints(game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getGamePoints());
-        virtualView.communicateHand(playerId, game.getPlayers()[playerId].getHand());
+        virtualView.communicateRemoveCard(playerId, card);
         for(PlayerModel player : game.getPlayers()) {
             if (player.getPlayerId() != playerId) {
-                virtualView.communicateOtherHand(player.getPlayerId(), game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getHand().getRestrictedVersion());
+                virtualView.communicateRemoveOtherCard(player.getPlayerId(), game.getPlayers()[playerId].getUsername(), card.getRestrictedVersion());
                 virtualView.redrawView(player.getPlayerId());
             }
         }
@@ -432,7 +441,7 @@ public class GameController {
             default -> virtualView.communicateCommonCards(game.getCommonResourceCards(), game.getCommonGoldCards());
         }
 
-        virtualView.communicateHand(playerId, game.getPlayers()[playerId].getHand());
+        virtualView.communicateHand(playerId, game.getPlayers()[playerId].getHand().getCards());
         for(PlayerModel player : game.getPlayers()) {
             if (player.getPlayerId() != playerId) {
                 virtualView.communicateOtherHand(player.getPlayerId(), game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getHand().getRestrictedVersion());
@@ -474,12 +483,7 @@ public class GameController {
      * @param text The message content.
      */
     public void sendChatMessage(String senderUsername, String text) {
-        //TODO we are sending the entire chat every time. maybe it's better to send just the new message?
-        game.sendChatMessage(senderUsername, text);
-        for(PlayerModel player : game.getPlayers()) {
-            virtualView.communicateChat(player.getPlayerId(), player.getChat());
-        }
-        virtualView.redrawView();
+        chatController.sendMessage(senderUsername, text);
     }
 
     /**
@@ -489,14 +493,7 @@ public class GameController {
      * @param receiverUsernames The set of players who should receive the message.
      */
     public void sendChatMessage(String senderUsername, String text, Set<String> receiverUsernames) {
-        //TODO we are sending the entire chat every time. maybe it's better to send just the new message?
-        game.sendChatMessage(senderUsername, text, receiverUsernames);
-        for(PlayerModel player : game.getPlayers()) {
-            if (receiverUsernames.contains(player.getUsername()) || player.getUsername().equals(senderUsername)) {
-                virtualView.communicateChat(player.getPlayerId(), player.getChat());
-                virtualView.redrawView(player.getPlayerId());
-            }
-        }
+        chatController.sendMessage(senderUsername, text, receiverUsernames);
     }
 
     /**
@@ -508,6 +505,7 @@ public class GameController {
         //TODO maybe make it so that disconnections are allowed in the lobby (if the game has not started).
         virtualView.signalDisconnection(playerId, game.getPlayers()[playerId].getUsername());
 
+        //TODO maybe the save file shouldn't be deleted? The requirements say that we should save in case the server crashes, not one of the clients.
         LobbyManager.deleteGame(game);
     }
 }

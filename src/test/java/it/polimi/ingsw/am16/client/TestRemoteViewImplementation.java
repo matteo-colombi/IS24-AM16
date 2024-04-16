@@ -7,11 +7,12 @@ import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.PlayAreaModel;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
-import it.polimi.ingsw.am16.common.model.players.hand.RestrictedHand;
+import it.polimi.ingsw.am16.common.util.Position;
 
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class TestRemoteViewImplementation implements RemoteViewInterface {
 
@@ -65,9 +66,10 @@ public class TestRemoteViewImplementation implements RemoteViewInterface {
     }
 
     @Override
-    public void setColor(PlayerColor color) throws RemoteException {
-        System.out.print("[" + username + "]: ");
-        System.out.println("You were assigned the color " + color);
+    public void setColor(String username, PlayerColor color) throws RemoteException {
+        System.out.print("[" + this.username + "]: ");
+        System.out.println(username + " chose " + color);
+
     }
 
     @Override
@@ -77,33 +79,63 @@ public class TestRemoteViewImplementation implements RemoteViewInterface {
     }
 
     @Override
-    public void setHand(HandModel hand) throws RemoteException {
-        System.out.print("[" + username + "]: ");
-        System.out.println("Your cards: " + hand);
-    }
-
-    @Override
-    public void setOtherHand(String username, RestrictedHand hand) throws RemoteException {
-        System.out.print("[" + username + "]: ");
-        System.out.println("Player " + username + "'s hand changed: " + hand);
-    }
-
-    @Override
-    public void setPlayArea(String username, PlayAreaModel playArea) throws RemoteException {
-        System.out.print("[" + username + "]: ");
-        System.out.println("Player " + username + "'s play area changed");
-    }
-
-    @Override
-    public void setGamePoints(String whosePoints, int gamePoints) throws RemoteException {
+    public void setHand(List<PlayableCard> hand) throws RemoteException {
         System.out.print("[" + this.username + "]: ");
-        System.out.println("Player " + whosePoints + "'s game points: " + gamePoints);
+        System.out.println("Your hand: " + hand);
     }
 
     @Override
-    public void setObjectivePoints(String whosePoints, int gamePoints) throws RemoteException {
+    public void addCardToHand(PlayableCard card) throws RemoteException {
         System.out.print("[" + this.username + "]: ");
-        System.out.println("Player " + whosePoints + "'s objective points: " + gamePoints);
+        System.out.print("You drew " + card.getName());
+    }
+
+    @Override
+    public void removeCardFromHand(PlayableCard card) throws RemoteException {
+        System.out.print("[" + this.username + "]: ");
+        System.out.println("You don't have " + card.getName() + " anymore");
+    }
+
+    @Override
+    public void setOtherHand(String username, List<RestrictedCard> hand) throws RemoteException {
+        System.out.print("[" + this.username + "]: ");
+        System.out.println(username + "'s hand: " + hand);
+    }
+
+    @Override
+    public void addCardToOtherHand(String username, RestrictedCard newCard) throws RemoteException {
+        System.out.print("[" + this.username + "]: ");
+        System.out.println(username + " acquired " + newCard);
+    }
+
+    @Override
+    public void removeCardFromOtherHand(String username, RestrictedCard cardToRemove) throws RemoteException {
+        System.out.print("[" + this.username + "]: ");
+        System.out.println(username + " doesn't have " + cardToRemove + " anymore");
+    }
+
+    @Override
+    public void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) throws RemoteException {
+        System.out.print("[" + this.username + "]: ");
+        System.out.println(username + "'s play area: " + cardPlacementOrder + ", " + field + ", " + activeSides);
+    }
+
+    @Override
+    public void playCard(String username, BoardCard card, SideType side, Position pos) throws RemoteException {
+        System.out.print("[" + this.username + "]: ");
+        System.out.println(username + " played " + card.getName() + " on the " + side + " at " + pos);
+    }
+
+    @Override
+    public void setGamePoints(String username, int gamePoints) throws RemoteException {
+        System.out.print("[" + this.username + "]: ");
+        System.out.println("Player " + username + "'s game points: " + gamePoints);
+    }
+
+    @Override
+    public void setObjectivePoints(String username, int gamePoints) throws RemoteException {
+        System.out.print("[" + this.username + "]: ");
+        System.out.println("Player " + username + "'s objective points: " + gamePoints);
     }
 
     @Override
@@ -143,11 +175,15 @@ public class TestRemoteViewImplementation implements RemoteViewInterface {
     }
 
     @Override
-    public void setChat(ChatModel chat) throws RemoteException {
-        System.out.print("[" + username + "]: Chat updated!\n");
-        for(ChatMessage message : chat.getMessages()) {
-            System.out.println(message);
-        }
+    public void addMessages(List<ChatMessage> messages) throws RemoteException {
+        System.out.print("[" + username + "]: ");
+        System.out.println("Received new messages: " + messages);
+    }
+
+    @Override
+    public void addMessage(ChatMessage message) throws RemoteException {
+        System.out.print("[" + username + "]: ");
+        System.out.println("Received new message: " + message);
     }
 
     @Override

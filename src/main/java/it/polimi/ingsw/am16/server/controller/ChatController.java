@@ -1,28 +1,38 @@
-package it.polimi.ingsw.am16.common.model.chat;
+package it.polimi.ingsw.am16.server.controller;
+
+import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
+import it.polimi.ingsw.am16.common.model.chat.ChatModel;
+import it.polimi.ingsw.am16.server.VirtualView;
 
 import java.util.*;
 
 /**
  * Class used to handle the distribution of messages in a game.
  */
-public class ChatManager {
+public class ChatController {
 
-    private final Map<String, Chat> chats;
+    private final Map<String, Integer> playerIds;
+    private final Map<String, ChatModel> chats;
+    private final VirtualView virtualView;
 
     /**
      * Creates a new empty chat manager.
      */
-    public ChatManager() {
+    public ChatController(VirtualView virtualView) {
+        playerIds = new HashMap<>();
         chats = new HashMap<>();
+        this.virtualView = virtualView;
     }
 
     /**
      * Adds a new user's chat to the manager. This allows the chat to receive new messages from this manager.
+     *
      * @param username The user's username.
-     * @param chat The user's chat.
+     * @param chat     The user's chat.
      */
-    public void subscribe(String username, Chat chat) {
+    public void subscribe(int playerId, String username, ChatModel chat) {
         chats.put(username, chat);
+        playerIds.put(username, playerId);
     }
 
     /**
@@ -31,6 +41,7 @@ public class ChatManager {
      */
     public void unsubscribe(String username) {
         chats.remove(username);
+        playerIds.remove(username);
     }
 
     /**
@@ -42,12 +53,18 @@ public class ChatManager {
     public void sendMessage(String senderUsername, String text, Set<String> receiverUsernames) {
         ChatMessage message = new ChatMessage(senderUsername, receiverUsernames, text, new Date());
         for(String username : receiverUsernames) {
-            if (chats.containsKey(username))
+            if (chats.containsKey(username)) {
                 chats.get(username).receiveMessage(message);
+                virtualView.communicateNewMessage(playerIds.get(username), message);
+                virtualView.redrawView(playerIds.get(username));
+            }
         }
         if (!receiverUsernames.contains(senderUsername)) {
-            if (chats.containsKey(senderUsername))
+            if (chats.containsKey(senderUsername)) {
                 chats.get(senderUsername).receiveMessage(message);
+                virtualView.communicateNewMessage(playerIds.get(senderUsername), message);
+                virtualView.redrawView(playerIds.get(senderUsername));
+            }
         }
     }
 

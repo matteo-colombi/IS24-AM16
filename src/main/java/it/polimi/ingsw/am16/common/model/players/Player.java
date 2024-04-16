@@ -65,7 +65,7 @@ public class Player implements PlayerModel {
         this.choseObjectiveCard = false;
         this.choseStarterCardSide = false;
         this.choseColor = false;
-        this.chat = new Chat(username);
+        this.chat = new Chat(playerId, username);
         this.isConnected = false;
     }
 
@@ -262,7 +262,7 @@ public class Player implements PlayerModel {
      * (and thus wasn't removed)
      */
     public boolean removeCard(PlayableCard card) {
-        return this.hand.getCards().remove(card);
+        return this.hand.removeCard(card);
     }
 
     /**
@@ -273,7 +273,7 @@ public class Player implements PlayerModel {
      * @throws IllegalMoveException Thrown if the player made an illegal move
      */
     public void playCard(PlayableCard card, SideType side, Position newCardPos) throws IllegalMoveException {
-        if (!hand.getCards().contains(card)) throw new IllegalMoveException("No such card.");
+        if (!hand.contains(card)) throw new IllegalMoveException("No such card.");
         this.playArea.playCard(card, side, newCardPos);
         this.currGamePoints += this.playArea.awardGamePoints(card);
         hand.removeCard(card);

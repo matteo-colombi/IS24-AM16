@@ -1,12 +1,13 @@
 package it.polimi.ingsw.am16.server;
 
 import it.polimi.ingsw.am16.client.RemoteViewInterface;
+import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.players.*;
-import it.polimi.ingsw.am16.common.model.players.hand.RestrictedHand;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatModel;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
+import it.polimi.ingsw.am16.common.util.Position;
 
 import java.rmi.RemoteException;
 import java.util.HashMap;
@@ -131,17 +132,18 @@ public class VirtualView {
     }
 
     /**
-     * Communicates to the player the color they have been assigned.
-     * @param receiverPlayerId The player which this communication should be sent to.
-     * @param color The color that the player has been assigned.
+     * DOCME
+     * @param username
+     * @param color
      */
-    public void communicateColor(int receiverPlayerId, PlayerColor color) {
-        RemoteViewInterface userView = userViews.get(receiverPlayerId);
-        try {
-            userView.setColor(color);
-        } catch (RemoteException e) {
-            //TODO handle it
-        }
+    public void communicateColor(String username, PlayerColor color) {
+        userViews.values().forEach(userView -> {
+            try {
+                userView.setColor(username, color);
+            } catch (RemoteException e) {
+                //TODO handle it
+            }
+        });
     }
 
     /**
@@ -162,7 +164,7 @@ public class VirtualView {
      * @param receiverPlayerId The player which this communication should be sent to.
      * @param hand The player's hand.
      */
-    public void communicateHand(int receiverPlayerId, HandModel hand) {
+    public void communicateHand(int receiverPlayerId, List<PlayableCard> hand) {
         RemoteViewInterface userView = userViews.get(receiverPlayerId);
         try {
             userView.setHand(hand);
@@ -172,29 +174,106 @@ public class VirtualView {
     }
 
     /**
-     * Communicates the restricted hand view of a player to the player with the given id.
-     * @param receiverPlayerId The player which this communication should be sent to.
-     * @param whoseHand The player whose hand is being sent.
-     * @param hand The restricted hand.
+     * DOCME
+     * @param receiverPlayerId
+     * @param card
      */
-    public void communicateOtherHand(int receiverPlayerId, String whoseHand, RestrictedHand hand) {
+    public void communicateNewCard(int receiverPlayerId, PlayableCard card) {
         RemoteViewInterface userView = userViews.get(receiverPlayerId);
         try {
-            userView.setOtherHand(whoseHand, hand);
+            userView.addCardToHand(card);
         } catch (RemoteException e) {
             //TODO handle it
         }
     }
 
     /**
-     * Communicates the play area of a player to all players in this VirtualView.
-     * @param whosePlayArea The player whose play area is being sent.
-     * @param playArea The play area.
+     * DOCME
+     * @param receiverPlayerId
+     * @param card
      */
-    public void communicatePlayArea(String whosePlayArea, PlayAreaModel playArea) {
+    public void communicateRemoveCard(int receiverPlayerId, PlayableCard card) {
+        RemoteViewInterface userView = userViews.get(receiverPlayerId);
+        try {
+            userView.removeCardFromHand(card);
+        } catch (RemoteException e) {
+            //TODO handle it
+        }
+    }
+
+    /**
+     * Communicates the restricted hand view of a player to the player with the given id.
+     * @param receiverPlayerId The player which this communication should be sent to.
+     * @param username The player whose hand is being sent.
+     * @param hand The restricted hand.
+     */
+    public void communicateOtherHand(int receiverPlayerId, String username, List<RestrictedCard> hand) {
+        RemoteViewInterface userView = userViews.get(receiverPlayerId);
+        try {
+            userView.setOtherHand(username, hand);
+        } catch (RemoteException e) {
+            //TODO handle it
+        }
+    }
+
+    /**
+     * DOCME
+     * @param receiverPlayerId
+     * @param username
+     * @param newCard
+     */
+    public void communicateNewOtherCard(int receiverPlayerId, String username, RestrictedCard newCard) {
+        RemoteViewInterface userView = userViews.get(receiverPlayerId);
+        try {
+            userView.addCardToOtherHand(username, newCard);
+        } catch (RemoteException e) {
+            //TODO handle it
+        }
+    }
+
+    /**
+     * DOCME
+     * @param receiverPlayerId
+     * @param username
+     * @param removedCard
+     */
+    public void communicateRemoveOtherCard(int receiverPlayerId, String username, RestrictedCard removedCard) {
+        RemoteViewInterface userView = userViews.get(receiverPlayerId);
+        try {
+            userView.removeCardFromOtherHand(username, removedCard);
+        } catch (RemoteException e) {
+            //TODO handle it
+        }
+    }
+
+    /**
+     * DOCME
+     * @param username
+     * @param cardPlacementOrder
+     * @param field
+     * @param activeSides
+     */
+    public void communicatePlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) {
         userViews.values().forEach(userView -> {
             try {
-                userView.setPlayArea(whosePlayArea, playArea);
+                userView.setPlayArea(username, cardPlacementOrder, field, activeSides);
+            } catch (RemoteException e) {
+                //TODO handle it
+            }
+        });
+    }
+
+    /**
+     * DOCME
+     * @param username
+     * @param card
+     * @param side
+     * @param pos
+     */
+    public void communicatePlayCard(String username, BoardCard card, SideType side, Position pos) {
+        userViews.values().forEach(userView -> {
+            try {
+                userView.playCard(username, card, side, pos);
             } catch (RemoteException e) {
                 //TODO handle it
             }
@@ -316,14 +395,43 @@ public class VirtualView {
     }
 
     /**
-     * Communicates the chat to the player with the given id.
-     * @param playerId The player which this communication should be sent to.
-     * @param chat The player's chat.
+     * DOCME
+     * @param playerId
+     * @param messages
      */
-    public void communicateChat(int playerId, ChatModel chat) {
+    public void communicateNewMessages(int playerId, List<ChatMessage> messages) {
         RemoteViewInterface userView = userViews.get(playerId);
         try {
-            userView.setChat(chat);
+            userView.addMessages(messages);
+        } catch (RemoteException e) {
+            //TODO handle it
+        }
+    }
+
+    /**
+     * DOCME
+     * @param newMessage
+     */
+    public void communicateNewMessage(ChatMessage newMessage) {
+        userViews.values().forEach(userView -> {
+            try {
+                userView.addMessage(newMessage);
+            } catch (RemoteException e) {
+                //TODO handle it
+            }
+        });
+    }
+
+    /**
+     * DOCME
+     * @param playerId
+     * @param newMessage
+     */
+    public void communicateNewMessage(int playerId, ChatMessage newMessage) {
+        RemoteViewInterface userView = userViews.get(playerId);
+        if (userView == null) return;
+        try {
+            userView.addMessage(newMessage);
         } catch (RemoteException e) {
             //TODO handle it
         }
@@ -362,6 +470,7 @@ public class VirtualView {
      */
     public void redrawView(int playerId) {
         RemoteViewInterface userView = userViews.get(playerId);
+        if (userView == null) return;
         try {
             userView.redrawView();
         } catch (RemoteException e) {

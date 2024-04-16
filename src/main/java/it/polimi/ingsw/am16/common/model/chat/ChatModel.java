@@ -11,4 +11,11 @@ public interface ChatModel {
      * @return The chat's list of received and sent messages.
      */
     List<ChatMessage> getMessages();
+
+    /**
+     * Adds the given message to the chat's list of received messages.
+     * @param message The message to add.
+     */
+    void receiveMessage(ChatMessage message);
+
 }

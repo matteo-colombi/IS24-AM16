@@ -8,15 +8,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
-import it.polimi.ingsw.am16.common.model.cards.PlayableCardType;
-import it.polimi.ingsw.am16.common.model.cards.ResourceType;
+import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
-import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Handles a player's hand of resource and gold cards.
@@ -42,43 +40,30 @@ public class Hand implements HandModel{
     }
 
     /**
-     *
      * @return the list of cards in the hand.
      */
     public List<PlayableCard> getCards() {
-        return this.cards;
+        return new ArrayList<>(this.cards);
     }
 
     /**
-     *
-     * @return the number of cards in the hand.
+     * DOCME
+     * @param card
+     * @return
      */
-    @Override
-    @JsonIgnore
-    public int getSize(){
-        return this.cards.size();
+    public boolean contains(PlayableCard card) {
+        return this.cards.contains(card);
     }
 
-    /**
-     *
-     * @param index Index of the card in the list of cards representing the hand.
-     * @return the card corresponding to the index.
-     */
-    @Override
-    public PlayableCard getCard(int index){
-        try {
-            return this.cards.get(index);
-        } catch (IndexOutOfBoundsException ignored) {
-            return null;
-        }
-    }
 
     /**
      * Removes the given card from the Hand. This method does nothing if the given card is not present in the hand.
+     *
      * @param card The card to remove.
+     * @return
      */
-    public void removeCard(PlayableCard card) {
-        this.cards.remove(card);
+    public boolean removeCard(PlayableCard card) {
+        return this.cards.remove(card);
     }
 
     /**
@@ -89,14 +74,14 @@ public class Hand implements HandModel{
         this.cards.add(card);
     }
 
+    /**
+     * DOCME
+     * @return
+     */
     @Override
     @JsonIgnore
-    public RestrictedHand getRestrictedVersion() {
-        RestrictedHand restrictedHand = new RestrictedHand();
-        for(PlayableCard card : cards) {
-            restrictedHand.addCard(card.getType(), card.getPlayableCardType());
-        }
-        return restrictedHand;
+    public List<RestrictedCard> getRestrictedVersion() {
+        return cards.stream().map(PlayableCard::getRestrictedVersion).collect(Collectors.toList());
     }
 
     @Override
