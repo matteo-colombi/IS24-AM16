@@ -1,19 +1,12 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
-import it.polimi.ingsw.am16.common.model.cards.BoardCard;
-import it.polimi.ingsw.am16.common.model.cards.Card;
 import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.util.Position;
 
-import javafx.geometry.Side;
 import org.junit.jupiter.api.Test;
-
-import java.util.Map;
-import java.util.stream.Collectors;
-
 
 public class TestCLIPlayArea {
     @Test
@@ -38,10 +31,10 @@ public class TestCLIPlayArea {
 
         CLIPlayArea otherCliPlayArea = new CLIPlayArea(testPlayArea.getPlacementOrder(), testPlayArea.getField(), testPlayArea.getActiveSides());
 
-        otherCliPlayArea.printPlayArea();
-
-        otherCliPlayArea.addCard(CardRegistry.getRegistry().getGoldCardFromName("gold_plant_8"), SideType.FRONT, new Position(5, 0));
+        otherCliPlayArea.addCard(CardRegistry.getRegistry().getGoldCardFromName("gold_animal_6"), SideType.FRONT, new Position(3,1));
 
         otherCliPlayArea.printPlayArea();
+
+        System.out.println(otherCliPlayArea.getPlaceablePositions());
     }
 }
