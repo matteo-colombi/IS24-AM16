@@ -22,12 +22,25 @@ public class CLIPlayArea {
 
     private final Set<Position> placeablePositions;
 
+    private static final int VIEW_WIDTH = 9;
+    private int viewCenter;
+
+    private int minX;
+    private int maxX;
+
     public CLIPlayArea(List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) {
         this.cardPlacementOrder = new ArrayList<>(cardPlacementOrder);
         this.field = new HashMap<>(field);
         this.activeSides = new HashMap<>(activeSides);
+
         playAreaText = new CLIText();
         placeablePositions = new HashSet<>();
+
+        this.viewCenter = 0;
+
+        this.minX = 0;
+        this.maxX = 0;
+
         for(Position p : cardPlacementOrder) {
             BoardCard card = field.get(p);
             CardSide side = card.getCardSideBySideType(activeSides.get(card));
@@ -41,7 +54,10 @@ public class CLIPlayArea {
                     placeablePositions.add(p.addOffset(idx.getOffset()));
                 }
             }
+            minX = Math.min(minX, p.x());
+            maxX = Math.max(maxX, p.x());
         }
+
         initializeText();
     }
 
@@ -49,19 +65,27 @@ public class CLIPlayArea {
         cardPlacementOrder = new ArrayList<>();
         field = new HashMap<>();
         activeSides = new HashMap<>();
+
         playAreaText = new CLIText();
         placeablePositions = new HashSet<>(Set.of(new Position(0, 0)));
+
+        this.viewCenter = 0;
     }
 
     public void addCard(BoardCard card, SideType side, Position position) {
         this.cardPlacementOrder.add(position);
         this.field.put(position, card);
         this.activeSides.put(card, side);
+
         mergeCard(card, position);
+
         placeablePositions.remove(position);
-        Map<CornersIdx, CornerType> corners = card.getCardSideBySideType(side).getCorners();
+
         Set<Position> newPlaceablePositions = new HashSet<>();
         Set<Position> toRemovePlaceablePositions = new HashSet<>();
+
+        Map<CornersIdx, CornerType> corners = card.getCardSideBySideType(side).getCorners();
+
         for(CornersIdx idx : corners.keySet()) {
             if (corners.get(idx) == CornerType.BLOCKED) {
                 toRemovePlaceablePositions.add(position.addOffset(idx.getOffset()));
@@ -84,6 +108,9 @@ public class CLIPlayArea {
         }
         placeablePositions.removeAll(toRemovePlaceablePositions);
         placeablePositions.addAll(newPlaceablePositions);
+
+        minX = Math.min(minX, position.x());
+        maxX = Math.max(maxX, position.x());
     }
 
     private void initializeText() {
@@ -126,10 +153,18 @@ public class CLIPlayArea {
     }
 
     public void printPlayArea() {
-        playAreaText.printText();
+        int startX = playAreaText.getOriginX() + (viewCenter - VIEW_WIDTH/2) * (CARD_WIDTH - OVERLAP_X)-5;
+        int endX = playAreaText.getOriginX() + (viewCenter + VIEW_WIDTH/2) * (CARD_WIDTH - OVERLAP_X)+5;
+        playAreaText.printText(startX, 0, endX, playAreaText.getHeight(), true);
     }
 
     public Set<Position> getPlaceablePositions() {
         return placeablePositions;
+    }
+
+    public void moveView(int offset) {
+        if (offset > 0 && viewCenter + VIEW_WIDTH/2 > maxX) return;
+        if (offset < 0 && viewCenter - VIEW_WIDTH/2 < minX) return;
+        viewCenter += offset;
     }
 }

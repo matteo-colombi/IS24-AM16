@@ -6,7 +6,7 @@ public class TestCLIText {
     @Test
     void textCLITextExpansion() {
         CLIText text = new CLIText();
-        text.printText();
+        text.printText(true);
 
         text.expandDown(10);
         text.expandRight(10);
@@ -20,14 +20,17 @@ public class TestCLIText {
 
         System.out.println("---------------SEPARATOR----------------");
 
-        text.printText();
+        text.printText(true);
 
         System.out.println("---------------SEPARATOR----------------");
-
 
         text.expandLeft(16);
         text.expandUp(12);
 
-        text.printText();
+        text.printText(true);
+
+        System.out.println("---------------SEPARATOR----------------");
+
+        text.printText(9, 4, 11, 5, true);
     }
 }

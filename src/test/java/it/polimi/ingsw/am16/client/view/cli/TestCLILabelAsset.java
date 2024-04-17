@@ -6,7 +6,7 @@ public class TestCLILabelAsset {
     @Test
     void testCLILabelAsset() {
         CLILabelAsset label = new CLILabelAsset(-2, 3);
-        label.getLabel().printText();
+        label.getLabel().printText(false);
         //TODO test more
     }
 }
