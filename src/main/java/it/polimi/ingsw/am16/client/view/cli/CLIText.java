@@ -162,7 +162,7 @@ public class CLIText {
             toPrint.append(topHorizontal).append('\n');
         }
         for(int j = startY; j <= endY; j++) {
-            toPrint.append(escapeCodes.get(' ')).append(vertical).append(escapeCodes.get(lastColor));
+            if (frame) toPrint.append(escapeCodes.get(' ')).append(vertical).append(escapeCodes.get(lastColor));
             for(int i = startX; i <= endX; i++) {
                 char thisColor = colorMask[j].charAt(i);
                 if(text[j].charAt(i) != ' ' && thisColor != lastColor) {
@@ -171,7 +171,8 @@ public class CLIText {
                 }
                 toPrint.append(text[j].charAt(i));
             }
-            toPrint.append(escapeCodes.get(' ')).append(vertical).append(escapeCodes.get(lastColor)).append('\n');
+            if (frame) toPrint.append(escapeCodes.get(' ')).append(vertical).append(escapeCodes.get(lastColor));
+            toPrint.append('\n');
         }
         toPrint.append(escapeCodes.get(' '));
         if (frame) {

@@ -97,13 +97,13 @@ public class CLIPlayArea {
         }
         for(Position p : toRemovePlaceablePositions) {
             if (placeablePositions.contains(p)) {
-                removeLabel(p);
+                removePositionLabel(p);
             }
         }
         newPlaceablePositions.removeAll(toRemovePlaceablePositions);
         for(Position p : newPlaceablePositions) {
             if (field.get(p) == null) {
-                addLabel(p);
+                addPositionLabel(p);
             }
         }
         placeablePositions.removeAll(toRemovePlaceablePositions);
@@ -121,7 +121,7 @@ public class CLIPlayArea {
             mergeCard(card, pos);
         }
         for(Position pos : placeablePositions) {
-            addLabel(pos);
+            addPositionLabel(pos);
         }
     }
 
@@ -134,17 +134,17 @@ public class CLIPlayArea {
         playAreaText.mergeText(asset, startRow, startCol);
     }
 
-    private void addLabel(Position pos) {
-        CLILabelAsset label = new CLILabelAsset(pos.x(), pos.y());
-        putLabel(label, pos);
+    private void addPositionLabel(Position pos) {
+        CLIPositionLabelAsset label = new CLIPositionLabelAsset(pos.x(), pos.y());
+        putPositionLabel(label, pos);
     }
 
-    private void removeLabel(Position pos) {
-        CLILabelAsset label = CLILabelAsset.getEmptyLabel();
-        putLabel(label, pos);
+    private void removePositionLabel(Position pos) {
+        CLIPositionLabelAsset label = CLIPositionLabelAsset.getEmptyLabel();
+        putPositionLabel(label, pos);
     }
 
-    private void putLabel(CLILabelAsset label, Position pos) {
+    private void putPositionLabel(CLIPositionLabelAsset label, Position pos) {
         int newPosCenterX = playAreaText.getOriginX() + (pos.x() * (CARD_WIDTH-OVERLAP_X));
         int newPosCenterY = playAreaText.getOriginY() + (-pos.y() * (CARD_HEIGHT-OVERLAP_Y));
         int startCol = newPosCenterX - LABEL_WIDTH/2;

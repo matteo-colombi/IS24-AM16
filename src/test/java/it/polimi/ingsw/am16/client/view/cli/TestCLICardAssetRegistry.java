@@ -7,7 +7,7 @@ import java.io.IOException;
 
 class TestCLICardAssetRegistry {
     @Test
-    void testCliAssetRegistry() throws IOException {
+    void testCliAssetRegistry() {
         CLIAssetRegistry assetRegistry = CLIAssetRegistry.getCLIAssetRegistry();
         for(ResourceCard card : CardRegistry.getRegistry().getResourceCards()) {
             System.out.println(card.getName());

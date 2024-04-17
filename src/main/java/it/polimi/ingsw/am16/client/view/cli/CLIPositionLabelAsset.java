@@ -1,24 +1,27 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
-public class CLILabelAsset {
+public class CLIPositionLabelAsset {
 
     private final CLIText label;
     private final int x;
     private final int y;
 
-    private static final CLIText emptyLabel = new CLIText(new String[]{"           ", "           ", "           "}, new String[]{"           ", "           ", "           "});
+    private static final CLIText emptyLabel = new CLIText(
+            new String[]{"           ", "           ", "           "},
+            new String[]{"           ", "           ", "           "}
+    );
 
-    private CLILabelAsset() {
+    private CLIPositionLabelAsset() {
         this.label = emptyLabel;
         this.x = 0;
         this.y = 0;
     }
 
-    public static CLILabelAsset getEmptyLabel() {
-        return new CLILabelAsset();
+    public static CLIPositionLabelAsset getEmptyLabel() {
+        return new CLIPositionLabelAsset();
     }
 
-    public CLILabelAsset(int x, int y) {
+    public CLIPositionLabelAsset(int x, int y) {
         this.label = CLIAssetRegistry.getCLIAssetRegistry().getPositionLabel();
         this.x = x;
         this.y = y;
