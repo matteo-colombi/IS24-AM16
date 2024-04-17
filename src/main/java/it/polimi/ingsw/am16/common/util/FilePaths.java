@@ -26,6 +26,11 @@ public final class FilePaths {
     public static final String CLI_CARDS = CLI_ASSETS + "/cliCards.json";
 
     /**
+     * The path for the label used to signal positions in the CLI play area.
+     */
+    public static final String CLI_POSITION_LABEL = CLI_ASSETS + "/label.json";
+
+    /**
      * The path for JSON files.
      */
     public static final String JSON = RESOURCES + "/json";

@@ -12,10 +12,11 @@ import java.util.Map;
 public class CLIAssetRegistry {
     private static CLIAssetRegistry instance;
 
-    private final Map<String, CLIAsset> cliCards;
+    private final Map<String, CLICardAsset> cliCards;
+    private final CLIText positionLabel;
 
     private CLIAssetRegistry() {
-        TypeReference<HashMap<String, CLIAsset>> cliCardsTypeRef = new TypeReference<>() {};
+        TypeReference<HashMap<String, CLICardAsset>> cliCardsTypeRef = new TypeReference<>() {};
         File f = new File(FilePaths.CLI_CARDS);
         if (!f.exists()) {
             throw new RuntimeException(FilePaths.CLI_CARDS + " does not exist!");
@@ -24,6 +25,16 @@ public class CLIAssetRegistry {
             cliCards = JsonMapper.getObjectMapper().readValue(f, cliCardsTypeRef);
         } catch (IOException ignored) {
             throw new RuntimeException("Unable to read cli cards!");
+        }
+
+        f = new File(FilePaths.CLI_POSITION_LABEL);
+        if (!f.exists()) {
+            throw new RuntimeException(FilePaths.CLI_POSITION_LABEL + " does not exist!");
+        }
+        try {
+            positionLabel = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
+        } catch (IOException ignored) {
+            throw new RuntimeException("Unable to read cli label for positions.");
         }
     }
 
@@ -34,7 +45,11 @@ public class CLIAssetRegistry {
         return instance;
     }
 
-    public CLIAsset getCard(String name) {
+    public CLICardAsset getCard(String name) {
         return cliCards.get(name);
+    }
+
+    public CLIText getPositionLabel() {
+        return positionLabel.getClone();
     }
 }

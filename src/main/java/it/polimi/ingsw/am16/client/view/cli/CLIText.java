@@ -188,4 +188,8 @@ public class CLIText {
     public int getOriginY() {
         return originY;
     }
+
+    public CLIText getClone() {
+        return new CLIText(Arrays.copyOf(this.text, this.text.length), Arrays.copyOf(this.colorMask, this.colorMask.length));
+    }
 }
