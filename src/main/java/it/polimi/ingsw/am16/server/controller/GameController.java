@@ -51,12 +51,9 @@ public class GameController {
      * @param username The player's username
      * @return The newly added player's id, or <code>-1</code> if a player with the same username already exists, or if this game does not accept new players (already full or already started).
      */
-    public int createPlayer(String username) {
-        try {
-            return game.addPlayer(username);
-        } catch (UnexpectedActionException e) {
-            return -1;
-        }
+    public int createPlayer(String username) throws UnexpectedActionException {
+        //TODO debate this
+        return game.addPlayer(username);
     }
 
     /**
@@ -111,6 +108,8 @@ public class GameController {
 
         virtualView.communicateGameState(game.getState());
         virtualView.communicateCommonCards(game.getCommonResourceCards(), game.getCommonGoldCards());
+        virtualView.communicateDeckTopType(PlayableCardType.RESOURCE, game.getResourceDeckTopType());
+        virtualView.communicateDeckTopType(PlayableCardType.GOLD, game.getGoldDeckTopType());
 
         for(PlayerModel player : game.getPlayers()) {
             virtualView.promptStarterChoice(player.getPlayerId(), player.getStarterCard());
@@ -212,6 +211,8 @@ public class GameController {
             virtualView.communicateDontDraw();
         }
         virtualView.communicateCommonCards(game.getCommonResourceCards(), game.getCommonGoldCards());
+        virtualView.communicateDeckTopType(PlayableCardType.RESOURCE, game.getResourceDeckTopType());
+        virtualView.communicateDeckTopType(PlayableCardType.GOLD, game.getGoldDeckTopType());
         virtualView.communicateCommonObjectives(game.getCommonObjectiveCards());
         virtualView.communicateTurnOrder(game.getTurnOrder());
 
@@ -250,6 +251,9 @@ public class GameController {
         virtualView.communicateDrawingCards();
 
         game.distributeCards();
+
+        virtualView.communicateDeckTopType(PlayableCardType.RESOURCE, game.getResourceDeckTopType());
+        virtualView.communicateDeckTopType(PlayableCardType.GOLD, game.getGoldDeckTopType());
 
         for(PlayerModel player : game.getPlayers()) {
             virtualView.communicateHand(player.getPlayerId(), player.getHand().getCards());
@@ -423,8 +427,10 @@ public class GameController {
                 || playerId != game.getActivePlayer()
         ) return;
 
+        PlayableCard drawnCard;
+
         try {
-            game.drawCard(playerId, drawType);
+            drawnCard = game.drawCard(playerId, drawType);
         } catch (IllegalMoveException e) {
             System.err.println("Illegal draw.");
             //TODO handle it
@@ -441,10 +447,10 @@ public class GameController {
             default -> virtualView.communicateCommonCards(game.getCommonResourceCards(), game.getCommonGoldCards());
         }
 
-        virtualView.communicateHand(playerId, game.getPlayers()[playerId].getHand().getCards());
+        virtualView.communicateNewCard(playerId, drawnCard);
         for(PlayerModel player : game.getPlayers()) {
             if (player.getPlayerId() != playerId) {
-                virtualView.communicateOtherHand(player.getPlayerId(), game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getHand().getRestrictedVersion());
+                virtualView.communicateNewOtherCard(player.getPlayerId(), game.getPlayers()[playerId].getUsername(), drawnCard.getRestrictedVersion());
                 virtualView.redrawView(player.getPlayerId());
             }
         }

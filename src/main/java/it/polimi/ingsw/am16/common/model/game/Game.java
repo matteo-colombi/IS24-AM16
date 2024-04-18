@@ -143,14 +143,16 @@ public class Game implements GameModel {
      */
     @Override
     public int addPlayer(String username) throws UnexpectedActionException {
+        for(Player player : players) {
+            if (player != null && player.getUsername().equals(username))
+                return player.getPlayerId();
+        }
+
         if (currentPlayerCount >= numPlayers)
             throw new UnexpectedActionException("Maximum player count reached");
         if (state != GameState.JOINING)
             throw new UnexpectedActionException("Game already started");
-        for(Player player : players) {
-            if (player != null && player.getUsername().equals(username))
-                throw new UnexpectedActionException("Player already present");
-        }
+
 
         Player player = new Player(currentPlayerCount, username);
         players[currentPlayerCount] = player;
@@ -433,17 +435,22 @@ public class Game implements GameModel {
      * If the card is drawn from one of the common cards, it is replaced with a card of the same type if available. If a card of the same type is not available, it is replaced with a card of the other type.
      * @param playerId The player's ID.
      * @param drawType The place a player wants to draw a card from.
+     * @return The drawn card.
      * @throws UnexpectedActionException Thrown if this method is called before the game has been started.
      * @throws IllegalMoveException Thrown if a draw is attempted from an empty deck, or from an empty common card slot.
      */
     @Override
-    public void drawCard(int playerId, DrawType drawType) throws UnexpectedActionException, IllegalMoveException {
+    public PlayableCard drawCard(int playerId, DrawType drawType) throws UnexpectedActionException, IllegalMoveException {
         if (state != GameState.STARTED) throw new UnexpectedActionException("Game not started");
+
+        PlayableCard drawnCard = null;
+
         switch (drawType) {
             case GOLD_1 -> {
                 if(commonGoldCards[0] == null)
                     throw new IllegalMoveException("Illegal draw: no card");
 
+                drawnCard = commonGoldCards[0];
                 players[playerId].giveCard(commonGoldCards[0]);
                 commonGoldCards[0] = goldCardsDeck.drawCard();
                 if (commonGoldCards[0] == null) {
@@ -454,6 +461,7 @@ public class Game implements GameModel {
                 if(commonGoldCards[1] == null)
                     throw new IllegalMoveException("Illegal draw: no card");
 
+                drawnCard = commonGoldCards[1];
                 players[playerId].giveCard(commonGoldCards[1]);
                 commonGoldCards[1] = goldCardsDeck.drawCard();
                 if (commonGoldCards[1] == null) {
@@ -464,12 +472,15 @@ public class Game implements GameModel {
                 if(goldCardsDeck.isEmpty())
                     throw new IllegalMoveException("Illegal draw: empty deck");
 
-                players[playerId].giveCard(goldCardsDeck.drawCard());
+                drawnCard = goldCardsDeck.drawCard();
+
+                players[playerId].giveCard(drawnCard);
             }
             case RESOURCE_1 -> {
                 if(commonResourceCards[0] == null)
                     throw new IllegalMoveException("Illegal draw: no card");
 
+                drawnCard = commonResourceCards[0];
                 players[playerId].giveCard(commonResourceCards[0]);
                 commonResourceCards[0] = resourceCardsDeck.drawCard();
                 if (commonResourceCards[0] == null) {
@@ -480,6 +491,7 @@ public class Game implements GameModel {
                 if(commonResourceCards[1] == null)
                     throw new IllegalMoveException("Illegal draw: no card");
 
+                drawnCard = commonResourceCards[1];
                 players[playerId].giveCard(commonResourceCards[1]);
                 commonResourceCards[1] = resourceCardsDeck.drawCard();
                 if (commonResourceCards[1] == null) {
@@ -490,9 +502,13 @@ public class Game implements GameModel {
                 if(resourceCardsDeck.isEmpty())
                     throw new IllegalMoveException("Illegal draw: empty deck");
 
-                players[playerId].giveCard(resourceCardsDeck.drawCard());
+                drawnCard = resourceCardsDeck.drawCard();
+
+                players[playerId].giveCard(drawnCard);
             }
         }
+
+        return drawnCard;
     }
 
     /**

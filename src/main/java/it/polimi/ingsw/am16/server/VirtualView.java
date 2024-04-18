@@ -280,13 +280,13 @@ public class VirtualView {
 
     /**
      * Communicate to all players the number of game points of the specified player.
-     * @param whosePoints The username of the player whose points are being given.
+     * @param username The username of the player whose points are being given.
      * @param gamePoints The given player's number of game points.
      */
-    public void communicateGamePoints(String whosePoints, int gamePoints) {
+    public void communicateGamePoints(String username, int gamePoints) {
         userViews.values().forEach(userView -> {
             try {
-                userView.setGamePoints(whosePoints, gamePoints);
+                userView.setGamePoints(username, gamePoints);
             } catch (RemoteException e) {
                 //TODO handle it
             }
@@ -295,13 +295,13 @@ public class VirtualView {
 
     /**
      * Communicate to all players the number of objective points of the specified player.
-     * @param whosePoints The username of the player whose points are being given.
+     * @param username The username of the player whose points are being given.
      * @param objectivePoints The given player's number of objective points.
      */
-    public void communicateObjectivePoints(String whosePoints, int objectivePoints) {
+    public void communicateObjectivePoints(String username, int objectivePoints) {
         userViews.values().forEach(userView -> {
             try {
-                userView.setObjectivePoints(whosePoints, objectivePoints);
+                userView.setObjectivePoints(username, objectivePoints);
             } catch (RemoteException e) {
                 //TODO handle it
             }
@@ -366,12 +366,12 @@ public class VirtualView {
 
     /**
      * Notifies all the players in this VirtualView that the player with the given username's turn has started.
-     * @param whoseTurn The player whose turn has started.
+     * @param username The player whose turn has started.
      */
-    public void notifyTurnStart(String whoseTurn) {
+    public void notifyTurnStart(String username) {
         userViews.values().forEach(userView -> {
             try {
-                userView.turn(whoseTurn);
+                userView.turn(username);
             } catch (RemoteException e) {
                 //TODO handle it
             }
