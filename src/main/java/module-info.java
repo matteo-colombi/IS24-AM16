@@ -17,6 +17,7 @@ module it.polimi.ingsw.am16 {
     opens it.polimi.ingsw.am16.common.model.players.hand to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.am16.common.model.cards.decks to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.am16.common.model.chat to com.fasterxml.jackson.databind;
+    opens it.polimi.ingsw.am16.client.view.cli to com.fasterxml.jackson.databind;
     exports it.polimi.ingsw.am16;
     opens it.polimi.ingsw.am16.server.controller to com.fasterxml.jackson.databind;
 }
