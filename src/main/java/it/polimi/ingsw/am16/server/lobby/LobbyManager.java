@@ -1,8 +1,6 @@
 package it.polimi.ingsw.am16.server.lobby;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.am16.common.model.game.Game;
 import it.polimi.ingsw.am16.common.model.game.GameModel;
@@ -12,12 +10,9 @@ import it.polimi.ingsw.am16.common.util.RNG;
 import it.polimi.ingsw.am16.server.controller.GameController;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.*;
 

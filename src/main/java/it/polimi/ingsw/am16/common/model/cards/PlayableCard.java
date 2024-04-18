@@ -18,7 +18,7 @@ import java.io.IOException;
 @JsonDeserialize(using = PlayableCard.Deserializer.class)
 public abstract class PlayableCard extends BoardCard {
 
-    private PlayableCardType playableCardType;
+    private final PlayableCardType playableCardType;
 
     /**
      * Constructs a new playable card with the given name, sides and of the given resource type.

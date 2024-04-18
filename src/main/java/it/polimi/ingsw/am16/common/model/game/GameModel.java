@@ -10,7 +10,6 @@ import it.polimi.ingsw.am16.common.model.players.PlayerModel;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * The game's interface. It contains all the methods a game can use.

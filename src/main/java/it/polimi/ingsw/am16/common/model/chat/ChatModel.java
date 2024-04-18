@@ -1,7 +1,6 @@
 package it.polimi.ingsw.am16.common.model.chat;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Interface that defines the method used by the client to interact with the chat.
