@@ -26,8 +26,7 @@ public class CLIText {
             'B', (char)27 + "[34m",
             'P', (char)27 + "[35m",
             'C', (char)27 + "[36m",
-            'W', (char)27 + "[37m",
-            ' ', (char)27 + "[39m"
+            ' ', (char)27 + "[37m"
     );
 
     @JsonCreator
@@ -154,6 +153,7 @@ public class CLIText {
         endY = Math.min(endY, height-1);
         char lastColor = ' ';
         StringBuilder toPrint = new StringBuilder();
+        toPrint.append(escapeCodes.get(' '));
         String horizontal = new String(new char[endX - startX + 1]).replace('\0', '─');
         String topHorizontal = '┌' + horizontal + '┐';
         char vertical = '│';
