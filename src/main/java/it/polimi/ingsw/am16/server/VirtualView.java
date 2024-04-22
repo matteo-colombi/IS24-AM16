@@ -130,9 +130,9 @@ public class VirtualView {
     }
 
     /**
-     * DOCME
-     * @param username
-     * @param color
+     * Communicates the given player's color to all the players in this VirtualView.
+     * @param username The username of the player whose color is being given.
+     * @param color The player's color.
      */
     public void communicateColor(String username, PlayerColor color) {
         userViews.values().forEach(userView -> {
@@ -172,9 +172,9 @@ public class VirtualView {
     }
 
     /**
-     * DOCME
-     * @param receiverPlayerId
-     * @param card
+     * Communicates to the given player that they have a new card in their hand.
+     * @param receiverPlayerId The player which this communication should be sent to.
+     * @param card The new card in the player's hand.
      */
     public void communicateNewCard(int receiverPlayerId, PlayableCard card) {
         RemoteViewInterface userView = userViews.get(receiverPlayerId);
@@ -186,9 +186,9 @@ public class VirtualView {
     }
 
     /**
-     * DOCME
-     * @param receiverPlayerId
-     * @param card
+     * Communicates to the given player that they no longer have a card in their hand.
+     * @param receiverPlayerId The player which this communication should be sent to.
+     * @param card The card to be removed from the player's hand.
      */
     public void communicateRemoveCard(int receiverPlayerId, PlayableCard card) {
         RemoteViewInterface userView = userViews.get(receiverPlayerId);
@@ -215,10 +215,10 @@ public class VirtualView {
     }
 
     /**
-     * DOCME
-     * @param receiverPlayerId
-     * @param username
-     * @param newCard
+     * Communicates to the given player that another player has a new card in their hand.
+     * @param receiverPlayerId The player which this communication should be sent to.
+     * @param username The player whose hand the card should be added to.
+     * @param newCard The restricted card to be added to the player's hand.
      */
     public void communicateNewOtherCard(int receiverPlayerId, String username, RestrictedCard newCard) {
         RemoteViewInterface userView = userViews.get(receiverPlayerId);
@@ -230,10 +230,10 @@ public class VirtualView {
     }
 
     /**
-     * DOCME
-     * @param receiverPlayerId
-     * @param username
-     * @param removedCard
+     * Communicates to the given player that another player no longer has a card in their hand.
+     * @param receiverPlayerId The player which this communication should be sent to.
+     * @param username The player whose hand the card should be removed from.
+     * @param removedCard The restricted card to be removed from the player's hand.
      */
     public void communicateRemoveOtherCard(int receiverPlayerId, String username, RestrictedCard removedCard) {
         RemoteViewInterface userView = userViews.get(receiverPlayerId);
@@ -245,11 +245,11 @@ public class VirtualView {
     }
 
     /**
-     * DOCME
-     * @param username
-     * @param cardPlacementOrder
-     * @param field
-     * @param activeSides
+     * Communicates a play area to all the players in this VirtualView.
+     * @param username The username of the player whose play area is being given.
+     * @param cardPlacementOrder The order in which the cards were played in this play area.
+     * @param field The play area's field.
+     * @param activeSides The map that keeps track of what side each card was played on.
      */
     public void communicatePlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) {
         userViews.values().forEach(userView -> {
@@ -262,11 +262,11 @@ public class VirtualView {
     }
 
     /**
-     * DOCME
-     * @param username
-     * @param card
-     * @param side
-     * @param pos
+     * Communicates to all players in this VirtualView that a new card was played.
+     * @param username The player who played the card.
+     * @param card The played card.
+     * @param side The side on which the card was placed on.
+     * @param pos The position where the new card was placed.
      */
     public void communicatePlayCard(String username, BoardCard card, SideType side, Position pos) {
         userViews.values().forEach(userView -> {
@@ -393,9 +393,9 @@ public class VirtualView {
     }
 
     /**
-     * DOCME
-     * @param playerId
-     * @param messages
+     * Communicates to the given player that they have new messages in the chat.
+     * @param playerId The player which this communication should be sent to.
+     * @param messages The list of new messages.
      */
     public void communicateNewMessages(int playerId, List<ChatMessage> messages) {
         RemoteViewInterface userView = userViews.get(playerId);
@@ -407,8 +407,8 @@ public class VirtualView {
     }
 
     /**
-     * DOCME
-     * @param newMessage
+     * Communicates to all the players in this VirtualView that there is a new message in chat.
+     * @param newMessage The new message.
      */
     public void communicateNewMessage(ChatMessage newMessage) {
         userViews.values().forEach(userView -> {
@@ -421,9 +421,9 @@ public class VirtualView {
     }
 
     /**
-     * DOCME
-     * @param playerId
-     * @param newMessage
+     * Communicates to the given player that they have a new message in chat.
+     * @param playerId The player which this communication should be sent to.
+     * @param newMessage The new message.
      */
     public void communicateNewMessage(int playerId, ChatMessage newMessage) {
         RemoteViewInterface userView = userViews.get(playerId);
@@ -486,9 +486,9 @@ public class VirtualView {
     }
 
     /**
-     * DOCME
-     * @param disconnectedId
-     * @param disconnectedUsername
+     * Communicates to all players that a player has disconnected from the game.
+     * @param disconnectedId The id of the player who disconnected.
+     * @param disconnectedUsername The username of the player who disconnected.
      */
     public void signalDisconnection(int disconnectedId, String disconnectedUsername) {
         userViews.forEach((id, userView) -> {
@@ -503,8 +503,8 @@ public class VirtualView {
     }
 
     /**
-     * DOCME
-     * @param username
+     * Communicates to all users in this VirtualView that a player has skipped their turn because they have no more legal moves to make.
+     * @param username The player who skipped the turn because of a deadlock.
      */
     public void communicateDeadlock(String username) {
         userViews.forEach((id, userView) -> {

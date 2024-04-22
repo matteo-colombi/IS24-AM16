@@ -47,9 +47,8 @@ public class Hand implements HandModel{
     }
 
     /**
-     * DOCME
-     * @param card
-     * @return
+     * @param card The card to check.
+     * @return Whether the given card is in this hand.
      */
     public boolean contains(PlayableCard card) {
         return this.cards.contains(card);
@@ -75,8 +74,7 @@ public class Hand implements HandModel{
     }
 
     /**
-     * DOCME
-     * @return
+     * @return A {@link List} of {@link RestrictedCard}, used to grant views limited access to the hand information.
      */
     @Override
     @JsonIgnore

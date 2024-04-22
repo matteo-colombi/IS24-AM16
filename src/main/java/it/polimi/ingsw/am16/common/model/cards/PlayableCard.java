@@ -33,8 +33,7 @@ public abstract class PlayableCard extends BoardCard {
     }
 
     /**
-     * DOCME
-     * @return
+     * @return A {@link RestrictedCard} version of this playable card.
      */
     @JsonIgnore
     public RestrictedCard getRestrictedVersion() {

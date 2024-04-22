@@ -60,8 +60,7 @@ public class Chat implements ChatModel {
     }
 
     /**
-     * DOCME
-     * @return
+     * @return The player's id.
      */
     public int getPlayerId() {
         return playerId;

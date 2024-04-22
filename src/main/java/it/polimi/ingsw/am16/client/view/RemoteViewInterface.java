@@ -88,16 +88,16 @@ public interface RemoteViewInterface extends Remote {
     void setHand(List<PlayableCard> hand) throws RemoteException;
 
     /**
-     * DOCME
-     * @param card
-     * @throws RemoteException
+     * Adds the given card to this player's hand.
+     * @param card The card to be added.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void addCardToHand(PlayableCard card) throws RemoteException;
 
     /**
-     * DOCME
-     * @param card
-     * @throws RemoteException
+     * Removed the given card from this player's hand.
+     * @param card The card to be removed.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void removeCardFromHand(PlayableCard card) throws RemoteException;
 
@@ -110,28 +110,28 @@ public interface RemoteViewInterface extends Remote {
     void setOtherHand(String username, List<RestrictedCard> hand) throws RemoteException;
 
     /**
-     * DOCME
-     * @param username
-     * @param newCard
-     * @throws RemoteException
+     * Adds the given restricted card to the given user's hand.
+     * @param username The user to add this card to.
+     * @param newCard The restricted card to be added.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void addCardToOtherHand(String username, RestrictedCard newCard) throws RemoteException;
 
     /**
-     * DOCME
-     * @param username
-     * @param cardToRemove
-     * @throws RemoteException
+     * Removes the given restricted card from the given user's hand.
+     * @param username The user to remove this card from.
+     * @param cardToRemove The restricted card to be removed.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void removeCardFromOtherHand(String username, RestrictedCard cardToRemove) throws RemoteException;
 
     /**
-     * DOCME
-     * @param username
-     * @param cardPlacementOrder
-     * @param field
-     * @param activeSides
-     * @throws RemoteException
+     * Sets the given player's play area.
+     * @param username The player whose play area is being given.
+     * @param cardPlacementOrder The order in which the cards were played in this play area.
+     * @param field The user's field.
+     * @param activeSides The map keeping track of which side every card is placed on.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) throws RemoteException;
 
@@ -244,9 +244,9 @@ public interface RemoteViewInterface extends Remote {
     void signalDisconnection(String whoDisconnected) throws RemoteException;
 
     /**
-     * DOCME
-     * @param username
-     * @throws RemoteException
+     * Tells the client that a player has skipped their turn because of a deadlock.
+     * @param username The username of the player who skipped their turn.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void signalDeadlock(String username) throws RemoteException;
 
