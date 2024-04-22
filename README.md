@@ -1,10 +1,10 @@
-#Repository per il corso di Prova Finale di Ingegneria del Software.
+# Repository per il corso di Prova Finale di Ingegneria del Software.
 
-###Docente di riferimento: Alessandro Margara
+### Docente di riferimento: Alessandro Margara
 
-###Membri del gruppo: Matteo Colombi, Andrea Colombo, Leonardo Carlo Conti, Lorenzo Demontis
+### Membri del gruppo: Matteo Colombi, Andrea Colombo, Leonardo Carlo Conti, Lorenzo Demontis
 
-##Scopo del progetto 
+## Scopo del progetto 
 Implementazione tramite Java del gioco Codex Naturalis (di Cranio Creations) tramite interfaccia grafica e linea di comando. Intendiamo realizzare tre funzioni avanzate:
 
 * **Partite multiple:** Il server è realizzato in modo che possa gestire più partite contemporaneamente. In fase di ingresso, ai giocatori sarà consentito di scegliere a quale partita aperta e non ancora iniziata collegarsi o creare una nuova partita.
