@@ -35,6 +35,7 @@ public class PlayArea implements PlayAreaModel {
     private int maxX;
     private int minY;
     private int maxY;
+    private StarterCard starterCard;
 
     private final Set<Position> placeablePositions;
     private Set<Position> addedPlaceablePositions;
@@ -219,6 +220,14 @@ public class PlayArea implements PlayAreaModel {
         return placeablePositions.isEmpty();
     }
 
+    /**
+     * @return The starter card in this play area.
+     */
+    @Override
+    public StarterCard getStarterCard() {
+        return starterCard;
+    }
+
     //endregion
 
     //region Local Methods
@@ -231,6 +240,7 @@ public class PlayArea implements PlayAreaModel {
      * @param side        The visible side of the starter card.
      */
     public void setStarterCard(StarterCard starterCard, SideType side) {
+        this.starterCard = starterCard;
         Position starterPosition = new Position(0, 0);
 
         if (field.containsKey(starterPosition))
@@ -258,12 +268,16 @@ public class PlayArea implements PlayAreaModel {
         updateBounds(playedCardPosition);
     }
 
+    /**
+     * DOCME
+     * @param playedCard
+     * @return
+     */
     public int awardGamePoints(PlayableCard playedCard) {
         CardSide activeSide = activeSides.get(playedCard);
 
         return activeSide.getAwardedPoints(this);
     }
-
 
     /**
      * Increases the card count, adds the new position to the placement order list,

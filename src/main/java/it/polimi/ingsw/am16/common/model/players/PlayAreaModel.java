@@ -87,4 +87,9 @@ public interface PlayAreaModel {
      * @return Whether the player has no valid moves to make.
      */
     boolean isDeadlocked();
+
+    /**
+     * @return The starter card in this play area.
+     */
+    StarterCard getStarterCard();
 }
