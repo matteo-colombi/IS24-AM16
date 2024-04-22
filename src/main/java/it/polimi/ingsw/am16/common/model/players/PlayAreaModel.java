@@ -2,7 +2,6 @@ package it.polimi.ingsw.am16.common.model.players;
 
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.util.Position;
-import javafx.geometry.Pos;
 
 import java.util.List;
 import java.util.Map;
@@ -83,4 +82,9 @@ public interface PlayAreaModel {
      * @return The set of positions that were removed from placeablePositions with the last card placement.
      */
     Set<Position> getRemovedPlaceablePositions();
+
+    /**
+     * @return Whether the player has no valid moves to make.
+     */
+    boolean isDeadlocked();
 }

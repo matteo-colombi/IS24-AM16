@@ -380,6 +380,14 @@ public class Player implements PlayerModel {
     }
 
     /**
+     * @return Whether the player is deadlocked.
+     */
+    @Override
+    public boolean isDeadlocked() {
+        return playArea.isDeadlocked();
+    }
+
+    /**
      * Checks an object is equal to the player by comparing their IDs (if the parameter object is also a player).
      * @param o The object to compare the player to
      * @return true if the two are equal, false if they aren't

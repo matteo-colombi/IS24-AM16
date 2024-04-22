@@ -211,6 +211,14 @@ public class PlayArea implements PlayAreaModel {
         return Set.copyOf(removedPlaceablePositions);
     }
 
+    /**
+     * @return Whether the player has no valid moves to make.
+     */
+    @Override
+    public boolean isDeadlocked() {
+        return placeablePositions.isEmpty();
+    }
+
     //endregion
 
     //region Local Methods

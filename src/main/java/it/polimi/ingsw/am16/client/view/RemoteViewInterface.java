@@ -243,4 +243,11 @@ public interface RemoteViewInterface extends Remote {
      */
     void signalDisconnection(String whoDisconnected) throws RemoteException;
 
+    /**
+     * DOCME
+     * @param username
+     * @throws RemoteException
+     */
+    void signalDeadlock(String username) throws RemoteException;
+
 }

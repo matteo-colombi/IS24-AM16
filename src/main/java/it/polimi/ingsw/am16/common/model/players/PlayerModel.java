@@ -109,5 +109,10 @@ public interface PlayerModel {
      * @param isConnected Whether the player is connected or not.
      */
     void setConnected(boolean isConnected);
+
+    /**
+     * @return Whether the player is deadlocked.
+     */
+    boolean isDeadlocked();
 }
 

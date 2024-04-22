@@ -206,4 +206,10 @@ public class TestRemoteViewImplementation implements RemoteViewInterface {
         System.out.print("[" + username + "]: ");
         System.err.println("Player " + whoDisconnected + " has disconnected!");
     }
+
+    @Override
+    public void signalDeadlock(String username) throws RemoteException {
+        System.out.print("[" + username + "]: ");
+        System.err.println("Player " + username + " is deadlocked!");
+    }
 }

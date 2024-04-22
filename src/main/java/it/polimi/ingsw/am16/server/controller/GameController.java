@@ -370,7 +370,12 @@ public class GameController {
             }
         }
 
-        virtualView.notifyTurnStart(game.getPlayers()[game.getActivePlayer()].getUsername());
+        if (game.getPlayers()[game.getActivePlayer()].isDeadlocked()) {
+            virtualView.communicateDeadlock(game.getPlayers()[game.getActivePlayer()].getUsername());
+            turnManager();
+        } else {
+            virtualView.notifyTurnStart(game.getPlayers()[game.getActivePlayer()].getUsername());
+        }
     }
 
     /**

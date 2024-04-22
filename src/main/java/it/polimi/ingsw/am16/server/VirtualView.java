@@ -485,6 +485,11 @@ public class VirtualView {
         }
     }
 
+    /**
+     * DOCME
+     * @param disconnectedId
+     * @param disconnectedUsername
+     */
     public void signalDisconnection(int disconnectedId, String disconnectedUsername) {
         userViews.forEach((id, userView) -> {
             if (id != disconnectedId) {
@@ -493,6 +498,20 @@ public class VirtualView {
                 } catch (RemoteException e) {
                     //TODO handle it
                 }
+            }
+        });
+    }
+
+    /**
+     * DOCME
+     * @param username
+     */
+    public void communicateDeadlock(String username) {
+        userViews.forEach((id, userView) -> {
+            try {
+                userView.signalDeadlock(username);
+            } catch (RemoteException e) {
+                //TODO handle it
             }
         });
     }
