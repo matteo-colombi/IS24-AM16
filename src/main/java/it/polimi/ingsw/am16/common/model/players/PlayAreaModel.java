@@ -2,9 +2,11 @@ package it.polimi.ingsw.am16.common.model.players;
 
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.util.Position;
+import javafx.geometry.Pos;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Interface to give external classes access to {@link PlayArea}-type objects. It contains all the methods
@@ -66,4 +68,19 @@ public interface PlayAreaModel {
      * @return The Y coordinate of the up-most played card.
      */
     int getMaxY();
+
+    /**
+     * @return The set of positions in which a card can be placed.
+     */
+    Set<Position> getPlaceablePositions();
+
+    /**
+     * @return The set of placeable positions that were added with the last card placement.
+     */
+    Set<Position> getAddedPlaceablePositions();
+
+    /**
+     * @return The set of positions that were removed from placeablePositions with the last card placement.
+     */
+    Set<Position> getRemovedPlaceablePositions();
 }

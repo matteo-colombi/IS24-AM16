@@ -36,6 +36,10 @@ public class PlayArea implements PlayAreaModel {
     private int minY;
     private int maxY;
 
+    private final Set<Position> placeablePositions;
+    private Set<Position> addedPlaceablePositions;
+    private Set<Position> removedPlaceablePositions;
+
     /**
      * Creates a play area, initializing its player, its other attributes are set to standard values.
      */
@@ -49,6 +53,10 @@ public class PlayArea implements PlayAreaModel {
         this.maxX = 0;
         this.minY = 0;
         this.maxY = 0;
+
+        placeablePositions = new HashSet<>();
+        addedPlaceablePositions = new HashSet<>();
+        removedPlaceablePositions = new HashSet<>();
 
         for (CornerType cornerType : CornerType.values()) {
             resourceAndObjectCounts.put(cornerType, 0);
@@ -67,6 +75,7 @@ public class PlayArea implements PlayAreaModel {
      * @param maxX The maximum x-coordinate of a card in the player's play field.
      * @param minY The minimum y-coordinate of a card in the player's play field.
      * @param maxY The maximum y-coordinate of a card in the player's play field.
+     * @param placeablePositions The set of positions in which a card can be placed.
      */
     private PlayArea(
             int cardCount,
@@ -77,7 +86,8 @@ public class PlayArea implements PlayAreaModel {
             int minX,
             int maxX,
             int minY,
-            int maxY) {
+            int maxY,
+            Set<Position> placeablePositions) {
         this.cardCount = cardCount;
         this.resourceAndObjectCounts = resourceAndObjectCounts;
         this.cardPlacementOrder = cardPlacementOrder;
@@ -89,6 +99,9 @@ public class PlayArea implements PlayAreaModel {
         this.maxX = maxX;
         this.minY = minY;
         this.maxY = maxY;
+        this.placeablePositions = placeablePositions;
+        this.addedPlaceablePositions = new HashSet<>();
+        this.removedPlaceablePositions = new HashSet<>();
     }
 
     //region Local Getter and Setter
@@ -174,6 +187,30 @@ public class PlayArea implements PlayAreaModel {
         return maxY;
     }
 
+    /**
+     * @return The set of positions in which a card can be placed.
+     */
+    @Override
+    public Set<Position> getPlaceablePositions() {
+        return new HashSet<>(placeablePositions);
+    }
+
+    /**
+     * @return The set of placeable positions that were added with the last card placement.
+     */
+    @JsonIgnore
+    public Set<Position> getAddedPlaceablePositions() {
+        return Set.copyOf(addedPlaceablePositions);
+    }
+
+    /**
+     * @return The set of positions that were removed from placeablePositions with the last card placement.
+     */
+    @JsonIgnore
+    public Set<Position> getRemovedPlaceablePositions() {
+        return Set.copyOf(removedPlaceablePositions);
+    }
+
     //endregion
 
     //region Local Methods
@@ -222,7 +259,8 @@ public class PlayArea implements PlayAreaModel {
 
     /**
      * Increases the card count, adds the new position to the placement order list,
-     * maps the played card to the position and the visible side to the card.
+     * maps the played card to the position and the visible side to the card. Updates the
+     * placeablePositions set.
      *
      * @param playedCard         The card chosen by the player.
      * @param side               The visible side of the card.
@@ -236,6 +274,21 @@ public class PlayArea implements PlayAreaModel {
         cardPlacementOrder.add(playedCardPosition);
         field.put(playedCardPosition, playedCard);
         activeSides.put(playedCard, activeSide);
+
+        placeablePositions.remove(playedCardPosition);
+        addedPlaceablePositions = new HashSet<>();
+        removedPlaceablePositions = new HashSet<>();
+
+        Map<CornersIdx, CornerType> corners = activeSide.getCorners();
+        for(CornersIdx idx : corners.keySet()) {
+            if (corners.get(idx) == CornerType.BLOCKED) {
+                removedPlaceablePositions.add(playedCardPosition.addOffset(idx.getOffset()));
+            } else if (field.get(playedCardPosition.addOffset(idx.getOffset())) == null) {
+                addedPlaceablePositions.add(playedCardPosition.addOffset(idx.getOffset()));
+            }
+        }
+        placeablePositions.removeAll(removedPlaceablePositions);
+        placeablePositions.addAll(addedPlaceablePositions);
     }
 
     /**
@@ -358,48 +411,8 @@ public class PlayArea implements PlayAreaModel {
         if (field.containsKey(playedCardPosition))
             return false;
 
-        List<Position> neighboursPositions = playedCardPosition.getNeighbours();
-
-        // checks if the playedCard has been placed isolated from the rest of the field
-        boolean isIsolated = true;
-
-        for (Position neighbourPosition : neighboursPositions) {
-            if (field.containsKey(neighbourPosition)) {
-                isIsolated = false;
-                break;
-            }
-        }
-
-        if (isIsolated)
+        if (!placeablePositions.contains(playedCardPosition))
             return false;
-
-        // checks if the playedCard has been placed over a blocked corner
-        for (Position neighbourPosition : neighboursPositions) {
-            if (!field.containsKey(neighbourPosition))
-                continue;
-
-            BoardCard neighbourCard = field.get(neighbourPosition);
-            CardSide neighbourCardSide = activeSides.get(neighbourCard);
-            Map<CornersIdx, CornerType> corners = neighbourCardSide.getCorners();
-
-            if (playedCardPosition.neighbourIsTopLeft(neighbourPosition)) {
-                if (corners.get(CornersIdx.BOTTOM_RIGHT) == CornerType.BLOCKED) {
-                    return false;
-                }
-            } else if (playedCardPosition.neighbourIsTopRight(neighbourPosition)) {
-                if (corners.get(CornersIdx.BOTTOM_LEFT) == CornerType.BLOCKED) {
-                    return false;
-                }
-            } else if (playedCardPosition.neighbourIsBottomRight(neighbourPosition)) {
-                if (corners.get(CornersIdx.TOP_LEFT) == CornerType.BLOCKED) {
-                    return false;
-                }
-            } else if (playedCardPosition.neighbourIsBottomLeft(neighbourPosition)) {
-                if (corners.get(CornersIdx.TOP_RIGHT) == CornerType.BLOCKED) {
-                    return false;
-                }
-            }
-        }
 
         // checks if the playedCard cost is satisfied
         CardSide cardSide = playedCard.getCardSideBySideType(side);
@@ -463,7 +476,10 @@ public class PlayArea implements PlayAreaModel {
             int minY = playAreaNode.get("minY").asInt();
             int maxY = playAreaNode.get("maxY").asInt();
 
-            return new PlayArea(cardCount, resourceAndObjectCounts, cardPlacementOrder, field, activeSideTypes, minX, maxX, minY, maxY);
+            TypeReference<HashSet<Position>> typeReferencePlaceablePositions = new TypeReference<>() {};
+            Set<Position> placeablePositions = mapper.readValue(playAreaNode.get("placeablePositions").toString(), typeReferencePlaceablePositions);
+
+            return new PlayArea(cardCount, resourceAndObjectCounts, cardPlacementOrder, field, activeSideTypes, minX, maxX, minY, maxY, placeablePositions);
         }
     }
 
