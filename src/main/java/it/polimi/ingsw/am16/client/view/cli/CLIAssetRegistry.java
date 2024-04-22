@@ -14,6 +14,8 @@ public class CLIAssetRegistry {
 
     private final Map<String, CLICardAsset> cliCards;
     private final CLIText positionLabel;
+    private final CLIText banner;
+    private final CLIText rick;
 
     private CLIAssetRegistry() {
         TypeReference<HashMap<String, CLICardAsset>> cliCardsTypeRef = new TypeReference<>() {};
@@ -36,6 +38,26 @@ public class CLIAssetRegistry {
         } catch (IOException ignored) {
             throw new RuntimeException("Unable to read cli label for positions.");
         }
+
+        f = new File(FilePaths.CLI_BANNER);
+        if (!f.exists()) {
+            throw new RuntimeException(FilePaths.CLI_BANNER + " does not exist!");
+        }
+        try {
+            banner = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
+        } catch (IOException ignored) {
+            throw new RuntimeException("Unable to read cli banner.");
+        }
+
+        f = new File(FilePaths.CLI_ASSETS + "/rick.json");
+        if (!f.exists()) {
+            throw new RuntimeException("Unable to rickroll.");
+        }
+        try {
+            rick = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
+        } catch (IOException ignored) {
+            throw new RuntimeException("Unable to rickroll.");
+        }
     }
 
     public static CLIAssetRegistry getCLIAssetRegistry() {
@@ -51,5 +73,13 @@ public class CLIAssetRegistry {
 
     public CLIText getPositionLabel() {
         return positionLabel.getClone();
+    }
+
+    public CLIText getBanner() {
+        return banner;
+    }
+
+    public CLIText getRick() {
+        return rick;
     }
 }

@@ -30,6 +30,8 @@ public final class FilePaths {
      */
     public static final String CLI_POSITION_LABEL = CLI_ASSETS + "/label.json";
 
+    public static final String CLI_BANNER = CLI_ASSETS + "/cliBanner.json";
+
     /**
      * The path for JSON files.
      */

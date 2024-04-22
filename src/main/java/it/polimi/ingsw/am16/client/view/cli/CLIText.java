@@ -142,6 +142,10 @@ public class CLIText {
         height = toHeight;
     }
 
+    public void printText() {
+        printText(false);
+    }
+
     public void printText(boolean frame) {
         printText(0, 0, width-1, height-1, frame);
     }
