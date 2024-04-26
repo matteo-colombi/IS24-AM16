@@ -88,8 +88,4 @@ public interface PlayAreaModel {
      */
     boolean isDeadlocked();
 
-    /**
-     * @return The starter card in this play area.
-     */
-    StarterCard getStarterCard();
 }

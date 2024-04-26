@@ -18,9 +18,9 @@ class TestGameController {
     @Test
     void testGameController() throws UnexpectedActionException {
         RNG.setRNGSeed(420);
-
-        String gameId = LobbyManager.createGame(2);
-        GameController controller = LobbyManager.getGame(gameId);
+        LobbyManager lobbyManager = new LobbyManager();
+        String gameId = lobbyManager.createGame(2);
+        GameController controller = lobbyManager.getGame(gameId);
 
         RemoteViewInterface xLordeInterface = new TestRemoteViewImplementation("xLorde");
         RemoteViewInterface l2cInterface = new TestRemoteViewImplementation("l2c");
