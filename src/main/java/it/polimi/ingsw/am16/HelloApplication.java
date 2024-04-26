@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16;
 
 import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
+import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -22,7 +23,7 @@ public class HelloApplication /* extends Application */ {
      */
 
     public static void main(String[] args) {
-        // launch();
+        // For testing purposes
         System.out.println("Hello World");
     }
 }
