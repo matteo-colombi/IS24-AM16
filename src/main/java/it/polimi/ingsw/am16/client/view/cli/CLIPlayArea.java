@@ -5,15 +5,9 @@ import it.polimi.ingsw.am16.common.util.Position;
 
 import java.util.*;
 
+import static it.polimi.ingsw.am16.client.view.cli.CLIConstants.*;
+
 public class CLIPlayArea {
-
-    private static final int CARD_WIDTH = 21;
-    private static final int CARD_HEIGHT = 7;
-    private static final int OVERLAP_X = 5;
-    private static final int OVERLAP_Y = 3;
-
-    private static final int LABEL_WIDTH = 11;
-    private static final int LABEL_HEIGHT = 3;
 
     private final List<Position> cardPlacementOrder;
     private final Map<Position, BoardCard> field;
@@ -22,7 +16,6 @@ public class CLIPlayArea {
 
     private final Set<Position> placeablePositions;
 
-    private static final int VIEW_WIDTH = 9;
     private int viewCenter;
 
     private int minX;

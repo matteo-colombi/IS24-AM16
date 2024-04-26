@@ -1,6 +1,6 @@
 package it.polimi.ingsw.am16.server.controller;
 
-import it.polimi.ingsw.am16.client.view.RemoteViewInterface;
+import it.polimi.ingsw.am16.client.RemoteViewInterface;
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;

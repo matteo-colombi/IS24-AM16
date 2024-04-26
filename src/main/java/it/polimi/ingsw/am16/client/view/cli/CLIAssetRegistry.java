@@ -1,6 +1,9 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import it.polimi.ingsw.am16.common.model.cards.PlayableCardType;
+import it.polimi.ingsw.am16.common.model.cards.ResourceType;
+import it.polimi.ingsw.am16.common.model.cards.RestrictedCard;
 import it.polimi.ingsw.am16.common.util.FilePaths;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
@@ -17,6 +20,8 @@ public class CLIAssetRegistry {
     private final CLIText banner;
     private final CLIText rick;
 
+    private final Map<RestrictedCard, CLIText> restrictedCliCards;
+
     private CLIAssetRegistry() {
         TypeReference<HashMap<String, CLICardAsset>> cliCardsTypeRef = new TypeReference<>() {};
         File f = new File(FilePaths.CLI_CARDS);
@@ -27,6 +32,16 @@ public class CLIAssetRegistry {
             cliCards = JsonMapper.getObjectMapper().readValue(f, cliCardsTypeRef);
         } catch (IOException ignored) {
             throw new RuntimeException("Unable to read cli cards!");
+        }
+
+        restrictedCliCards = new HashMap<>();
+        for(PlayableCardType cardType : PlayableCardType.values()) {
+            for(ResourceType resourceType : ResourceType.values()) {
+                restrictedCliCards.put(
+                        new RestrictedCard(cardType, resourceType),
+                        cliCards.get(String.format("%s_%s_1", cardType.name().toLowerCase(), resourceType.name().toLowerCase())).back()
+                );
+            }
         }
 
         f = new File(FilePaths.CLI_POSITION_LABEL);
@@ -69,6 +84,10 @@ public class CLIAssetRegistry {
 
     public CLICardAsset getCard(String name) {
         return cliCards.get(name);
+    }
+
+    public CLIText getCardBack(RestrictedCard restrictedCard) {
+        return restrictedCliCards.get(restrictedCard);
     }
 
     public CLIText getPositionLabel() {

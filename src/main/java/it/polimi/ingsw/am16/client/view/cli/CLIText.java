@@ -26,7 +26,7 @@ public class CLIText {
             'B', (char)27 + "[34m",
             'P', (char)27 + "[35m",
             'C', (char)27 + "[36m",
-            ' ', (char)27 + "[37m"
+            ' ', (char)27 + "[39m"
     );
 
     @JsonCreator
@@ -37,6 +37,15 @@ public class CLIText {
         this.colorMask = colorMask;
         this.originX = width / 2;
         this.originY = height / 2;
+    }
+
+    public CLIText(String text) {
+        this(new String[]{text});
+    }
+
+    public CLIText(String[] text) {
+        this(text, new String[text.length]);
+        Arrays.fill(this.colorMask, new String(new char[text.length]).replace('\0', ' '));
     }
 
     public CLIText() {

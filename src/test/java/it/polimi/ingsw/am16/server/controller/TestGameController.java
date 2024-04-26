@@ -1,6 +1,6 @@
 package it.polimi.ingsw.am16.server.controller;
 
-import it.polimi.ingsw.am16.client.view.RemoteViewInterface;
+import it.polimi.ingsw.am16.client.RemoteViewInterface;
 import it.polimi.ingsw.am16.client.TestRemoteViewImplementation;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.model.cards.CardRegistry;

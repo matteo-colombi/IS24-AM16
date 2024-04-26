@@ -1,6 +1,5 @@
 package it.polimi.ingsw.am16.client;
 
-import it.polimi.ingsw.am16.client.view.RemoteViewInterface;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;

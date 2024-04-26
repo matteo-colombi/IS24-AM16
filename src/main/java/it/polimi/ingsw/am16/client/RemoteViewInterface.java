@@ -1,4 +1,4 @@
-package it.polimi.ingsw.am16.client.view;
+package it.polimi.ingsw.am16.client;
 
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
@@ -147,19 +147,19 @@ public interface RemoteViewInterface extends Remote {
 
     /**
      * Sets a player's number of game points.
-     * @param whosePoints The username of the player whose points are being set.
+     * @param username The username of the player whose points are being set.
      * @param gamePoints The given player's number of game points.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void setGamePoints(String whosePoints, int gamePoints) throws RemoteException;
+    void setGamePoints(String username, int gamePoints) throws RemoteException;
 
     /**
      * Sets a player's number of objective points.
-     * @param whosePoints The username of the player whose points are being set.
+     * @param username The username of the player whose points are being set.
      * @param objectivePoints The given player's number of objective points.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void setObjectivePoints(String whosePoints, int objectivePoints) throws RemoteException;
+    void setObjectivePoints(String username, int objectivePoints) throws RemoteException;
 
     /**
      * Sets the common objectives for the game.
