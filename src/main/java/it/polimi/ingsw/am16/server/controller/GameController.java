@@ -31,6 +31,7 @@ public class GameController {
     private final GameModel game;
     private final VirtualView virtualView;
     private final ChatController chatController;
+    private final LobbyManager lobbyManager;
 
     private Queue<PlayerModel> playerQueue = null;
 
@@ -38,7 +39,8 @@ public class GameController {
      * Constructs a new GameController for the given {@link GameModel}.
      * @param game The {@link GameModel} linked to this controller.
      */
-    public GameController(GameModel game) {
+    public GameController(LobbyManager lobbyManager, GameModel game) {
+        this.lobbyManager = lobbyManager;
         this.choosingColor = -1;
         this.hasPlacedCard = false;
         this.game = game;
@@ -351,7 +353,7 @@ public class GameController {
             //TODO maybe change when the game is saved?
             // Options: periodically (every x seconds, at the end of the turn)
             //          or after every turn?
-            LobbyManager.saveGame(game);
+            lobbyManager.saveGame(game);
             if (game.getState() == GameState.FINAL_ROUND) {
                 endGame();
                 return;
@@ -485,7 +487,7 @@ public class GameController {
         virtualView.communicateWinners(winnerUsernames);
         virtualView.redrawView();
 
-        LobbyManager.deleteGame(game);
+        lobbyManager.deleteGame(game);
     }
 
     /**
@@ -517,6 +519,6 @@ public class GameController {
         virtualView.signalDisconnection(playerId, game.getPlayers()[playerId].getUsername());
 
         //TODO maybe the save file shouldn't be deleted? The requirements say that we should save in case the server crashes, not one of the clients.
-        LobbyManager.deleteGame(game);
+        lobbyManager.deleteGame(game);
     }
 }
