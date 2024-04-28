@@ -12,6 +12,7 @@ public class TestCLIHand {
     @Test
     void testCLIHand() {
         CLI cli = new CLI();
+        cli.joinGame("test");
         List<PlayableCard> hand = new ArrayList<>();
         hand.add(CardRegistry.getRegistry().getGoldCardFromName("gold_fungi_3"));
         hand.add(CardRegistry.getRegistry().getGoldCardFromName("gold_animal_4"));
@@ -25,5 +26,6 @@ public class TestCLIHand {
         restrictedHand.add(hand.get(2).getRestrictedVersion());
 
         cli.setOtherHand("test", restrictedHand);
+        cli.printOtherHand("test");
     }
 }

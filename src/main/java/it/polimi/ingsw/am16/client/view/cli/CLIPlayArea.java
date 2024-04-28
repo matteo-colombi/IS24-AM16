@@ -160,4 +160,8 @@ public class CLIPlayArea {
         if (offset < 0 && viewCenter - VIEW_WIDTH/2 < minX) return;
         viewCenter += offset;
     }
+
+    public void resetView() {
+        viewCenter = 0;
+    }
 }

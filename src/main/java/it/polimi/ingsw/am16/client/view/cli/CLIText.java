@@ -2,6 +2,7 @@ package it.polimi.ingsw.am16.client.view.cli;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -43,9 +44,14 @@ public class CLIText {
         this(new String[]{text});
     }
 
+    public CLIText(String text, PlayerColor playerColor) {
+        this(text);
+        this.colorMask[0] = this.colorMask[0].replace(' ', playerColorToChar(playerColor));
+    }
+
     public CLIText(String[] text) {
         this(text, new String[text.length]);
-        Arrays.fill(this.colorMask, new String(new char[text.length]).replace('\0', ' '));
+        Arrays.fill(this.colorMask, new String(new char[text[0].length()]).replace('\0', ' '));
     }
 
     public CLIText() {
@@ -224,5 +230,15 @@ public class CLIText {
 
     public CLIText getClone() {
         return new CLIText(Arrays.copyOf(this.text, this.text.length), Arrays.copyOf(this.colorMask, this.colorMask.length));
+    }
+
+    public char playerColorToChar(PlayerColor playerColor) {
+        if (playerColor == null) return ' ';
+        return switch (playerColor) {
+            case RED -> 'R';
+            case BLUE -> 'B';
+            case GREEN -> 'G';
+            case YELLOW -> 'Y';
+        };
     }
 }

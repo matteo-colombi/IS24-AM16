@@ -54,7 +54,7 @@ public class TestPlayerReloading {
 
         chatController.sendMessage("L2C", "I am a message from fakePlayer");
 
-        chatController.sendMessage("L2C", "This is a chat message!!!", Set.of("L2C", "xLorde"));
+        chatController.sendMessage("L2C", "This is a chat message!!!", Set.of("L2C", "xLorde"), true);
         chatController.sendMessage("L2C", "This is another chat message!");
 
         mapper.writeValue(f, player);

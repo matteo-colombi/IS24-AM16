@@ -8,6 +8,7 @@ import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,30 +19,43 @@ import java.util.Map;
 public class VirtualView {
 
     private final Map<Integer, RemoteViewInterface> userViews;
+    private final List<String> usernames;
 
     /**
      * Creates a new empty VirtualView.
      */
     public VirtualView() {
         this.userViews = new HashMap<>();
+        this.usernames = new ArrayList<>();
+    }
+
+    public void joinGame(int playerId, String username) {
+        RemoteViewInterface userView = userViews.get(playerId);
+        try {
+            userView.joinGame(username);
+            userView.setPlayers(new ArrayList<>(usernames));
+        } catch (RemoteException e) {
+            //TODO handle it
+        }
     }
 
     /**
      * Communicates to all the players that a new player has joined. Then adds the new player to the VirtualView.
      * @param playerId The new player's id.
-     * @param userView The player's view interface.
+     * @param newUserView The player's view interface.
      * @param username The username of the new player.
      */
-    public void addPlayer(int playerId, RemoteViewInterface userView, String username) {
-        userViews.values().forEach(otherUserView -> {
+    public void addPlayer(int playerId, RemoteViewInterface newUserView, String username) {
+        userViews.keySet().forEach(otherPlayerId -> {
             try {
-                otherUserView.addPlayer(username);
+                userViews.get(otherPlayerId).addPlayer(username);
             } catch (RemoteException e) {
                 //TODO handle it
             }
         });
 
-        this.userViews.put(playerId, userView);
+        this.userViews.put(playerId, newUserView);
+        this.usernames.add(username);
     }
 
     /**
@@ -514,5 +528,16 @@ public class VirtualView {
                 //TODO handle it
             }
         });
+    }
+
+    /**
+     * You saw nothing ;)
+     */
+    public void rick(int playerId) {
+        try {
+            userViews.get(playerId).rick();
+        } catch (RemoteException e) {
+            //TODO handle it
+        }
     }
 }

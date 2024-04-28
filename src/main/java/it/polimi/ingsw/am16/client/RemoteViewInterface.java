@@ -17,11 +17,25 @@ import java.util.Map;
 public interface RemoteViewInterface extends Remote {
 
     /**
+     * Tells the view that they have joined a game with the given username.
+     * @param username The username the player has joined the game with.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    void joinGame(String username) throws RemoteException;
+
+    /**
      * Adds a player to the game. Used to communicate the connection of a new player.
      * @param username The new player's username.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void addPlayer(String username) throws RemoteException;
+
+    /**
+     * DOCME
+     * @param usernames
+     * @throws RemoteException
+     */
+    void setPlayers(List<String> usernames) throws RemoteException;
 
     /**
      * Sets the game state. To be called when the game's state changes.
@@ -249,5 +263,10 @@ public interface RemoteViewInterface extends Remote {
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void signalDeadlock(String username) throws RemoteException;
+
+    /**
+     * You saw nothing ;)
+     */
+    void rick() throws RemoteException;
 
 }

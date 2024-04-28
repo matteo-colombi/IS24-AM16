@@ -11,7 +11,7 @@ import java.util.Set;
  * @param text The message's body text.
  * @param timestamp The timestamp when this message was sent.
  */
-public record ChatMessage(String senderUsername, Set<String> receiverUsernames, String text, Date timestamp) {
+public record ChatMessage(String senderUsername, Set<String> receiverUsernames, String text, Date timestamp, boolean isPrivate) {
 
     /**
      * Formats the message in a user-friendly way, including the time when it was sent, the sender and the body.
@@ -19,7 +19,12 @@ public record ChatMessage(String senderUsername, Set<String> receiverUsernames, 
      */
     @Override
     public String toString() {
-        return String.format("[%s] %s: %s", SimpleDateFormat.getTimeInstance().format(timestamp), senderUsername, text);
+        return String.format("[%s] %s%s: %s",
+                SimpleDateFormat.getTimeInstance().format(timestamp),
+                senderUsername,
+                isPrivate ? " (privately)" : "",
+                text
+        );
     }
 
     @Override
@@ -31,6 +36,7 @@ public record ChatMessage(String senderUsername, Set<String> receiverUsernames, 
 
         if (!senderUsername.equals(that.senderUsername)) return false;
         if (!receiverUsernames.equals(that.receiverUsernames)) return false;
+        if (isPrivate != that.isPrivate) return false;
         if (!text.equals(that.text)) return false;
         return timestamp.equals(that.timestamp);
     }
