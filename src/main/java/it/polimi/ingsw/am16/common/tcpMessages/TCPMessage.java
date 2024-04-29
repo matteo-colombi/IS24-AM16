@@ -1,4 +1,4 @@
-package it.polimi.ingsw.am16.common.messages;
+package it.polimi.ingsw.am16.common.tcpMessages;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

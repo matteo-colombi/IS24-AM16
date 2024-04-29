@@ -1,4 +1,4 @@
-package it.polimi.ingsw.am16.common.messages;
+package it.polimi.ingsw.am16.common.tcpMessages;
 
 public enum MessageType {
     QUIT,

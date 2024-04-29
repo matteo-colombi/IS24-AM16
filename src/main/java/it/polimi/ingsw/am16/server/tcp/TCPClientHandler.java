@@ -1,17 +1,15 @@
 package it.polimi.ingsw.am16.server.tcp;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.am16.client.view.RemoteViewInterface;
-import it.polimi.ingsw.am16.common.messages.MessageType;
+import it.polimi.ingsw.am16.common.tcpMessages.MessageType;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
-import it.polimi.ingsw.am16.common.messages.TCPMessage;
+import it.polimi.ingsw.am16.common.tcpMessages.TCPMessage;
 import it.polimi.ingsw.am16.server.controller.GameController;
 import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 
