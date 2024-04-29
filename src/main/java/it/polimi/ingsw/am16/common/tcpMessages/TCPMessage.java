@@ -2,7 +2,7 @@ package it.polimi.ingsw.am16.common.tcpMessages;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public abstract class TCPMessage {
+public class TCPMessage {
 
     private MessageType messageType;
     private Payload payload;
