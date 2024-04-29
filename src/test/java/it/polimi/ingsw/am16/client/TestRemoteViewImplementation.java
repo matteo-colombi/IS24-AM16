@@ -1,6 +1,5 @@
 package it.polimi.ingsw.am16.client;
 
-import it.polimi.ingsw.am16.client.view.RemoteViewInterface;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
@@ -20,10 +19,32 @@ public class TestRemoteViewImplementation implements RemoteViewInterface {
         this.username = username;
     }
 
+    /**
+     * Tells the view that they have joined a game with the given username.
+     *
+     * @param username The username the player has joined the game with.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    @Override
+    public void joinGame(String gameId, String username) throws RemoteException {
+        System.out.println("You joined a game with username: " + username);
+    }
+
     @Override
     public void addPlayer(String username) throws RemoteException {
         System.out.print("[" + this.username + "]: ");
         System.out.println("Player " + username + " joined the game");
+    }
+
+    /**
+     * DOCME
+     *
+     * @param usernames
+     * @throws RemoteException
+     */
+    @Override
+    public void setPlayers(List<String> usernames) throws RemoteException {
+
     }
 
     @Override
@@ -211,5 +232,13 @@ public class TestRemoteViewImplementation implements RemoteViewInterface {
     public void signalDeadlock(String username) throws RemoteException {
         System.out.print("[" + username + "]: ");
         System.err.println("Player " + username + " is deadlocked!");
+    }
+
+    /**
+     * You saw nothing ;)
+     */
+    @Override
+    public void rick() throws RemoteException {
+
     }
 }

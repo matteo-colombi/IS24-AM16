@@ -1,4 +1,4 @@
-package it.polimi.ingsw.am16.client.view;
+package it.polimi.ingsw.am16.client;
 
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
@@ -17,11 +17,25 @@ import java.util.Map;
 public interface RemoteViewInterface extends Remote {
 
     /**
+     * Tells the view that they have joined a game with the given username.
+     * @param username The username the player has joined the game with.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    void joinGame(String gameId, String username) throws RemoteException;
+
+    /**
      * Adds a player to the game. Used to communicate the connection of a new player.
      * @param username The new player's username.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void addPlayer(String username) throws RemoteException;
+
+    /**
+     * DOCME
+     * @param usernames
+     * @throws RemoteException
+     */
+    void setPlayers(List<String> usernames) throws RemoteException;
 
     /**
      * Sets the game state. To be called when the game's state changes.
@@ -147,19 +161,19 @@ public interface RemoteViewInterface extends Remote {
 
     /**
      * Sets a player's number of game points.
-     * @param whosePoints The username of the player whose points are being set.
+     * @param username The username of the player whose points are being set.
      * @param gamePoints The given player's number of game points.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void setGamePoints(String whosePoints, int gamePoints) throws RemoteException;
+    void setGamePoints(String username, int gamePoints) throws RemoteException;
 
     /**
      * Sets a player's number of objective points.
-     * @param whosePoints The username of the player whose points are being set.
+     * @param username The username of the player whose points are being set.
      * @param objectivePoints The given player's number of objective points.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void setObjectivePoints(String whosePoints, int objectivePoints) throws RemoteException;
+    void setObjectivePoints(String username, int objectivePoints) throws RemoteException;
 
     /**
      * Sets the common objectives for the game.
@@ -249,5 +263,10 @@ public interface RemoteViewInterface extends Remote {
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void signalDeadlock(String username) throws RemoteException;
+
+    /**
+     * You saw nothing ;)
+     */
+    void rick() throws RemoteException;
 
 }

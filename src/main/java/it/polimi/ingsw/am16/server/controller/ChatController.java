@@ -50,8 +50,8 @@ public class ChatController {
      * @param text The text body of the message.
      * @param receiverUsernames The usernames to send the message to.
      */
-    public void sendMessage(String senderUsername, String text, Set<String> receiverUsernames) {
-        ChatMessage message = new ChatMessage(senderUsername, receiverUsernames, text, new Date());
+    public void sendMessage(String senderUsername, String text, Set<String> receiverUsernames, boolean isPrivate) {
+        ChatMessage message = new ChatMessage(senderUsername, receiverUsernames, text, new Date(), isPrivate);
         for(String username : receiverUsernames) {
             if (chats.containsKey(username)) {
                 chats.get(username).receiveMessage(message);
@@ -74,7 +74,7 @@ public class ChatController {
      * @param text The text body of the message.
      */
     public void sendMessage(String senderUsername, String text) {
-        sendMessage(senderUsername, text, chats.keySet());
+        sendMessage(senderUsername, text, chats.keySet(), false);
     }
 
     /**

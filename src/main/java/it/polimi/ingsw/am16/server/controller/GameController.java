@@ -1,6 +1,6 @@
 package it.polimi.ingsw.am16.server.controller;
 
-import it.polimi.ingsw.am16.client.view.RemoteViewInterface;
+import it.polimi.ingsw.am16.client.RemoteViewInterface;
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
@@ -78,8 +78,8 @@ public class GameController {
             }
             return;
         }
-        virtualView.addPlayer(players[playerId].getPlayerId(), userView, players[playerId].getUsername());
-
+        virtualView.addPlayer(playerId, userView, players[playerId].getUsername());
+        virtualView.joinGame(playerId, game.getId(), players[playerId].getUsername());
         players[playerId].setConnected(true);
         if (game.isRejoiningAfterCrash()) {
             virtualView.communicateNewMessages(playerId, players[playerId].getChat().getMessages());
@@ -142,7 +142,7 @@ public class GameController {
         }
         PlayAreaModel playArea = game.getPlayers()[playerId].getPlayArea();
 
-        virtualView.communicatePlayCard(game.getPlayers()[playerId].getUsername(), card, starterSide, new Position(0, 0));
+        virtualView.communicatePlayArea(game.getPlayers()[playerId].getUsername(), playArea.getPlacementOrder(), playArea.getField(), playArea.getActiveSides());
         virtualView.redrawView(playerId);
 
         if (game.allPlayersChoseStarterSide()) {
@@ -506,7 +506,7 @@ public class GameController {
      * @param receiverUsernames The set of players who should receive the message.
      */
     public void sendChatMessage(String senderUsername, String text, Set<String> receiverUsernames) {
-        chatController.sendMessage(senderUsername, text, receiverUsernames);
+        chatController.sendMessage(senderUsername, text, receiverUsernames, true);
     }
 
     /**
@@ -520,5 +520,18 @@ public class GameController {
 
         //TODO maybe the save file shouldn't be deleted? The requirements say that we should save in case the server crashes, not one of the clients.
         lobbyManager.deleteGame(game);
+    }
+
+    /**
+     * You saw nothing ;)
+     */
+    public void rick(String username) {
+        PlayerModel[] players = game.getPlayers();
+        for(PlayerModel player : players) {
+            if (player.getUsername().equals(username)) {
+                virtualView.rick(player.getPlayerId());
+                return;
+            }
+        }
     }
 }
