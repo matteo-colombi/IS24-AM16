@@ -26,7 +26,7 @@ public class TestRemoteViewImplementation implements RemoteViewInterface {
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     @Override
-    public void joinGame(String username) throws RemoteException {
+    public void joinGame(String gameId, String username) throws RemoteException {
         System.out.println("You joined a game with username: " + username);
     }
 

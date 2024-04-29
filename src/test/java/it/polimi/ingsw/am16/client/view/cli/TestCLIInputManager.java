@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
 import it.polimi.ingsw.am16.common.util.RNG;
+import it.polimi.ingsw.am16.server.controller.GameController;
 import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +15,8 @@ public class TestCLIInputManager {
         RNG.setRNGSeed(420);
         CLI cli1 = new CLI();
         CLI cli2 = new CLI();
+//        CLI cli3 = new CLI();
+
         LobbyManager lobbyManager = new LobbyManager();
         String id = lobbyManager.createGame(2);
 
@@ -25,12 +28,21 @@ public class TestCLIInputManager {
         PipedOutputStream outputTo2 = new PipedOutputStream();
         input2.connect(outputTo2);
 
-        CLIInputManager inputManager1 = new CLIInputManager(cli1, input1, lobbyManager.getGame(id));
-        CLIInputManager inputManager2 = new CLIInputManager(cli2, input2, lobbyManager.getGame(id));
+//        PipedInputStream input3 = new PipedInputStream();
+//        PipedOutputStream outputTo3 = new PipedOutputStream();
+//        input3.connect(outputTo3);
+
+        GameController controller = lobbyManager.getGame(id);
+
+        CLIInputManager inputManager1 = new CLIInputManager(cli1, input1, controller, lobbyManager);
+        CLIInputManager inputManager2 = new CLIInputManager(cli2, input2, controller, lobbyManager);
+//        CLIInputManager inputManager3 = new CLIInputManager(cli3, input3, controller);
         Thread t1 = new Thread(inputManager1);
         Thread t2 = new Thread(inputManager2);
+//        Thread t3 = new Thread(inputManager3);
         t1.start();
         t2.start();
+//        t3.start();
 
         outputTo1.write("help\n".getBytes());
         Thread.sleep(SLEEP);
@@ -72,12 +84,52 @@ public class TestCLIInputManager {
         Thread.sleep(SLEEP);
         outputTo1.write("hand andrea\n".getBytes());
         Thread.sleep(SLEEP);
-        outputTo2.write("play_area PepperOne\n".getBytes());
+//        outputTo1.write("scroll_view center\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo1.write("scroll_view left 1\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo1.write("scroll_view right 5\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo1.write("scroll_view left\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo1.write("scroll_view right\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo1.write("scroll_view center 5\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo2.write("play_area PepperOne\n".getBytes());
+//        outputTo1.write("chat Ciao a tutti!!!!\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo2.write("chat\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo1.write("chat_private l2c Ciao leo!!!\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo1.write("chat_private andrea Ciao andreee!!!\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo3.write("chat\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo2.write("chat_history\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo2.write("chat\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo2.write("chat_history\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo1.write("points\n".getBytes());
+//        Thread.sleep(SLEEP);
+//        outputTo1.write("objectives\n".getBytes());
+//        Thread.sleep(SLEEP);
+        outputTo2.write("play_card 1 front 1;1\n".getBytes());
         Thread.sleep(SLEEP);
-        outputTo2.write("hand afjwkjanw\n".getBytes());
+        outputTo2.write("play_area\n".getBytes());
         Thread.sleep(SLEEP);
-        outputTo1.write("color\n".getBytes());
-
+        outputTo2.write("draw_card common gold 1\n".getBytes());
+        Thread.sleep(SLEEP);
+        outputTo2.write("draw_options\n".getBytes());
+        Thread.sleep(SLEEP);
+        outputTo1.write("play_card 2 back -1,-1\n".getBytes());
+        Thread.sleep(SLEEP);
+        outputTo1.write("play_area\n".getBytes());
+        Thread.sleep(SLEEP);
+        outputTo1.write("draw_card deck resources\n".getBytes());
 
         t1.join();
         t2.join();

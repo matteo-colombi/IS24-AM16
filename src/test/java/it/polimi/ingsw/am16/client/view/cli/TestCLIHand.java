@@ -12,7 +12,7 @@ public class TestCLIHand {
     @Test
     void testCLIHand() {
         CLI cli = new CLI();
-        cli.joinGame("test");
+        cli.joinGame("test","test");
         List<PlayableCard> hand = new ArrayList<>();
         hand.add(CardRegistry.getRegistry().getGoldCardFromName("gold_fungi_3"));
         hand.add(CardRegistry.getRegistry().getGoldCardFromName("gold_animal_4"));

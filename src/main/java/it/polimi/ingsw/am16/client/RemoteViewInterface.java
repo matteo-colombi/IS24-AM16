@@ -21,7 +21,7 @@ public interface RemoteViewInterface extends Remote {
      * @param username The username the player has joined the game with.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void joinGame(String username) throws RemoteException;
+    void joinGame(String gameId, String username) throws RemoteException;
 
     /**
      * Adds a player to the game. Used to communicate the connection of a new player.

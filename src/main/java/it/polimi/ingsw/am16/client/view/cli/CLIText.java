@@ -173,7 +173,7 @@ public class CLIText {
         char lastColor = ' ';
         StringBuilder toPrint = new StringBuilder();
         toPrint.append(escapeCodes.get(' '));
-        String horizontal = new String(new char[endX - startX + 1]).replace('\0', '─');
+        String horizontal = new String(new char[endX - startX + 5]).replace('\0', '─');
         String topHorizontal = '┌' + horizontal + '┐';
         char vertical = '│';
         String bottomHorizontal = '└' + horizontal + '┘';
@@ -181,7 +181,7 @@ public class CLIText {
             toPrint.append(topHorizontal).append('\n');
         }
         for(int j = startY; j <= endY; j++) {
-            if (frame) toPrint.append(escapeCodes.get(' ')).append(vertical).append(escapeCodes.get(lastColor));
+            if (frame) toPrint.append(escapeCodes.get(' ')).append(vertical).append("  ").append(escapeCodes.get(lastColor));
             for(int i = startX; i <= endX; i++) {
                 char thisColor = colorMask[j].charAt(i);
                 if(text[j].charAt(i) != ' ' && thisColor != lastColor) {
@@ -190,7 +190,7 @@ public class CLIText {
                 }
                 toPrint.append(text[j].charAt(i));
             }
-            if (frame) toPrint.append(escapeCodes.get(' ')).append(vertical).append(escapeCodes.get(lastColor));
+            if (frame) toPrint.append(escapeCodes.get(' ')).append("  ").append(vertical).append(escapeCodes.get(lastColor));
             toPrint.append('\n');
         }
         toPrint.append(escapeCodes.get(' '));

@@ -29,10 +29,10 @@ public class VirtualView {
         this.usernames = new ArrayList<>();
     }
 
-    public void joinGame(int playerId, String username) {
+    public void joinGame(int playerId, String gameId, String username) {
         RemoteViewInterface userView = userViews.get(playerId);
         try {
-            userView.joinGame(username);
+            userView.joinGame(gameId, username);
             userView.setPlayers(new ArrayList<>(usernames));
         } catch (RemoteException e) {
             //TODO handle it

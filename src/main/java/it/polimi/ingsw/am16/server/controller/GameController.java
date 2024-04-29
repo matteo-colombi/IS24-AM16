@@ -79,7 +79,7 @@ public class GameController {
             return;
         }
         virtualView.addPlayer(playerId, userView, players[playerId].getUsername());
-        virtualView.joinGame(playerId, players[playerId].getUsername());
+        virtualView.joinGame(playerId, game.getId(), players[playerId].getUsername());
         players[playerId].setConnected(true);
         if (game.isRejoiningAfterCrash()) {
             virtualView.communicateNewMessages(playerId, players[playerId].getChat().getMessages());
