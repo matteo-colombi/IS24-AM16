@@ -1,7 +1,7 @@
 package it.polimi.ingsw.am16.server.tcp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.polimi.ingsw.am16.client.view.RemoteViewInterface;
+import it.polimi.ingsw.am16.client.RemoteViewInterface;
 import it.polimi.ingsw.am16.common.tcpMessages.*;
 import it.polimi.ingsw.am16.common.tcpMessages.response.*;
 import it.polimi.ingsw.am16.common.tcpMessages.request.*;
@@ -10,6 +10,7 @@ import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.tcpMessages.response.AddPlayer;
+import it.polimi.ingsw.am16.common.tcpMessages.response.JoinGame;
 import it.polimi.ingsw.am16.common.tcpMessages.response.SignalDisconnection;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
@@ -83,6 +84,27 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
         }
     }
 
+    private void sendTCPMessage(TCPMessage tcpMessage) {
+        try {
+            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
+        } catch (IOException e) {
+            //TODO see if this is appropriate
+            System.err.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Tells the view that they have joined a game with the given username.
+     *
+     * @param gameId
+     * @param username The username the player has joined the game with.
+     */
+    @Override
+    public void joinGame(String gameId, String username) {
+        TCPMessage tcpMessage = new TCPMessage(MessageType.JOIN_GAME, new JoinGame(gameId, username));
+        sendTCPMessage(tcpMessage);
+    }
+
     /**
      * Sets the game controller.
      * @param username The new player's username.
@@ -90,12 +112,18 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void addPlayer(String username) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.ADD_PLAYER, new AddPlayer(username));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
+    }
+
+    /**
+     * DOCME
+     *
+     * @param usernames
+     */
+    @Override
+    public void setPlayers(List<String> usernames) {
+        TCPMessage tcpMessage = new TCPMessage(MessageType.ADD_PLAYER, new SetPlayers(usernames));
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -105,12 +133,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void setGameState(GameState state) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SET_GAME_STATE, new SetGameState(state));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -118,17 +141,10 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
      * @param commonResourceCards The common resource cards (may also contain gold cards if the resource card deck is empty). Should always be of length 2.
      * @param commonGoldCards The common gold cards (may also contain resource cards if the gold card deck is empty). Should always be of length 2.
      */
-    //    Pavia
-    //🔥🔥🔥🔥🔥🔥
     @Override
     public void setCommonCards(PlayableCard[] commonResourceCards, PlayableCard[] commonGoldCards) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SET_COMMON_CARDS, new SetCommonCards(commonResourceCards, commonGoldCards));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -139,12 +155,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void setDeckTopType(PlayableCardType whichDeck, ResourceType resourceType) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SET_DECK_TOP_TYPE, new SetDeckTopType(whichDeck, resourceType));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -154,12 +165,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void promptStarterChoice(StarterCard starterCard) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.PROMPT_STARTER_CHOICE, new PromptStarterChoice(starterCard));
-        try{
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -168,12 +174,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void choosingColors() {
         TCPMessage tcpMessage = new TCPMessage(MessageType.CHOOSING_COLORS, null);
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -183,12 +184,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void promptColorChoice(List<PlayerColor> colorChoices) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.PROMPT_COLOR_CHOICE, new PromptColorChoice(colorChoices));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -199,12 +195,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void setColor(String username, PlayerColor color) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SET_COLOR, new SetColor(username, color));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -213,12 +204,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void drawingCards() {
         TCPMessage tcpMessage = new TCPMessage(MessageType.DRAWING_CARDS, null);
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -228,12 +214,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void setHand(List<PlayableCard> hand) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SET_HAND, new SetHand(hand));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -243,12 +224,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void addCardToHand(PlayableCard card) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.ADD_CARD_TO_HAND, new AddCardToHand(card));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -258,12 +234,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void removeCardFromHand(PlayableCard card) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.REMOVE_CARD_FROM_HAND, new RemoveCardFromHand(card));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -274,12 +245,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void setOtherHand(String username, List<RestrictedCard> hand) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SET_OTHER_HAND, new SetOtherHand(username, hand));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -290,12 +256,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void addCardToOtherHand(String username, RestrictedCard newCard) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.ADD_CARD_TO_OTHER_HAND, new AddCardToOtherHand(username, newCard));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -306,12 +267,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void removeCardFromOtherHand(String username, RestrictedCard cardToRemove) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.REMOVE_CARD_FROM_OTHER_HAND, new RemoveCardFromOtherHand(username, cardToRemove));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -324,12 +280,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SET_PLAY_AREA, new SetPlayArea(username, cardPlacementOrder, field, activeSides));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -342,12 +293,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void playCard(String username, BoardCard card, SideType side, Position pos) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.PLAY_CARD, new PlayCard(username, card, side, pos));
-        try{
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -358,12 +304,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void setGamePoints(String whosePoints, int gamePoints) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SET_GAME_POINTS, new SetGamePoints(whosePoints, gamePoints));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -374,12 +315,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void setObjectivePoints(String whosePoints, int objectivePoints) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SET_OBJECTIVE_POINTS, new SetObjectivePoints(whosePoints, objectivePoints));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -389,12 +325,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void setCommonObjectives(ObjectiveCard[] commonObjectives) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SET_COMMON_OBJECTIVES, new SetCommonObjectives(commonObjectives));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -404,12 +335,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void promptObjectiveChoice(List<ObjectiveCard> possiblePersonalObjectives) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.PROMPT_OBJECTIVE_CHOICE, new PromptObjectiveChoice(possiblePersonalObjectives));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -419,12 +345,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void setPersonalObjective(ObjectiveCard personalObjective) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SET_PERSONAL_OBJECTIVE, new SetPersonalObjective(personalObjective));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -434,12 +355,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void setStartOrder(List<String> usernames) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SET_START_ORDER, new SetStartOrder(usernames));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -449,12 +365,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void turn(String username) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.TURN, new Turn(username));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -464,12 +375,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void setWinners(List<String> winnerUsernames) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SET_WINNERS, new SetWinners(winnerUsernames));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -479,12 +385,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void addMessages(List<ChatMessage> messages) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.ADD_MESSAGES, new AddMessages(messages));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -494,12 +395,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void addMessage(ChatMessage message) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.ADD_MESSAGE, new AddMessage(message));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -509,12 +405,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void promptError(String errorMessage) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.PROMPT_ERROR, new PromptError(errorMessage));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -523,12 +414,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void redrawView() {
         TCPMessage tcpMessage = new TCPMessage(MessageType.REDRAW_VIEW, null);
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -537,12 +423,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void notifyDontDraw() {
         TCPMessage tcpMessage = new TCPMessage(MessageType.NOTIFY_DONT_DRAW, null);
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -552,12 +433,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void signalDisconnection(String whoDisconnected) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SIGNAL_DISCONNECTION, new SignalDisconnection(whoDisconnected));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
     }
 
     /**
@@ -567,11 +443,15 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void signalDeadlock(String username) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SIGNAL_DEADLOCK, new SignalDeadlock(username));
-        try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
-        } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
-        }
+        sendTCPMessage(tcpMessage);
+    }
+
+    /**
+     * You saw nothing ;)
+     */
+    @Override
+    public void rick() {
+        TCPMessage tcpMessage = new TCPMessage(MessageType.RICK, null);
+        sendTCPMessage(tcpMessage);
     }
 }

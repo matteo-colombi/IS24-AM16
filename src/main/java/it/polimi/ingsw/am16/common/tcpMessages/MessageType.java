@@ -5,6 +5,7 @@ public enum MessageType {
     CREATE_GAME,
     JOIN_GAME,
     ADD_PLAYER,
+    SET_PLAYERS,
     SET_GAME_STATE,
     SET_COMMON_CARDS,
     SET_DECK_TOP_TYPE,
@@ -37,5 +38,5 @@ public enum MessageType {
     SIGNAL_DISCONNECTION,
     SIGNAL_DEADLOCK,
     SIGNAL_RECONNECTION,
-
+    RICK
 }
