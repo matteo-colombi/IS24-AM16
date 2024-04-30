@@ -23,7 +23,8 @@ public class SetOtherHand extends Payload {
     private final String username;
     private final List<RestrictedCard> hand;
 
-    public SetOtherHand(String username, List<RestrictedCard> hand) {
+    @JsonCreator
+    public SetOtherHand(@JsonProperty("username") String username, @JsonProperty("hand") List<RestrictedCard> hand) {
         this.username = username;
         this.hand = hand;
     }

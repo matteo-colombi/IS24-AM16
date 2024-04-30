@@ -21,7 +21,8 @@ import java.util.List;
 public class SetStartOrder extends Payload {
     private final List<String> usernames;
 
-    public SetStartOrder(List<String> usernames) {
+    @JsonCreator
+    public SetStartOrder(@JsonProperty("usernames") List<String> usernames) {
         this.usernames = usernames;
     }
 

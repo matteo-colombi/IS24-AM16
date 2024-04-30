@@ -32,7 +32,8 @@ public class SetPlayArea extends Payload {
     @JsonSerialize(keyUsing = BoardCard.BoardCardSerializer.class, contentUsing = CardSide.Serializer.class)
     private final Map<BoardCard, SideType> activeSides;
 
-    public SetPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) {
+    @JsonCreator
+    public SetPlayArea(@JsonProperty("username") String username, @JsonProperty("cardPlacementOrder") List<Position> cardPlacementOrder, @JsonProperty("field") Map<Position, BoardCard> field, @JsonProperty("activeSides") Map<BoardCard, SideType> activeSides) {
         this.username = username;
         this.cardPlacementOrder = cardPlacementOrder;
         this.field = field;
