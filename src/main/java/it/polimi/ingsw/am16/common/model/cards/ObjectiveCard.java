@@ -6,7 +6,6 @@ import it.polimi.ingsw.am16.common.model.players.PlayArea;
 /**
  * Class used to model objective cards.
  */
-
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "objectiveType"

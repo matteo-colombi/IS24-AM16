@@ -234,11 +234,4 @@ public class TestRemoteViewImplementation implements RemoteViewInterface {
         System.err.println("Player " + username + " is deadlocked!");
     }
 
-    /**
-     * You saw nothing ;)
-     */
-    @Override
-    public void rick() throws RemoteException {
-
-    }
 }

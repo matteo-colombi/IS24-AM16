@@ -139,15 +139,15 @@ public class Game implements GameModel {
     /**
      * Adds a new player into the game. The number of players cannot exceed numPlayers.
      * @param username The player's username.
-     * @throws UnexpectedActionException Thrown if the game is already full, if the game has already started, or if a player with the given username is already present in the game.
+     * @return The newly added player's id.
+     * @throws UnexpectedActionException Thrown if the game is already full, if the game has already started, or if there is already a player with the same username present in the game.
      */
     @Override
     public int addPlayer(String username) throws UnexpectedActionException {
         for(Player player : players) {
             if (player != null && player.getUsername().equals(username))
-                return player.getPlayerId();
+                throw new UnexpectedActionException("Player already present with the same username");
         }
-
         if (currentPlayerCount >= numPlayers)
             throw new UnexpectedActionException("Maximum player count reached");
         if (state != GameState.JOINING)
@@ -691,7 +691,7 @@ public class Game implements GameModel {
     }
 
     /**
-     * @return an array containing the ids of the players in the order in which they play.
+     * @return a list containing the ids of the players in the order in which they play.
      */
     @Override
     @JsonIgnore

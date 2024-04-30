@@ -1,9 +1,7 @@
 package it.polimi.ingsw.am16.common.tcpMessages;
 
 public enum MessageType {
-    QUIT,
-    CREATE_GAME,
-    JOIN_GAME,
+    //Responses
     ADD_PLAYER,
     SET_PLAYERS,
     SET_GAME_STATE,
@@ -21,7 +19,7 @@ public enum MessageType {
     ADD_CARD_TO_OTHER_HAND,
     REMOVE_CARD_FROM_OTHER_HAND,
     SET_PLAY_AREA,
-    PLAY_CARD,
+    PLAY_CARD_RESPONSE,
     SET_GAME_POINTS,
     SET_OBJECTIVE_POINTS,
     SET_COMMON_OBJECTIVES,
@@ -37,6 +35,18 @@ public enum MessageType {
     NOTIFY_DONT_DRAW,
     SIGNAL_DISCONNECTION,
     SIGNAL_DEADLOCK,
-    SIGNAL_RECONNECTION,
-    RICK
+    JOIN_GAME_RESPONSE,
+
+    //Requests
+    LEAVE_GAME,
+    DISCONNECT,
+    CHOOSE_COLOR,
+    CHOOSE_OBJECTIVE,
+    CHOOSE_STARTER_SIDE,
+    CREATE_GAME,
+    JOIN_GAME_REQUEST,
+    PLAY_CARD_REQUEST,
+    DRAW_CARD,
+    SEND_CHAT_MESSAGE,
+    SEND_PRIVATE_CHAT_MESSAGE
 }

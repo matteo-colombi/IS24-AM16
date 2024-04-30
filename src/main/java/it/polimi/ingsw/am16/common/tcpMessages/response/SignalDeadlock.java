@@ -12,4 +12,5 @@ public class SignalDeadlock extends Payload {
     public String getUsername() {
         return username;
     }
+
 }

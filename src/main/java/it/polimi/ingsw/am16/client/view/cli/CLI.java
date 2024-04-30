@@ -113,8 +113,7 @@ public class CLI implements RemoteViewInterface {
         this.allowedCommands.add("players");
         this.allowedCommands.add("chat_history");
         this.allowedCommands.add("chat");
-        this.allowedCommands.add("chat_private");
-        this.allowedCommands.add("rick");
+        this.allowedCommands.add("whisper");
         System.out.printf("\nJoined the game (ID %s). Your username is %s.\n\n", gameId, username);
         printCommandPrompt();
     }
@@ -507,7 +506,11 @@ public class CLI implements RemoteViewInterface {
      */
     @Override
     public void addMessage(ChatMessage message) {
-        this.unreadChat.add(message);
+        if (message.text().equals("rick")) {
+            printRick();
+        } else {
+            this.unreadChat.add(message);
+        }
     }
 
     /**
@@ -583,18 +586,6 @@ public class CLI implements RemoteViewInterface {
             System.out.printf("\n%s has deadlocked themselves!\n", username);
         }
 
-    }
-
-    /**
-     * You saw nothing ;)
-     */
-    @Override
-    public void rick() throws RemoteException {
-        CLIText rick = CLIAssetRegistry.getCLIAssetRegistry().getRick();
-        System.out.print("\n\n");
-        rick.printText();
-        System.out.println("You got rickrolled!\n");
-        printCommandPrompt();
     }
 
     public void printHand() {
@@ -862,7 +853,7 @@ public class CLI implements RemoteViewInterface {
                 System.out.println("\tchat - Prints unread chat messages.");
                 System.out.println("\tchat_history - Prints the whole chat history.");
                 System.out.println("\tchat [message] - Sends a message to the public chat.");
-                System.out.println("\tchat_private [receiver username] [message] - Sends a private message to the specified player.");
+                System.out.println("\twhisper [receiver username] [message] - Sends a private message to the specified player.");
             }
             //Specific commands if the player is in a game
             if (cliState != CLIState.LOBBY) {
@@ -930,6 +921,14 @@ public class CLI implements RemoteViewInterface {
             System.out.printf("You also have %d unread message%s! Type \"chat\" to see them.\n", unreadChat.size(), unreadChat.size() == 1 ? "" : "s");
         }
 
+        printCommandPrompt();
+    }
+
+    public void printRick() {
+        System.out.println();
+        CLIText rick = CLIAssetRegistry.getCLIAssetRegistry().getRick();
+        rick.printText();
+        System.out.println("You have been rickrolled!");
         printCommandPrompt();
     }
 

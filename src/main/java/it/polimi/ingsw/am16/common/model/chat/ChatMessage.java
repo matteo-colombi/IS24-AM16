@@ -22,7 +22,7 @@ public record ChatMessage(String senderUsername, Set<String> receiverUsernames, 
         return String.format("[%s] %s%s: %s",
                 SimpleDateFormat.getTimeInstance().format(timestamp),
                 senderUsername,
-                isPrivate ? " (privately)" : "",
+                isPrivate ? " (whispered)" : "",
                 text
         );
     }

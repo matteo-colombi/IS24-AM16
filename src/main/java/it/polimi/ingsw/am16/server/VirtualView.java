@@ -529,15 +529,4 @@ public class VirtualView {
             }
         });
     }
-
-    /**
-     * You saw nothing ;)
-     */
-    public void rick(int playerId) {
-        try {
-            userViews.get(playerId).rick();
-        } catch (RemoteException e) {
-            //TODO handle it
-        }
-    }
 }

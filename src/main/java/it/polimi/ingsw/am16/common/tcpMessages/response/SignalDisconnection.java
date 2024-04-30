@@ -8,4 +8,8 @@ public class SignalDisconnection extends Payload {
     public SignalDisconnection(String whoDisconnected) {
         this.whoDisconnected = whoDisconnected;
     }
+
+    public String getWhoDisconnected() {
+        return whoDisconnected;
+    }
 }

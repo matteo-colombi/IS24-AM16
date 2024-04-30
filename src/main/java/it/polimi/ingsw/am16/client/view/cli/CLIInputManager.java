@@ -366,7 +366,7 @@ public class CLIInputManager implements Runnable {
             case "chat_history" -> {
                 cliView.printChatHistory();
             }
-            case "chat_private" -> {
+            case "whisper" -> {
                 if (args.length < 3) {
                     System.out.println("Invalid arguments. Usage: chat_private [receiver username] [message]");
                     cliView.printCommandPrompt();
@@ -396,18 +396,6 @@ public class CLIInputManager implements Runnable {
                     System.out.println("Disconnected.");
                     cliView.printCommandPrompt();
                 }
-            }
-            case "rick" -> {
-                if (args.length < 2 || args[1] == null || args[1].isEmpty()) {
-                    System.out.println("Invalid arguments. Usage: rick [username]");
-                    cliView.printCommandPrompt();
-                    break;
-                }
-
-                String username = args[1];
-
-                //FOR TESTING PURPOSES
-                gameController.rick(username);
             }
         }
     }

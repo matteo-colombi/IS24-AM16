@@ -1,23 +1,7 @@
 package it.polimi.ingsw.am16.common.tcpMessages;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TCPMessage {
+public record TCPMessage(@JsonProperty("messageType") MessageType messageType, @JsonProperty("payload") Payload payload) {
 
-    private MessageType messageType;
-    private Payload payload;
-
-    @JsonCreator
-    public TCPMessage(MessageType messageType, Payload payload) {
-        this.messageType = messageType;
-        this.payload = payload;
-    }
-
-    public MessageType getMessageType() {
-        return messageType;
-    }
-
-    public Payload getPayload() {
-        return payload;
-    }
 }

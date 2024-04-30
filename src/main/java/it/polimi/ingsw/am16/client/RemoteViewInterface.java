@@ -264,9 +264,4 @@ public interface RemoteViewInterface extends Remote {
      */
     void signalDeadlock(String username) throws RemoteException;
 
-    /**
-     * You saw nothing ;)
-     */
-    void rick() throws RemoteException;
-
 }

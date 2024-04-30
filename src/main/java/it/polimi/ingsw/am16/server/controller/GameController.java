@@ -49,12 +49,35 @@ public class GameController {
     }
 
     /**
+     * @return whether the game being controlled is being reloaded after a server crash.
+     */
+    public boolean isRejoiningAfterCrash() {
+        return game.isRejoiningAfterCrash();
+    }
+
+    /**
+     * Retrieves the given player's id.
+     * @param username The player whose id is being queried.
+     * @return The id of the player with the given username
+     * @throws IllegalArgumentException Thrown if no player with the given username is found in the game.
+     */
+    public int getPlayerId(String username) throws IllegalArgumentException {
+        PlayerModel[] players = game.getPlayers();
+        for(PlayerModel player : players) {
+            if (player.getUsername().equals(username)) {
+                return player.getPlayerId();
+            }
+        }
+        throw new IllegalArgumentException("No player with the given username in the game.");
+    }
+
+    /**
      * Creates a new player and adds it to the game. By default, the player is considered disconnected.
      * @param username The player's username
-     * @return The newly added player's id, or <code>-1</code> if a player with the same username already exists, or if this game does not accept new players (already full or already started).
+     * @return The newly added player's id.
+     * @throws UnexpectedActionException Thrown if the game is already full, if the game has already started, or if a player with the given username is already present in the game.
      */
     public int createPlayer(String username) throws UnexpectedActionException {
-        //TODO debate this
         return game.addPlayer(username);
     }
 
@@ -522,16 +545,4 @@ public class GameController {
         lobbyManager.deleteGame(game);
     }
 
-    /**
-     * You saw nothing ;)
-     */
-    public void rick(String username) {
-        PlayerModel[] players = game.getPlayers();
-        for(PlayerModel player : players) {
-            if (player.getUsername().equals(username)) {
-                virtualView.rick(player.getPlayerId());
-                return;
-            }
-        }
-    }
 }

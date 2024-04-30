@@ -9,4 +9,8 @@ public class SetPersonalObjective extends Payload {
     public SetPersonalObjective(ObjectiveCard personalObjective) {
         this.personalObjective = personalObjective;
     }
+
+    public ObjectiveCard getPersonalObjective() {
+        return personalObjective;
+    }
 }
