@@ -79,7 +79,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
                 }
 
                 if (tcpMessage != null) {
-                    System.out.println("Received message of type: " + tcpMessage.messageType());
+//                    System.out.println("Received message of type: " + tcpMessage.messageType());
 
                     switch (tcpMessage.messageType()) {
                         case LEAVE_GAME -> {
@@ -295,7 +295,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     }
 
     private void sendTCPMessage(TCPMessage tcpMessage) {
-        System.out.println("Sent message of type " + tcpMessage.messageType());
+//        System.out.println("Sent message of type " + tcpMessage.messageType());
         try {
             out.println(mapper.writeValueAsString(tcpMessage));
             out.flush();
