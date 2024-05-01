@@ -264,6 +264,7 @@ public class CLI implements ViewInterface {
     public synchronized void promptColorChoice(List<PlayerColor> colorChoices) {
         this.cliState = CLIState.CHOOSING_COLOR;
         this.allowedCommands.add("color");
+        this.allowedCommands.add("colour");
         this.colorChoices = colorChoices;
 
         System.out.println("\nChoose a color between:");
@@ -288,6 +289,7 @@ public class CLI implements ViewInterface {
         this.playerColors.put(username, color);
         if (this.username.equals(username)) {
             this.allowedCommands.remove("color");
+            this.allowedCommands.remove("colour");
         }
         System.out.printf("\nPlayer %s's color is %s.\n", username, color.name().toLowerCase());
         printCommandPrompt();
@@ -847,7 +849,7 @@ public class CLI implements ViewInterface {
         for(String username : sortedUsernames) {
             CLIText colorLabel = new CLIText("██", this.playerColors.get(username));
             CLIText pointsLabel;
-            if (this.objectivePoints.get(username) != null) {
+            if (this.objectivePoints.get(username) != null && this.objectivePoints.get(username) != 0) {
                 pointsLabel = new CLIText(username + ": " + (this.gamePoints.getOrDefault(username, 0) + this.objectivePoints.getOrDefault(username, 0)) + " (" + this.objectivePoints.getOrDefault(username, 0) + " from objectives)");
             } else {
                 pointsLabel = new CLIText(username + ": " + this.gamePoints.getOrDefault(username, 0));

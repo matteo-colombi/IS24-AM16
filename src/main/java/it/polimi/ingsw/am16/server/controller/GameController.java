@@ -537,7 +537,7 @@ public class GameController {
      * @param playerId The player who disconnected. If the given id is not valid, this method does nothing.
      */
     public synchronized void disconnect(int playerId) {
-        if (playerId < 0 || playerId >= game.getCurrentPlayerCount()) return;
+        if (playerId < 0 || playerId >= game.getCurrentPlayerCount() || game.getState() == GameState.ENDED) return;
         //TODO maybe make it so that disconnections are allowed in the lobby (if the game has not started).
         virtualView.signalDisconnection(playerId, game.getPlayers()[playerId].getUsername());
 
