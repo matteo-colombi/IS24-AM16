@@ -51,7 +51,7 @@ public class GameController {
     /**
      * @return whether the game being controlled is being reloaded after a server crash.
      */
-    public boolean isRejoiningAfterCrash() {
+    public synchronized boolean isRejoiningAfterCrash() {
         return game.isRejoiningAfterCrash();
     }
 
@@ -61,7 +61,7 @@ public class GameController {
      * @return The id of the player with the given username
      * @throws IllegalArgumentException Thrown if no player with the given username is found in the game.
      */
-    public int getPlayerId(String username) throws IllegalArgumentException {
+    public synchronized int getPlayerId(String username) throws IllegalArgumentException {
         PlayerModel[] players = game.getPlayers();
         for(PlayerModel player : players) {
             if (player.getUsername().equals(username)) {
@@ -77,7 +77,7 @@ public class GameController {
      * @return The newly added player's id.
      * @throws UnexpectedActionException Thrown if the game is already full, if the game has already started, or if a player with the given username is already present in the game.
      */
-    public int createPlayer(String username) throws UnexpectedActionException {
+    public synchronized int createPlayer(String username) throws UnexpectedActionException {
         return game.addPlayer(username);
     }
 
@@ -86,7 +86,7 @@ public class GameController {
      * @param playerId The player's id. If an invalid id is given, this method does nothing.
      * @param userView The {@link RemoteViewInterface}, used to communicate with the player.
      */
-    public void joinPlayer(int playerId, RemoteViewInterface userView) {
+    public synchronized void joinPlayer(int playerId, RemoteViewInterface userView) {
         if (playerId < 0 || playerId >= game.getCurrentPlayerCount())
             return;
 
@@ -146,7 +146,7 @@ public class GameController {
      * @param playerId The player id. If an invalid id is given, this method does nothing.
      * @param starterSide The side on which the player decided to place the starter card.
      */
-    public void setStarterCard(int playerId, SideType starterSide) {
+    public synchronized void setStarterCard(int playerId, SideType starterSide) {
         if (playerId < 0 || playerId >= game.getCurrentPlayerCount())
             return;
 
@@ -176,7 +176,7 @@ public class GameController {
     /**
      * Starts the color-choosing phase.
      */
-    private void initializingColors() {
+    private synchronized void initializingColors() {
         List<PlayerModel> playerModels = new ArrayList<>(List.of(game.getPlayers()));
         Collections.shuffle(playerModels, RNG.getRNG());
         playerQueue = new LinkedList<>(playerModels);
@@ -187,7 +187,7 @@ public class GameController {
     /**
      * Prompts the correct player to choose their color.
      */
-    private void promptColor() {
+    private synchronized void promptColor() {
         if (playerQueue.isEmpty()) {
             assert game.allPlayersChoseColor();
             choosingColor = -1;
@@ -205,7 +205,7 @@ public class GameController {
      * @param playerId The player's id. If an invalid id is given, or it is not the given player's turn to choose their color, this method does nothing.
      * @param color The color chosen by the player. If <code>null</code>, a random color will be assigned.
      */
-    public void setPlayerColor(int playerId, PlayerColor color) {
+    public synchronized void setPlayerColor(int playerId, PlayerColor color) {
         if (choosingColor == -1 || choosingColor != playerId) {
             System.err.println("Wrong player!");
             //TODO handle it better?
@@ -315,7 +315,7 @@ public class GameController {
      * @param playerId The player's id. If an invalid id is given, this method does nothing.
      * @param objectiveCard The chosen objective card. If the user doesn't have this card, this method will do nothing.
      */
-    public void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) {
+    public synchronized void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) {
         if (playerId < 0 || playerId >= game.getCurrentPlayerCount())
             return;
 
@@ -342,7 +342,7 @@ public class GameController {
      * Actually starts the game.
      * After this, the game will be periodically saved.
      */
-    public void startGame() {
+    public synchronized void startGame() {
         try {
             game.startGame();
         } catch (UnexpectedActionException e) {
@@ -410,7 +410,7 @@ public class GameController {
      * @param side The side on which the card is played.
      * @param newPos The position of the newly placed card.
      */
-    public void placeCard(int playerId, PlayableCard card, SideType side, Position newPos) {
+    public synchronized void placeCard(int playerId, PlayableCard card, SideType side, Position newPos) {
         if ((game.getState() != GameState.STARTED && game.getState() != GameState.FINAL_ROUND)
                 || hasPlacedCard
                 || playerId != game.getActivePlayer()
@@ -451,7 +451,7 @@ public class GameController {
      * @param playerId The player's id. If the given id is invalid, or it is not the right moment to draw a card, or if it's not the given player's turn, this method does nothing.
      * @param drawType The type of draw the player has decided to perform.
      */
-    public void drawCard(int playerId, DrawType drawType) {
+    public synchronized void drawCard(int playerId, DrawType drawType) {
         if ((game.getState() != GameState.STARTED)
                 || !hasPlacedCard
                 || playerId != game.getActivePlayer()
@@ -518,7 +518,7 @@ public class GameController {
      * @param senderUsername The sender's username.
      * @param text The message content.
      */
-    public void sendChatMessage(String senderUsername, String text) {
+    public synchronized void sendChatMessage(String senderUsername, String text) {
         chatController.sendMessage(senderUsername, text);
     }
 
@@ -528,7 +528,7 @@ public class GameController {
      * @param text The message content.
      * @param receiverUsernames The set of players who should receive the message.
      */
-    public void sendChatMessage(String senderUsername, String text, Set<String> receiverUsernames) {
+    public synchronized void sendChatMessage(String senderUsername, String text, Set<String> receiverUsernames) {
         chatController.sendMessage(senderUsername, text, receiverUsernames, true);
     }
 
@@ -536,7 +536,7 @@ public class GameController {
      * Ends the game because of the disconnection of the given player.
      * @param playerId The player who disconnected. If the given id is not valid, this method does nothing.
      */
-    public void disconnect(int playerId) {
+    public synchronized void disconnect(int playerId) {
         if (playerId < 0 || playerId >= game.getCurrentPlayerCount()) return;
         //TODO maybe make it so that disconnections are allowed in the lobby (if the game has not started).
         virtualView.signalDisconnection(playerId, game.getPlayers()[playerId].getUsername());

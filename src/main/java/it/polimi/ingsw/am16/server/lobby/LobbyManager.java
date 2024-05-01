@@ -126,6 +126,10 @@ public class LobbyManager {
         }
     }
 
+    /**
+     * DOCME
+     * @param game
+     */
     public void saveGame(GameModel game) {
         String savedGame;
         try {

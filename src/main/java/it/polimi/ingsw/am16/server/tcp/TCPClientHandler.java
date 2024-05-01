@@ -22,24 +22,28 @@ import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
+/**
+ * DOCME
+ */
 public class TCPClientHandler implements Runnable, RemoteViewInterface {
 
     private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
     private final Socket clientSocket;
+    private final PrintWriter out;
+    private final Scanner in;
     private final LobbyManager lobbyManager;
     private GameController gameController;
     private int playerId;
     private String username;
 
-    public TCPClientHandler(Socket clientSocket, LobbyManager lobbyManager) {
+    public TCPClientHandler(Socket clientSocket, LobbyManager lobbyManager) throws IOException {
         this.lobbyManager = lobbyManager;
         this.clientSocket = clientSocket;
+        this.out = new PrintWriter(clientSocket.getOutputStream());
+        this.in = new Scanner(clientSocket.getInputStream());
         this.gameController = null;
         this.username = null;
         this.playerId = -1;
@@ -49,225 +53,237 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     public void run() {
         boolean running = true;
         try {
-            final Scanner in = new Scanner(clientSocket.getInputStream());
-            final PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
             while (running) {
-                String serializedMessage;
+                String serializedMessage = null;
+                TCPMessage tcpMessage;
                 try {
                     serializedMessage = in.nextLine();
-                    TCPMessage tcpMessage = mapper.readValue(serializedMessage, TCPMessage.class);
-                    if (tcpMessage != null) {
-                        if (tcpMessage.messageType() == MessageType.SIGNAL_DISCONNECTION)
-                            break;
+                    tcpMessage = mapper.readValue(serializedMessage, TCPMessage.class);
+                } catch (IOException ignored) {
 
-                        switch (tcpMessage.messageType()) {
-                            case LEAVE_GAME -> {
-                                if (gameController != null) {
-                                    gameController.disconnect(playerId);
-                                }
+                    //Error while deserializing message
+
+                    System.out.println("Client sent a malformed message: " + serializedMessage);
+                    continue;
+                } catch (NoSuchElementException | IllegalStateException ignored) {
+
+                    //Connection lost with client.
+
+                    if (gameController != null && playerId != -1) {
+                        gameController.disconnect(playerId);
+                        playerId = -1;
+                        gameController = null;
+                    }
+                    running = false;
+                    continue;
+                }
+
+                if (tcpMessage != null) {
+                    if (tcpMessage.messageType() == MessageType.SIGNAL_DISCONNECTION)
+                        break;
+
+                    switch (tcpMessage.messageType()) {
+                        case LEAVE_GAME -> {
+                            if (gameController != null) {
+                                gameController.disconnect(playerId);
+                            }
+                            playerId = -1;
+                            gameController = null;
+                        }
+                        case DISCONNECT -> {
+                            if (gameController != null && playerId != -1) {
+                                gameController.disconnect(playerId);
                                 playerId = -1;
                                 gameController = null;
                             }
-                            case DISCONNECT -> {
-                                if (gameController != null && playerId != -1) {
-                                    gameController.disconnect(playerId);
-                                    playerId = -1;
-                                    gameController = null;
-                                }
-                                running = false;
+                            running = false;
+                        }
+                        case CREATE_GAME -> {
+                            if (gameController != null) {
+                                promptError("You are already in a game.");
+                                break;
                             }
-                            case CREATE_GAME -> {
-                                if (gameController != null) {
-                                    promptError("You are already in a game.");
-                                    break;
-                                }
 
-                                CreateGame payload;
+                            CreateGame payload;
+                            try {
+                                payload = (CreateGame) tcpMessage.payload();
+                            } catch (ClassCastException e) {
+                                break;
+                            }
+
+                            String username = payload.getUsername();
+                            int numPlayers = payload.getNumPlayers();
+
+                            String gameId = lobbyManager.createGame(numPlayers);
+
+                            gameController = lobbyManager.getGame(gameId);
+                            try {
+                                playerId = gameController.createPlayer(username);
+                            } catch (UnexpectedActionException e) {
+                                promptError("Couldn't join game: " + e.getMessage());
+                                break;
+                            }
+
+                            gameController.joinPlayer(playerId, this);
+                            this.username = username;
+                        }
+                        case JOIN_GAME_REQUEST -> {
+                            if (gameController != null) {
+                                promptError("You are already in a game.");
+                                break;
+                            }
+
+                            JoinGameRequest payload;
+                            try {
+                                payload = (JoinGameRequest) tcpMessage.payload();
+                            } catch (ClassCastException e) {
+                                break;
+                            }
+
+                            String gameId = payload.getGameId();
+                            String username = payload.getUsername();
+
+                            gameController = lobbyManager.getGame(gameId);
+                            if (gameController == null) {
+                                promptError("No game with the given id.");
+                                break;
+                            }
+
+                            if (gameController.isRejoiningAfterCrash()) {
                                 try {
-                                    payload = (CreateGame) tcpMessage.payload();
-                                } catch (ClassCastException e) {
+                                    playerId = gameController.getPlayerId(username);
+                                } catch (IllegalArgumentException e) {
+                                    promptError("Couldn't join game: " + e.getMessage());
                                     break;
                                 }
-
-                                String username = payload.getUsername();
-                                int numPlayers = payload.getNumPlayers();
-
-                                String gameId = lobbyManager.createGame(numPlayers);
-
-                                gameController = lobbyManager.getGame(gameId);
+                            } else {
                                 try {
                                     playerId = gameController.createPlayer(username);
                                 } catch (UnexpectedActionException e) {
                                     promptError("Couldn't join game: " + e.getMessage());
                                     break;
                                 }
-
-                                gameController.joinPlayer(playerId, this);
-                                this.username = username;
                             }
-                            case JOIN_GAME_REQUEST -> {
-                                if (gameController != null) {
-                                    promptError("You are already in a game.");
-                                    break;
-                                }
 
-                                JoinGameRequest payload;
-                                try {
-                                    payload = (JoinGameRequest) tcpMessage.payload();
-                                } catch (ClassCastException e) {
-                                    break;
-                                }
-
-                                String gameId = payload.getGameId();
-                                String username = payload.getUsername();
-
-                                gameController = lobbyManager.getGame(gameId);
-                                if (gameController == null) {
-                                    promptError("No game with the given id.");
-                                    break;
-                                }
-
-                                if (gameController.isRejoiningAfterCrash()) {
-                                    try {
-                                        playerId = gameController.getPlayerId(username);
-                                    } catch (IllegalArgumentException e) {
-                                        promptError("Couldn't join game: " + e.getMessage());
-                                        break;
-                                    }
-                                } else {
-                                    try {
-                                        playerId = gameController.createPlayer(username);
-                                    } catch (UnexpectedActionException e) {
-                                        promptError("Couldn't join game: " + e.getMessage());
-                                        break;
-                                    }
-                                }
-
-                                gameController.joinPlayer(playerId, this);
-                                this.username = username;
+                            gameController.joinPlayer(playerId, this);
+                            this.username = username;
+                        }
+                        case CHOOSE_STARTER_SIDE -> {
+                            ChooseStarterSide payload;
+                            try {
+                                payload = (ChooseStarterSide) tcpMessage.payload();
+                            } catch (ClassCastException e) {
+                                break;
                             }
-                            case CHOOSE_STARTER_SIDE -> {
-                                ChooseStarterSide payload;
-                                try {
-                                    payload = (ChooseStarterSide) tcpMessage.payload();
-                                } catch (ClassCastException e) {
-                                    break;
-                                }
 
-                                SideType side = payload.getSide();
+                            SideType side = payload.getSide();
 
-                                if (gameController != null) {
-                                    gameController.setStarterCard(playerId, side);
-                                }
-                            }
-                            case CHOOSE_COLOR -> {
-                                ChooseColor payload;
-                                try {
-                                    payload = (ChooseColor) tcpMessage.payload();
-                                } catch (ClassCastException e) {
-                                    break;
-                                }
-
-                                PlayerColor color = payload.getColor();
-
-                                if (gameController != null) {
-                                    gameController.setPlayerColor(playerId, color);
-                                }
-                            }
-                            case CHOOSE_OBJECTIVE -> {
-                                ChooseObjective payload;
-                                try {
-                                    payload = (ChooseObjective) tcpMessage.payload();
-                                } catch (ClassCastException e) {
-                                    break;
-                                }
-
-                                ObjectiveCard objective = payload.getObjective();
-
-                                if (gameController != null) {
-                                    gameController.setPlayerObjective(playerId, objective);
-                                }
-                            }
-                            case PLAY_CARD_REQUEST -> {
-                                PlayCardRequest payload;
-                                try {
-                                    payload = (PlayCardRequest) tcpMessage.payload();
-                                } catch (ClassCastException e) {
-                                    break;
-                                }
-
-                                PlayableCard playedCard = payload.getPlayedCard();
-                                SideType side = payload.getSide();
-                                Position pos = payload.getPos();
-
-                                if (gameController != null) {
-                                    gameController.placeCard(playerId, playedCard, side, pos);
-                                }
-                            }
-                            case DRAW_CARD -> {
-                                DrawCard payload;
-                                try {
-                                    payload = (DrawCard) tcpMessage.payload();
-                                } catch (ClassCastException e) {
-                                    break;
-                                }
-
-                                DrawType drawType = payload.getDrawType();
-
-                                if (gameController != null) {
-                                    gameController.drawCard(playerId, drawType);
-                                }
-                            }
-                            case SEND_CHAT_MESSAGE -> {
-                                SendChatMessage payload;
-                                try {
-                                    payload = (SendChatMessage) tcpMessage.payload();
-                                } catch (ClassCastException e) {
-                                    break;
-                                }
-
-                                String text = payload.getText();
-
-                                if (gameController != null) {
-                                    gameController.sendChatMessage(username, text);
-                                }
-                            }
-                            case SEND_PRIVATE_CHAT_MESSAGE -> {
-                                SendPrivateChatMessage payload;
-                                try {
-                                    payload = (SendPrivateChatMessage) tcpMessage.payload();
-                                } catch (ClassCastException e) {
-                                    break;
-                                }
-
-                                String text = payload.getText();
-                                String receiverUsername = payload.getReceiver();
-
-                                if (gameController != null) {
-                                    gameController.sendChatMessage(username, text, Set.of(receiverUsername));
-                                }
+                            if (gameController != null) {
+                                gameController.setStarterCard(playerId, side);
                             }
                         }
+                        case CHOOSE_COLOR -> {
+                            ChooseColor payload;
+                            try {
+                                payload = (ChooseColor) tcpMessage.payload();
+                            } catch (ClassCastException e) {
+                                break;
+                            }
 
+                            PlayerColor color = payload.getColor();
+
+                            if (gameController != null) {
+                                gameController.setPlayerColor(playerId, color);
+                            }
+                        }
+                        case CHOOSE_OBJECTIVE -> {
+                            ChooseObjective payload;
+                            try {
+                                payload = (ChooseObjective) tcpMessage.payload();
+                            } catch (ClassCastException e) {
+                                break;
+                            }
+
+                            ObjectiveCard objective = payload.getObjective();
+
+                            if (gameController != null) {
+                                gameController.setPlayerObjective(playerId, objective);
+                            }
+                        }
+                        case PLAY_CARD_REQUEST -> {
+                            PlayCardRequest payload;
+                            try {
+                                payload = (PlayCardRequest) tcpMessage.payload();
+                            } catch (ClassCastException e) {
+                                break;
+                            }
+
+                            PlayableCard playedCard = payload.getPlayedCard();
+                            SideType side = payload.getSide();
+                            Position pos = payload.getPos();
+
+                            if (gameController != null) {
+                                gameController.placeCard(playerId, playedCard, side, pos);
+                            }
+                        }
+                        case DRAW_CARD -> {
+                            DrawCard payload;
+                            try {
+                                payload = (DrawCard) tcpMessage.payload();
+                            } catch (ClassCastException e) {
+                                break;
+                            }
+
+                            DrawType drawType = payload.getDrawType();
+
+                            if (gameController != null) {
+                                gameController.drawCard(playerId, drawType);
+                            }
+                        }
+                        case SEND_CHAT_MESSAGE -> {
+                            SendChatMessage payload;
+                            try {
+                                payload = (SendChatMessage) tcpMessage.payload();
+                            } catch (ClassCastException e) {
+                                break;
+                            }
+
+                            String text = payload.getText();
+
+                            if (gameController != null) {
+                                gameController.sendChatMessage(username, text);
+                            }
+                        }
+                        case SEND_PRIVATE_CHAT_MESSAGE -> {
+                            SendPrivateChatMessage payload;
+                            try {
+                                payload = (SendPrivateChatMessage) tcpMessage.payload();
+                            } catch (ClassCastException e) {
+                                break;
+                            }
+
+                            String text = payload.getText();
+                            String receiverUsername = payload.getReceiver();
+
+                            if (gameController != null) {
+                                gameController.sendChatMessage(username, text, Set.of(receiverUsername));
+                            }
+                        }
                     }
-
-                } catch (IOException e) {
-                    //TODO see if this is appropriate
-                    System.out.println(e.getMessage());
                 }
             }
             in.close();
             out.close();
             clientSocket.close();
-        } catch (final IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     private void sendTCPMessage(TCPMessage tcpMessage) {
         try {
-            clientSocket.getOutputStream().write(mapper.writeValueAsString(tcpMessage).getBytes());
+            out.println(mapper.writeValueAsString(tcpMessage));
+            out.flush();
         } catch (IOException e) {
             //TODO see if this is appropriate
             System.err.println(e.getMessage());
@@ -303,7 +319,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
      */
     @Override
     public void setPlayers(List<String> usernames) {
-        TCPMessage tcpMessage = new TCPMessage(MessageType.ADD_PLAYER, new SetPlayers(usernames));
+        TCPMessage tcpMessage = new TCPMessage(MessageType.SET_PLAYERS, new SetPlayers(usernames));
         sendTCPMessage(tcpMessage);
     }
 

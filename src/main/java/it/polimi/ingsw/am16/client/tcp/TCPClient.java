@@ -1,0 +1,468 @@
+package it.polimi.ingsw.am16.client.tcp;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polimi.ingsw.am16.client.view.ViewInterface;
+import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
+import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
+import it.polimi.ingsw.am16.common.model.cards.SideType;
+import it.polimi.ingsw.am16.common.model.game.DrawType;
+import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.tcpMessages.MessageType;
+import it.polimi.ingsw.am16.common.tcpMessages.TCPMessage;
+import it.polimi.ingsw.am16.common.tcpMessages.request.*;
+import it.polimi.ingsw.am16.common.tcpMessages.response.*;
+import it.polimi.ingsw.am16.common.util.JsonMapper;
+import it.polimi.ingsw.am16.common.util.Position;
+import it.polimi.ingsw.am16.server.ServerInterface;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
+/**
+ * DOCME
+ */
+public class TCPClient implements Runnable, ServerInterface {
+
+    private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+
+    private final Socket socket;
+    private final ViewInterface view;
+    private final PrintWriter out;
+    private final Scanner in;
+    private boolean running;
+
+    public TCPClient(String address, int port, ViewInterface view) throws IOException {
+        socket = new Socket(address, port);
+        out = new PrintWriter(socket.getOutputStream());
+        in = new Scanner(socket.getInputStream());
+        this.view = view;
+        this.view.setServerInterface(this);
+        this.view.start();
+    }
+
+    @Override
+    public void run() {
+        running = true;
+        try {
+            while (running) {
+                String serializedMessage = null;
+                TCPMessage message;
+                try {
+                    serializedMessage = in.nextLine();
+                    message = mapper.readValue(serializedMessage, TCPMessage.class);
+                } catch (IOException ignored) {
+
+                    //Error while deserializing message
+
+                    System.err.println("Server sent a malformed message: " + serializedMessage);
+                    continue;
+                } catch (NoSuchElementException | IllegalStateException ignored) {
+
+                    //Connection lost with server
+
+                    System.err.println("Connection lost.");
+                    running = false;
+                    continue;
+                }
+
+                switch (message.messageType()) {
+                    case JOIN_GAME_RESPONSE -> {
+                        JoinGameResponse payload;
+                        try {
+                            payload = (JoinGameResponse) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.joinGame(payload.getGameId(), payload.getUsername());
+                    }
+                    case SET_GAME_STATE -> {
+                        SetGameState payload;
+                        try {
+                            payload = (SetGameState) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.setGameState(payload.getGameState());
+                    }
+                    case ADD_PLAYER -> {
+                        AddPlayer payload;
+                        try {
+                            payload = (AddPlayer) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.addPlayer(payload.getUsername());
+                    }
+                    case SET_PLAYERS -> {
+                        SetPlayers payload;
+                        try {
+                            payload = (SetPlayers) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.setPlayers(payload.getUsernames());
+                    }
+                    case SET_COMMON_CARDS -> {
+                        SetCommonCards payload;
+                        try {
+                            payload = (SetCommonCards) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.setCommonCards(payload.getCommonResourceCards(), payload.getCommonGoldCards());
+                    }
+                    case SET_DECK_TOP_TYPE -> {
+                        SetDeckTopType payload;
+                        try {
+                            payload = (SetDeckTopType) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.setDeckTopType(payload.getWhichDeck(), payload.getResourceType());
+                    }
+                    case PROMPT_STARTER_CHOICE -> {
+                        PromptStarterChoice payload;
+                        try {
+                            payload = (PromptStarterChoice) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.promptStarterChoice(payload.getStarterCard());
+                    }
+                    case SET_PLAY_AREA -> {
+                        SetPlayArea payload;
+                        try {
+                            payload = (SetPlayArea) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.setPlayArea(payload.getUsername(), payload.getCardPlacementOrder(), payload.getField(), payload.getActiveSides());
+                    }
+                    case PROMPT_COLOR_CHOICE -> {
+                        PromptColorChoice payload;
+                        try {
+                            payload = (PromptColorChoice) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.promptColorChoice(payload.getColorChoices());
+                    }
+                    case SET_COLOR -> {
+                        SetColor payload;
+                        try {
+                            payload = (SetColor) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.setColor(payload.getUsername(), payload.getColor());
+                    }
+                    case SET_COMMON_OBJECTIVES -> {
+                        SetCommonObjectives payload;
+                        try {
+                            payload = (SetCommonObjectives) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.setCommonObjectives(payload.getCommonObjectives());
+                    }
+                    case PROMPT_OBJECTIVE_CHOICE -> {
+                        PromptObjectiveChoice payload;
+                        try {
+                            payload = (PromptObjectiveChoice) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.promptObjectiveChoice(payload.getPossiblePersonalObjectives());
+                    }
+                    case SET_PERSONAL_OBJECTIVE -> {
+                        SetPersonalObjective payload;
+                        try {
+                            payload = (SetPersonalObjective) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.setPersonalObjective(payload.getPersonalObjective());
+                    }
+                    case SET_START_ORDER -> {
+                        SetStartOrder payload;
+                        try {
+                            payload = (SetStartOrder) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.setStartOrder(payload.getUsernames());
+                    }
+                    case SET_HAND -> {
+                        SetHand payload;
+                        try {
+                            payload = (SetHand) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.setHand(payload.getHand());
+                    }
+                    case SET_OTHER_HAND -> {
+                        SetOtherHand payload;
+                        try {
+                            payload = (SetOtherHand) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.setOtherHand(payload.getUsername(), payload.getHand());
+                    }
+                    case ADD_CARD_TO_HAND -> {
+                        AddCardToHand payload;
+                        try {
+                            payload = (AddCardToHand) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.addCardToHand(payload.getCard());
+                    }
+                    case ADD_CARD_TO_OTHER_HAND -> {
+                        AddCardToOtherHand payload;
+                        try {
+                            payload = (AddCardToOtherHand) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.addCardToOtherHand(payload.getUsername(), payload.getNewCard());
+                    }
+                    case REMOVE_CARD_FROM_HAND -> {
+                        RemoveCardFromHand payload;
+                        try {
+                            payload = (RemoveCardFromHand) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.removeCardFromHand(payload.getCard());
+                    }
+                    case REMOVE_CARD_FROM_OTHER_HAND -> {
+                        RemoveCardFromOtherHand payload;
+                        try {
+                            payload = (RemoveCardFromOtherHand) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.removeCardFromOtherHand(payload.getUsername(), payload.getCardToRemove());
+                    }
+                    case TURN -> {
+                        Turn payload;
+                        try {
+                            payload = (Turn) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.turn(payload.getUsername());
+                    }
+                    case PLAY_CARD_RESPONSE -> {
+                        PlayCardResponse payload;
+                        try {
+                            payload = (PlayCardResponse) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.playCard(payload.getUsername(), payload.getCard(), payload.getSide(), payload.getPos());
+                    }
+                    case SET_GAME_POINTS -> {
+                        SetGamePoints payload;
+                        try {
+                            payload = (SetGamePoints) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.setGamePoints(payload.getWhosePoints(), payload.getGamePoints());
+                    }
+                    case SET_OBJECTIVE_POINTS -> {
+                        SetObjectivePoints payload;
+                        try {
+                            payload = (SetObjectivePoints) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.setObjectivePoints(payload.getWhosePoints(), payload.getObjectivePoints());
+                    }
+                    case NOTIFY_DONT_DRAW -> {
+                        view.notifyDontDraw();
+                    }
+                    case SET_WINNERS -> {
+                        SetWinners payload;
+                        try {
+                            payload = (SetWinners) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.setWinners(payload.getWinnerUsernames());
+                    }
+                    case ADD_MESSAGE -> {
+                        AddMessage payload;
+                        try {
+                            payload = (AddMessage) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.addMessage(payload.getMessage());
+                    }
+                    case ADD_MESSAGES -> {
+                        AddMessages payload;
+                        try {
+                            payload = (AddMessages) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.addMessages(payload.getMessages());
+                    }
+                    case SIGNAL_DEADLOCK -> {
+                        SignalDeadlock payload;
+                        try {
+                            payload = (SignalDeadlock) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.signalDeadlock(payload.getUsername());
+                    }
+                    case SIGNAL_DISCONNECTION -> {
+                        SignalDisconnection payload;
+                        try {
+                            payload = (SignalDisconnection) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.signalDisconnection(payload.getWhoDisconnected());
+                    }
+                    case PROMPT_ERROR -> {
+                        PromptError payload;
+                        try {
+                            payload = (PromptError) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.promptError(payload.getErrorMessage());
+                    }
+                    case REDRAW_VIEW -> {
+                        view.redrawView();
+                    }
+                    default -> System.err.println("Unknown message type: " + message.messageType());
+                }
+            }
+            in.close();
+            out.close();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.exit(0);
+    }
+
+    private void sendTCPMessage(TCPMessage tcpMessage) {
+        try {
+            out.println(mapper.writeValueAsString(tcpMessage));
+            out.flush();
+        } catch (IOException e) {
+            //TODO see if this is appropriate
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public void createGame(String username, int numPlayers) {
+        TCPMessage message = new TCPMessage(MessageType.CREATE_GAME, new CreateGame(username, numPlayers));
+        sendTCPMessage(message);
+    }
+
+    @Override
+    public void joinGame(String gameId, String username) {
+        TCPMessage message = new TCPMessage(MessageType.JOIN_GAME_REQUEST, new JoinGameRequest(gameId, username));
+        sendTCPMessage(message);
+    }
+
+    @Override
+    public void setStarterCard(SideType side) {
+        TCPMessage message = new TCPMessage(MessageType.CHOOSE_STARTER_SIDE, new ChooseStarterSide(side));
+        sendTCPMessage(message);
+    }
+
+    @Override
+    public void setColor(PlayerColor color) {
+        TCPMessage message = new TCPMessage(MessageType.CHOOSE_COLOR, new ChooseColor(color));
+        sendTCPMessage(message);
+    }
+
+    @Override
+    public void setPersonalObjective(ObjectiveCard objectiveCard) {
+        TCPMessage message = new TCPMessage(MessageType.CHOOSE_OBJECTIVE, new ChooseObjective(objectiveCard));
+        sendTCPMessage(message);
+    }
+
+    @Override
+    public void playCard(PlayableCard playedCard, SideType side, Position pos) {
+        TCPMessage message = new TCPMessage(MessageType.PLAY_CARD_REQUEST, new PlayCardRequest(playedCard, side, pos));
+        sendTCPMessage(message);
+    }
+
+    @Override
+    public void drawCard(DrawType drawType) {
+        TCPMessage message = new TCPMessage(MessageType.DRAW_CARD, new DrawCard(drawType));
+        sendTCPMessage(message);
+    }
+
+    @Override
+    public void sendChatMessage(String text) {
+        TCPMessage message = new TCPMessage(MessageType.SEND_CHAT_MESSAGE, new SendChatMessage(text));
+        sendTCPMessage(message);
+    }
+
+    @Override
+    public void sendChatMessage(String text, String receiverUsername) {
+        TCPMessage message = new TCPMessage(MessageType.SEND_PRIVATE_CHAT_MESSAGE, new SendPrivateChatMessage(text, receiverUsername));
+        sendTCPMessage(message);
+    }
+
+    @Override
+    public void disconnect() {
+        TCPMessage message = new TCPMessage(MessageType.DISCONNECT, null);
+        sendTCPMessage(message);
+        running = false;
+        System.exit(0);
+    }
+
+    @Override
+    public void leaveGame() {
+        TCPMessage message = new TCPMessage(MessageType.LEAVE_GAME, null);
+        sendTCPMessage(message);
+    }
+}

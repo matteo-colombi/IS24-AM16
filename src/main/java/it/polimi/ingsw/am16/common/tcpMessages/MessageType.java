@@ -1,7 +1,7 @@
 package it.polimi.ingsw.am16.common.tcpMessages;
 
 public enum MessageType {
-    //Responses
+    //Responses (from server to client)
     ADD_PLAYER,
     SET_PLAYERS,
     SET_GAME_STATE,
@@ -37,7 +37,7 @@ public enum MessageType {
     SIGNAL_DEADLOCK,
     JOIN_GAME_RESPONSE,
 
-    //Requests
+    //Requests (from client to server)
     LEAVE_GAME,
     DISCONNECT,
     CHOOSE_COLOR,

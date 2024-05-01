@@ -1,11 +1,17 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
+import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.tcpMessages.MessageType;
+import it.polimi.ingsw.am16.common.tcpMessages.TCPMessage;
+import it.polimi.ingsw.am16.common.tcpMessages.request.CreateGame;
 import it.polimi.ingsw.am16.common.util.Position;
+import it.polimi.ingsw.am16.server.Server;
+import it.polimi.ingsw.am16.server.ServerInterface;
 import it.polimi.ingsw.am16.server.controller.GameController;
 import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 
@@ -13,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -24,21 +31,15 @@ public class CLIInputManager implements Runnable {
     private boolean running;
     private final CLI cliView;
     private final InputStream inputStream;
+    private ServerInterface serverInterface;
 
-    //JUST FOR TESTING
-    private int playerId;
-    private String username;
-    private GameController gameController;
-    private final LobbyManager lobbyManager;
-
-    public CLIInputManager(CLI cliView, InputStream inputStream, GameController gameController, LobbyManager lobbyManager) {
+    public CLIInputManager(CLI cliView, InputStream inputStream) {
         this.cliView = cliView;
         this.inputStream = inputStream;
+    }
 
-        //JUST FOR TESTING
-        this.playerId = -1;
-        this.gameController = gameController;
-        this.lobbyManager = lobbyManager;
+    public void setServerInterface(ServerInterface serverInterface) {
+        this.serverInterface = serverInterface;
     }
 
     @Override
@@ -58,8 +59,6 @@ public class CLIInputManager implements Runnable {
     }
 
     private void parseCommand(String input) {
-        System.out.println(playerId + " " + input); //FOR TESTING PURPOSES
-
         String[] args = input.split(" ");
 
         String command = args[0];
@@ -92,20 +91,12 @@ public class CLIInputManager implements Runnable {
                     break;
                 }
 
-                //JUST FOR TESTING
-                String gameId = lobbyManager.createGame(numPlayers);
-                gameController = lobbyManager.getGame(gameId);
-
-                this.username = username;
                 try {
-                    this.playerId = gameController.createPlayer(username);
-                } catch (UnexpectedActionException e) {
-                    System.out.println("Couldn't join game: " + e.getMessage() + ".");
-                    break;
+                    serverInterface.createGame(username, numPlayers);
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
                 }
-
-                gameController.joinPlayer(this.playerId, cliView);
-
             }
             case "join_game" -> {
                 if (args.length < 3 || args[1] == null || args[2] == null || args[1].isEmpty() || args[2].isEmpty()) {
@@ -117,16 +108,12 @@ public class CLIInputManager implements Runnable {
                 String username = args[1];
                 String gameId = args[2];
 
-                //THIS IS JUST FOR TESTING
-                this.username = username;
                 try {
-                    this.playerId = gameController.createPlayer(username);
-                } catch (UnexpectedActionException e) {
-                    System.out.println("Couldn't join game: " + e.getMessage() + ".");
-                    break;
+                    serverInterface.joinGame(gameId, username);
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
                 }
-
-                gameController.joinPlayer(this.playerId, cliView);
             }
             case "id" -> {
                 cliView.printGameId();
@@ -158,8 +145,12 @@ public class CLIInputManager implements Runnable {
                     sideType = SideType.BACK;
                 }
 
-                //FOR TESTING ONLY
-                gameController.setStarterCard(playerId, sideType);
+                try {
+                    serverInterface.setStarterCard(sideType);
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
+                }
             }
             case "color", "colour" -> {
                 if (args.length < 2 || args[1] == null) {
@@ -183,8 +174,12 @@ public class CLIInputManager implements Runnable {
                     return;
                 }
 
-                //JUST FOR TESTING
-                gameController.setPlayerColor(playerId, color);
+                try {
+                    serverInterface.setColor(color);
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
+                }
             }
             case "objective" -> {
                 if (args.length == 1) {
@@ -197,10 +192,14 @@ public class CLIInputManager implements Runnable {
                 }
 
                 int objectiveChoice = Integer.parseInt(args[1]);
+                ObjectiveCard objectiveCard = cliView.getPersonalObjectiveOption(objectiveChoice);
 
-                //JUST FOR TESTING
-                gameController.setPlayerObjective(playerId, cliView.getPersonalObjectiveOption(objectiveChoice));
-
+                try {
+                    serverInterface.setPersonalObjective(objectiveCard);
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
+                }
             }
             case "objectives" -> {
                 cliView.printAllObjectives();
@@ -279,8 +278,20 @@ public class CLIInputManager implements Runnable {
                     break;
                 }
 
-                //FOR TESTING PURPOSES
-                gameController.placeCard(playerId, hand.get(index-1), SideType.valueOf(side.toUpperCase()), new Position(x, y));
+                PlayableCard playedCard = hand.get(index-1);
+
+                SideType sideType = switch (side) {
+                    case "front" -> SideType.FRONT;
+                    case "back" -> SideType.BACK;
+                    default -> null;
+                };
+
+                try {
+                    serverInterface.playCard(playedCard, sideType, new Position(x, y));
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
+                }
             }
             case "draw_card" -> {
                 if (args.length < 3
@@ -320,8 +331,12 @@ public class CLIInputManager implements Runnable {
                     default -> null;
                 };
 
-                //JUST FOR TESTING
-                gameController.drawCard(playerId, drawType);
+                try {
+                    serverInterface.drawCard(drawType);
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
+                }
             }
             case "scroll_view" -> {
                 if (args.length < 2
@@ -359,8 +374,12 @@ public class CLIInputManager implements Runnable {
                 } else {
                     String text = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
 
-                    //JUST FOR TESTING
-                    gameController.sendChatMessage(this.username, text);
+                    try {
+                        serverInterface.sendChatMessage(text);
+                    } catch (RemoteException e) {
+                        //TODO handle it
+                        e.printStackTrace();
+                    }
                 }
             }
             case "chat_history" -> {
@@ -380,20 +399,33 @@ public class CLIInputManager implements Runnable {
                 }
                 String text = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
 
-                //JUST FOR TESTING
-                gameController.sendChatMessage(this.username, text, Set.of(receiverUsername));
+                try {
+                    serverInterface.sendChatMessage(text, receiverUsername);
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
+                }
             }
             case "exit" -> {
                 if (cliView.getCliState() == CLI.CLIState.STARTUP) {
                     System.out.println("Good bye!");
+                    try {
+                        serverInterface.disconnect();
+                    } catch (RemoteException e) {
+                        //TODO handle it
+                        e.printStackTrace();
+                    }
                     running = false;
                 } else {
-                    //THIS IS ONLY FOR TESTING
-                    System.out.println("Disconnecting from the game...");
-                    gameController.disconnect(this.playerId);
-                    this.gameController = null;
-                    cliView.resetToStartup();
-                    System.out.println("Disconnected.");
+                    System.out.println("Leaving the game...");
+                    try {
+                        serverInterface.leaveGame();
+                        cliView.resetToStartup();
+                        System.out.println("Game left.");
+                    } catch (RemoteException e) {
+                        //TODO handle it
+                        e.printStackTrace();
+                    }
                     cliView.printCommandPrompt();
                 }
             }

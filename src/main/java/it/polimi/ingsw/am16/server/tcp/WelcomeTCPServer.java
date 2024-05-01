@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * DOCME
+ */
 public class WelcomeTCPServer implements Runnable {
     private final int port;
     private final LobbyManager lobbyManager;
@@ -27,12 +30,13 @@ public class WelcomeTCPServer implements Runnable {
                 try {
                     final Socket socket = serverSocket.accept();
                     new Thread(new TCPClientHandler(socket, lobbyManager)).start();
-                } catch (final IOException e) {
+                } catch (IOException e) {
+                    System.err.println("TCP server shutting down: " + e.getMessage());
                     break;
                 }
             }
-        } catch (final IOException e) {
-            System.err.println(e.getMessage());
+        } catch (IOException e) {
+            System.err.println("Failed to start server: " + e.getMessage());
         }
     }
 }

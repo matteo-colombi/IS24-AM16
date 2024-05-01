@@ -1,11 +1,13 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
 import it.polimi.ingsw.am16.client.RemoteViewInterface;
+import it.polimi.ingsw.am16.client.view.ViewInterface;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
+import it.polimi.ingsw.am16.server.ServerInterface;
 
 import java.rmi.RemoteException;
 import java.util.*;
@@ -16,7 +18,11 @@ import static it.polimi.ingsw.am16.client.view.cli.CLIConstants.CARD_WIDTH;
 /**
  * DOCME
  */
-public class CLI implements RemoteViewInterface {
+public class CLI implements ViewInterface {
+
+    // This class is thread safe. All methods are synchronized(this).
+    // Technically this limits parallel execution, but that shouldn't be a problem,
+    // since methods will be called only once in a while.
 
     private static final CLIText frontLabel = new CLIText("Fronts:");
     private static final CLIText backLabel = new CLIText("Backs:");
@@ -29,10 +35,14 @@ public class CLI implements RemoteViewInterface {
     private static final CLIText commonObjectivesLabel = new CLIText("Common objectives:");
     private static final CLIText personalObjectivesLabel = new CLIText("Personal objective:");
 
+    private final Set<String> allowedCommands;
+
+    private final Thread inputManagerThread;
+    private final CLIInputManager cliInputManager;
+
     private String gameId;
     private String username;
     private CLIState cliState;
-    private final Set<String> allowedCommands;
     private List<String> playerUsernames;
     private GameState gameState;
     private PlayableCard[] commonResourceCards;
@@ -86,6 +96,28 @@ public class CLI implements RemoteViewInterface {
         this.chatHistory = null;
         this.unreadChat = null;
         this.lastPrintedPlayArea = null;
+
+        this.cliInputManager = new CLIInputManager(this, System.in);
+        this.inputManagerThread = new Thread(cliInputManager);
+    }
+
+    /**
+     * DOCME
+     * @param serverInterface
+     */
+    public synchronized void setServerInterface(ServerInterface serverInterface) {
+        cliInputManager.setServerInterface(serverInterface);
+    }
+
+    /**
+     * DOCME
+     */
+    @Override
+    public synchronized void start() {
+        printBanner();
+        printWelcome();
+
+        this.inputManagerThread.start();
     }
 
     /**
@@ -94,7 +126,7 @@ public class CLI implements RemoteViewInterface {
      * @param username The username the player has joined the game with.
      */
     @Override
-    public void joinGame(String gameId, String username) {
+    public synchronized void joinGame(String gameId, String username) {
         this.gameId = gameId;
         this.username = username;
         this.cliState = CLIState.LOBBY;
@@ -124,7 +156,7 @@ public class CLI implements RemoteViewInterface {
      * @param username The new player's username.
      */
     @Override
-    public void addPlayer(String username) {
+    public synchronized void addPlayer(String username) {
         this.playerUsernames.add(username);
         System.out.printf("\nPlayer %s joined the game!", username);
         printCommandPrompt();
@@ -137,7 +169,7 @@ public class CLI implements RemoteViewInterface {
      * @throws RemoteException
      */
     @Override
-    public void setPlayers(List<String> usernames) {
+    public synchronized void setPlayers(List<String> usernames) {
         this.playerUsernames.addAll(usernames);
     }
 
@@ -147,7 +179,7 @@ public class CLI implements RemoteViewInterface {
      * @param state The new game state.
      */
     @Override
-    public void setGameState(GameState state) {
+    public synchronized void setGameState(GameState state) {
         this.gameState = state;
         switch (state) {
             case JOINING -> {
@@ -180,7 +212,7 @@ public class CLI implements RemoteViewInterface {
      * @param commonGoldCards     The common gold cards (may also contain resource cards if the gold card deck is empty). Should always be of length 2.
      */
     @Override
-    public void setCommonCards(PlayableCard[] commonResourceCards, PlayableCard[] commonGoldCards) {
+    public synchronized void setCommonCards(PlayableCard[] commonResourceCards, PlayableCard[] commonGoldCards) {
         this.commonResourceCards = commonResourceCards;
         this.commonGoldCards = commonGoldCards;
         this.allowedCommands.add("draw_options");
@@ -193,7 +225,7 @@ public class CLI implements RemoteViewInterface {
      * @param resourceType The resource type of the card on top of the given deck.
      */
     @Override
-    public void setDeckTopType(PlayableCardType whichDeck, ResourceType resourceType) {
+    public synchronized void setDeckTopType(PlayableCardType whichDeck, ResourceType resourceType) {
         switch (whichDeck) {
             case RESOURCE -> this.resourceDeckTopType = resourceType;
             case GOLD -> this.goldDeckTopType = resourceType;
@@ -206,7 +238,7 @@ public class CLI implements RemoteViewInterface {
      * @param starterCard The starter card of the player.
      */
     @Override
-    public void promptStarterChoice(StarterCard starterCard) {
+    public synchronized void promptStarterChoice(StarterCard starterCard) {
         this.starterCard = starterCard;
         this.cliState = CLIState.CHOOSING_STARTER;
         this.allowedCommands.add("starter");
@@ -220,7 +252,7 @@ public class CLI implements RemoteViewInterface {
      * Tells the client that the color-choosing phase has begun.
      */
     @Override
-    public void choosingColors() {
+    public synchronized void choosingColors() {
         System.out.println("\nPlayers are now choosing their color.");
         System.out.println("\nPlease wait for your turn.");
     }
@@ -231,7 +263,7 @@ public class CLI implements RemoteViewInterface {
      * @param colorChoices The possible choices for the player's color.
      */
     @Override
-    public void promptColorChoice(List<PlayerColor> colorChoices) {
+    public synchronized void promptColorChoice(List<PlayerColor> colorChoices) {
         this.cliState = CLIState.CHOOSING_COLOR;
         this.allowedCommands.add("color");
         this.colorChoices = colorChoices;
@@ -254,7 +286,7 @@ public class CLI implements RemoteViewInterface {
      * @param color    The color assigned to the player.
      */
     @Override
-    public void setColor(String username, PlayerColor color) {
+    public synchronized void setColor(String username, PlayerColor color) {
         this.playerColors.put(username, color);
         if (this.username.equals(username)) {
             this.allowedCommands.remove("color");
@@ -267,7 +299,7 @@ public class CLI implements RemoteViewInterface {
      * Tells the client that the cards for the game are being drawn.
      */
     @Override
-    public void drawingCards() {
+    public synchronized void drawingCards() {
         System.out.println("\nCards are being drawn.\n");
     }
 
@@ -277,7 +309,7 @@ public class CLI implements RemoteViewInterface {
      * @param hand The player's hand.
      */
     @Override
-    public void setHand(List<PlayableCard> hand) {
+    public synchronized void setHand(List<PlayableCard> hand) {
         this.hand = new ArrayList<>(hand);
         this.allowedCommands.add("hand");
 
@@ -290,7 +322,7 @@ public class CLI implements RemoteViewInterface {
      * @param card
      */
     @Override
-    public void addCardToHand(PlayableCard card) {
+    public synchronized void addCardToHand(PlayableCard card) {
         this.hand.add(card);
 
         printHand();
@@ -302,7 +334,7 @@ public class CLI implements RemoteViewInterface {
      * @param card
      */
     @Override
-    public void removeCardFromHand(PlayableCard card) {
+    public synchronized void removeCardFromHand(PlayableCard card) {
         this.hand.remove(card);
     }
 
@@ -313,7 +345,7 @@ public class CLI implements RemoteViewInterface {
      * @param hand     The restricted hand.
      */
     @Override
-    public void setOtherHand(String username, List<RestrictedCard> hand) {
+    public synchronized void setOtherHand(String username, List<RestrictedCard> hand) {
         this.otherHands.put(username, new ArrayList<>(hand));
         this.allowedCommands.add("hand");
     }
@@ -325,7 +357,7 @@ public class CLI implements RemoteViewInterface {
      * @param newCard
      */
     @Override
-    public void addCardToOtherHand(String username, RestrictedCard newCard) {
+    public synchronized void addCardToOtherHand(String username, RestrictedCard newCard) {
         this.otherHands.get(username).add(newCard);
     }
 
@@ -336,7 +368,7 @@ public class CLI implements RemoteViewInterface {
      * @param cardToRemove
      */
     @Override
-    public void removeCardFromOtherHand(String username, RestrictedCard cardToRemove) {
+    public synchronized void removeCardFromOtherHand(String username, RestrictedCard cardToRemove) {
         this.otherHands.get(username).remove(cardToRemove);
     }
 
@@ -349,7 +381,7 @@ public class CLI implements RemoteViewInterface {
      * @param activeSides
      */
     @Override
-    public void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) {
+    public synchronized void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) {
         if (this.username.equals(username)) {
             this.allowedCommands.remove("starter");
         }
@@ -367,7 +399,7 @@ public class CLI implements RemoteViewInterface {
      * @param pos      The position where the new card was played.
      */
     @Override
-    public void playCard(String username, BoardCard card, SideType side, Position pos) {
+    public synchronized void playCard(String username, BoardCard card, SideType side, Position pos) {
         this.playAreas.get(username).addCard(card, side, pos);
         this.allowedCommands.remove("play_card");
         if (username.equals(this.username)) {
@@ -387,7 +419,7 @@ public class CLI implements RemoteViewInterface {
      * @param gamePoints  The given player's number of game points.
      */
     @Override
-    public void setGamePoints(String username, int gamePoints) {
+    public synchronized void setGamePoints(String username, int gamePoints) {
         this.gamePoints.put(username, gamePoints);
     }
 
@@ -398,7 +430,7 @@ public class CLI implements RemoteViewInterface {
      * @param objectivePoints The given player's number of objective points.
      */
     @Override
-    public void setObjectivePoints(String username, int objectivePoints) {
+    public synchronized void setObjectivePoints(String username, int objectivePoints) {
         this.objectivePoints.put(username, objectivePoints);
     }
 
@@ -408,7 +440,7 @@ public class CLI implements RemoteViewInterface {
      * @param commonObjectives The common objectives. Should always contain 2 elements.
      */
     @Override
-    public void setCommonObjectives(ObjectiveCard[] commonObjectives) {
+    public synchronized void setCommonObjectives(ObjectiveCard[] commonObjectives) {
         this.commonObjectiveCards = commonObjectives;
         this.allowedCommands.add("common_objectives");
         printCommonObjectives();
@@ -420,7 +452,7 @@ public class CLI implements RemoteViewInterface {
      * @param possiblePersonalObjectives The possible objectives the player can choose from. Should always contain 2 cards.
      */
     @Override
-    public void promptObjectiveChoice(List<ObjectiveCard> possiblePersonalObjectives) {
+    public synchronized void promptObjectiveChoice(List<ObjectiveCard> possiblePersonalObjectives) {
         this.cliState = CLIState.CHOOSING_OBJECTIVE;
         this.personalObjectiveOptions = possiblePersonalObjectives;
         this.allowedCommands.add("objective");
@@ -435,7 +467,7 @@ public class CLI implements RemoteViewInterface {
      * @param personalObjective The player's personal objective.
      */
     @Override
-    public void setPersonalObjective(ObjectiveCard personalObjective) {
+    public synchronized void setPersonalObjective(ObjectiveCard personalObjective) {
         this.allowedCommands.remove("objective");
         this.allowedCommands.add("objectives");
         this.personalObjective = personalObjective;
@@ -450,7 +482,7 @@ public class CLI implements RemoteViewInterface {
      * @param usernames The turn order. Should always contain as many usernames as were added at the beginning of the game.
      */
     @Override
-    public void setStartOrder(List<String> usernames) {
+    public synchronized void setStartOrder(List<String> usernames) {
         this.turnOrder = usernames;
         System.out.println("\nPlayers will play in the order:");
         for(String username : usernames) {
@@ -465,7 +497,7 @@ public class CLI implements RemoteViewInterface {
      * @param username The player's username.
      */
     @Override
-    public void turn(String username) {
+    public synchronized void turn(String username) {
         if(username.equals(this.username)) {
             System.out.println("\nIt's your turn! You can now play a card, then draw one.");
             cliState = CLIState.PLAYING_CARD;
@@ -483,7 +515,7 @@ public class CLI implements RemoteViewInterface {
      * @param winnerUsernames The winners of the game.
      */
     @Override
-    public void setWinners(List<String> winnerUsernames) {
+    public synchronized void setWinners(List<String> winnerUsernames) {
         this.allowedCommands.add("winners");
         this.winners = winnerUsernames;
         printWinners();
@@ -495,7 +527,7 @@ public class CLI implements RemoteViewInterface {
      * @param messages The chat messages to add.
      */
     @Override
-    public void addMessages(List<ChatMessage> messages) {
+    public synchronized void addMessages(List<ChatMessage> messages) {
         this.unreadChat.addAll(messages);
     }
 
@@ -505,7 +537,7 @@ public class CLI implements RemoteViewInterface {
      * @param message The new message.
      */
     @Override
-    public void addMessage(ChatMessage message) {
+    public synchronized void addMessage(ChatMessage message) {
         if (message.text().equals("rick")) {
             printRick();
         } else {
@@ -519,8 +551,8 @@ public class CLI implements RemoteViewInterface {
      * @param errorMessage The message that should be displayed to the user.
      */
     @Override
-    public void promptError(String errorMessage) {
-        System.err.println("\nAn error has occurred: " + errorMessage);
+    public synchronized void promptError(String errorMessage) {
+        System.err.println(errorMessage);
         printCommandPrompt();
     }
 
@@ -528,7 +560,7 @@ public class CLI implements RemoteViewInterface {
      * Forces the client to redraw the view.
      */
     @Override
-    public void redrawView() {
+    public synchronized void redrawView() {
 
     }
 
@@ -536,7 +568,7 @@ public class CLI implements RemoteViewInterface {
      * Notifies the client that from now on they shouldn't draw cards anymore.
      */
     @Override
-    public void notifyDontDraw() {
+    public synchronized void notifyDontDraw() {
         this.dontDraw = true;
         System.out.println("\nFrom now on, you shouldn't draw cards anymore.");
     }
@@ -547,12 +579,12 @@ public class CLI implements RemoteViewInterface {
      * @param whoDisconnected The username of the player who disconnected.
      */
     @Override
-    public void signalDisconnection(String whoDisconnected) {
+    public synchronized void signalDisconnection(String whoDisconnected) {
         System.out.printf("\n%s disconnected. The game ends here.\n", whoDisconnected);
         resetToStartup();
     }
 
-    public void resetToStartup() {
+    public synchronized void resetToStartup() {
         cliState = CLIState.STARTUP;
         username = null;
         commonResourceCards = null;
@@ -570,6 +602,10 @@ public class CLI implements RemoteViewInterface {
         hand = null;
         playAreas = null;
         dontDraw = false;
+        chatHistory = null;
+        unreadChat = null;
+        lastPrintedPlayArea = null;
+        colorChoices = null;
 
         allowedCommands.clear();
         allowedCommands.add("help");
@@ -579,7 +615,7 @@ public class CLI implements RemoteViewInterface {
     }
 
     @Override
-    public void signalDeadlock(String username) {
+    public synchronized void signalDeadlock(String username) {
         if (username.equals(this.username)) {
             System.out.println("\nYou have deadlocked yourself!");
         } else {
@@ -588,7 +624,7 @@ public class CLI implements RemoteViewInterface {
 
     }
 
-    public void printHand() {
+    public synchronized void printHand() {
         if (this.hand.isEmpty()) {
             System.out.println("\nYour hand is empty.\n");
             printCommandPrompt();
@@ -611,7 +647,7 @@ public class CLI implements RemoteViewInterface {
         printCommandPrompt();
     }
 
-    public void printOtherHand(String username) {
+    public synchronized void printOtherHand(String username) {
         if (!this.playerUsernames.contains(username)) {
             System.out.println("Invalid username: \"" + username + "\"");
             printCommandPrompt();
@@ -641,19 +677,19 @@ public class CLI implements RemoteViewInterface {
         printCommandPrompt();
     }
 
-    public void printObjectiveOptions() {
+    public synchronized void printObjectiveOptions() {
         System.out.println("\nChoose an objective between:");
         printObjectives(this.personalObjectiveOptions, true);
         printCommandPrompt();
     }
 
-    public void printCommonObjectives() {
+    public synchronized void printCommonObjectives() {
         System.out.println("\nThe common objectives are:");
         printObjectives(List.of(commonObjectiveCards), false);
         printCommandPrompt();
     }
 
-    public void printDrawOptions() {
+    public synchronized void printDrawOptions() {
         System.out.println("\nThe draw options are:");
         CLIText drawOptions = new CLIText();
         drawOptions.mergeText(resourcesLabel, 0, 0);
@@ -682,7 +718,7 @@ public class CLI implements RemoteViewInterface {
         printCommandPrompt();
     }
 
-    public void printObjectives(List<ObjectiveCard> objectives, boolean printIndices) {
+    public synchronized void printObjectives(List<ObjectiveCard> objectives, boolean printIndices) {
         System.out.println();
         CLIText objectivesText = new CLIText();
         if (printIndices) {
@@ -702,7 +738,7 @@ public class CLI implements RemoteViewInterface {
         printCommandPrompt();
     }
 
-    public void printAllObjectives() {
+    public synchronized void printAllObjectives() {
         CLIText objectiveText = new CLIText();
         CLIText personalObjective = CLIAssetRegistry.getCLIAssetRegistry().getCard(this.personalObjective.getName()).front();
         CLIText commonObjective1 = CLIAssetRegistry.getCLIAssetRegistry().getCard(commonObjectiveCards[0].getName()).front();
@@ -719,7 +755,7 @@ public class CLI implements RemoteViewInterface {
         printCommandPrompt();
     }
 
-    public void printStarterCard() {
+    public synchronized void printStarterCard() {
         System.out.println("\nChoose on which side to place your starter card.");
 
         CLIText starterCardText = new CLIText();
@@ -737,12 +773,12 @@ public class CLI implements RemoteViewInterface {
         printCommandPrompt();
     }
 
-    public void printGameId() {
+    public synchronized void printGameId() {
         System.out.printf("This game's id is %s.\n", this.gameId);
         printCommandPrompt();
     }
 
-    public void printPlayers() {
+    public synchronized void printPlayers() {
         System.out.println("Players currently in the game:");
 
         for(String username : (turnOrder != null ? turnOrder : playerUsernames)) {
@@ -756,11 +792,11 @@ public class CLI implements RemoteViewInterface {
         printCommandPrompt();
     }
 
-    public void printPlayArea() {
+    public synchronized void printPlayArea() {
         printPlayArea(username);
     }
 
-    public void printPlayArea(String username) {
+    public synchronized void printPlayArea(String username) {
         if (!this.playerUsernames.contains(username)) {
             System.out.println("\nInvalid username: \"" + username + "\"");
             printCommandPrompt();
@@ -784,7 +820,7 @@ public class CLI implements RemoteViewInterface {
         printCommandPrompt();
     }
 
-    public void scrollView(String direction, int offset) {
+    public synchronized void scrollView(String direction, int offset) {
         if (lastPrintedPlayArea == null) return;
 
         switch (direction) {
@@ -794,7 +830,7 @@ public class CLI implements RemoteViewInterface {
         }
     }
 
-    public void printPoints() {
+    public synchronized void printPoints() {
         System.out.println("\nCurrent points (in order from most to least points):");
 
         List<String> sortedUsernames =
@@ -823,7 +859,7 @@ public class CLI implements RemoteViewInterface {
         printCommandPrompt();
     }
 
-    public void printWinners() {
+    public synchronized void printWinners() {
         if (cliState != CLIState.GAME_ENDED) {
             System.out.println("\nNo winners yet!");
             printCommandPrompt();
@@ -838,7 +874,7 @@ public class CLI implements RemoteViewInterface {
         printCommandPrompt();
     }
 
-    public void printHelp() {
+    public synchronized void printHelp() {
         System.out.println("\nAvailable commands:");
         System.out.println("\thelp - Prints the list of available commands.");
         if (cliState == CLIState.STARTUP) {
@@ -895,7 +931,7 @@ public class CLI implements RemoteViewInterface {
         printCommandPrompt();
     }
 
-    public void printUnreadChat() {
+    public synchronized void printUnreadChat() {
         if (unreadChat.isEmpty()) {
             System.out.println("You have no unread messages. Type \"chat_history\" to see older messages");
             return;
@@ -912,7 +948,7 @@ public class CLI implements RemoteViewInterface {
         printCommandPrompt();
     }
 
-    public void printChatHistory() {
+    public synchronized void printChatHistory() {
         for(ChatMessage message : chatHistory) {
             System.out.println(message);
         }
@@ -924,7 +960,7 @@ public class CLI implements RemoteViewInterface {
         printCommandPrompt();
     }
 
-    public void printRick() {
+    public synchronized void printRick() {
         System.out.println();
         CLIText rick = CLIAssetRegistry.getCLIAssetRegistry().getRick();
         rick.printText();
@@ -932,11 +968,22 @@ public class CLI implements RemoteViewInterface {
         printCommandPrompt();
     }
 
-    public boolean allowedCommand(String command) {
+    public synchronized void printBanner() {
+        System.out.println();
+        CLIAssetRegistry.getCLIAssetRegistry().getBanner().printText();
+        System.out.println();
+    }
+
+    public synchronized void printWelcome() {
+        System.out.println("Welcome to Codex Naturalis!");
+        System.out.println("Type \"help\" to see all available commands.");
+    }
+
+    public synchronized boolean allowedCommand(String command) {
         return this.allowedCommands.contains(command);
     }
 
-    public boolean validUsername(String username) {
+    public synchronized boolean validUsername(String username) {
         return this.playerUsernames.contains(username);
     }
 
@@ -944,19 +991,19 @@ public class CLI implements RemoteViewInterface {
         System.out.print("\n>> ");
     }
 
-    public CLIState getCliState() {
+    public synchronized CLIState getCliState() {
         return cliState;
     }
 
-    public boolean validColorChoice(PlayerColor playerColor) {
+    public synchronized boolean validColorChoice(PlayerColor playerColor) {
         return this.colorChoices.contains(playerColor);
     }
 
-    public ObjectiveCard getPersonalObjectiveOption(int index) {
+    public synchronized ObjectiveCard getPersonalObjectiveOption(int index) {
         return this.personalObjectiveOptions.get(index-1);
     }
 
-    public List<PlayableCard> getHand() {
+    public synchronized List<PlayableCard> getHand() {
         return hand;
     }
 
