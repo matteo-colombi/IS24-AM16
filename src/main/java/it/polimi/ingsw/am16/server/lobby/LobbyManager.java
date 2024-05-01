@@ -104,6 +104,7 @@ public class LobbyManager {
             for(final File f : gameFiles) {
                 service.submit(() -> loadGame(f));
             }
+            service.shutdown();
             if(!service.awaitTermination(200L * gameFiles.length, TimeUnit.MILLISECONDS)) {
                 throw new RuntimeException("Couldn't reload games from memory: timeout expired.");
             }

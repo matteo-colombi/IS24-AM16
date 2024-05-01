@@ -63,7 +63,7 @@ public class CLIInputManager implements Runnable {
 
         String command = args[0];
 
-        if(!cliView.allowedCommand(command)) {
+        if(!cliView.allowedCommand(command.toLowerCase())) {
             System.out.println("Unknown command: \"" + command + "\"");
             cliView.printCommandPrompt();
             return;

@@ -87,7 +87,7 @@ public class GameController {
      * @param userView The {@link RemoteViewInterface}, used to communicate with the player.
      */
     public synchronized void joinPlayer(int playerId, RemoteViewInterface userView) {
-        if (playerId < 0 || playerId >= game.getCurrentPlayerCount())
+        if (!game.isRejoiningAfterCrash() && (playerId < 0 || playerId >= game.getCurrentPlayerCount()))
             return;
 
         PlayerModel[] players = game.getPlayers();
@@ -103,7 +103,7 @@ public class GameController {
         }
         virtualView.addPlayer(playerId, userView, players[playerId].getUsername());
         virtualView.joinGame(playerId, game.getId(), players[playerId].getUsername());
-        players[playerId].setConnected(true);
+        game.setConnected(playerId);
         if (game.isRejoiningAfterCrash()) {
             virtualView.communicateNewMessages(playerId, players[playerId].getChat().getMessages());
         }
@@ -419,8 +419,7 @@ public class GameController {
         try {
             game.placeCard(playerId, card, side, newPos);
         } catch (IllegalMoveException e) {
-            System.err.println("Illegal move.");
-            //TODO handle it better?
+            virtualView.promptError(playerId, "Illegal move.");
             return;
         } catch (UnexpectedActionException e) {
             e.printStackTrace();
@@ -436,7 +435,6 @@ public class GameController {
         for(PlayerModel player : game.getPlayers()) {
             if (player.getPlayerId() != playerId) {
                 virtualView.communicateRemoveOtherCard(player.getPlayerId(), game.getPlayers()[playerId].getUsername(), card.getRestrictedVersion());
-                virtualView.redrawView(player.getPlayerId());
             }
         }
         virtualView.redrawView();
@@ -472,9 +470,16 @@ public class GameController {
         }
 
         switch (drawType) {
-            case GOLD_DECK -> virtualView.communicateDeckTopType(PlayableCardType.GOLD, game.getGoldDeckTopType());
-            case RESOURCE_DECK -> virtualView.communicateDeckTopType(PlayableCardType.RESOURCE, game.getResourceDeckTopType());
-            default -> virtualView.communicateCommonCards(game.getCommonResourceCards(), game.getCommonGoldCards());
+            case RESOURCE_1, RESOURCE_2:
+                virtualView.communicateCommonCards(game.getCommonResourceCards(), game.getCommonGoldCards());
+            case RESOURCE_DECK:
+                virtualView.communicateDeckTopType(PlayableCardType.RESOURCE, game.getResourceDeckTopType());
+                break;
+            case GOLD_1, GOLD_2:
+                virtualView.communicateCommonCards(game.getCommonResourceCards(), game.getCommonGoldCards());
+            case GOLD_DECK:
+                virtualView.communicateDeckTopType(PlayableCardType.GOLD, game.getGoldDeckTopType());
+                break;
         }
 
         virtualView.communicateNewCard(playerId, drawnCard);

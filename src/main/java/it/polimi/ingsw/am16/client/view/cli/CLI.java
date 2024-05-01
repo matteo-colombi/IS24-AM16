@@ -322,6 +322,8 @@ public class CLI implements ViewInterface {
     @Override
     public synchronized void addCardToHand(PlayableCard card) {
         this.hand.add(card);
+        this.allowedCommands.remove("draw_card");
+        this.cliState = CLIState.IN_GAME;
 
         printHand();
     }
@@ -782,7 +784,7 @@ public class CLI implements ViewInterface {
 
         for(String username : (turnOrder != null ? turnOrder : playerUsernames)) {
             CLIText colorLabel = new CLIText("██", this.playerColors.get(username));
-            CLIText userLabel = new CLIText(username + (turnOrder != null && turnOrder.indexOf(username) == 1 ? "(starter player)" : ""));
+            CLIText userLabel = new CLIText(username + (turnOrder != null && turnOrder.indexOf(username) == 0 ? " (starter player)" : ""));
             userLabel.mergeText(colorLabel, 0, -3);
             System.out.print("\t");
             userLabel.printText();

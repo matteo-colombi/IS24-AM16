@@ -41,6 +41,12 @@ public interface GameModel {
     int getCurrentPlayerCount();
 
     /**
+     * DOCME
+     * @param playerId
+     */
+    void setConnected(int playerId);
+
+    /**
      * @return whether all the players in this game are connected.
      */
     boolean everybodyConnected();

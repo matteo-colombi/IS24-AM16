@@ -179,6 +179,17 @@ public class Game implements GameModel {
     }
 
     /**
+     * DOCME
+     *
+     * @param playerId
+     */
+    @Override
+    public void setConnected(int playerId) {
+        players[playerId].setConnected(true);
+        currentPlayerCount++;
+    }
+
+    /**
      * @return whether all the players in this game are connected.
      */
     public boolean everybodyConnected() {

@@ -153,6 +153,8 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
                                     playerId = gameController.getPlayerId(username);
                                 } catch (IllegalArgumentException e) {
                                     promptError("Couldn't join game: " + e.getMessage());
+                                    playerId = -1;
+                                    gameController = null;
                                     break;
                                 }
                             } else {
@@ -160,6 +162,8 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
                                     playerId = gameController.createPlayer(username);
                                 } catch (UnexpectedActionException e) {
                                     promptError("Couldn't join game: " + e.getMessage());
+                                    playerId = -1;
+                                    gameController = null;
                                     break;
                                 }
                             }
