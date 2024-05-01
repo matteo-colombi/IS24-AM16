@@ -56,7 +56,7 @@ public class TCPClient implements Runnable, ServerInterface {
                 } catch (IOException ignored) {
 
                     //Error while deserializing message
-
+                    ignored.printStackTrace();
                     System.err.println("Server sent a malformed message: " + serializedMessage);
                     continue;
                 } catch (NoSuchElementException | IllegalStateException ignored) {

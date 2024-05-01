@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16;
 
 import it.polimi.ingsw.am16.client.Client;
+import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 import it.polimi.ingsw.am16.server.Server;
 
 public class CodexStart /* extends Application */ {
@@ -20,6 +21,8 @@ public class CodexStart /* extends Application */ {
             printUsage();
             return;
         }
+
+        CardRegistry.getRegistry();
 
         switch (args[0]) {
             case "--client" -> {
