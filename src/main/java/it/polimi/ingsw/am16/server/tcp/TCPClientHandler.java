@@ -123,8 +123,13 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
                                 break;
                             }
 
-                            gameController.joinPlayer(playerId, this);
-                            this.username = username;
+                            try {
+                                gameController.joinPlayer(playerId, this);
+                                this.username = username;
+                            } catch (UnexpectedActionException e) {
+                                System.err.println("Unexpected error: " + e.getMessage());
+                                e.printStackTrace();
+                            }
                         }
                         case JOIN_GAME_REQUEST -> {
                             if (gameController != null) {
@@ -168,8 +173,14 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
                                 }
                             }
 
-                            gameController.joinPlayer(playerId, this);
-                            this.username = username;
+                            try {
+                                gameController.joinPlayer(playerId, this);
+                                this.username = username;
+                            } catch (UnexpectedActionException e) {
+                                promptError("User " + username + " already rejoined the game.");
+                                gameController = null;
+                                playerId = -1;
+                            }
                         }
                         case CHOOSE_STARTER_SIDE -> {
                             ChooseStarterSide payload;

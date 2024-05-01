@@ -184,7 +184,7 @@ public class Game implements GameModel {
      * @param playerId
      */
     @Override
-    public void setConnected(int playerId) {
+    public void reconnectionSuccessful(int playerId) {
         players[playerId].setConnected(true);
         currentPlayerCount++;
     }

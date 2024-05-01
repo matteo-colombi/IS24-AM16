@@ -44,7 +44,7 @@ public interface GameModel {
      * DOCME
      * @param playerId
      */
-    void setConnected(int playerId);
+    void reconnectionSuccessful(int playerId);
 
     /**
      * @return whether all the players in this game are connected.

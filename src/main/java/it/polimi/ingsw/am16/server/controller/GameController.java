@@ -17,7 +17,6 @@ import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.util.RNG;
 import it.polimi.ingsw.am16.server.VirtualView;
 
-import java.rmi.RemoteException;
 import java.util.*;
 
 /**
@@ -86,26 +85,21 @@ public class GameController {
      * @param playerId The player's id. If an invalid id is given, this method does nothing.
      * @param userView The {@link RemoteViewInterface}, used to communicate with the player.
      */
-    public synchronized void joinPlayer(int playerId, RemoteViewInterface userView) {
+    public synchronized void joinPlayer(int playerId, RemoteViewInterface userView) throws UnexpectedActionException {
         if (!game.isRejoiningAfterCrash() && (playerId < 0 || playerId >= game.getCurrentPlayerCount()))
             return;
 
         PlayerModel[] players = game.getPlayers();
         if (players[playerId] != null && players[playerId].isConnected()) {
-            try {
-                userView.promptError("User already present with same username.");
-            } catch (RemoteException e) {
-                e.printStackTrace();
-                //TODO handle it
-                return;
-            }
-            return;
+            throw new UnexpectedActionException("User " + players[playerId].getUsername() + " already reconnected.");
         }
         virtualView.addPlayer(playerId, userView, players[playerId].getUsername());
         virtualView.joinGame(playerId, game.getId(), players[playerId].getUsername());
-        game.setConnected(playerId);
         if (game.isRejoiningAfterCrash()) {
+            game.reconnectionSuccessful(playerId);
             virtualView.communicateNewMessages(playerId, players[playerId].getChat().getMessages());
+        } else {
+            players[playerId].setConnected(true);
         }
 
         if (game.getCurrentPlayerCount() == game.getNumPlayers() && game.everybodyConnected()) {
@@ -245,14 +239,15 @@ public class GameController {
             virtualView.communicateHand(player.getPlayerId(), player.getHand().getCards());
             virtualView.communicatePlayArea(player.getUsername(), player.getPlayArea().getPlacementOrder(), player.getPlayArea().getField(), player.getPlayArea().getActiveSides());
             virtualView.communicatePersonalObjective(player.getPlayerId(), player.getPersonalObjective());
+            virtualView.communicateColor(player.getUsername(), player.getPlayerColor());
+            virtualView.communicateGamePoints(player.getUsername(), player.getGamePoints());
+            virtualView.communicateObjectivePoints(player.getUsername(), player.getObjectivePoints());
 
             for (PlayerModel player2 : game.getPlayers()) {
                 if (player2 != player) {
                     virtualView.communicateOtherHand(player2.getPlayerId(), player.getUsername(), player.getHand().getRestrictedVersion());
                 }
             }
-
-            virtualView.communicateNewMessages(player.getPlayerId(), player.getChat().getMessages());
         }
 
         //TODO maybe remove this?
