@@ -68,6 +68,8 @@ public class TCPClient implements Runnable, ServerInterface {
                     continue;
                 }
 
+                System.out.println(message.messageType());
+
                 switch (message.messageType()) {
                     case JOIN_GAME_RESPONSE -> {
                         JoinGameResponse payload;
@@ -158,6 +160,9 @@ public class TCPClient implements Runnable, ServerInterface {
                         }
 
                         view.promptColorChoice(payload.getColorChoices());
+                    }
+                    case CHOOSING_COLORS -> {
+                        view.choosingColors();
                     }
                     case SET_COLOR -> {
                         SetColor payload;
@@ -268,6 +273,9 @@ public class TCPClient implements Runnable, ServerInterface {
                         }
 
                         view.removeCardFromOtherHand(payload.getUsername(), payload.getCardToRemove());
+                    }
+                    case DRAWING_CARDS -> {
+                        view.drawingCards();
                     }
                     case TURN -> {
                         Turn payload;

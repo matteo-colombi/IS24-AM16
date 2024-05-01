@@ -56,7 +56,7 @@ public class SetStartOrder extends Payload {
             JsonNode node = p.getCodec().readTree(p);
 
             TypeReference<ArrayList<String>> usernamesTypeRef = new TypeReference<>() {};
-            List<String> usernames = mapper.readValue(node.get("winnerUsernames").toString(), usernamesTypeRef);
+            List<String> usernames = mapper.readValue(node.get("usernames").toString(), usernamesTypeRef);
 
             return new SetStartOrder(
                     usernames

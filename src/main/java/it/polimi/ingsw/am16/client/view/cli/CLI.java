@@ -470,6 +470,7 @@ public class CLI implements ViewInterface {
     public synchronized void setPersonalObjective(ObjectiveCard personalObjective) {
         this.allowedCommands.remove("objective");
         this.allowedCommands.add("objectives");
+        this.cliState = CLIState.PRE_GAME;
         this.personalObjective = personalObjective;
         System.out.println("\nYour personal objective is:");
         CLIAssetRegistry.getCLIAssetRegistry().getCard(personalObjective.getName()).front().printText();
