@@ -244,8 +244,6 @@ public class CLI implements ViewInterface {
         this.allowedCommands.add("starter");
 
         printStarterCard();
-
-        System.out.println();
     }
 
     /**

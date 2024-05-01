@@ -29,7 +29,7 @@ public class SetPlayArea extends Payload {
     private final List<Position> cardPlacementOrder;
     @JsonSerialize(keyUsing = Position.Serializer.class)
     private final Map<Position, BoardCard> field;
-    @JsonSerialize(keyUsing = BoardCard.BoardCardSerializer.class, contentUsing = CardSide.Serializer.class)
+    @JsonSerialize(keyUsing = BoardCard.BoardCardSerializer.class)
     private final Map<BoardCard, SideType> activeSides;
 
     @JsonCreator
@@ -84,7 +84,7 @@ public class SetPlayArea extends Payload {
             String username = setPlayAreaNode.get("username").asText();
 
             TypeReference<ArrayList<Position>> typeReferenceCardPlacementOrder = new TypeReference<>() {};
-            List<Position> cardPlacementOrder = mapper.readValue(setPlayAreaNode.get("placementOrder").toString(), typeReferenceCardPlacementOrder);
+            List<Position> cardPlacementOrder = mapper.readValue(setPlayAreaNode.get("cardPlacementOrder").toString(), typeReferenceCardPlacementOrder);
 
             TypeReference<HashMap<Position, BoardCard>> typeReferenceField = new TypeReference<>() {};
             Map<Position, BoardCard> field = mapper.readValue(setPlayAreaNode.get("field").toString(), typeReferenceField);
