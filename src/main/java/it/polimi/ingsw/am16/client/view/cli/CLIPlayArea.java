@@ -148,6 +148,8 @@ public class CLIPlayArea {
     public void printPlayArea() {
         int startX = playAreaText.getOriginX() + (viewCenter - VIEW_WIDTH/2) * (CARD_WIDTH - OVERLAP_X)-5;
         int endX = playAreaText.getOriginX() + (viewCenter + VIEW_WIDTH/2) * (CARD_WIDTH - OVERLAP_X)+5;
+        CLIText infoTable = CLIAssetRegistry.getCLIAssetRegistry().getInfoTable(); //FIXME just for testing. Create a new logic
+        playAreaText.mergeText(infoTable, 0, 60); //FIXME just for testing. Create a new logic
         playAreaText.printText(startX, 0, endX, playAreaText.getHeight(), true);
     }
 
