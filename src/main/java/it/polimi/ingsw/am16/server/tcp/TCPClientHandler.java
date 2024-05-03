@@ -113,7 +113,14 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
                             String username = payload.getUsername();
                             int numPlayers = payload.getNumPlayers();
 
-                            String gameId = lobbyManager.createGame(numPlayers);
+                            String gameId;
+
+                            try {
+                                gameId = lobbyManager.createGame(numPlayers);
+                            } catch (IllegalArgumentException e) {
+                                promptError(e.getMessage());
+                                break;
+                            }
 
                             gameController = lobbyManager.getGame(gameId);
                             try {

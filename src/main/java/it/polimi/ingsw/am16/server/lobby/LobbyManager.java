@@ -39,6 +39,10 @@ public class LobbyManager {
      * @return The created lobby's id.
      */
     public String createGame(int numPlayers) {
+        if (numPlayers < 2 || numPlayers > 4) {
+            throw new IllegalArgumentException("Number of players must be between 2 and 4");
+        }
+
         String id;
         do {
             id = RNG.getRNG().nextAlphNumString(LOBBY_ID_LENGTH);
