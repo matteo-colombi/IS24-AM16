@@ -405,8 +405,10 @@ public class CLI implements ViewInterface {
         this.cliInputManager.removeCommand(CLICommand.PLAY_CARD);
         if (username.equals(this.username)) {
             if (dontDraw) {
+                System.out.println("Card played.");
                 cliState = CLIState.IN_GAME;
             } else {
+                System.out.println("Card played. Use \"draw_card\" to draw a card.");
                 cliState = CLIState.DRAWING_CARD;
                 this.cliInputManager.addCommand(CLICommand.DRAW_CARD);
             }
@@ -938,7 +940,7 @@ public class CLI implements ViewInterface {
     }
 
     public synchronized void printCommandPrompt() {
-        System.out.print("\n>> ");
+        System.out.print("\n");
     }
 
     public synchronized boolean validColorChoice(PlayerColor playerColor) {
