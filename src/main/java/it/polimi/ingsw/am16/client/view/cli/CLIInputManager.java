@@ -70,6 +70,10 @@ public class CLIInputManager implements Runnable {
 
         if (matchingCommands.size() > 1) {
             System.out.println("Ambiguous command: \"" + inputCommand + "\"");
+            System.out.println("Possible matches:");
+            for(CLICommand command : matchingCommands) {
+                System.out.println("\t- " + command);
+            }
             return;
         } else if (matchingCommands.isEmpty()) {
             System.out.println("Unknown command: \"" + inputCommand + "\"");
