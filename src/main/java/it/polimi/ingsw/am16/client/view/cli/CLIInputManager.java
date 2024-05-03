@@ -1,19 +1,12 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
-import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
-import it.polimi.ingsw.am16.common.tcpMessages.MessageType;
-import it.polimi.ingsw.am16.common.tcpMessages.TCPMessage;
-import it.polimi.ingsw.am16.common.tcpMessages.request.CreateGame;
 import it.polimi.ingsw.am16.common.util.Position;
-import it.polimi.ingsw.am16.server.Server;
 import it.polimi.ingsw.am16.server.ServerInterface;
-import it.polimi.ingsw.am16.server.controller.GameController;
-import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,10 +14,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.rmi.RemoteException;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class CLIInputManager implements Runnable {
 
@@ -32,14 +25,24 @@ public class CLIInputManager implements Runnable {
     private final CLI cliView;
     private final InputStream inputStream;
     private ServerInterface serverInterface;
+    private final Set<CLICommand> allowedCommands;
 
     public CLIInputManager(CLI cliView, InputStream inputStream) {
         this.cliView = cliView;
         this.inputStream = inputStream;
+        this.allowedCommands = new HashSet<>();
     }
 
     public void setServerInterface(ServerInterface serverInterface) {
         this.serverInterface = serverInterface;
+    }
+
+    public void addCommand(CLICommand command) {
+        allowedCommands.add(command);
+    }
+
+    public void removeCommand(CLICommand command) {
+        allowedCommands.remove(command);
     }
 
     @Override
@@ -61,19 +64,25 @@ public class CLIInputManager implements Runnable {
     private void parseCommand(String input) {
         String[] args = input.split(" ");
 
-        String command = args[0];
+        String inputCommand = args[0].toLowerCase();
 
-        if(!cliView.allowedCommand(command.toLowerCase())) {
-            System.out.println("Unknown command: \"" + command + "\"");
-            cliView.printCommandPrompt();
+        Set<CLICommand> matchingCommands = commandMatch(inputCommand);
+
+        if (matchingCommands.size() > 1) {
+            System.out.println("Ambiguous command: \"" + inputCommand + "\"");
+            return;
+        } else if (matchingCommands.isEmpty()) {
+            System.out.println("Unknown command: \"" + inputCommand + "\"");
             return;
         }
 
-        switch (command.toLowerCase()) {
-            case "help" -> {
+        CLICommand command = matchingCommands.iterator().next();
+
+        switch (command) {
+            case HELP -> {
                 cliView.printHelp();
             }
-            case "create_game" -> {
+            case CREATE_GAME -> {
                 if (args.length < 3 || args[1] == null || args[1].isEmpty() || args[2] == null || args[2].isEmpty()) {
                     System.out.println("Invalid arguments. Usage: create_game [username] [numPlayers]");
                     cliView.printCommandPrompt();
@@ -98,7 +107,7 @@ public class CLIInputManager implements Runnable {
                     e.printStackTrace();
                 }
             }
-            case "join_game" -> {
+            case JOIN_GAME -> {
                 if (args.length < 3 || args[1] == null || args[2] == null || args[1].isEmpty() || args[2].isEmpty()) {
                     System.out.println("Invalid arguments. Usage: join_game [username] [gameId]");
                     cliView.printCommandPrompt();
@@ -115,19 +124,19 @@ public class CLIInputManager implements Runnable {
                     e.printStackTrace();
                 }
             }
-            case "id" -> {
+            case ID -> {
                 cliView.printGameId();
             }
-            case "players" -> {
+            case PLAYERS -> {
                 cliView.printPlayers();
             }
-            case "draw_options" -> {
+            case DRAW_OPTIONS -> {
                 cliView.printDrawOptions();
             }
-            case "common_objectives" -> {
+            case COMMON_OBJECTIVES -> {
                 cliView.printCommonObjectives();
             }
-            case "starter" -> {
+            case STARTER -> {
                 if (args.length == 1) {
                     cliView.printStarterCard();
                     break;
@@ -152,7 +161,7 @@ public class CLIInputManager implements Runnable {
                     e.printStackTrace();
                 }
             }
-            case "color", "colour" -> {
+            case COLOR -> {
                 if (args.length < 2 || args[1] == null) {
                     System.out.println("Invalid arguments. Usage: color [color]");
                     cliView.printCommandPrompt();
@@ -181,7 +190,7 @@ public class CLIInputManager implements Runnable {
                     e.printStackTrace();
                 }
             }
-            case "objective" -> {
+            case OBJECTIVE -> {
                 if (args.length == 1) {
                     cliView.printObjectiveOptions();
                     break;
@@ -201,10 +210,10 @@ public class CLIInputManager implements Runnable {
                     e.printStackTrace();
                 }
             }
-            case "objectives" -> {
+            case OBJECTIVES -> {
                 cliView.printAllObjectives();
             }
-            case "hand" -> {
+            case HAND -> {
                 if (args.length == 1) {
                     cliView.printHand();
                 } else {
@@ -217,7 +226,7 @@ public class CLIInputManager implements Runnable {
                     cliView.printOtherHand(username);
                 }
             }
-            case "play_area" -> {
+            case PLAY_AREA -> {
                 if (args.length == 1) {
                     cliView.printPlayArea();
                 } else {
@@ -231,7 +240,7 @@ public class CLIInputManager implements Runnable {
                 }
 
             }
-            case "play_card" -> {
+            case PLAY_CARD -> {
                 if (args.length < 4
                         || args[1] == null
                         || args[2] == null
@@ -293,7 +302,7 @@ public class CLIInputManager implements Runnable {
                     e.printStackTrace();
                 }
             }
-            case "draw_card" -> {
+            case DRAW_CARD -> {
                 if (args.length < 3
                         || args[1] == null
                         || args[2] == null
@@ -338,7 +347,7 @@ public class CLIInputManager implements Runnable {
                     e.printStackTrace();
                 }
             }
-            case "scroll_view" -> {
+            case SCROLL_VIEW -> {
                 if (args.length < 2
                         || args[1] == null
                         || args[1].isEmpty()
@@ -362,13 +371,13 @@ public class CLIInputManager implements Runnable {
 
                 cliView.printCommandPrompt();
             }
-            case "points" -> {
+            case POINTS -> {
                 cliView.printPoints();
             }
-            case "winners" -> {
+            case WINNERS -> {
                 cliView.printWinners();
             }
-            case "chat" -> {
+            case CHAT -> {
                 if (args.length == 1) {
                     cliView.printUnreadChat();
                 } else {
@@ -382,10 +391,10 @@ public class CLIInputManager implements Runnable {
                     }
                 }
             }
-            case "chat_history" -> {
+            case CHAT_HISTORY -> {
                 cliView.printChatHistory();
             }
-            case "whisper" -> {
+            case WHISPER -> {
                 if (args.length < 3) {
                     System.out.println("Invalid arguments. Usage: chat_private [receiver username] [message]");
                     cliView.printCommandPrompt();
@@ -406,29 +415,43 @@ public class CLIInputManager implements Runnable {
                     e.printStackTrace();
                 }
             }
-            case "exit" -> {
-                if (cliView.getCliState() == CLI.CLIState.STARTUP) {
-                    System.out.println("Good bye!");
-                    try {
-                        serverInterface.disconnect();
-                    } catch (RemoteException e) {
-                        //TODO handle it
-                        e.printStackTrace();
-                    }
-                    running = false;
-                } else {
-                    System.out.println("Leaving the game...");
-                    try {
-                        serverInterface.leaveGame();
-                        cliView.resetToStartup();
-                        System.out.println("Game left.");
-                    } catch (RemoteException e) {
-                        //TODO handle it
-                        e.printStackTrace();
-                    }
-                    cliView.printCommandPrompt();
+            case LEAVE_GAME -> {
+                System.out.println("Leaving the game...");
+                try {
+                    serverInterface.leaveGame();
+                    cliView.resetToStartup();
+                    System.out.println("Game left.");
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
                 }
+                cliView.printCommandPrompt();
+            }
+            case EXIT -> {
+                System.out.println("Good bye!");
+                try {
+                    serverInterface.disconnect();
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
+                }
+                running = false;
             }
         }
+    }
+
+    public Set<CLICommand> commandMatch(String input) {
+        return allowedCommands
+                .stream()
+                .filter(c -> c.matches(input))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<CLICommand> getAllowedCommands() {
+        return allowedCommands;
+    }
+
+    public void clearCommands() {
+        allowedCommands.clear();
     }
 }

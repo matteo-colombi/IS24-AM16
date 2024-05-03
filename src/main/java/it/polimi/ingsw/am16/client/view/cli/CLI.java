@@ -1,6 +1,5 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
-import it.polimi.ingsw.am16.client.RemoteViewInterface;
 import it.polimi.ingsw.am16.client.view.ViewInterface;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
@@ -22,7 +21,7 @@ public class CLI implements ViewInterface {
 
     // This class is thread safe. All methods are synchronized(this).
     // Technically this limits parallel execution, but that shouldn't be a problem,
-    // since methods will be called only once in a while.
+    // since methods will be called only once in a while (at "user" speeds).
 
     private static final CLIText frontLabel = new CLIText("Fronts:");
     private static final CLIText backLabel = new CLIText("Backs:");
@@ -34,8 +33,6 @@ public class CLI implements ViewInterface {
     private static final CLIText twoLabel = new CLIText("[2]");
     private static final CLIText commonObjectivesLabel = new CLIText("Common objectives:");
     private static final CLIText personalObjectivesLabel = new CLIText("Personal objective:");
-
-    private final Set<String> allowedCommands;
 
     private final Thread inputManagerThread;
     private final CLIInputManager cliInputManager;
@@ -70,11 +67,11 @@ public class CLI implements ViewInterface {
 
     public CLI() {
         this.cliState = CLIState.STARTUP;
-        this.allowedCommands = new HashSet<>();
-        this.allowedCommands.add("help");
-        this.allowedCommands.add("join_game");
-        this.allowedCommands.add("create_game");
-        this.allowedCommands.add("exit");
+        this.cliInputManager = new CLIInputManager(this, System.in);
+        this.cliInputManager.addCommand(CLICommand.HELP);
+        this.cliInputManager.addCommand(CLICommand.JOIN_GAME);
+        this.cliInputManager.addCommand(CLICommand.CREATE_GAME);
+        this.cliInputManager.addCommand(CLICommand.EXIT);
         this.gameId = null;
         this.username = null;
         this.commonResourceCards = null;
@@ -97,7 +94,6 @@ public class CLI implements ViewInterface {
         this.unreadChat = null;
         this.lastPrintedPlayArea = null;
 
-        this.cliInputManager = new CLIInputManager(this, System.in);
         this.inputManagerThread = new Thread(cliInputManager);
     }
 
@@ -139,13 +135,15 @@ public class CLI implements ViewInterface {
         this.playAreas = new HashMap<>();
         this.chatHistory = new ArrayList<>();
         this.unreadChat = new ArrayList<>();
-        this.allowedCommands.remove("join_game");
-        this.allowedCommands.remove("create_game");
-        this.allowedCommands.add("id");
-        this.allowedCommands.add("players");
-        this.allowedCommands.add("chat_history");
-        this.allowedCommands.add("chat");
-        this.allowedCommands.add("whisper");
+        this.cliInputManager.removeCommand(CLICommand.JOIN_GAME);
+        this.cliInputManager.removeCommand(CLICommand.CREATE_GAME);
+        this.cliInputManager.removeCommand(CLICommand.EXIT);
+        this.cliInputManager.addCommand(CLICommand.ID);
+        this.cliInputManager.addCommand(CLICommand.PLAYERS);
+        this.cliInputManager.addCommand(CLICommand.CHAT);
+        this.cliInputManager.addCommand(CLICommand.CHAT);
+        this.cliInputManager.addCommand(CLICommand.WHISPER);
+        this.cliInputManager.addCommand(CLICommand.LEAVE_GAME);
         System.out.printf("\nJoined the game (ID %s). Your username is %s.\n\n", gameId, username);
         printCommandPrompt();
     }
@@ -192,7 +190,7 @@ public class CLI implements ViewInterface {
                 System.out.println("The game will now start.");
             }
             case STARTED -> {
-                this.allowedCommands.add("points");
+                this.cliInputManager.addCommand(CLICommand.POINTS);
                 this.cliState = CLIState.IN_GAME;
             }
             case FINAL_ROUND -> {
@@ -215,7 +213,7 @@ public class CLI implements ViewInterface {
     public synchronized void setCommonCards(PlayableCard[] commonResourceCards, PlayableCard[] commonGoldCards) {
         this.commonResourceCards = commonResourceCards;
         this.commonGoldCards = commonGoldCards;
-        this.allowedCommands.add("draw_options");
+        this.cliInputManager.addCommand(CLICommand.DRAW_OPTIONS);
     }
 
     /**
@@ -241,7 +239,7 @@ public class CLI implements ViewInterface {
     public synchronized void promptStarterChoice(StarterCard starterCard) {
         this.starterCard = starterCard;
         this.cliState = CLIState.CHOOSING_STARTER;
-        this.allowedCommands.add("starter");
+        this.cliInputManager.addCommand(CLICommand.STARTER);
 
         printStarterCard();
     }
@@ -263,8 +261,7 @@ public class CLI implements ViewInterface {
     @Override
     public synchronized void promptColorChoice(List<PlayerColor> colorChoices) {
         this.cliState = CLIState.CHOOSING_COLOR;
-        this.allowedCommands.add("color");
-        this.allowedCommands.add("colour");
+        this.cliInputManager.addCommand(CLICommand.COLOR);
         this.colorChoices = colorChoices;
 
         System.out.println("\nChoose a color between:");
@@ -288,8 +285,7 @@ public class CLI implements ViewInterface {
     public synchronized void setColor(String username, PlayerColor color) {
         this.playerColors.put(username, color);
         if (this.username.equals(username)) {
-            this.allowedCommands.remove("color");
-            this.allowedCommands.remove("colour");
+            this.cliInputManager.removeCommand(CLICommand.COLOR);
         }
         System.out.printf("\nPlayer %s's color is %s.\n", username, color.name().toLowerCase());
         printCommandPrompt();
@@ -311,7 +307,7 @@ public class CLI implements ViewInterface {
     @Override
     public synchronized void setHand(List<PlayableCard> hand) {
         this.hand = new ArrayList<>(hand);
-        this.allowedCommands.add("hand");
+        this.cliInputManager.addCommand(CLICommand.HAND);
 
         printHand();
     }
@@ -324,7 +320,7 @@ public class CLI implements ViewInterface {
     @Override
     public synchronized void addCardToHand(PlayableCard card) {
         this.hand.add(card);
-        this.allowedCommands.remove("draw_card");
+        this.cliInputManager.removeCommand(CLICommand.DRAW_CARD);
         this.cliState = CLIState.IN_GAME;
 
         printHand();
@@ -349,7 +345,7 @@ public class CLI implements ViewInterface {
     @Override
     public synchronized void setOtherHand(String username, List<RestrictedCard> hand) {
         this.otherHands.put(username, new ArrayList<>(hand));
-        this.allowedCommands.add("hand");
+        this.cliInputManager.addCommand(CLICommand.HAND);
     }
 
     /**
@@ -385,11 +381,14 @@ public class CLI implements ViewInterface {
     @Override
     public synchronized void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) {
         if (this.username.equals(username)) {
-            this.allowedCommands.remove("starter");
+            this.cliInputManager.removeCommand(CLICommand.STARTER);
         }
-        this.allowedCommands.add("play_area");
-        this.allowedCommands.add("scroll_view");
+        this.cliInputManager.addCommand(CLICommand.PLAY_AREA);
+        this.cliInputManager.addCommand(CLICommand.SCROLL_VIEW);
         this.playAreas.put(username, new CLIPlayArea(cardPlacementOrder, field, activeSides));
+        if (username.equals(this.username)) {
+            System.out.println("Starter card played! Type \"play_area\" to see your play area.");
+        }
     }
 
     /**
@@ -403,13 +402,13 @@ public class CLI implements ViewInterface {
     @Override
     public synchronized void playCard(String username, BoardCard card, SideType side, Position pos) {
         this.playAreas.get(username).addCard(card, side, pos);
-        this.allowedCommands.remove("play_card");
+        this.cliInputManager.removeCommand(CLICommand.PLAY_CARD);
         if (username.equals(this.username)) {
             if (dontDraw) {
                 cliState = CLIState.IN_GAME;
             } else {
                 cliState = CLIState.DRAWING_CARD;
-                this.allowedCommands.add("draw_card");
+                this.cliInputManager.addCommand(CLICommand.DRAW_CARD);
             }
         }
     }
@@ -444,7 +443,7 @@ public class CLI implements ViewInterface {
     @Override
     public synchronized void setCommonObjectives(ObjectiveCard[] commonObjectives) {
         this.commonObjectiveCards = commonObjectives;
-        this.allowedCommands.add("common_objectives");
+        this.cliInputManager.addCommand(CLICommand.COMMON_OBJECTIVES);
         printCommonObjectives();
     }
 
@@ -457,7 +456,7 @@ public class CLI implements ViewInterface {
     public synchronized void promptObjectiveChoice(List<ObjectiveCard> possiblePersonalObjectives) {
         this.cliState = CLIState.CHOOSING_OBJECTIVE;
         this.personalObjectiveOptions = possiblePersonalObjectives;
-        this.allowedCommands.add("objective");
+        this.cliInputManager.addCommand(CLICommand.OBJECTIVE);
         printObjectiveOptions();
 
         printCommandPrompt();
@@ -470,8 +469,8 @@ public class CLI implements ViewInterface {
      */
     @Override
     public synchronized void setPersonalObjective(ObjectiveCard personalObjective) {
-        this.allowedCommands.remove("objective");
-        this.allowedCommands.add("objectives");
+        this.cliInputManager.removeCommand(CLICommand.OBJECTIVE);
+        this.cliInputManager.addCommand(CLICommand.OBJECTIVES);
         this.cliState = CLIState.PRE_GAME;
         this.personalObjective = personalObjective;
         System.out.println("\nYour personal objective is:");
@@ -504,7 +503,7 @@ public class CLI implements ViewInterface {
         if(username.equals(this.username)) {
             System.out.println("\nIt's your turn! You can now play a card, then draw one.");
             cliState = CLIState.PLAYING_CARD;
-            this.allowedCommands.add("play_card");
+            this.cliInputManager.addCommand(CLICommand.PLAY_CARD);
         } else {
             System.out.printf("\nIt's %s's turn.", username);
         }
@@ -519,7 +518,7 @@ public class CLI implements ViewInterface {
      */
     @Override
     public synchronized void setWinners(List<String> winnerUsernames) {
-        this.allowedCommands.add("winners");
+        this.cliInputManager.addCommand(CLICommand.WINNERS);
         this.winners = winnerUsernames;
         printWinners();
     }
@@ -610,11 +609,11 @@ public class CLI implements ViewInterface {
         lastPrintedPlayArea = null;
         colorChoices = null;
 
-        allowedCommands.clear();
-        allowedCommands.add("help");
-        allowedCommands.add("join_game");
-        allowedCommands.add("create_game");
-        allowedCommands.add("exit");
+        cliInputManager.clearCommands();
+        cliInputManager.addCommand(CLICommand.HELP);
+        cliInputManager.addCommand(CLICommand.JOIN_GAME);
+        cliInputManager.addCommand(CLICommand.CREATE_GAME);
+        cliInputManager.addCommand(CLICommand.EXIT);
     }
 
     @Override
@@ -878,58 +877,10 @@ public class CLI implements ViewInterface {
     }
 
     public synchronized void printHelp() {
+        Set<CLICommand> allowedCommands = cliInputManager.getAllowedCommands();
         System.out.println("\nAvailable commands:");
-        System.out.println("\thelp - Prints the list of available commands.");
-        if (cliState == CLIState.STARTUP) {
-            System.out.println("\tjoin_game [username] [gameId] - Joins a game with the given username.");
-            System.out.println("\tcreate_game [username] [numPlayers] - Creates a new game with the given number of players, and joins it with the given username.");
-            System.out.println("\texit - Closes the game.");
-        } else {
-            //The player is either in a lobby or in a game
-            System.out.println("\tid - Prints this game's id.");
-            System.out.println("\tplayers - Prints the usernames of the players in the game. If a turn order has been chosen, the usernames will be printed in the correct order.");
-            if (cliState != CLIState.GAME_ENDED) {
-                System.out.println("\tchat - Prints unread chat messages.");
-                System.out.println("\tchat_history - Prints the whole chat history.");
-                System.out.println("\tchat [message] - Sends a message to the public chat.");
-                System.out.println("\twhisper [receiver username] [message] - Sends a private message to the specified player.");
-            }
-            //Specific commands if the player is in a game
-            if (cliState != CLIState.LOBBY) {
-                //At this point common cards have been drawn, so you can see them
-                System.out.println("\tdraw_options - Prints the options from which everyone can draw from (decks and common cards).");
-                switch (cliState) {
-                    case CLIState.CHOOSING_STARTER -> System.out.println("\tstarter [front|back] - Places your starter card on the specified side. If no side is specified, prints your starter card.");
-                    case CLIState.CHOOSING_COLOR -> System.out.println("\tcolor [color] - Chooses your color. If no color is given, prints the options available.");
-                    case CLIState.CHOOSING_OBJECTIVE -> {
-                        System.out.println("\tcommon_objectives - Prints the common objectives for this game.");
-                        System.out.println("\tobjective [1|2] - Sets your objective. If no index is given, prints your objective options.");
-                    }
-                    default -> {
-                        //The game is ongoing, so you can see other people's hands and play areas, as well as your own
-                        System.out.println("\thand [username] - Prints the hand of the specified player. If no username is given, prints your own hand.");
-                        System.out.println("\tplay_area [username] - Prints the play area of the specified player. If no username is given, prints your own play area.");
-                        System.out.println("\tscroll_view [left|right|center] [(if left/right) offset] - Scrolls the view you have of the last printed play area in the given direction; \"center\" resets the view so that the starter card is centered.");
-                        System.out.println("\tobjectives - Prints your personal objective, and the game's common objectives.");
-                        System.out.println("\tpoints - Prints the amount of points each player has currently.");
-                        switch (cliState) {
-                            case PLAYING_CARD -> {
-                                //The player must play a card, so the relative command is available
-                                System.out.println("\tplay_card [index] [front|back] [position: x;y] - Plays the specified card, on the given side, in the given position.");
-                            }
-                            case DRAWING_CARD -> {
-                                //The player must draw a card, so the relative command is available
-                                System.out.println("\tdraw_card [deck|common] [resource|gold] [(if common) index] - Draws the specified card.");
-                            }
-                            case GAME_ENDED -> {
-                                //The game has ended, so the winner usernames are available.
-                                System.out.println("\twinners - Prints the usernames of the players who won this game.");
-                            }
-                        }
-                    }
-                }
-            }
-            System.out.println("\texit - Disconnects from the current game.");
+        for(CLICommand cmd : allowedCommands) {
+            System.out.println("\t- " + cmd);
         }
         printCommandPrompt();
     }
@@ -982,20 +933,12 @@ public class CLI implements ViewInterface {
         System.out.println("Type \"help\" to see all available commands.");
     }
 
-    public synchronized boolean allowedCommand(String command) {
-        return this.allowedCommands.contains(command);
-    }
-
     public synchronized boolean validUsername(String username) {
         return this.playerUsernames.contains(username);
     }
 
-    public void printCommandPrompt() {
+    public synchronized void printCommandPrompt() {
         System.out.print("\n>> ");
-    }
-
-    public synchronized CLIState getCliState() {
-        return cliState;
     }
 
     public synchronized boolean validColorChoice(PlayerColor playerColor) {
@@ -1010,7 +953,7 @@ public class CLI implements ViewInterface {
         return hand;
     }
 
-    public enum CLIState {
+    private enum CLIState {
         STARTUP,
         LOBBY,
         PRE_GAME,
