@@ -201,6 +201,14 @@ public class PlayArea implements PlayAreaModel {
     }
 
     /**
+     * @return The set of positions in which a card cannot be placed.
+     */
+    @Override
+    public Set<Position> getIllegalPositions() {
+        return new HashSet<>(illegalPositions);
+    }
+
+    /**
      * @return The set of placeable positions that were added with the last card placement.
      */
     @JsonIgnore

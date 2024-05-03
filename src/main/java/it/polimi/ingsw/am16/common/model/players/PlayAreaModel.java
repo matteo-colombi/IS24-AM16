@@ -74,6 +74,11 @@ public interface PlayAreaModel {
     Set<Position> getLegalPositions();
 
     /**
+     * @return The set of positions in which a card cannot be placed.
+     */
+    Set<Position> getIllegalPositions();
+
+    /**
      * @return The set of placeable positions that were added with the last card placement.
      */
     Set<Position> getAddedLegalPositions();
