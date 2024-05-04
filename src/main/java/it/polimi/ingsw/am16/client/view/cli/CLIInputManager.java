@@ -46,9 +46,9 @@ public class CLIInputManager implements Runnable {
     public void run() {
         running = true;
         //Using BufferedReader instead of Scanner because it is thread safe
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             cliView.printCommandPrompt();
-            while(running) {
+            while (running) {
                 String input = reader.readLine();
                 parseCommand(input);
             }
@@ -68,7 +68,7 @@ public class CLIInputManager implements Runnable {
         if (matchingCommands.size() > 1) {
             System.out.println("Ambiguous command: \"" + inputCommand + "\"");
             System.out.println("Possible matches:");
-            for(CLICommand command : matchingCommands) {
+            for (CLICommand command : matchingCommands) {
                 System.out.println("\t- " + command);
             }
             return;
@@ -288,7 +288,7 @@ public class CLIInputManager implements Runnable {
                     break;
                 }
 
-                PlayableCard playedCard = hand.get(index-1);
+                PlayableCard playedCard = hand.get(index - 1);
 
                 SideType sideType = switch (side) {
                     case "front" -> SideType.FRONT;
@@ -442,6 +442,30 @@ public class CLIInputManager implements Runnable {
     }
 
     private Set<CLICommand> commandMatch(String input) {
+//        Set<CLICommand> filteredCommand  = new HashSet<>();
+//
+//        for (CLICommand command : allowedCommands) {
+//            if(command.exactMatch(input)) {
+//                filteredCommand.clear();
+//                filteredCommand.add(command);
+//                return filteredCommand;
+//            }
+//
+//            if(command.matches(input))
+//                filteredCommand.add(command);
+//        }
+//
+//        return filteredCommand;
+
+        Set<CLICommand> filteredCommands = allowedCommands
+                .stream()
+                .filter(c -> c.exactMatch(input))
+                .limit(1)
+                .collect(Collectors.toSet());
+
+        if (!filteredCommands.isEmpty())
+            return filteredCommands;
+
         return allowedCommands
                 .stream()
                 .filter(c -> c.matches(input))

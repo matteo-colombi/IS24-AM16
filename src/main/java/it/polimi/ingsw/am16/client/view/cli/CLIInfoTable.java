@@ -22,19 +22,7 @@ public class CLIInfoTable {
             ObjectType.QUILL, 8
     );
 
-    private static final CLIText emptyInfoTable = new CLIText(
-            new String[]{"                      ", "                      ", "                      ", "                      ", "                      ", "                      ", "                      ", "                      ", "                      ", "                      "}
-    );
-
-    public static CLIInfoTable getEmptyInfoTable() {
-        return new CLIInfoTable();
-    }
-
     private final CLIText infoTableAsset;
-
-    public CLIInfoTable() {
-        this.infoTableAsset = emptyInfoTable;
-    }
 
     public CLIInfoTable(Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         this.infoTableAsset = CLIAssetRegistry.getCLIAssetRegistry().getInfoTable();

@@ -91,7 +91,11 @@ public enum CLICommand {
     }
 
     public boolean matches(String input) {
-        return command.startsWith(input) || aliases.stream().anyMatch(c -> c.startsWith(input));
+        return command.contains(input) || aliases.stream().anyMatch(c -> c.contains(input));
+    }
+
+    public boolean exactMatch(String input) {
+        return command.equals(input);
     }
 
     @Override

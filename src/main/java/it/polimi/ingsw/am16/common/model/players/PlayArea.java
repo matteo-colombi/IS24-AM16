@@ -307,12 +307,16 @@ public class PlayArea implements PlayAreaModel {
         removedLegalPositions.clear();
 
         Map<CornersIdx, CornerType> corners = activeSide.getCorners();
+
         for(CornersIdx idx : corners.keySet()) {
             Position neighbourPosition = playedCardPosition.addOffset(idx.getOffset());
-            if (corners.get(idx) == CornerType.BLOCKED) {
-                removedLegalPositions.add(neighbourPosition);
-            } else if (!illegalPositions.contains(neighbourPosition)) {
-                addedLegalPositions.add(neighbourPosition);
+
+            if (!illegalPositions.contains(neighbourPosition)) {
+                if (corners.get(idx) == CornerType.BLOCKED) {
+                    removedLegalPositions.add(neighbourPosition);
+                } else {
+                    addedLegalPositions.add(neighbourPosition);
+                }
             }
         }
 
