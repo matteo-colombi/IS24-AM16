@@ -204,6 +204,7 @@ public class PlayArea implements PlayAreaModel {
      * @return The set of positions in which a card cannot be placed.
      */
     @Override
+    @SuppressWarnings("unused") //Suppressing because this method is used by Jackson, but it doesn't get detected
     public Set<Position> getIllegalPositions() {
         return new HashSet<>(illegalPositions);
     }

@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class TestRemoteViewImplementation implements RemoteViewInterface {
+public class TestRemoteViewImplementation implements RemoteClientInterface {
 
     String username;
 
@@ -232,6 +232,16 @@ public class TestRemoteViewImplementation implements RemoteViewInterface {
     public void signalDeadlock(String username) throws RemoteException {
         System.out.print("[" + username + "]: ");
         System.err.println("Player " + username + " is deadlocked!");
+    }
+
+    /**
+     * Ping request used by the server to check that the client is still connected.
+     *
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    @Override
+    public void ping() throws RemoteException {
+
     }
 
 }

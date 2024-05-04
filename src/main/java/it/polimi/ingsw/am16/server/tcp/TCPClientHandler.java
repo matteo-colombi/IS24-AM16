@@ -1,7 +1,7 @@
 package it.polimi.ingsw.am16.server.tcp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.polimi.ingsw.am16.client.RemoteViewInterface;
+import it.polimi.ingsw.am16.client.RemoteClientInterface;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.tcpMessages.*;
@@ -23,11 +23,12 @@ import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 import java.io.*;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * DOCME
  */
-public class TCPClientHandler implements Runnable, RemoteViewInterface {
+public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
@@ -38,6 +39,12 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     private GameController gameController;
     private int playerId;
     private String username;
+    private final AtomicBoolean running;
+
+    private final AtomicBoolean ponged;
+
+    private final Timer pingTimer;
+
 
     public TCPClientHandler(Socket clientSocket, LobbyManager lobbyManager) throws IOException {
         this.lobbyManager = lobbyManager;
@@ -47,13 +54,16 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
         this.gameController = null;
         this.username = null;
         this.playerId = -1;
+        this.ponged = new AtomicBoolean(true);
+        this.pingTimer = new Timer();
+        this.running = new AtomicBoolean(true);
     }
 
     @Override
     public void run() {
-        boolean running = true;
+        pingRoutine();
         try {
-            while (running) {
+            while (running.get()) {
                 String serializedMessage = null;
                 TCPMessage tcpMessage;
                 try {
@@ -69,12 +79,16 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
 
                     //Connection lost with client.
 
+                    System.out.println("Client disconnected.");
+
+                    pingTimer.cancel();
+
                     if (gameController != null && playerId != -1) {
                         gameController.disconnect(playerId);
                         playerId = -1;
                         gameController = null;
                     }
-                    running = false;
+                    running.set(false);
                     continue;
                 }
 
@@ -95,7 +109,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
                                 playerId = -1;
                                 gameController = null;
                             }
-                            running = false;
+                            running.set(false);
                         }
                         case CREATE_GAME -> {
                             if (gameController != null) {
@@ -184,7 +198,7 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
                                 gameController.joinPlayer(playerId, this);
                                 this.username = username;
                             } catch (UnexpectedActionException e) {
-                                promptError("User " + username + " already rejoined the game.");
+                                promptError("User already rejoined the game.");
                                 gameController = null;
                                 playerId = -1;
                             }
@@ -290,6 +304,12 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
                                 gameController.sendChatMessage(username, text, Set.of(receiverUsername));
                             }
                         }
+                        case PONG -> {
+                            ponged.set(true);
+                        }
+                        default -> {
+                            System.out.println("Client " + username + " sent a malformed message.");
+                        }
                     }
                 }
             }
@@ -301,8 +321,32 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
         }
     }
 
+    private void pingRoutine() {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (ponged.get()) {
+                    ponged.set(false);
+                    ping();
+                } else {
+                    System.out.println("Client didn't answer the last ping.");
+                    pingTimer.cancel();
+
+                    if (gameController != null) {
+                        gameController.disconnect(playerId);
+
+                    }
+                    playerId = -1;
+                    gameController = null;
+                    running.set(false);
+                }
+            }
+        };
+
+        pingTimer.schedule(task, 1000, 10000);
+    }
+
     private void sendTCPMessage(TCPMessage tcpMessage) {
-//        System.out.println("Sent message of type " + tcpMessage.messageType());
         try {
             out.println(mapper.writeValueAsString(tcpMessage));
             out.flush();
@@ -662,6 +706,15 @@ public class TCPClientHandler implements Runnable, RemoteViewInterface {
     @Override
     public void signalDeadlock(String username) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.SIGNAL_DEADLOCK, new SignalDeadlock(username));
+        sendTCPMessage(tcpMessage);
+    }
+
+    /**
+     * Ping request used by the server to check that the client is still connected.
+     */
+    @Override
+    public void ping() {
+        TCPMessage tcpMessage = new TCPMessage(MessageType.PING, null);
         sendTCPMessage(tcpMessage);
     }
 }

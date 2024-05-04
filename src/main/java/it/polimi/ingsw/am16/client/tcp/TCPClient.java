@@ -20,6 +20,10 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * DOCME
@@ -32,31 +36,39 @@ public class TCPClient implements Runnable, ServerInterface {
     private final ViewInterface view;
     private final PrintWriter out;
     private final Scanner in;
-    private boolean running;
+    private final AtomicBoolean running;
+
+    private final AtomicLong lastPinged;
+
+    private final Timer checkConnectionTimer;
+
 
     public TCPClient(String address, int port, ViewInterface view) throws IOException {
         socket = new Socket(address, port);
         out = new PrintWriter(socket.getOutputStream());
         in = new Scanner(socket.getInputStream());
         this.view = view;
+        this.lastPinged = new AtomicLong(System.currentTimeMillis());
+        this.running = new AtomicBoolean(true);
+        this.checkConnectionTimer = new Timer();
         this.view.setServerInterface(this);
         this.view.start();
     }
 
     @Override
     public void run() {
-        running = true;
+        checkConnectionRoutine();
         try {
-            while (running) {
+            while (running.get()) {
                 String serializedMessage = null;
                 TCPMessage message;
                 try {
                     serializedMessage = in.nextLine();
                     message = mapper.readValue(serializedMessage, TCPMessage.class);
-                } catch (IOException ignored) {
+                } catch (IOException e) {
 
                     //Error while deserializing message
-                    ignored.printStackTrace();
+                    e.printStackTrace();
                     System.err.println("Server sent a malformed message: " + serializedMessage);
                     continue;
                 } catch (NoSuchElementException | IllegalStateException ignored) {
@@ -64,7 +76,9 @@ public class TCPClient implements Runnable, ServerInterface {
                     //Connection lost with server
 
                     System.err.println("Connection lost.");
-                    running = false;
+                    checkConnectionTimer.cancel();
+
+                    running.set(false);
                     continue;
                 }
                 
@@ -381,6 +395,10 @@ public class TCPClient implements Runnable, ServerInterface {
                     case REDRAW_VIEW -> {
                         view.redrawView();
                     }
+                    case PING -> {
+                        lastPinged.set(System.currentTimeMillis());
+                        pong();
+                    }
                     default -> System.err.println("Unknown message type: " + message.messageType());
                 }
             }
@@ -392,6 +410,22 @@ public class TCPClient implements Runnable, ServerInterface {
         }
 
         System.exit(0);
+    }
+
+    private void checkConnectionRoutine() {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                long diff = System.currentTimeMillis() - lastPinged.get();
+                if (diff > 15000) {
+                    System.err.println("Server hasn't pinged in a while. Considering connection as lost.");
+                    System.out.println("Good bye!");
+                    running.set(false);
+                }
+            }
+        };
+
+        checkConnectionTimer.schedule(task, 1000, 10000);
     }
 
     private void sendTCPMessage(TCPMessage tcpMessage) {
@@ -462,13 +496,20 @@ public class TCPClient implements Runnable, ServerInterface {
     public void disconnect() {
         TCPMessage message = new TCPMessage(MessageType.DISCONNECT, null);
         sendTCPMessage(message);
-        running = false;
+        running.set(false);
+        checkConnectionTimer.cancel();
         System.exit(0);
     }
 
     @Override
     public void leaveGame() {
         TCPMessage message = new TCPMessage(MessageType.LEAVE_GAME, null);
+        sendTCPMessage(message);
+    }
+
+    @Override
+    public void pong() {
+        TCPMessage message = new TCPMessage(MessageType.PONG, null);
         sendTCPMessage(message);
     }
 }

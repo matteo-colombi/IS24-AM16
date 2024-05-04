@@ -141,7 +141,7 @@ public class CLI implements ViewInterface {
         this.cliInputManager.addCommand(CLICommand.ID);
         this.cliInputManager.addCommand(CLICommand.PLAYERS);
         this.cliInputManager.addCommand(CLICommand.CHAT);
-        this.cliInputManager.addCommand(CLICommand.CHAT);
+        this.cliInputManager.addCommand(CLICommand.CHAT_HISTORY);
         this.cliInputManager.addCommand(CLICommand.WHISPER);
         this.cliInputManager.addCommand(CLICommand.LEAVE_GAME);
         System.out.printf("\nJoined the game (ID %s). Your username is %s.\n\n", gameId, username);

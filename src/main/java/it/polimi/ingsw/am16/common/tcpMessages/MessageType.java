@@ -36,6 +36,7 @@ public enum MessageType {
     SIGNAL_DISCONNECTION,
     SIGNAL_DEADLOCK,
     JOIN_GAME_RESPONSE,
+    PING,
 
     //Requests (from client to server)
     LEAVE_GAME,
@@ -48,5 +49,6 @@ public enum MessageType {
     PLAY_CARD_REQUEST,
     DRAW_CARD,
     SEND_CHAT_MESSAGE,
-    SEND_PRIVATE_CHAT_MESSAGE
+    SEND_PRIVATE_CHAT_MESSAGE,
+    PONG
 }

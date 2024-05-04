@@ -14,11 +14,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.rmi.RemoteException;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
+/**
+ * DOCME
+ * N.B. the only parts of this class that are thread safe are the allowedCommands methods
+ * Everything else should never be called by multiple threads
+ */
 public class CLIInputManager implements Runnable {
 
     private boolean running;
@@ -30,19 +35,11 @@ public class CLIInputManager implements Runnable {
     public CLIInputManager(CLI cliView, InputStream inputStream) {
         this.cliView = cliView;
         this.inputStream = inputStream;
-        this.allowedCommands = new HashSet<>();
+        this.allowedCommands = new ConcurrentSkipListSet<>();
     }
 
     public void setServerInterface(ServerInterface serverInterface) {
         this.serverInterface = serverInterface;
-    }
-
-    public void addCommand(CLICommand command) {
-        allowedCommands.add(command);
-    }
-
-    public void removeCommand(CLICommand command) {
-        allowedCommands.remove(command);
     }
 
     @Override
@@ -444,11 +441,19 @@ public class CLIInputManager implements Runnable {
         }
     }
 
-    public Set<CLICommand> commandMatch(String input) {
+    private Set<CLICommand> commandMatch(String input) {
         return allowedCommands
                 .stream()
                 .filter(c -> c.matches(input))
                 .collect(Collectors.toSet());
+    }
+
+    public void addCommand(CLICommand command) {
+        allowedCommands.add(command);
+    }
+
+    public void removeCommand(CLICommand command) {
+        allowedCommands.remove(command);
     }
 
     public Set<CLICommand> getAllowedCommands() {

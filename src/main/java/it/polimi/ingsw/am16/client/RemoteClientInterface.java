@@ -1,6 +1,5 @@
 package it.polimi.ingsw.am16.client;
 
-import it.polimi.ingsw.am16.client.view.ViewInterface;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
@@ -15,7 +14,7 @@ import java.util.Map;
 /**
  * Interface that contains the methods used by the server to communicate with client views.
  */
-public interface RemoteViewInterface extends Remote {
+public interface RemoteClientInterface extends Remote {
 
     /**
      * Tells the view that they have joined a game with the given username.
@@ -265,4 +264,9 @@ public interface RemoteViewInterface extends Remote {
      */
     void signalDeadlock(String username) throws RemoteException;
 
+    /**
+     * Ping request used by the server to check that the client is still connected.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    void ping() throws RemoteException;
 }

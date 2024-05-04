@@ -1,6 +1,6 @@
 package it.polimi.ingsw.am16.server.controller;
 
-import it.polimi.ingsw.am16.client.RemoteViewInterface;
+import it.polimi.ingsw.am16.client.RemoteClientInterface;
 import it.polimi.ingsw.am16.client.TestRemoteViewImplementation;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
@@ -22,8 +22,8 @@ class TestGameController {
         String gameId = lobbyManager.createGame(2);
         GameController controller = lobbyManager.getGame(gameId);
 
-        RemoteViewInterface xLordeInterface = new TestRemoteViewImplementation("xLorde");
-        RemoteViewInterface l2cInterface = new TestRemoteViewImplementation("l2c");
+        RemoteClientInterface xLordeInterface = new TestRemoteViewImplementation("xLorde");
+        RemoteClientInterface l2cInterface = new TestRemoteViewImplementation("l2c");
 
         int xLordeId = controller.createPlayer("xLorde");
         int l2cId = controller.createPlayer("l2c");

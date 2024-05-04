@@ -1,6 +1,6 @@
 package it.polimi.ingsw.am16.server;
 
-import it.polimi.ingsw.am16.client.RemoteViewInterface;
+import it.polimi.ingsw.am16.client.RemoteClientInterface;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.players.*;
 import it.polimi.ingsw.am16.common.model.cards.*;
@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class VirtualView {
 
-    private final Map<Integer, RemoteViewInterface> userViews;
+    private final Map<Integer, RemoteClientInterface> userViews;
     private final List<String> usernames;
 
     /**
@@ -30,7 +30,7 @@ public class VirtualView {
     }
 
     public void joinGame(int playerId, String gameId, String username) {
-        RemoteViewInterface userView = userViews.get(playerId);
+        RemoteClientInterface userView = userViews.get(playerId);
         try {
             userView.joinGame(gameId, username);
             userView.setPlayers(new ArrayList<>(usernames));
@@ -45,7 +45,7 @@ public class VirtualView {
      * @param newUserView The player's view interface.
      * @param username The username of the new player.
      */
-    public void addPlayer(int playerId, RemoteViewInterface newUserView, String username) {
+    public void addPlayer(int playerId, RemoteClientInterface newUserView, String username) {
         userViews.keySet().forEach(otherPlayerId -> {
             try {
                 userViews.get(otherPlayerId).addPlayer(username);
@@ -108,7 +108,7 @@ public class VirtualView {
      * @param card The starter card.
      */
     public void promptStarterChoice(int receiverPlayerId, StarterCard card) {
-        RemoteViewInterface userView = userViews.get(receiverPlayerId);
+        RemoteClientInterface userView = userViews.get(receiverPlayerId);
         try {
             userView.promptStarterChoice(card);
         } catch (RemoteException e) {
@@ -135,7 +135,7 @@ public class VirtualView {
      * @param colorChoices The list of colors the player can choose from.
      */
     public void promptColorChoice(int receiverPlayerId, List<PlayerColor> colorChoices) {
-        RemoteViewInterface userView = userViews.get(receiverPlayerId);
+        RemoteClientInterface userView = userViews.get(receiverPlayerId);
         try {
             userView.promptColorChoice(colorChoices);
         } catch (RemoteException e) {
@@ -177,7 +177,7 @@ public class VirtualView {
      * @param hand The player's hand.
      */
     public void communicateHand(int receiverPlayerId, List<PlayableCard> hand) {
-        RemoteViewInterface userView = userViews.get(receiverPlayerId);
+        RemoteClientInterface userView = userViews.get(receiverPlayerId);
         try {
             userView.setHand(hand);
         } catch (RemoteException e) {
@@ -191,7 +191,7 @@ public class VirtualView {
      * @param card The new card in the player's hand.
      */
     public void communicateNewCard(int receiverPlayerId, PlayableCard card) {
-        RemoteViewInterface userView = userViews.get(receiverPlayerId);
+        RemoteClientInterface userView = userViews.get(receiverPlayerId);
         try {
             userView.addCardToHand(card);
         } catch (RemoteException e) {
@@ -205,7 +205,7 @@ public class VirtualView {
      * @param card The card to be removed from the player's hand.
      */
     public void communicateRemoveCard(int receiverPlayerId, PlayableCard card) {
-        RemoteViewInterface userView = userViews.get(receiverPlayerId);
+        RemoteClientInterface userView = userViews.get(receiverPlayerId);
         try {
             userView.removeCardFromHand(card);
         } catch (RemoteException e) {
@@ -220,7 +220,7 @@ public class VirtualView {
      * @param hand The restricted hand.
      */
     public void communicateOtherHand(int receiverPlayerId, String username, List<RestrictedCard> hand) {
-        RemoteViewInterface userView = userViews.get(receiverPlayerId);
+        RemoteClientInterface userView = userViews.get(receiverPlayerId);
         try {
             userView.setOtherHand(username, hand);
         } catch (RemoteException e) {
@@ -235,7 +235,7 @@ public class VirtualView {
      * @param newCard The restricted card to be added to the player's hand.
      */
     public void communicateNewOtherCard(int receiverPlayerId, String username, RestrictedCard newCard) {
-        RemoteViewInterface userView = userViews.get(receiverPlayerId);
+        RemoteClientInterface userView = userViews.get(receiverPlayerId);
         try {
             userView.addCardToOtherHand(username, newCard);
         } catch (RemoteException e) {
@@ -250,7 +250,7 @@ public class VirtualView {
      * @param removedCard The restricted card to be removed from the player's hand.
      */
     public void communicateRemoveOtherCard(int receiverPlayerId, String username, RestrictedCard removedCard) {
-        RemoteViewInterface userView = userViews.get(receiverPlayerId);
+        RemoteClientInterface userView = userViews.get(receiverPlayerId);
         try {
             userView.removeCardFromOtherHand(username, removedCard);
         } catch (RemoteException e) {
@@ -328,7 +328,7 @@ public class VirtualView {
      * @param possiblePersonalObjectives The possible objectives which the player can choose from.
      */
     public void promptObjectiveChoice(int receiverPlayerId, List<ObjectiveCard> possiblePersonalObjectives) {
-        RemoteViewInterface userView = userViews.get(receiverPlayerId);
+        RemoteClientInterface userView = userViews.get(receiverPlayerId);
         try {
             userView.promptObjectiveChoice(possiblePersonalObjectives);
         } catch (RemoteException e) {
@@ -342,7 +342,7 @@ public class VirtualView {
      * @param personalObjective The player's personal objective.
      */
     public void communicatePersonalObjective(int receiverPlayerId, ObjectiveCard personalObjective) {
-        RemoteViewInterface userView = userViews.get(receiverPlayerId);
+        RemoteClientInterface userView = userViews.get(receiverPlayerId);
         try {
             userView.setPersonalObjective(personalObjective);
         } catch (RemoteException e) {
@@ -412,7 +412,7 @@ public class VirtualView {
      * @param messages The list of new messages.
      */
     public void communicateNewMessages(int playerId, List<ChatMessage> messages) {
-        RemoteViewInterface userView = userViews.get(playerId);
+        RemoteClientInterface userView = userViews.get(playerId);
         try {
             userView.addMessages(messages);
         } catch (RemoteException e) {
@@ -440,7 +440,7 @@ public class VirtualView {
      * @param newMessage The new message.
      */
     public void communicateNewMessage(int playerId, ChatMessage newMessage) {
-        RemoteViewInterface userView = userViews.get(playerId);
+        RemoteClientInterface userView = userViews.get(playerId);
         if (userView == null) return;
         try {
             userView.addMessage(newMessage);
@@ -455,7 +455,7 @@ public class VirtualView {
      * @param errorMessage The error message.
      */
     public void promptError(int playerId, String errorMessage) {
-        RemoteViewInterface userView = userViews.get(playerId);
+        RemoteClientInterface userView = userViews.get(playerId);
         try {
             userView.promptError(errorMessage);
         } catch (RemoteException e) {
@@ -481,7 +481,7 @@ public class VirtualView {
      * @param playerId The player which this communication should be sent to.
      */
     public void redrawView(int playerId) {
-        RemoteViewInterface userView = userViews.get(playerId);
+        RemoteClientInterface userView = userViews.get(playerId);
         if (userView == null) return;
         try {
             userView.redrawView();

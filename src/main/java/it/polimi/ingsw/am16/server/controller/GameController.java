@@ -1,6 +1,6 @@
 package it.polimi.ingsw.am16.server.controller;
 
-import it.polimi.ingsw.am16.client.RemoteViewInterface;
+import it.polimi.ingsw.am16.client.RemoteClientInterface;
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
@@ -83,9 +83,9 @@ public class GameController {
     /**
      * Sets the player with the given playerId's status to connected, and adds it to the list of players which should receive updates about the game.
      * @param playerId The player's id. If an invalid id is given, this method does nothing.
-     * @param userView The {@link RemoteViewInterface}, used to communicate with the player.
+     * @param userView The {@link RemoteClientInterface}, used to communicate with the player.
      */
-    public synchronized void joinPlayer(int playerId, RemoteViewInterface userView) throws UnexpectedActionException {
+    public synchronized void joinPlayer(int playerId, RemoteClientInterface userView) throws UnexpectedActionException {
         if (!game.isRejoiningAfterCrash() && (playerId < 0 || playerId >= game.getCurrentPlayerCount()))
             return;
 

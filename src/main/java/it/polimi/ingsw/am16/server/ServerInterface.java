@@ -33,4 +33,6 @@ public interface ServerInterface extends Remote {
     void disconnect() throws RemoteException;
 
     void leaveGame() throws RemoteException;
+
+    void pong() throws RemoteException;
 }
