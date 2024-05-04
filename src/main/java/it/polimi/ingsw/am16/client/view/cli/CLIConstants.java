@@ -10,4 +10,7 @@ public class CLIConstants {
     public static final int LABEL_HEIGHT = 3;
 
     public static final int VIEW_WIDTH = 9;
+
+    public static final int INFO_TABLE_WIDTH = 22;
+    public static final int INFO_TABLE_HEIGHT = 10;
 }

@@ -12,10 +12,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.model.cards.BoardCard;
-import it.polimi.ingsw.am16.common.model.cards.CardSide;
-import it.polimi.ingsw.am16.common.model.cards.CornerType;
+import it.polimi.ingsw.am16.common.model.cards.ObjectType;
+import it.polimi.ingsw.am16.common.model.cards.ResourceType;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
-import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.tcpMessages.Payload;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
@@ -31,13 +30,29 @@ public class SetPlayArea extends Payload {
     private final Map<Position, BoardCard> field;
     @JsonSerialize(keyUsing = BoardCard.BoardCardSerializer.class)
     private final Map<BoardCard, SideType> activeSides;
+    private final Set<Position> legalPositions;
+    private final Set<Position> illegalPositions;
+    private final Map<ResourceType, Integer> resourceCounts;
+    private final Map<ObjectType, Integer> objectCounts;
 
     @JsonCreator
-    public SetPlayArea(@JsonProperty("username") String username, @JsonProperty("cardPlacementOrder") List<Position> cardPlacementOrder, @JsonProperty("field") Map<Position, BoardCard> field, @JsonProperty("activeSides") Map<BoardCard, SideType> activeSides) {
+    public SetPlayArea(
+            @JsonProperty("username") String username,
+            @JsonProperty("cardPlacementOrder") List<Position> cardPlacementOrder,
+            @JsonProperty("field") Map<Position, BoardCard> field,
+            @JsonProperty("activeSides") Map<BoardCard, SideType> activeSides,
+            @JsonProperty("legalPositions") Set<Position> legalPositions,
+            @JsonProperty("illegalPositions") Set<Position> illegalPositions,
+            @JsonProperty("resourceCounts") Map<ResourceType, Integer> resourceCounts,
+            @JsonProperty("objectCounts") Map<ObjectType, Integer> objectCounts) {
         this.username = username;
         this.cardPlacementOrder = cardPlacementOrder;
         this.field = field;
         this.activeSides = activeSides;
+        this.legalPositions = legalPositions;
+        this.illegalPositions = illegalPositions;
+        this.resourceCounts = resourceCounts;
+        this.objectCounts = objectCounts;
     }
 
     public String getUsername() {
@@ -54,6 +69,22 @@ public class SetPlayArea extends Payload {
 
     public Map<BoardCard, SideType> getActiveSides() {
         return activeSides;
+    }
+
+    public Set<Position> getLegalPositions() {
+        return legalPositions;
+    }
+
+    public Set<Position> getIllegalPositions() {
+        return illegalPositions;
+    }
+
+    public Map<ResourceType, Integer> getResourceCounts() {
+        return resourceCounts;
+    }
+
+    public Map<ObjectType, Integer> getObjectCounts() {
+        return objectCounts;
     }
 
     /**
@@ -92,7 +123,19 @@ public class SetPlayArea extends Payload {
             TypeReference<HashMap<BoardCard, SideType>> typeReferenceActiveSides = new TypeReference<>() {};
             Map<BoardCard, SideType> activeSideTypes = mapper.readValue(setPlayAreaNode.get("activeSides").toString(), typeReferenceActiveSides);
 
-            return new SetPlayArea(username, cardPlacementOrder, field, activeSideTypes);
+            TypeReference<HashSet<Position>> typeReferenceLegalPositions = new TypeReference<>() {};
+            Set<Position> legalPositions = mapper.readValue(setPlayAreaNode.get("legalPositions").toString(), typeReferenceLegalPositions);
+
+            TypeReference<HashSet<Position>> typeReferenceIllegalPositions = new TypeReference<>() {};
+            Set<Position> illegalPositions = mapper.readValue(setPlayAreaNode.get("illegalPositions").toString(), typeReferenceIllegalPositions);
+
+            TypeReference<HashMap<ResourceType, Integer>> typeReferenceResourceCounts = new TypeReference<>() {};
+            Map<ResourceType, Integer> resourceCounts = mapper.readValue(setPlayAreaNode.get("resourceCounts").toString(), typeReferenceResourceCounts);
+
+            TypeReference<HashMap<ObjectType, Integer>> typeReferenceObjectCounts = new TypeReference<>() {};
+            Map<ObjectType, Integer> objectCounts = mapper.readValue(setPlayAreaNode.get("objectCounts").toString(), typeReferenceObjectCounts);
+
+            return new SetPlayArea(username, cardPlacementOrder, field, activeSideTypes, legalPositions, illegalPositions, resourceCounts, objectCounts);
         }
     }
 }

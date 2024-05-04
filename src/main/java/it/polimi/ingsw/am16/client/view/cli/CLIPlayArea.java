@@ -13,43 +13,32 @@ public class CLIPlayArea {
     private final Map<Position, BoardCard> field;
     private final Map<BoardCard, SideType> activeSides;
     private final CLIText playAreaText;
+    private final CLIInfoTable infoTable;
 
-    private final Set<Position> placeablePositions;
+    private final Set<Position> legalPositions;
+    private final Set<Position> illegalPositions;
 
     private int viewCenter;
 
     private int minX;
     private int maxX;
 
-    public CLIPlayArea(List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) {
+    public CLIPlayArea(List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         this.cardPlacementOrder = new ArrayList<>(cardPlacementOrder);
         this.field = new HashMap<>(field);
         this.activeSides = new HashMap<>(activeSides);
 
         playAreaText = new CLIText();
-        placeablePositions = new HashSet<>();
+
+        this.legalPositions = legalPositions;
+        this.illegalPositions = illegalPositions;
+
+        this.infoTable = new CLIInfoTable(resourceCounts, objectCounts);
 
         this.viewCenter = 0;
 
         this.minX = 0;
         this.maxX = 0;
-
-        for(Position p : cardPlacementOrder) {
-            BoardCard card = field.get(p);
-            CardSide side = card.getCardSideBySideType(activeSides.get(card));
-            Map<CornersIdx, CornerType> corners = side.getCorners();
-            for(CornersIdx idx : corners.keySet()) {
-                if (corners.get(idx) == CornerType.BLOCKED) {
-                    placeablePositions.remove(p.addOffset(idx.getOffset()));
-                    continue;
-                }
-                if (field.get(p.addOffset(idx.getOffset())) == null) {
-                    placeablePositions.add(p.addOffset(idx.getOffset()));
-                }
-            }
-            minX = Math.min(minX, p.x());
-            maxX = Math.max(maxX, p.x());
-        }
 
         initializeText();
     }
@@ -60,47 +49,32 @@ public class CLIPlayArea {
         activeSides = new HashMap<>();
 
         playAreaText = new CLIText();
-        placeablePositions = new HashSet<>(Set.of(new Position(0, 0)));
+        legalPositions = new HashSet<>(Set.of(new Position(0, 0)));
+        illegalPositions = new HashSet<>();
+
+        infoTable = new CLIInfoTable(Map.of(), Map.of());
 
         this.viewCenter = 0;
     }
 
-    public void addCard(BoardCard card, SideType side, Position position) {
+    public void addCard(BoardCard card, SideType side, Position position, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         this.cardPlacementOrder.add(position);
         this.field.put(position, card);
         this.activeSides.put(card, side);
 
         mergeCard(card, position);
 
-        placeablePositions.remove(position);
+        this.legalPositions.addAll(addedLegalPositions);
+        this.legalPositions.removeAll(removedLegalPositions);
 
-        Set<Position> newPlaceablePositions = new HashSet<>();
-        Set<Position> toRemovePlaceablePositions = new HashSet<>();
+        for(Position p : removedLegalPositions) {
+            removePositionLabel(p);
+        }
+        for(Position p : addedLegalPositions) {
+            addPositionLabel(p);
+        }
 
-        Map<CornersIdx, CornerType> corners = card.getCardSideBySideType(side).getCorners();
-
-        for(CornersIdx idx : corners.keySet()) {
-            if (corners.get(idx) == CornerType.BLOCKED) {
-                toRemovePlaceablePositions.add(position.addOffset(idx.getOffset()));
-                continue;
-            }
-            if (field.get(position.addOffset(idx.getOffset())) == null) {
-                newPlaceablePositions.add(position.addOffset(idx.getOffset()));
-            }
-        }
-        for(Position p : toRemovePlaceablePositions) {
-            if (placeablePositions.contains(p)) {
-                removePositionLabel(p);
-            }
-        }
-        newPlaceablePositions.removeAll(toRemovePlaceablePositions);
-        for(Position p : newPlaceablePositions) {
-            if (field.get(p) == null) {
-                addPositionLabel(p);
-            }
-        }
-        placeablePositions.removeAll(toRemovePlaceablePositions);
-        placeablePositions.addAll(newPlaceablePositions);
+        this.infoTable.update(resourceCounts, objectCounts);
 
         minX = Math.min(minX, position.x());
         maxX = Math.max(maxX, position.x());
@@ -113,8 +87,9 @@ public class CLIPlayArea {
 
             mergeCard(card, pos);
         }
-        for(Position pos : placeablePositions) {
-            addPositionLabel(pos);
+        for(Position pos : legalPositions) {
+            if (!illegalPositions.contains(pos))
+                addPositionLabel(pos);
         }
     }
 
@@ -145,16 +120,18 @@ public class CLIPlayArea {
         playAreaText.mergeText(label.getLabel(), startRow, startCol);
     }
 
+    private void placeInfoTable(CLIText toPrintText) {
+        int startRow = playAreaText.getHeight() - INFO_TABLE_HEIGHT;
+        int startCol = playAreaText.getWidth() + 2;
+        toPrintText.mergeText(infoTable.getText(), startRow, startCol);
+    }
+
     public void printPlayArea() {
         int startX = playAreaText.getOriginX() + (viewCenter - VIEW_WIDTH/2) * (CARD_WIDTH - OVERLAP_X)-5;
         int endX = playAreaText.getOriginX() + (viewCenter + VIEW_WIDTH/2) * (CARD_WIDTH - OVERLAP_X)+5;
-        CLIText infoTable = CLIAssetRegistry.getCLIAssetRegistry().getInfoTable(); //FIXME just for testing. Create a new logic
-        playAreaText.mergeText(infoTable, 0, 60); //FIXME just for testing. Create a new logic
-        playAreaText.printText(startX, 0, endX, playAreaText.getHeight(), true);
-    }
-
-    public Set<Position> getPlaceablePositions() {
-        return placeablePositions;
+        CLIText subPlayArea = playAreaText.getSubText(startX, 0, endX, playAreaText.getHeight());
+        placeInfoTable(subPlayArea);
+        subPlayArea.printText(true);
     }
 
     public void moveView(int offset) {

@@ -159,7 +159,7 @@ public class GameController {
         }
         PlayAreaModel playArea = game.getPlayers()[playerId].getPlayArea();
 
-        virtualView.communicatePlayArea(game.getPlayers()[playerId].getUsername(), playArea.getPlacementOrder(), playArea.getField(), playArea.getActiveSides());
+        virtualView.communicatePlayArea(game.getPlayers()[playerId].getUsername(), playArea.getPlacementOrder(), playArea.getField(), playArea.getActiveSides(), playArea.getLegalPositions(), playArea.getIllegalPositions(), playArea.getResourceCounts(), playArea.getObjectCounts());
         virtualView.redrawView(playerId);
 
         if (game.allPlayersChoseStarterSide()) {
@@ -237,7 +237,7 @@ public class GameController {
 
         for(PlayerModel player : game.getPlayers()) {
             virtualView.communicateHand(player.getPlayerId(), player.getHand().getCards());
-            virtualView.communicatePlayArea(player.getUsername(), player.getPlayArea().getPlacementOrder(), player.getPlayArea().getField(), player.getPlayArea().getActiveSides());
+            virtualView.communicatePlayArea(player.getUsername(), player.getPlayArea().getPlacementOrder(), player.getPlayArea().getField(), player.getPlayArea().getActiveSides(), player.getPlayArea().getLegalPositions(), player.getPlayArea().getIllegalPositions(), player.getPlayArea().getResourceCounts(), player.getPlayArea().getObjectCounts());
             virtualView.communicatePersonalObjective(player.getPlayerId(), player.getPersonalObjective());
             virtualView.communicateColor(player.getUsername(), player.getPlayerColor());
             virtualView.communicateGamePoints(player.getUsername(), player.getGamePoints());
@@ -424,7 +424,9 @@ public class GameController {
 
         hasPlacedCard = true;
 
-        virtualView.communicatePlayCard(game.getPlayers()[playerId].getUsername(), card, side, newPos);
+        PlayAreaModel playArea = game.getPlayers()[playerId].getPlayArea();
+
+        virtualView.communicatePlayCard(game.getPlayers()[playerId].getUsername(), card, side, newPos, playArea.getAddedLegalPositions(), playArea.getRemovedLegalPositions(), playArea.getResourceCounts(), playArea.getObjectCounts());
         virtualView.communicateGamePoints(game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getGamePoints());
         virtualView.communicateRemoveCard(playerId, card);
         for(PlayerModel player : game.getPlayers()) {

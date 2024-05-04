@@ -161,7 +161,7 @@ public class TCPClient implements Runnable, ServerInterface {
                             break;
                         }
 
-                        view.setPlayArea(payload.getUsername(), payload.getCardPlacementOrder(), payload.getField(), payload.getActiveSides());
+                        view.setPlayArea(payload.getUsername(), payload.getCardPlacementOrder(), payload.getField(), payload.getActiveSides(), payload.getLegalPositions(), payload.getIllegalPositions(), payload.getResourceCounts(), payload.getObjectCounts());
                     }
                     case PROMPT_COLOR_CHOICE -> {
                         PromptColorChoice payload;
@@ -307,7 +307,7 @@ public class TCPClient implements Runnable, ServerInterface {
                             break;
                         }
 
-                        view.playCard(payload.getUsername(), payload.getCard(), payload.getSide(), payload.getPos());
+                        view.playCard(payload.getUsername(), payload.getCard(), payload.getSide(), payload.getPos(), payload.getAddedLegalPositions(), payload.getRemovedLegalPositions(), payload.getResourceCounts(), payload.getObjectCounts());
                     }
                     case SET_GAME_POINTS -> {
                         SetGamePoints payload;

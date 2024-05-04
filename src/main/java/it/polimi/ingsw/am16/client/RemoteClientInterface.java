@@ -10,6 +10,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Interface that contains the methods used by the server to communicate with client views.
@@ -145,9 +146,13 @@ public interface RemoteClientInterface extends Remote {
      * @param cardPlacementOrder The order in which the cards were played in this play area.
      * @param field The user's field.
      * @param activeSides The map keeping track of which side every card is placed on.
+     * @param legalPositions DOCME
+     * @param illegalPositions DOCME
+     * @param resourceCounts DOCME
+     * @param objectCounts DOCME
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) throws RemoteException;
+    void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) throws RemoteException;
 
     /**
      * Adds the given card to the given player's play area.
@@ -155,9 +160,13 @@ public interface RemoteClientInterface extends Remote {
      * @param card The played card.
      * @param side The card the new card was played on.
      * @param pos The position where the new card was played.
+     * @param addedLegalPositions DOCME
+     * @param removedLegalPositions DOCME
+     * @param resourceCounts DOCME
+     * @param objectCounts DOCME
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void playCard(String username, BoardCard card, SideType side, Position pos) throws RemoteException;
+    void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) throws RemoteException;
 
     /**
      * Sets a player's number of game points.

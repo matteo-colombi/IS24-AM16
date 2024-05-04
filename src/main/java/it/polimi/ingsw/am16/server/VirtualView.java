@@ -8,10 +8,7 @@ import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Class used to store all the player views. Used by the controller to communicate with the players.
@@ -263,12 +260,16 @@ public class VirtualView {
      * @param username The username of the player whose play area is being given.
      * @param cardPlacementOrder The order in which the cards were played in this play area.
      * @param field The play area's field.
+     * @param legalPositions DOCME
+     * @param illegalPositions DOCME
+     * @param resourceCounts DOCME
+     * @param objectCounts DOCME
      * @param activeSides The map that keeps track of what side each card was played on.
      */
-    public void communicatePlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) {
+    public void communicatePlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         userViews.values().forEach(userView -> {
             try {
-                userView.setPlayArea(username, cardPlacementOrder, field, activeSides);
+                userView.setPlayArea(username, cardPlacementOrder, field, activeSides, legalPositions, illegalPositions, resourceCounts, objectCounts);
             } catch (RemoteException e) {
                 //TODO handle it
             }
@@ -281,11 +282,15 @@ public class VirtualView {
      * @param card The played card.
      * @param side The side on which the card was placed on.
      * @param pos The position where the new card was placed.
+     * @param addedLegalPositions DOCME
+     * @param removedLegalPositions DOCME
+     * @param resourceCounts DOCME,
+     * @param objectCounts DOCME
      */
-    public void communicatePlayCard(String username, BoardCard card, SideType side, Position pos) {
+    public void communicatePlayCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         userViews.values().forEach(userView -> {
             try {
-                userView.playCard(username, card, side, pos);
+                userView.playCard(username, card, side, pos, addedLegalPositions, removedLegalPositions, resourceCounts, objectCounts);
             } catch (RemoteException e) {
                 //TODO handle it
             }

@@ -379,13 +379,13 @@ public class CLI implements ViewInterface {
      * @param activeSides
      */
     @Override
-    public synchronized void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) {
+    public synchronized void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         if (this.username.equals(username)) {
             this.cliInputManager.removeCommand(CLICommand.STARTER);
         }
         this.cliInputManager.addCommand(CLICommand.PLAY_AREA);
         this.cliInputManager.addCommand(CLICommand.SCROLL_VIEW);
-        this.playAreas.put(username, new CLIPlayArea(cardPlacementOrder, field, activeSides));
+        this.playAreas.put(username, new CLIPlayArea(cardPlacementOrder, field, activeSides, legalPositions, illegalPositions, resourceCounts, objectCounts));
         if (username.equals(this.username)) {
             System.out.println("Starter card played! Type \"play_area\" to see your play area.");
         }
@@ -398,10 +398,12 @@ public class CLI implements ViewInterface {
      * @param card     The played card.
      * @param side     The card the new card was played on.
      * @param pos      The position where the new card was played.
+     * @param addedLegalPositions DOCME
+     * @param removedLegalPositions DOCME
      */
     @Override
-    public synchronized void playCard(String username, BoardCard card, SideType side, Position pos) {
-        this.playAreas.get(username).addCard(card, side, pos);
+    public synchronized void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
+        this.playAreas.get(username).addCard(card, side, pos, addedLegalPositions, removedLegalPositions, resourceCounts, objectCounts);
         this.cliInputManager.removeCommand(CLICommand.PLAY_CARD);
         if (username.equals(this.username)) {
             if (dontDraw) {

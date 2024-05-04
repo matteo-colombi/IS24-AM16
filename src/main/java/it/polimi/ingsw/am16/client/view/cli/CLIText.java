@@ -232,6 +232,25 @@ public class CLIText {
         return new CLIText(Arrays.copyOf(this.text, this.text.length), Arrays.copyOf(this.colorMask, this.colorMask.length));
     }
 
+    public CLIText getSubText(int startX, int startY, int endX, int endY) {
+        startX = Math.max(startX, 0);
+        startY = Math.max(startY, 0);
+        endX = Math.min(endX, width-1);
+        endY = Math.min(endY, height-1);
+
+        int newHeight = endY - startY + 1;
+
+        String[] newText = new String[newHeight];
+        String[] newColorMask = new String[newHeight];
+
+        for(int i = 0; i < newHeight; i++) {
+            newText[i] = text[i+startY].substring(startX, endX+1);
+            newColorMask[i] = colorMask[i+startY].substring(startX, endX+1);
+        }
+
+        return new CLIText(newText, newColorMask);
+    }
+
     public char playerColorToChar(PlayerColor playerColor) {
         if (playerColor == null) return ' ';
         return switch (playerColor) {

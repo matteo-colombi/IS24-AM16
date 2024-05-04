@@ -539,10 +539,14 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
      * @param cardPlacementOrder The order in which the cards were played in this play area.
      * @param field The user's field.
      * @param activeSides The map keeping track of which side every card is placed on.
+     * @param legalPositions DOCME
+     * @param illegalPositions DOCME
+     * @param resourceCounts DOCME
+     * @param objectCounts DOCME
      */
     @Override
-    public void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) {
-        TCPMessage tcpMessage = new TCPMessage(MessageType.SET_PLAY_AREA, new SetPlayArea(username, cardPlacementOrder, field, activeSides));
+    public void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
+        TCPMessage tcpMessage = new TCPMessage(MessageType.SET_PLAY_AREA, new SetPlayArea(username, cardPlacementOrder, field, activeSides, legalPositions, illegalPositions, resourceCounts, objectCounts));
         sendTCPMessage(tcpMessage);
     }
 
@@ -552,10 +556,14 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
      * @param card The played card.
      * @param side The card the new card was played on.
      * @param pos The position where the new card was played.
+     * @param addedLegalPositions DOCME
+     * @param removedLegalPositions DOCME
+     * @param resourceCounts DOCME
+     * @param objectCounts DOCME
      */
     @Override
-    public void playCard(String username, BoardCard card, SideType side, Position pos) {
-        TCPMessage tcpMessage = new TCPMessage(MessageType.PLAY_CARD_RESPONSE, new PlayCardResponse(username, card, side, pos));
+    public void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
+        TCPMessage tcpMessage = new TCPMessage(MessageType.PLAY_CARD_RESPONSE, new PlayCardResponse(username, card, side, pos, addedLegalPositions, removedLegalPositions, resourceCounts, objectCounts));
         sendTCPMessage(tcpMessage);
     }
 

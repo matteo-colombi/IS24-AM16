@@ -6,10 +6,12 @@ import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
+import javafx.geometry.Pos;
 
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface ViewInterface {
 
@@ -153,9 +155,13 @@ public interface ViewInterface {
      * @param cardPlacementOrder The order in which the cards were played in this play area.
      * @param field The user's field.
      * @param activeSides The map keeping track of which side every card is placed on.
+     * @param legalPositions DOCME
+     * @param illegalPositions DOCME
+     * @param resourceCounts DOCME
+     * @param objectCounts DOCME
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides);
+    void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts);
 
     /**
      * Adds the given card to the given player's play area.
@@ -163,9 +169,13 @@ public interface ViewInterface {
      * @param card The played card.
      * @param side The card the new card was played on.
      * @param pos The position where the new card was played.
+     * @param addedLegalPositions DOCME
+     * @param removedLegalPositions DOCME
+     * @param resourceCounts DOCME
+     * @param objectCounts DOCME
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void playCard(String username, BoardCard card, SideType side, Position pos);
+    void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts);
 
     /**
      * Sets a player's number of game points.
