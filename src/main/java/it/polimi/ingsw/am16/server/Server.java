@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Server {
     public static void start(String[] args) {
-        RNG.setRNGSeed(4); //FIXME Remove this. It's for testing.
+        RNG.setRNGSeed(5); //FIXME Remove this. It's for testing.
 
         int tcpPort;
         int rmiPort;

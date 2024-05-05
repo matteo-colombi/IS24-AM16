@@ -120,9 +120,10 @@ public class CLIPlayArea {
         playAreaText.mergeText(label.getLabel(), startRow, startCol);
     }
 
-    private void placeInfoTable(CLIText toPrintText) {
+    private void placeInfoTable(CLIText toPrintText, int startX, int endX) {
         int startRow = playAreaText.getHeight() - INFO_TABLE_HEIGHT;
-        int startCol = playAreaText.getWidth() + 2;
+        startX = Math.max(startX, 0);
+        int startCol = endX - startX + 4;
         toPrintText.mergeText(infoTable.getText(), startRow, startCol);
     }
 
@@ -130,7 +131,7 @@ public class CLIPlayArea {
         int startX = playAreaText.getOriginX() + (viewCenter - VIEW_WIDTH/2) * (CARD_WIDTH - OVERLAP_X)-5;
         int endX = playAreaText.getOriginX() + (viewCenter + VIEW_WIDTH/2) * (CARD_WIDTH - OVERLAP_X)+5;
         CLIText subPlayArea = playAreaText.getSubText(startX, 0, endX, playAreaText.getHeight());
-        placeInfoTable(subPlayArea);
+        placeInfoTable(subPlayArea, startX, endX);
         subPlayArea.printText(true);
     }
 
