@@ -381,6 +381,7 @@ public class TCPClient implements Runnable, ServerInterface {
                         }
 
                         view.signalDisconnection(payload.getWhoDisconnected());
+
                     }
                     case PROMPT_ERROR -> {
                         PromptError payload;

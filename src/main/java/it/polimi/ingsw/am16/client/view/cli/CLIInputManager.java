@@ -47,7 +47,6 @@ public class CLIInputManager implements Runnable {
         running = true;
         //Using BufferedReader instead of Scanner because it is thread safe
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            cliView.printCommandPrompt();
             while (running) {
                 String input = reader.readLine();
                 parseCommand(input);
@@ -68,12 +67,12 @@ public class CLIInputManager implements Runnable {
         if (matchingCommands.size() > 1) {
             System.out.println("Ambiguous command: \"" + inputCommand + "\"");
             System.out.println("Possible matches:");
-            for (CLICommand command : matchingCommands) {
-                System.out.println("\t- " + command);
-            }
+            matchingCommands.stream().sorted().forEach(c -> System.out.println("\t- " + c));
+            cliView.printCommandPrompt();
             return;
         } else if (matchingCommands.isEmpty()) {
-            System.out.println("Unknown command: \"" + inputCommand + "\"");
+            System.out.println("Command not allowed: \"" + inputCommand + "\"");
+            cliView.printCommandPrompt();
             return;
         }
 
@@ -91,6 +90,12 @@ public class CLIInputManager implements Runnable {
                 }
 
                 String username = args[1];
+                if (username.length() > 16) {
+                    System.out.println("Invalid argument. Username must be 16 characters or less.");
+                    cliView.printCommandPrompt();
+                    break;
+                }
+
                 String numPlayersString = args[2];
                 int numPlayers;
                 try {
@@ -116,7 +121,12 @@ public class CLIInputManager implements Runnable {
                 }
 
                 String username = args[1];
-                String gameId = args[2];
+                if (username.length() > 16) {
+                    System.out.println("Invalid argument. Username must be 16 characters or less.");
+                    cliView.printCommandPrompt();
+                    break;
+                }
+                String gameId = args[2].toUpperCase();
 
                 try {
                     serverInterface.joinGame(gameId, username);
@@ -347,6 +357,8 @@ public class CLIInputManager implements Runnable {
                     //TODO handle it
                     e.printStackTrace();
                 }
+
+                cliView.printCommandPrompt();
             }
             case SCROLL_VIEW -> {
                 if (args.length < 2
@@ -390,6 +402,8 @@ public class CLIInputManager implements Runnable {
                         //TODO handle it
                         e.printStackTrace();
                     }
+
+                    cliView.printCommandPrompt();
                 }
             }
             case CHAT_HISTORY -> {
@@ -415,6 +429,8 @@ public class CLIInputManager implements Runnable {
                     //TODO handle it
                     e.printStackTrace();
                 }
+
+                cliView.printCommandPrompt();
             }
             case LEAVE_GAME -> {
                 System.out.println("Leaving the game...");

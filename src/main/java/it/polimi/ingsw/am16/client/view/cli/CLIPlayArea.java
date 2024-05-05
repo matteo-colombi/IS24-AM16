@@ -123,6 +123,7 @@ public class CLIPlayArea {
     private void placeInfoTable(CLIText toPrintText, int startX, int endX) {
         int startRow = playAreaText.getHeight() - INFO_TABLE_HEIGHT;
         startX = Math.max(startX, 0);
+        endX = Math.min(endX, playAreaText.getWidth()-1);
         int startCol = endX - startX + 4;
         toPrintText.mergeText(infoTable.getText(), startRow, startCol);
     }

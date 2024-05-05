@@ -251,6 +251,7 @@ public class CLI implements ViewInterface {
     public synchronized void choosingColors() {
         System.out.println("\nPlayers are now choosing their color.");
         System.out.println("\nPlease wait for your turn.");
+        printCommandPrompt();
     }
 
     /**
@@ -272,7 +273,7 @@ public class CLI implements ViewInterface {
             colorLabel.mergeText(colorLabel2, 0, 3);
             colorLabel.printText();
         }
-        System.out.println();
+        printCommandPrompt();
     }
 
     /**
@@ -388,6 +389,7 @@ public class CLI implements ViewInterface {
         this.playAreas.put(username, new CLIPlayArea(cardPlacementOrder, field, activeSides, legalPositions, illegalPositions, resourceCounts, objectCounts));
         if (username.equals(this.username)) {
             System.out.println("Starter card played! Type \"play_area\" to see your play area.");
+            printCommandPrompt();
         }
     }
 
@@ -414,6 +416,7 @@ public class CLI implements ViewInterface {
                 cliState = CLIState.DRAWING_CARD;
                 this.cliInputManager.addCommand(CLICommand.DRAW_CARD);
             }
+            printCommandPrompt();
         }
     }
 
@@ -462,8 +465,6 @@ public class CLI implements ViewInterface {
         this.personalObjectiveOptions = possiblePersonalObjectives;
         this.cliInputManager.addCommand(CLICommand.OBJECTIVE);
         printObjectiveOptions();
-
-        printCommandPrompt();
     }
 
     /**
@@ -494,7 +495,7 @@ public class CLI implements ViewInterface {
         for(String username : usernames) {
             System.out.printf("%s%s", usernames.indexOf(username) == 0 ? "" : ", ",username);
         }
-        System.out.print("\n\n");
+        printCommandPrompt();
     }
 
     /**
@@ -509,7 +510,7 @@ public class CLI implements ViewInterface {
             cliState = CLIState.PLAYING_CARD;
             this.cliInputManager.addCommand(CLICommand.PLAY_CARD);
         } else {
-            System.out.printf("\nIt's %s's turn.", username);
+            System.out.printf("\nIt's %s's turn.\n", username);
         }
 
         printCommandPrompt();
@@ -548,6 +549,10 @@ public class CLI implements ViewInterface {
             printRick();
         } else {
             this.unreadChat.add(message);
+            if (!message.senderUsername().equals(username)) {
+                System.out.println("\nYou have a new chat message. Type \"chat\" to read it!");
+                printCommandPrompt();
+            }
         }
     }
 
@@ -588,6 +593,8 @@ public class CLI implements ViewInterface {
     public synchronized void signalDisconnection(String whoDisconnected) {
         System.out.printf("\n%s disconnected. The game ends here.\n", whoDisconnected);
         resetToStartup();
+
+        printWelcome();
     }
 
     public synchronized void resetToStartup() {
@@ -686,13 +693,11 @@ public class CLI implements ViewInterface {
     public synchronized void printObjectiveOptions() {
         System.out.println("\nChoose an objective between:");
         printObjectives(this.personalObjectiveOptions, true);
-        printCommandPrompt();
     }
 
     public synchronized void printCommonObjectives() {
         System.out.println("\nThe common objectives are:");
         printObjectives(List.of(commonObjectiveCards), false);
-        printCommandPrompt();
     }
 
     public synchronized void printDrawOptions() {
@@ -872,7 +877,7 @@ public class CLI implements ViewInterface {
             return;
         }
 
-        System.out.println("\nThe winners are...");
+        System.out.printf("\nThe winner%s...\n", winners.size() == 1 ? " is" : "s are");
         for(String username : this.winners) {
             System.out.printf("%s%s", this.winners.indexOf(username) == 0 ? "" : ", ", username);
         }
@@ -882,16 +887,32 @@ public class CLI implements ViewInterface {
 
     public synchronized void printHelp() {
         Set<CLICommand> allowedCommands = cliInputManager.getAllowedCommands();
-        System.out.println("\nAvailable commands:");
-        for(CLICommand cmd : allowedCommands) {
-            System.out.println("\t- " + cmd);
+        if (cliState == CLIState.STARTUP) {
+            System.out.println("\nAvailable commands:");
+        } else {
+            System.out.println("\nGame actions:");
+            allowedCommands
+                    .stream()
+                    .filter(CLICommand::isGameCommand)
+                    .sorted()
+                    .forEach(c -> System.out.println("\t- " + c));
+
+            System.out.println("\nGeneric commands:");
         }
+
+        allowedCommands
+                .stream()
+                .filter(c -> !c.isGameCommand())
+                .sorted()
+                .forEach(c -> System.out.println("\t- " + c));
+
         printCommandPrompt();
     }
 
     public synchronized void printUnreadChat() {
         if (unreadChat.isEmpty()) {
             System.out.println("You have no unread messages. Type \"chat_history\" to see older messages");
+            printCommandPrompt();
             return;
         }
 
@@ -907,12 +928,16 @@ public class CLI implements ViewInterface {
     }
 
     public synchronized void printChatHistory() {
-        for(ChatMessage message : chatHistory) {
-            System.out.println(message);
+        if (chatHistory.isEmpty()) {
+            System.out.println("You have no messages in the chat history.");
+        } else {
+            for(ChatMessage message : chatHistory) {
+                System.out.println(message);
+            }
         }
 
         if (!unreadChat.isEmpty()) {
-            System.out.printf("You also have %d unread message%s! Type \"chat\" to see them.\n", unreadChat.size(), unreadChat.size() == 1 ? "" : "s");
+            System.out.printf("You have %d unread message%s! Type \"chat\" to see them.\n", unreadChat.size(), unreadChat.size() == 1 ? "" : "s");
         }
 
         printCommandPrompt();
@@ -935,6 +960,7 @@ public class CLI implements ViewInterface {
     public synchronized void printWelcome() {
         System.out.println("Welcome to Codex Naturalis!");
         System.out.println("Type \"help\" to see all available commands.");
+        printCommandPrompt();
     }
 
     public synchronized boolean validUsername(String username) {
@@ -942,7 +968,7 @@ public class CLI implements ViewInterface {
     }
 
     public synchronized void printCommandPrompt() {
-        System.out.print("\n");
+        System.out.print("\n>> ");
     }
 
     public synchronized boolean validColorChoice(PlayerColor playerColor) {
