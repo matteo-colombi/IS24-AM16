@@ -1,7 +1,6 @@
 package it.polimi.ingsw.am16.server;
 
 import it.polimi.ingsw.am16.common.util.FilePaths;
-import it.polimi.ingsw.am16.common.util.RNG;
 import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 import it.polimi.ingsw.am16.server.tcp.WelcomeTCPServer;
 
@@ -9,8 +8,6 @@ import java.io.IOException;
 
 public class Server {
     public static void start(String[] args) {
-        RNG.setRNGSeed(5); //FIXME Remove this. It's for testing.
-
         int tcpPort;
         int rmiPort;
 
