@@ -55,6 +55,8 @@ public class CLIPlayArea {
         infoTable = new CLIInfoTable(Map.of(), Map.of());
 
         this.viewCenter = 0;
+        this.minX = 0;
+        this.maxX = 0;
     }
 
     public void addCard(BoardCard card, SideType side, Position position, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
@@ -75,9 +77,6 @@ public class CLIPlayArea {
         }
 
         this.infoTable.update(resourceCounts, objectCounts);
-
-        minX = Math.min(minX, position.x());
-        maxX = Math.max(maxX, position.x());
     }
 
     private void initializeText() {
@@ -100,6 +99,16 @@ public class CLIPlayArea {
         int startCol = newPosCenterX - CARD_WIDTH / 2;
         int startRow = newPosCenterY - CARD_HEIGHT / 2;
         playAreaText.mergeText(asset, startRow, startCol);
+
+        minX = Math.min(minX, pos.x());
+        maxX = Math.max(maxX, pos.x());
+
+        if (pos.x() < viewCenter - VIEW_WIDTH / 2 + 1) {
+            viewCenter = pos.x() - 1 + VIEW_WIDTH / 2;
+        }
+        if (pos.x() > viewCenter + VIEW_WIDTH / 2 - 1) {
+            viewCenter = pos.x() + 1 - VIEW_WIDTH / 2;
+        }
     }
 
     private void addPositionLabel(Position pos) {
@@ -122,7 +131,7 @@ public class CLIPlayArea {
 
     private void placeInfoTable(CLIText toPrintText) {
         int startRow = toPrintText.getHeight() - INFO_TABLE_HEIGHT;
-        int startCol = toPrintText.getWidth() + 10;
+        int startCol = toPrintText.getWidth() + 5;
         toPrintText.mergeText(infoTable.getText(), startRow, startCol);
     }
 
@@ -140,12 +149,14 @@ public class CLIPlayArea {
     }
 
     public void moveView(int offset) {
-        if (offset > 0 && viewCenter + VIEW_WIDTH / 2 > maxX) return;
-        if (offset < 0 && viewCenter - VIEW_WIDTH / 2 < minX) return;
+        if (offset > 0 && offset + viewCenter + VIEW_WIDTH / 2 > maxX + 1) {
+            viewCenter = maxX + 1 - VIEW_WIDTH / 2;
+            return;
+        }
+        if (offset < 0 && offset + viewCenter - VIEW_WIDTH / 2 < minX - 1) {
+            viewCenter = minX - 1 + VIEW_WIDTH / 2;
+            return;
+        }
         viewCenter += offset;
-    }
-
-    public void resetView() {
-        viewCenter = 0;
     }
 }

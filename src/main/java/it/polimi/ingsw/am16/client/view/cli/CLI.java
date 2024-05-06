@@ -195,7 +195,8 @@ public class CLI implements ViewInterface {
                 this.cliState = CLIState.IN_GAME;
             }
             case FINAL_ROUND -> {
-                System.out.println("\nThe game is almost over!");
+                System.out.println();
+                CLIAssetRegistry.getCLIAssetRegistry().getFinalRoundLabel().printText();
             }
             case ENDED -> {
                 this.cliState = CLIState.GAME_ENDED;
@@ -530,6 +531,7 @@ public class CLI implements ViewInterface {
     public synchronized void setWinners(List<String> winnerUsernames) {
         this.cliInputManager.addCommand(CLICommand.WINNERS);
         this.winners = winnerUsernames;
+        printPoints();
         printWinners();
     }
 
@@ -842,21 +844,26 @@ public class CLI implements ViewInterface {
         switch (direction) {
             case "left" -> this.playAreas.get(lastPrintedPlayArea).moveView(-offset);
             case "right" -> this.playAreas.get(lastPrintedPlayArea).moveView(offset);
-            case "center" -> this.playAreas.get(lastPrintedPlayArea).resetView();
         }
+
+        this.playAreas.get(lastPrintedPlayArea).printPlayArea();
     }
 
     public synchronized void printPoints() {
         System.out.println("\nCurrent points (in order from most to least points):");
-
-        List<String> sortedUsernames =
-                this.playerUsernames
+        Map<String, Integer> totalPoints = new HashMap<>();
+        for(String username : playerUsernames) {
+            totalPoints.put(username, gamePoints.getOrDefault(username, 0) + objectivePoints.getOrDefault(username, 0));
+        }
+        List<String> sortedUsernames = this.playerUsernames
                         .stream()
-                        .sorted(
-                                (s1, s2) -> Integer.compare(
-                                        this.gamePoints.getOrDefault(s1, 0) + this.objectivePoints.getOrDefault(s1, 0),
-                                        this.gamePoints.getOrDefault(s2, 0) + this.objectivePoints.getOrDefault(s2, 0)
-                                )
+                        .sorted((s1, s2) -> {
+                                if (totalPoints.get(s1).equals(totalPoints.get(s2))) {
+                                    return Integer.compare(objectivePoints.getOrDefault(s1, 0), objectivePoints.getOrDefault(s2, 0));
+                                } else {
+                                    return Integer.compare(totalPoints.get(s1), totalPoints.get(s2));
+                                }
+                            }
                         ).toList().reversed();
 
         for (String username : sortedUsernames) {

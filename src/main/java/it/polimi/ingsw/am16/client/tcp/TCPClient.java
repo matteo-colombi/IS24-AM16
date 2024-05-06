@@ -75,7 +75,7 @@ public class TCPClient implements Runnable, ServerInterface {
 
                     //Connection lost with server
 
-                    System.err.println("Connection lost.");
+                    System.err.println("\nConnection lost.");
                     checkConnectionTimer.cancel();
 
                     running.set(false);

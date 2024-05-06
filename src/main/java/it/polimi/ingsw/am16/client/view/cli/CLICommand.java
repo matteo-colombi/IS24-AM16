@@ -53,8 +53,8 @@ public enum CLICommand {
             "Prints the play area of the specified player. If no username is given, prints your own play area."),
     SCROLL_VIEW(true,
             "scroll_view",
-            "<left|right|center> [(if left/right) <offset>]",
-            "Scrolls the view you have of the last printed play area in the given direction; \"center\" resets the view so that the starter card is centered."),
+            "<left|right> <offset>",
+            "Scrolls the view you have of the last printed play area in the given direction."),
     HAND(true,
             "hand",
             "[username]",
@@ -86,7 +86,7 @@ public enum CLICommand {
     WHISPER(false,
             "whisper",
             "<receiver username> <message>",
-            ""),
+            "Sends a private message to the player with the given username."),
     PLAYERS(false,
             "players",
             "",
@@ -132,6 +132,10 @@ public enum CLICommand {
 
     public String getCommand() {
         return command;
+    }
+
+    public String getUsage() {
+        return String.format("%s %s", command, arguments);
     }
 
     @Override

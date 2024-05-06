@@ -41,6 +41,11 @@ public final class FilePaths {
     public static final String CLI_BANNER = CLI_ASSETS + "/cliBanner.json";
 
     /**
+     * The path for the label shown in the CLI when the final round of a game is triggered
+     */
+    public static final String CLI_FINAL_ROUND_LABEL = CLI_ASSETS + "/cliFinalRoundLabel.json";
+
+    /**
      * The path for JSON files.
      */
     public static final String JSON = RESOURCES + "/json";

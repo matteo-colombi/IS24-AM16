@@ -84,14 +84,14 @@ public class CLIInputManager implements Runnable {
             }
             case CREATE_GAME -> {
                 if (args.length < 3 || args[1] == null || args[1].isEmpty() || args[2] == null || args[2].isEmpty()) {
-                    System.out.println("Invalid arguments. Usage: create_game [username] [numPlayers]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.CREATE_GAME.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
 
                 String username = args[1];
-                if (username.length() > 16) {
-                    System.out.println("Invalid argument. Username must be 16 characters or less.");
+                if (username.length() > 10) {
+                    System.out.println("Invalid argument. Username must be 10 characters or less.");
                     cliView.printCommandPrompt();
                     break;
                 }
@@ -115,17 +115,17 @@ public class CLIInputManager implements Runnable {
             }
             case JOIN_GAME -> {
                 if (args.length < 3 || args[1] == null || args[2] == null || args[1].isEmpty() || args[2].isEmpty()) {
-                    System.out.println("Invalid arguments. Usage: join_game [username] [gameId]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.JOIN_GAME.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
 
                 String username = args[1];
-//                if (username.length() > 16) {
-//                    System.out.println("Invalid argument. Username must be 16 characters or less.");
-//                    cliView.printCommandPrompt();
-//                    break;
-//                }
+                if (username.length() > 10) {
+                    System.out.println("Invalid argument. Username must be 10 characters or less.");
+                    cliView.printCommandPrompt();
+                    break;
+                }
                 String gameId = args[2].toUpperCase();
 
                 try {
@@ -152,7 +152,7 @@ public class CLIInputManager implements Runnable {
                     cliView.printStarterCard();
                     break;
                 } else if (args[1] == null || (!args[1].equals("front") && !args[1].equals("back"))) {
-                    System.out.println("Invalid arguments. Usage: starter [front|back]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.STARTER.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
@@ -174,7 +174,7 @@ public class CLIInputManager implements Runnable {
             }
             case COLOR -> {
                 if (args.length < 2 || args[1] == null) {
-                    System.out.println("Invalid arguments. Usage: color [color]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.COLOR.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
@@ -206,7 +206,7 @@ public class CLIInputManager implements Runnable {
                     cliView.printObjectiveOptions();
                     break;
                 } else if (args[1] == null || (!args[1].equals("1") && !args[1].equals("2"))) {
-                    System.out.println("Invalid arguments. Usage: objective [1|2]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.OBJECTIVE.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
@@ -229,7 +229,7 @@ public class CLIInputManager implements Runnable {
                     cliView.printHand();
                 } else {
                     if (args[1] == null || args[1].isEmpty()) {
-                        System.out.println("Invalid arguments. Usage: hand [username]");
+                        System.out.println("Invalid arguments. Usage: " + CLICommand.HAND.getUsage());
                         cliView.printCommandPrompt();
                         break;
                     }
@@ -242,7 +242,7 @@ public class CLIInputManager implements Runnable {
                     cliView.printPlayArea();
                 } else {
                     if (args[1] == null || args[1].isEmpty()) {
-                        System.out.println("Invalid arguments. Usage: play_area [username]");
+                        System.out.println("Invalid arguments. Usage: " + CLICommand.PLAY_AREA.getUsage());
                         cliView.printCommandPrompt();
                         break;
                     }
@@ -260,7 +260,7 @@ public class CLIInputManager implements Runnable {
                         || args[2].isEmpty()
                         || args[3].isEmpty()
                         || (!args[2].equals("front") && !args[2].equals("back"))) {
-                    System.out.println("Invalid arguments. Usage: play_card [index] [front|back] [position: x;y]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.PLAY_CARD.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
@@ -323,7 +323,7 @@ public class CLIInputManager implements Runnable {
                         || (!args[2].equals("resource") && !args[2].equals("resources") && !args[2].equals("gold"))
                         || args[1].equals("common") && (args.length < 4 || args[3] == null || args[3].isEmpty() || (!args[3].equals("1") && !args[3].equals("2")))
                 ) {
-                    System.out.println("Invalid arguments. Usage: draw_card [deck|common] [resource|gold] [(if common) index]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.DRAW_CARD.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
@@ -361,25 +361,22 @@ public class CLIInputManager implements Runnable {
                 cliView.printCommandPrompt();
             }
             case SCROLL_VIEW -> {
-                if (args.length < 2
-                        || args[1] == null
-                        || args[1].isEmpty()
-                        || (!args[1].equals("left") && !args[1].equals("right") && !args[1].equals("center"))
-                        || (args[1].equals("left") || args[1].equals("right")) && (args.length < 3 || args[2] == null || args[2].isEmpty())
+                if (
+                        args.length < 3
+                                || args[1] == null || args[1].isEmpty()
+                                || !args[1].equals("left") && !args[1].equals("right")
+                                || args[2] == null || args[2].isEmpty()
                 ) {
-                    System.out.println("Invalid arguments. Usage: scroll_view [left|right|center] [(if left/right) offset]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.SCROLL_VIEW.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
-                if (args[1].equals("center")) {
-                    cliView.scrollView("center", 0);
-                } else {
-                    try {
-                        int offset = Integer.parseInt(args[2]);
-                        cliView.scrollView(args[1], offset);
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid arguments. Offset must be an integer.");
-                    }
+
+                try {
+                    int offset = Integer.parseInt(args[2]);
+                    cliView.scrollView(args[1], offset);
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid arguments. Offset must be an integer.");
                 }
 
                 cliView.printCommandPrompt();
@@ -411,7 +408,7 @@ public class CLIInputManager implements Runnable {
             }
             case WHISPER -> {
                 if (args.length < 3) {
-                    System.out.println("Invalid arguments. Usage: chat_private [receiver username] [message]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.WHISPER.getUsage());
                     cliView.printCommandPrompt();
                     return;
                 }
@@ -458,21 +455,6 @@ public class CLIInputManager implements Runnable {
     }
 
     private Set<CLICommand> commandMatch(String input) {
-//        Set<CLICommand> filteredCommand  = new HashSet<>();
-//
-//        for (CLICommand command : allowedCommands) {
-//            if(command.exactMatch(input)) {
-//                filteredCommand.clear();
-//                filteredCommand.add(command);
-//                return filteredCommand;
-//            }
-//
-//            if(command.matches(input))
-//                filteredCommand.add(command);
-//        }
-//
-//        return filteredCommand;
-
         Set<CLICommand> filteredCommands = allowedCommands
                 .stream()
                 .filter(c -> c.exactMatch(input))
