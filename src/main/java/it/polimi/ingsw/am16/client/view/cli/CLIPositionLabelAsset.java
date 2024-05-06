@@ -7,7 +7,6 @@ public class CLIPositionLabelAsset {
     private final int y;
 
     private static final CLIText emptyLabel = new CLIText(
-            new String[]{"           ", "           ", "           "},
             new String[]{"           ", "           ", "           "}
     );
 

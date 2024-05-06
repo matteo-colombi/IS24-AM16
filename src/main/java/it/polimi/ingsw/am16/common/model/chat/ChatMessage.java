@@ -19,10 +19,15 @@ public record ChatMessage(String senderUsername, Set<String> receiverUsernames, 
      */
     @Override
     public String toString() {
+        StringBuilder toWhom = new StringBuilder();
+        for(String receiverUsername : receiverUsernames) {
+            toWhom.append(receiverUsername).append(", ");
+        }
+        toWhom.delete(toWhom.length()-2, toWhom.length());
         return String.format("[%s] %s%s: %s",
                 SimpleDateFormat.getTimeInstance().format(timestamp),
                 senderUsername,
-                isPrivate ? " (privately)" : "",
+                isPrivate ? " (whispered to " + toWhom + ")"  : "",
                 text
         );
     }

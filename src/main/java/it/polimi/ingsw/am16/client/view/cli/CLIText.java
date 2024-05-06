@@ -20,14 +20,14 @@ public class CLIText {
     private int originY;
 
     private static final Map<Character, String> escapeCodes = Map.of(
-            'K', (char)27 + "[30m",
-            'R', (char)27 + "[31m",
-            'G', (char)27 + "[32m",
-            'Y', (char)27 + "[33m",
-            'B', (char)27 + "[34m",
-            'P', (char)27 + "[35m",
-            'C', (char)27 + "[36m",
-            ' ', (char)27 + "[39m"
+            'K', (char) 27 + "[30m",
+            'R', (char) 27 + "[31m",
+            'G', (char) 27 + "[32m",
+            'Y', (char) 27 + "[33m",
+            'B', (char) 27 + "[34m",
+            'P', (char) 27 + "[35m",
+            'C', (char) 27 + "[36m",
+            ' ', (char) 27 + "[39m"
     );
 
     @JsonCreator
@@ -76,14 +76,14 @@ public class CLIText {
             expandUp(Math.abs(startRow) + height);
             startRow = 0;
         }
-        if(startCol + toMergeWidth > width) {
+        if (startCol + toMergeWidth > width) {
             expandRight(startCol + toMergeWidth);
         }
-        if(startRow + toMergeHeight > height) {
+        if (startRow + toMergeHeight > height) {
             expandDown(startRow + toMergeHeight);
         }
 
-        for(int i = 0; i<textToMerge.length; i++) {
+        for (int i = 0; i < textToMerge.length; i++) {
             int row = i + startRow;
             text[row] = text[row].substring(0, startCol)
                     + textToMerge[i]
@@ -101,7 +101,7 @@ public class CLIText {
         originX += toWidth - width;
 
         String expansion = spacesString(toWidth - width);
-        for(int i = 0; i<text.length; i++) {
+        for (int i = 0; i < text.length; i++) {
             text[i] = expansion + text[i];
             colorMask[i] = expansion + colorMask[i];
         }
@@ -112,7 +112,7 @@ public class CLIText {
         if (toWidth < width) return;
 
         String expansion = spacesString(toWidth - width);
-        for(int i = 0; i<text.length; i++) {
+        for (int i = 0; i < text.length; i++) {
             text[i] = text[i] + expansion;
             colorMask[i] = colorMask[i] + expansion;
         }
@@ -126,11 +126,11 @@ public class CLIText {
         String expansion = spacesString(width);
         String[] newText = new String[toHeight];
         String[] newColorMask = new String[toHeight];
-        for(int i = 0; i < toHeight - height; i++) {
+        for (int i = 0; i < toHeight - height; i++) {
             newText[i] = expansion;
             newColorMask[i] = expansion;
         }
-        for(int i = toHeight - height; i < toHeight; i++) {
+        for (int i = toHeight - height; i < toHeight; i++) {
             newText[i] = text[i - toHeight + height];
             newColorMask[i] = colorMask[i - toHeight + height];
         }
@@ -144,11 +144,11 @@ public class CLIText {
         String expansion = spacesString(width);
         String[] newText = new String[toHeight];
         String[] newColorMask = new String[toHeight];
-        for(int i = 0; i < height; i++) {
+        for (int i = 0; i < height; i++) {
             newText[i] = text[i];
             newColorMask[i] = colorMask[i];
         }
-        for(int i = height; i < toHeight; i++) {
+        for (int i = height; i < toHeight; i++) {
             newText[i] = expansion;
             newColorMask[i] = expansion;
         }
@@ -162,42 +162,83 @@ public class CLIText {
     }
 
     public void printText(boolean frame) {
-        printText(0, 0, width-1, height-1, frame);
+        printText(0, 0, width - 1, height - 1, frame);
     }
 
     public void printText(int startX, int startY, int endX, int endY, boolean frame) {
+        CLIText tmpText = this;
+
+        if (frame)
+            tmpText = this.addFrame();
+
+        System.out.println(tmpText.color());
+    }
+
+    public CLIText addFrame() {
+        return addFrame(0, 0, width - 1, height - 1);
+    }
+
+    public CLIText addFrame(int startX, int startY, int endX, int endY) {
         startX = Math.max(startX, 0);
         startY = Math.max(startY, 0);
-        endX = Math.min(endX, width-1);
-        endY = Math.min(endY, height-1);
-        char lastColor = ' ';
-        StringBuilder toPrint = new StringBuilder();
-        toPrint.append(escapeCodes.get(' '));
+        endX = Math.min(endX, width - 1);
+        endY = Math.min(endY, height - 1);
+
+        StringBuilder framedText = new StringBuilder();
+        StringBuilder framedColorMask = new StringBuilder();
+
         String horizontal = new String(new char[endX - startX + 5]).replace('\0', '─');
         String topHorizontal = '┌' + horizontal + '┐';
-        char vertical = '│';
         String bottomHorizontal = '└' + horizontal + '┘';
-        if (frame) {
-            toPrint.append(topHorizontal).append('\n');
-        }
-        for(int j = startY; j <= endY; j++) {
-            if (frame) toPrint.append(escapeCodes.get(' ')).append(vertical).append("  ").append(escapeCodes.get(lastColor));
-            for(int i = startX; i <= endX; i++) {
-                char thisColor = colorMask[j].charAt(i);
-                if(text[j].charAt(i) != ' ' && thisColor != lastColor) {
-                    toPrint.append(escapeCodes.get(thisColor));
-                    lastColor = thisColor;
-                }
-                toPrint.append(text[j].charAt(i));
+
+        char vertical = '│';
+        String startVertical = vertical + "  ";
+        String endVertical = "  " + vertical;
+
+        String horizontalMask = " " + new String(new char[endX - startX + 5]).replace('\0', ' ') + " ";
+        String startVerticalMask = " " + "  ";
+        String endVerticalMask = "  " + " ";
+
+        framedText.append(topHorizontal).append('\n');
+        framedColorMask.append(horizontalMask).append('\n');
+
+        for (int j = startY; j <= endY; j++) {
+            framedText.append(startVertical);
+            framedColorMask.append(startVerticalMask);
+
+            for (int i = startX; i <= endX; i++) {
+                framedText.append(text[j].charAt(i));
+                framedColorMask.append(colorMask[j].charAt(i));
             }
-            if (frame) toPrint.append(escapeCodes.get(' ')).append("  ").append(vertical).append(escapeCodes.get(lastColor));
-            toPrint.append('\n');
+
+            framedText.append(endVertical).append('\n');
+            framedColorMask.append(endVerticalMask).append('\n');
         }
-        toPrint.append(escapeCodes.get(' '));
-        if (frame) {
-            toPrint.append(bottomHorizontal).append('\n');
+
+        framedText.append(bottomHorizontal).append('\n');
+        framedColorMask.append(horizontalMask).append('\n');
+
+        return new CLIText(framedText.toString().split("\n"), framedColorMask.toString().split("\n"));
+    }
+
+    private String color() {
+        StringBuilder coloredText = new StringBuilder();
+
+        for (int j = 0; j <= height - 1; j++) {
+            for (int i = 0; i <= width - 1; i++) {
+                char character = text[j].charAt(i);
+                char color = colorMask[j].charAt(i);
+
+                coloredText.append(escapeCodes.get(color)).append(character);
+            }
+
+            if (j != height - 1)
+                coloredText.append("\n");
         }
-        System.out.print(toPrint);
+
+        coloredText.append(escapeCodes.get(' '));
+
+        return coloredText.toString();
     }
 
     private String spacesString(int length) {
@@ -230,6 +271,25 @@ public class CLIText {
 
     public CLIText getClone() {
         return new CLIText(Arrays.copyOf(this.text, this.text.length), Arrays.copyOf(this.colorMask, this.colorMask.length));
+    }
+
+    public CLIText getSubText(int startX, int startY, int endX, int endY) {
+        startX = Math.max(startX, 0);
+        startY = Math.max(startY, 0);
+        endX = Math.min(endX, width - 1);
+        endY = Math.min(endY, height - 1);
+
+        int newHeight = endY - startY + 1;
+
+        String[] newText = new String[newHeight];
+        String[] newColorMask = new String[newHeight];
+
+        for (int i = 0; i < newHeight; i++) {
+            newText[i] = text[i + startY].substring(startX, endX + 1);
+            newColorMask[i] = colorMask[i + startY].substring(startX, endX + 1);
+        }
+
+        return new CLIText(newText, newColorMask);
     }
 
     public char playerColorToChar(PlayerColor playerColor) {

@@ -71,17 +71,22 @@ public interface PlayAreaModel {
     /**
      * @return The set of positions in which a card can be placed.
      */
-    Set<Position> getPlaceablePositions();
+    Set<Position> getLegalPositions();
+
+    /**
+     * @return The set of positions in which a card cannot be placed.
+     */
+    Set<Position> getIllegalPositions();
 
     /**
      * @return The set of placeable positions that were added with the last card placement.
      */
-    Set<Position> getAddedPlaceablePositions();
+    Set<Position> getAddedLegalPositions();
 
     /**
      * @return The set of positions that were removed from placeablePositions with the last card placement.
      */
-    Set<Position> getRemovedPlaceablePositions();
+    Set<Position> getRemovedLegalPositions();
 
     /**
      * @return Whether the player has no valid moves to make.

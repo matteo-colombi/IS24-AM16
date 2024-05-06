@@ -35,10 +35,15 @@ public class LobbyManager {
 
     /**
      * Creates a new game with the given number of players.
+     *
      * @param numPlayers The number of players.
      * @return The created lobby's id.
      */
     public String createGame(int numPlayers) {
+        if ((numPlayers != 1) && numPlayers < 2 || numPlayers > 4) { //FIXME 1 is only allowed for testing
+            throw new IllegalArgumentException("Number of players must be between 2 and 4");
+        }
+
         String id;
         do {
             id = RNG.getRNG().nextAlphNumString(LOBBY_ID_LENGTH);
@@ -51,6 +56,7 @@ public class LobbyManager {
 
     /**
      * Removes the game with the given id from the lobby manager, if present; does nothing if the game with the given id does not exist in this manager.
+     *
      * @param id The id of the game to remove.
      */
     public void removeGame(String id) {
@@ -59,6 +65,7 @@ public class LobbyManager {
 
     /**
      * Retrieves the lobby with the given id.
+     *
      * @param id The lobby's id.
      * @return The lobby with the given id.
      */
@@ -75,6 +82,7 @@ public class LobbyManager {
 
     /**
      * DOCME
+     *
      * @param game
      */
     public void deleteGame(GameModel game) {
@@ -90,6 +98,7 @@ public class LobbyManager {
 
     /**
      * Loads all the games in the given directory.
+     *
      * @param directoryPath The directory path to load the games from.
      */
     public void loadGames(String directoryPath) throws IOException {
@@ -100,11 +109,12 @@ public class LobbyManager {
 
         if (gameFiles == null) throw new IOException("Invalid directory: " + directoryPath);
 
-        try(ExecutorService service = Executors.newFixedThreadPool(4)) {
-            for(final File f : gameFiles) {
+        try (ExecutorService service = Executors.newFixedThreadPool(4)) {
+            for (final File f : gameFiles) {
                 service.submit(() -> loadGame(f));
             }
-            if(!service.awaitTermination(200L * gameFiles.length, TimeUnit.MILLISECONDS)) {
+            service.shutdown();
+            if (!service.awaitTermination(200L * gameFiles.length, TimeUnit.MILLISECONDS)) {
                 throw new RuntimeException("Couldn't reload games from memory: timeout expired.");
             }
         } catch (InterruptedException e) {
@@ -114,6 +124,7 @@ public class LobbyManager {
 
     /**
      * Loads a game from the given {@link File}.
+     *
      * @param saveFile The file to load the game from.
      */
     private void loadGame(File saveFile) {
@@ -126,6 +137,11 @@ public class LobbyManager {
         }
     }
 
+    /**
+     * DOCME
+     *
+     * @param game
+     */
     public void saveGame(GameModel game) {
         String savedGame;
         try {

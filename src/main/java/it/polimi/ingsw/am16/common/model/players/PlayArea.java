@@ -36,9 +36,10 @@ public class PlayArea implements PlayAreaModel {
     private int minY;
     private int maxY;
 
-    private final Set<Position> placeablePositions;
-    private Set<Position> addedPlaceablePositions;
-    private Set<Position> removedPlaceablePositions;
+    private final Set<Position> legalPositions;
+    private final Set<Position> illegalPositions;
+    private final Set<Position> addedLegalPositions;
+    private final Set<Position> removedLegalPositions;
 
     /**
      * Creates a play area, initializing its player, its other attributes are set to standard values.
@@ -54,9 +55,10 @@ public class PlayArea implements PlayAreaModel {
         this.minY = 0;
         this.maxY = 0;
 
-        placeablePositions = new HashSet<>();
-        addedPlaceablePositions = new HashSet<>();
-        removedPlaceablePositions = new HashSet<>();
+        legalPositions = new HashSet<>();
+        illegalPositions = new HashSet<>();
+        addedLegalPositions = new HashSet<>();
+        removedLegalPositions = new HashSet<>();
 
         for (CornerType cornerType : CornerType.values()) {
             resourceAndObjectCounts.put(cornerType, 0);
@@ -75,7 +77,8 @@ public class PlayArea implements PlayAreaModel {
      * @param maxX The maximum x-coordinate of a card in the player's play field.
      * @param minY The minimum y-coordinate of a card in the player's play field.
      * @param maxY The maximum y-coordinate of a card in the player's play field.
-     * @param placeablePositions The set of positions in which a card can be placed.
+     * @param legalPositions The set of positions in which a card can be placed.
+     * @param illegalPositions The set of positions in which a card cannot be placed.
      */
     private PlayArea(
             int cardCount,
@@ -87,7 +90,8 @@ public class PlayArea implements PlayAreaModel {
             int maxX,
             int minY,
             int maxY,
-            Set<Position> placeablePositions) {
+            Set<Position> legalPositions,
+            Set<Position> illegalPositions) {
         this.cardCount = cardCount;
         this.resourceAndObjectCounts = resourceAndObjectCounts;
         this.cardPlacementOrder = cardPlacementOrder;
@@ -99,9 +103,10 @@ public class PlayArea implements PlayAreaModel {
         this.maxX = maxX;
         this.minY = minY;
         this.maxY = maxY;
-        this.placeablePositions = placeablePositions;
-        this.addedPlaceablePositions = new HashSet<>();
-        this.removedPlaceablePositions = new HashSet<>();
+        this.legalPositions = legalPositions;
+        this.illegalPositions = illegalPositions;
+        this.addedLegalPositions = new HashSet<>();
+        this.removedLegalPositions = new HashSet<>();
     }
 
     //region Local Getter and Setter
@@ -191,24 +196,33 @@ public class PlayArea implements PlayAreaModel {
      * @return The set of positions in which a card can be placed.
      */
     @Override
-    public Set<Position> getPlaceablePositions() {
-        return new HashSet<>(placeablePositions);
+    public Set<Position> getLegalPositions() {
+        return new HashSet<>(legalPositions);
+    }
+
+    /**
+     * @return The set of positions in which a card cannot be placed.
+     */
+    @Override
+    @SuppressWarnings("unused") //Suppressing because this method is used by Jackson, but it doesn't get detected
+    public Set<Position> getIllegalPositions() {
+        return new HashSet<>(illegalPositions);
     }
 
     /**
      * @return The set of placeable positions that were added with the last card placement.
      */
     @JsonIgnore
-    public Set<Position> getAddedPlaceablePositions() {
-        return Set.copyOf(addedPlaceablePositions);
+    public Set<Position> getAddedLegalPositions() {
+        return Set.copyOf(addedLegalPositions);
     }
 
     /**
      * @return The set of positions that were removed from placeablePositions with the last card placement.
      */
     @JsonIgnore
-    public Set<Position> getRemovedPlaceablePositions() {
-        return Set.copyOf(removedPlaceablePositions);
+    public Set<Position> getRemovedLegalPositions() {
+        return Set.copyOf(removedLegalPositions);
     }
 
     /**
@@ -216,7 +230,7 @@ public class PlayArea implements PlayAreaModel {
      */
     @Override
     public boolean isDeadlocked() {
-        return placeablePositions.isEmpty();
+        return legalPositions.isEmpty();
     }
 
     //endregion
@@ -286,20 +300,29 @@ public class PlayArea implements PlayAreaModel {
         field.put(playedCardPosition, playedCard);
         activeSides.put(playedCard, activeSide);
 
-        placeablePositions.remove(playedCardPosition);
-        addedPlaceablePositions = new HashSet<>();
-        removedPlaceablePositions = new HashSet<>();
+        legalPositions.remove(playedCardPosition);
+        illegalPositions.add(playedCardPosition);
+
+        addedLegalPositions.clear();
+        removedLegalPositions.clear();
 
         Map<CornersIdx, CornerType> corners = activeSide.getCorners();
+
         for(CornersIdx idx : corners.keySet()) {
-            if (corners.get(idx) == CornerType.BLOCKED) {
-                removedPlaceablePositions.add(playedCardPosition.addOffset(idx.getOffset()));
-            } else if (field.get(playedCardPosition.addOffset(idx.getOffset())) == null) {
-                addedPlaceablePositions.add(playedCardPosition.addOffset(idx.getOffset()));
+            Position neighbourPosition = playedCardPosition.addOffset(idx.getOffset());
+
+            if (!illegalPositions.contains(neighbourPosition)) {
+                if (corners.get(idx) == CornerType.BLOCKED) {
+                    removedLegalPositions.add(neighbourPosition);
+                } else {
+                    addedLegalPositions.add(neighbourPosition);
+                }
             }
         }
-        placeablePositions.removeAll(removedPlaceablePositions);
-        placeablePositions.addAll(addedPlaceablePositions);
+
+        legalPositions.addAll(addedLegalPositions);
+        legalPositions.removeAll(removedLegalPositions);
+        illegalPositions.addAll(removedLegalPositions);
     }
 
     /**
@@ -422,7 +445,7 @@ public class PlayArea implements PlayAreaModel {
         if (field.containsKey(playedCardPosition))
             return false;
 
-        if (!placeablePositions.contains(playedCardPosition))
+        if (!legalPositions.contains(playedCardPosition))
             return false;
 
         // checks if the playedCard cost is satisfied
@@ -487,10 +510,12 @@ public class PlayArea implements PlayAreaModel {
             int minY = playAreaNode.get("minY").asInt();
             int maxY = playAreaNode.get("maxY").asInt();
 
-            TypeReference<HashSet<Position>> typeReferencePlaceablePositions = new TypeReference<>() {};
-            Set<Position> placeablePositions = mapper.readValue(playAreaNode.get("placeablePositions").toString(), typeReferencePlaceablePositions);
+            TypeReference<HashSet<Position>> typeReferenceLegalPositions = new TypeReference<>() {};
+            TypeReference<HashSet<Position>> typeReferenceIllegalPositions = new TypeReference<>() {};
+            Set<Position> legalPositions = mapper.readValue(playAreaNode.get("legalPositions").toString(), typeReferenceLegalPositions);
+            Set<Position> illegalPositions = mapper.readValue(playAreaNode.get("illegalPositions").toString(), typeReferenceIllegalPositions);
 
-            return new PlayArea(cardCount, resourceAndObjectCounts, cardPlacementOrder, field, activeSideTypes, minX, maxX, minY, maxY, placeablePositions);
+            return new PlayArea(cardCount, resourceAndObjectCounts, cardPlacementOrder, field, activeSideTypes, minX, maxX, minY, maxY, legalPositions, illegalPositions);
         }
     }
 

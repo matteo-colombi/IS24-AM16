@@ -1,53 +1,53 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
-import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
+import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
-import it.polimi.ingsw.am16.server.controller.GameController;
-import it.polimi.ingsw.am16.server.lobby.LobbyManager;
+import it.polimi.ingsw.am16.server.ServerInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.stream.Collectors;
 
+/**
+ * DOCME
+ * N.B. the only parts of this class that are thread safe are the allowedCommands methods
+ * Everything else should never be called by multiple threads
+ */
 public class CLIInputManager implements Runnable {
 
     private boolean running;
     private final CLI cliView;
     private final InputStream inputStream;
+    private ServerInterface serverInterface;
+    private final Set<CLICommand> allowedCommands;
 
-    //JUST FOR TESTING
-    private int playerId;
-    private String username;
-    private GameController gameController;
-    private final LobbyManager lobbyManager;
-
-    public CLIInputManager(CLI cliView, InputStream inputStream, GameController gameController, LobbyManager lobbyManager) {
+    public CLIInputManager(CLI cliView, InputStream inputStream) {
         this.cliView = cliView;
         this.inputStream = inputStream;
+        this.allowedCommands = new ConcurrentSkipListSet<>();
+    }
 
-        //JUST FOR TESTING
-        this.playerId = -1;
-        this.gameController = gameController;
-        this.lobbyManager = lobbyManager;
+    public void setServerInterface(ServerInterface serverInterface) {
+        this.serverInterface = serverInterface;
     }
 
     @Override
     public void run() {
         running = true;
         //Using BufferedReader instead of Scanner because it is thread safe
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-            cliView.printCommandPrompt();
-            while(running) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            while (running) {
                 String input = reader.readLine();
                 parseCommand(input);
             }
@@ -58,30 +58,44 @@ public class CLIInputManager implements Runnable {
     }
 
     private void parseCommand(String input) {
-        System.out.println(playerId + " " + input); //FOR TESTING PURPOSES
-
         String[] args = input.split(" ");
 
-        String command = args[0];
+        String inputCommand = args[0].toLowerCase();
 
-        if(!cliView.allowedCommand(command)) {
-            System.out.println("Unknown command: \"" + command + "\"");
+        Set<CLICommand> matchingCommands = commandMatch(inputCommand);
+
+        if (matchingCommands.size() > 1) {
+            System.out.println("Ambiguous command: \"" + inputCommand + "\"");
+            System.out.println("Possible matches:");
+            matchingCommands.stream().sorted().forEach(c -> System.out.println("\t- " + c));
+            cliView.printCommandPrompt();
+            return;
+        } else if (matchingCommands.isEmpty()) {
+            System.out.println("Command not allowed: \"" + inputCommand + "\"");
             cliView.printCommandPrompt();
             return;
         }
 
-        switch (command.toLowerCase()) {
-            case "help" -> {
+        CLICommand command = matchingCommands.iterator().next();
+
+        switch (command) {
+            case HELP -> {
                 cliView.printHelp();
             }
-            case "create_game" -> {
+            case CREATE_GAME -> {
                 if (args.length < 3 || args[1] == null || args[1].isEmpty() || args[2] == null || args[2].isEmpty()) {
-                    System.out.println("Invalid arguments. Usage: create_game [username] [numPlayers]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.CREATE_GAME.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
 
                 String username = args[1];
+                if (username.length() > 10) {
+                    System.out.println("Invalid argument. Username must be 10 characters or less.");
+                    cliView.printCommandPrompt();
+                    break;
+                }
+
                 String numPlayersString = args[2];
                 int numPlayers;
                 try {
@@ -92,60 +106,53 @@ public class CLIInputManager implements Runnable {
                     break;
                 }
 
-                //JUST FOR TESTING
-                String gameId = lobbyManager.createGame(numPlayers);
-                gameController = lobbyManager.getGame(gameId);
-
-                this.username = username;
                 try {
-                    this.playerId = gameController.createPlayer(username);
-                } catch (UnexpectedActionException e) {
-                    System.out.println("Couldn't join game: " + e.getMessage() + ".");
-                    break;
+                    serverInterface.createGame(username, numPlayers);
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
                 }
-
-                gameController.joinPlayer(this.playerId, cliView);
-
             }
-            case "join_game" -> {
+            case JOIN_GAME -> {
                 if (args.length < 3 || args[1] == null || args[2] == null || args[1].isEmpty() || args[2].isEmpty()) {
-                    System.out.println("Invalid arguments. Usage: join_game [username] [gameId]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.JOIN_GAME.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
 
                 String username = args[1];
-                String gameId = args[2];
-
-                //THIS IS JUST FOR TESTING
-                this.username = username;
-                try {
-                    this.playerId = gameController.createPlayer(username);
-                } catch (UnexpectedActionException e) {
-                    System.out.println("Couldn't join game: " + e.getMessage() + ".");
+                if (username.length() > 10) {
+                    System.out.println("Invalid argument. Username must be 10 characters or less.");
+                    cliView.printCommandPrompt();
                     break;
                 }
+                String gameId = args[2].toUpperCase();
 
-                gameController.joinPlayer(this.playerId, cliView);
+                try {
+                    serverInterface.joinGame(gameId, username);
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
+                }
             }
-            case "id" -> {
+            case ID -> {
                 cliView.printGameId();
             }
-            case "players" -> {
+            case PLAYERS -> {
                 cliView.printPlayers();
             }
-            case "draw_options" -> {
+            case DRAW_OPTIONS -> {
                 cliView.printDrawOptions();
             }
-            case "common_objectives" -> {
+            case COMMON_OBJECTIVES -> {
                 cliView.printCommonObjectives();
             }
-            case "starter" -> {
+            case STARTER -> {
                 if (args.length == 1) {
                     cliView.printStarterCard();
                     break;
                 } else if (args[1] == null || (!args[1].equals("front") && !args[1].equals("back"))) {
-                    System.out.println("Invalid arguments. Usage: starter [front|back]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.STARTER.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
@@ -158,12 +165,16 @@ public class CLIInputManager implements Runnable {
                     sideType = SideType.BACK;
                 }
 
-                //FOR TESTING ONLY
-                gameController.setStarterCard(playerId, sideType);
+                try {
+                    serverInterface.setStarterCard(sideType);
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
+                }
             }
-            case "color", "colour" -> {
+            case COLOR -> {
                 if (args.length < 2 || args[1] == null) {
-                    System.out.println("Invalid arguments. Usage: color [color]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.COLOR.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
@@ -183,34 +194,42 @@ public class CLIInputManager implements Runnable {
                     return;
                 }
 
-                //JUST FOR TESTING
-                gameController.setPlayerColor(playerId, color);
+                try {
+                    serverInterface.setColor(color);
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
+                }
             }
-            case "objective" -> {
+            case OBJECTIVE -> {
                 if (args.length == 1) {
                     cliView.printObjectiveOptions();
                     break;
                 } else if (args[1] == null || (!args[1].equals("1") && !args[1].equals("2"))) {
-                    System.out.println("Invalid arguments. Usage: objective [1|2]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.OBJECTIVE.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
 
                 int objectiveChoice = Integer.parseInt(args[1]);
+                ObjectiveCard objectiveCard = cliView.getPersonalObjectiveOption(objectiveChoice);
 
-                //JUST FOR TESTING
-                gameController.setPlayerObjective(playerId, cliView.getPersonalObjectiveOption(objectiveChoice));
-
+                try {
+                    serverInterface.setPersonalObjective(objectiveCard);
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
+                }
             }
-            case "objectives" -> {
+            case OBJECTIVES -> {
                 cliView.printAllObjectives();
             }
-            case "hand" -> {
+            case HAND -> {
                 if (args.length == 1) {
                     cliView.printHand();
                 } else {
                     if (args[1] == null || args[1].isEmpty()) {
-                        System.out.println("Invalid arguments. Usage: hand [username]");
+                        System.out.println("Invalid arguments. Usage: " + CLICommand.HAND.getUsage());
                         cliView.printCommandPrompt();
                         break;
                     }
@@ -218,12 +237,12 @@ public class CLIInputManager implements Runnable {
                     cliView.printOtherHand(username);
                 }
             }
-            case "play_area" -> {
+            case PLAY_AREA -> {
                 if (args.length == 1) {
                     cliView.printPlayArea();
                 } else {
                     if (args[1] == null || args[1].isEmpty()) {
-                        System.out.println("Invalid arguments. Usage: play_area [username]");
+                        System.out.println("Invalid arguments. Usage: " + CLICommand.PLAY_AREA.getUsage());
                         cliView.printCommandPrompt();
                         break;
                     }
@@ -232,7 +251,7 @@ public class CLIInputManager implements Runnable {
                 }
 
             }
-            case "play_card" -> {
+            case PLAY_CARD -> {
                 if (args.length < 4
                         || args[1] == null
                         || args[2] == null
@@ -241,7 +260,7 @@ public class CLIInputManager implements Runnable {
                         || args[2].isEmpty()
                         || args[3].isEmpty()
                         || (!args[2].equals("front") && !args[2].equals("back"))) {
-                    System.out.println("Invalid arguments. Usage: play_card [index] [front|back] [position: x;y]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.PLAY_CARD.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
@@ -279,10 +298,22 @@ public class CLIInputManager implements Runnable {
                     break;
                 }
 
-                //FOR TESTING PURPOSES
-                gameController.placeCard(playerId, hand.get(index-1), SideType.valueOf(side.toUpperCase()), new Position(x, y));
+                PlayableCard playedCard = hand.get(index - 1);
+
+                SideType sideType = switch (side) {
+                    case "front" -> SideType.FRONT;
+                    case "back" -> SideType.BACK;
+                    default -> null;
+                };
+
+                try {
+                    serverInterface.playCard(playedCard, sideType, new Position(x, y));
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
+                }
             }
-            case "draw_card" -> {
+            case DRAW_CARD -> {
                 if (args.length < 3
                         || args[1] == null
                         || args[2] == null
@@ -292,7 +323,7 @@ public class CLIInputManager implements Runnable {
                         || (!args[2].equals("resource") && !args[2].equals("resources") && !args[2].equals("gold"))
                         || args[1].equals("common") && (args.length < 4 || args[3] == null || args[3].isEmpty() || (!args[3].equals("1") && !args[3].equals("2")))
                 ) {
-                    System.out.println("Invalid arguments. Usage: draw_card [deck|common] [resource|gold] [(if common) index]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.DRAW_CARD.getUsage());
                     cliView.printCommandPrompt();
                     break;
                 }
@@ -320,55 +351,64 @@ public class CLIInputManager implements Runnable {
                     default -> null;
                 };
 
-                //JUST FOR TESTING
-                gameController.drawCard(playerId, drawType);
-            }
-            case "scroll_view" -> {
-                if (args.length < 2
-                        || args[1] == null
-                        || args[1].isEmpty()
-                        || (!args[1].equals("left") && !args[1].equals("right") && !args[1].equals("center"))
-                        || (args[1].equals("left") || args[1].equals("right")) && (args.length < 3 || args[2] == null || args[2].isEmpty())
-                ) {
-                    System.out.println("Invalid arguments. Usage: scroll_view [left|right|center] [(if left/right) offset]");
-                    cliView.printCommandPrompt();
-                    break;
-                }
-                if (args[1].equals("center")) {
-                    cliView.scrollView("center", 0);
-                } else {
-                    try {
-                        int offset = Integer.parseInt(args[2]);
-                        cliView.scrollView(args[1], offset);
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid arguments. Offset must be an integer.");
-                    }
+                try {
+                    serverInterface.drawCard(drawType);
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
                 }
 
                 cliView.printCommandPrompt();
             }
-            case "points" -> {
+            case SCROLL_VIEW -> {
+                if (
+                        args.length < 3
+                                || args[1] == null || args[1].isEmpty()
+                                || !args[1].equals("left") && !args[1].equals("right")
+                                || args[2] == null || args[2].isEmpty()
+                ) {
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.SCROLL_VIEW.getUsage());
+                    cliView.printCommandPrompt();
+                    break;
+                }
+
+                try {
+                    int offset = Integer.parseInt(args[2]);
+                    cliView.scrollView(args[1], offset);
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid arguments. Offset must be an integer.");
+                }
+
+                cliView.printCommandPrompt();
+            }
+            case POINTS -> {
                 cliView.printPoints();
             }
-            case "winners" -> {
+            case WINNERS -> {
                 cliView.printWinners();
             }
-            case "chat" -> {
+            case CHAT -> {
                 if (args.length == 1) {
                     cliView.printUnreadChat();
                 } else {
                     String text = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
 
-                    //JUST FOR TESTING
-                    gameController.sendChatMessage(this.username, text);
+                    try {
+                        serverInterface.sendChatMessage(text);
+                    } catch (RemoteException e) {
+                        //TODO handle it
+                        e.printStackTrace();
+                    }
+
+                    cliView.printCommandPrompt();
                 }
             }
-            case "chat_history" -> {
+            case CHAT_HISTORY -> {
                 cliView.printChatHistory();
             }
-            case "chat_private" -> {
+            case WHISPER -> {
                 if (args.length < 3) {
-                    System.out.println("Invalid arguments. Usage: chat_private [receiver username] [message]");
+                    System.out.println("Invalid arguments. Usage: " + CLICommand.WHISPER.getUsage());
                     cliView.printCommandPrompt();
                     return;
                 }
@@ -380,35 +420,69 @@ public class CLIInputManager implements Runnable {
                 }
                 String text = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
 
-                //JUST FOR TESTING
-                gameController.sendChatMessage(this.username, text, Set.of(receiverUsername));
+                try {
+                    serverInterface.sendChatMessage(text, receiverUsername);
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
+                }
+
+                cliView.printCommandPrompt();
             }
-            case "exit" -> {
-                if (cliView.getCliState() == CLI.CLIState.STARTUP) {
-                    System.out.println("Good bye!");
-                    running = false;
-                } else {
-                    //THIS IS ONLY FOR TESTING
-                    System.out.println("Disconnecting from the game...");
-                    gameController.disconnect(this.playerId);
-                    this.gameController = null;
+            case LEAVE_GAME -> {
+                System.out.println("Leaving the game...");
+                try {
+                    serverInterface.leaveGame();
                     cliView.resetToStartup();
-                    System.out.println("Disconnected.");
-                    cliView.printCommandPrompt();
+                    System.out.println("Game left.");
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
                 }
+                cliView.printCommandPrompt();
             }
-            case "rick" -> {
-                if (args.length < 2 || args[1] == null || args[1].isEmpty()) {
-                    System.out.println("Invalid arguments. Usage: rick [username]");
-                    cliView.printCommandPrompt();
-                    break;
+            case EXIT -> {
+                System.out.println("Good bye!");
+                try {
+                    serverInterface.disconnect();
+                } catch (RemoteException e) {
+                    //TODO handle it
+                    e.printStackTrace();
                 }
-
-                String username = args[1];
-
-                //FOR TESTING PURPOSES
-                gameController.rick(username);
+                running = false;
             }
         }
+    }
+
+    private Set<CLICommand> commandMatch(String input) {
+        Set<CLICommand> filteredCommands = allowedCommands
+                .stream()
+                .filter(c -> c.exactMatch(input))
+                .limit(1)
+                .collect(Collectors.toSet());
+
+        if (!filteredCommands.isEmpty())
+            return filteredCommands;
+
+        return allowedCommands
+                .stream()
+                .filter(c -> c.matches(input))
+                .collect(Collectors.toSet());
+    }
+
+    public void addCommand(CLICommand command) {
+        allowedCommands.add(command);
+    }
+
+    public void removeCommand(CLICommand command) {
+        allowedCommands.remove(command);
+    }
+
+    public Set<CLICommand> getAllowedCommands() {
+        return allowedCommands;
+    }
+
+    public void clearCommands() {
+        allowedCommands.clear();
     }
 }

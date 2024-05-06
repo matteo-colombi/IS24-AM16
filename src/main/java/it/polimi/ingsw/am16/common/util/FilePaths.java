@@ -30,7 +30,20 @@ public final class FilePaths {
      */
     public static final String CLI_POSITION_LABEL = CLI_ASSETS + "/label.json";
 
+    /**
+     * The path for the table used to signal the amount of resources and objects in the CLI play area
+     */
+    public static final String CLI_INFO_TABLE = CLI_ASSETS + "/infoTable.json";
+
+    /**
+     * The path for the banner shown in the command line interface
+     */
     public static final String CLI_BANNER = CLI_ASSETS + "/cliBanner.json";
+
+    /**
+     * The path for the label shown in the CLI when the final round of a game is triggered
+     */
+    public static final String CLI_FINAL_ROUND_LABEL = CLI_ASSETS + "/cliFinalRoundLabel.json";
 
     /**
      * The path for JSON files.

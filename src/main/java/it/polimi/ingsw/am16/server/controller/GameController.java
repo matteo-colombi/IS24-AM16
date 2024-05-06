@@ -1,6 +1,6 @@
 package it.polimi.ingsw.am16.server.controller;
 
-import it.polimi.ingsw.am16.client.RemoteViewInterface;
+import it.polimi.ingsw.am16.client.RemoteClientInterface;
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
@@ -17,7 +17,6 @@ import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.util.RNG;
 import it.polimi.ingsw.am16.server.VirtualView;
 
-import java.rmi.RemoteException;
 import java.util.*;
 
 /**
@@ -49,40 +48,58 @@ public class GameController {
     }
 
     /**
+     * @return whether the game being controlled is being reloaded after a server crash.
+     */
+    public synchronized boolean isRejoiningAfterCrash() {
+        return game.isRejoiningAfterCrash();
+    }
+
+    /**
+     * Retrieves the given player's id.
+     * @param username The player whose id is being queried.
+     * @return The id of the player with the given username
+     * @throws IllegalArgumentException Thrown if no player with the given username is found in the game.
+     */
+    public synchronized int getPlayerId(String username) throws IllegalArgumentException {
+        PlayerModel[] players = game.getPlayers();
+        for(PlayerModel player : players) {
+            if (player.getUsername().equals(username)) {
+                return player.getPlayerId();
+            }
+        }
+        throw new IllegalArgumentException("No player with the given username in the game.");
+    }
+
+    /**
      * Creates a new player and adds it to the game. By default, the player is considered disconnected.
      * @param username The player's username
-     * @return The newly added player's id, or <code>-1</code> if a player with the same username already exists, or if this game does not accept new players (already full or already started).
+     * @return The newly added player's id.
+     * @throws UnexpectedActionException Thrown if the game is already full, if the game has already started, or if a player with the given username is already present in the game.
      */
-    public int createPlayer(String username) throws UnexpectedActionException {
-        //TODO debate this
+    public synchronized int createPlayer(String username) throws UnexpectedActionException {
         return game.addPlayer(username);
     }
 
     /**
      * Sets the player with the given playerId's status to connected, and adds it to the list of players which should receive updates about the game.
      * @param playerId The player's id. If an invalid id is given, this method does nothing.
-     * @param userView The {@link RemoteViewInterface}, used to communicate with the player.
+     * @param userView The {@link RemoteClientInterface}, used to communicate with the player.
      */
-    public void joinPlayer(int playerId, RemoteViewInterface userView) {
-        if (playerId < 0 || playerId >= game.getCurrentPlayerCount())
+    public synchronized void joinPlayer(int playerId, RemoteClientInterface userView) throws UnexpectedActionException {
+        if (!game.isRejoiningAfterCrash() && (playerId < 0 || playerId >= game.getCurrentPlayerCount()))
             return;
 
         PlayerModel[] players = game.getPlayers();
         if (players[playerId] != null && players[playerId].isConnected()) {
-            try {
-                userView.promptError("User already present with same username.");
-            } catch (RemoteException e) {
-                e.printStackTrace();
-                //TODO handle it
-                return;
-            }
-            return;
+            throw new UnexpectedActionException("User " + players[playerId].getUsername() + " already reconnected.");
         }
         virtualView.addPlayer(playerId, userView, players[playerId].getUsername());
         virtualView.joinGame(playerId, game.getId(), players[playerId].getUsername());
-        players[playerId].setConnected(true);
         if (game.isRejoiningAfterCrash()) {
+            game.reconnectionSuccessful(playerId);
             virtualView.communicateNewMessages(playerId, players[playerId].getChat().getMessages());
+        } else {
+            players[playerId].setConnected(true);
         }
 
         if (game.getCurrentPlayerCount() == game.getNumPlayers() && game.everybodyConnected()) {
@@ -123,7 +140,7 @@ public class GameController {
      * @param playerId The player id. If an invalid id is given, this method does nothing.
      * @param starterSide The side on which the player decided to place the starter card.
      */
-    public void setStarterCard(int playerId, SideType starterSide) {
+    public synchronized void setStarterCard(int playerId, SideType starterSide) {
         if (playerId < 0 || playerId >= game.getCurrentPlayerCount())
             return;
 
@@ -142,7 +159,7 @@ public class GameController {
         }
         PlayAreaModel playArea = game.getPlayers()[playerId].getPlayArea();
 
-        virtualView.communicatePlayArea(game.getPlayers()[playerId].getUsername(), playArea.getPlacementOrder(), playArea.getField(), playArea.getActiveSides());
+        virtualView.communicatePlayArea(game.getPlayers()[playerId].getUsername(), playArea.getPlacementOrder(), playArea.getField(), playArea.getActiveSides(), playArea.getLegalPositions(), playArea.getIllegalPositions(), playArea.getResourceCounts(), playArea.getObjectCounts());
         virtualView.redrawView(playerId);
 
         if (game.allPlayersChoseStarterSide()) {
@@ -153,7 +170,7 @@ public class GameController {
     /**
      * Starts the color-choosing phase.
      */
-    private void initializingColors() {
+    private synchronized void initializingColors() {
         List<PlayerModel> playerModels = new ArrayList<>(List.of(game.getPlayers()));
         Collections.shuffle(playerModels, RNG.getRNG());
         playerQueue = new LinkedList<>(playerModels);
@@ -164,7 +181,7 @@ public class GameController {
     /**
      * Prompts the correct player to choose their color.
      */
-    private void promptColor() {
+    private synchronized void promptColor() {
         if (playerQueue.isEmpty()) {
             assert game.allPlayersChoseColor();
             choosingColor = -1;
@@ -182,7 +199,7 @@ public class GameController {
      * @param playerId The player's id. If an invalid id is given, or it is not the given player's turn to choose their color, this method does nothing.
      * @param color The color chosen by the player. If <code>null</code>, a random color will be assigned.
      */
-    public void setPlayerColor(int playerId, PlayerColor color) {
+    public synchronized void setPlayerColor(int playerId, PlayerColor color) {
         if (choosingColor == -1 || choosingColor != playerId) {
             System.err.println("Wrong player!");
             //TODO handle it better?
@@ -220,16 +237,17 @@ public class GameController {
 
         for(PlayerModel player : game.getPlayers()) {
             virtualView.communicateHand(player.getPlayerId(), player.getHand().getCards());
-            virtualView.communicatePlayArea(player.getUsername(), player.getPlayArea().getPlacementOrder(), player.getPlayArea().getField(), player.getPlayArea().getActiveSides());
+            virtualView.communicatePlayArea(player.getUsername(), player.getPlayArea().getPlacementOrder(), player.getPlayArea().getField(), player.getPlayArea().getActiveSides(), player.getPlayArea().getLegalPositions(), player.getPlayArea().getIllegalPositions(), player.getPlayArea().getResourceCounts(), player.getPlayArea().getObjectCounts());
             virtualView.communicatePersonalObjective(player.getPlayerId(), player.getPersonalObjective());
+            virtualView.communicateColor(player.getUsername(), player.getPlayerColor());
+            virtualView.communicateGamePoints(player.getUsername(), player.getGamePoints());
+            virtualView.communicateObjectivePoints(player.getUsername(), player.getObjectivePoints());
 
             for (PlayerModel player2 : game.getPlayers()) {
                 if (player2 != player) {
                     virtualView.communicateOtherHand(player2.getPlayerId(), player.getUsername(), player.getHand().getRestrictedVersion());
                 }
             }
-
-            virtualView.communicateNewMessages(player.getPlayerId(), player.getChat().getMessages());
         }
 
         //TODO maybe remove this?
@@ -292,7 +310,7 @@ public class GameController {
      * @param playerId The player's id. If an invalid id is given, this method does nothing.
      * @param objectiveCard The chosen objective card. If the user doesn't have this card, this method will do nothing.
      */
-    public void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) {
+    public synchronized void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) {
         if (playerId < 0 || playerId >= game.getCurrentPlayerCount())
             return;
 
@@ -319,7 +337,7 @@ public class GameController {
      * Actually starts the game.
      * After this, the game will be periodically saved.
      */
-    public void startGame() {
+    public synchronized void startGame() {
         try {
             game.startGame();
         } catch (UnexpectedActionException e) {
@@ -387,7 +405,7 @@ public class GameController {
      * @param side The side on which the card is played.
      * @param newPos The position of the newly placed card.
      */
-    public void placeCard(int playerId, PlayableCard card, SideType side, Position newPos) {
+    public synchronized void placeCard(int playerId, PlayableCard card, SideType side, Position newPos) {
         if ((game.getState() != GameState.STARTED && game.getState() != GameState.FINAL_ROUND)
                 || hasPlacedCard
                 || playerId != game.getActivePlayer()
@@ -396,8 +414,7 @@ public class GameController {
         try {
             game.placeCard(playerId, card, side, newPos);
         } catch (IllegalMoveException e) {
-            System.err.println("Illegal move.");
-            //TODO handle it better?
+            virtualView.promptError(playerId, "Illegal move.");
             return;
         } catch (UnexpectedActionException e) {
             e.printStackTrace();
@@ -407,13 +424,14 @@ public class GameController {
 
         hasPlacedCard = true;
 
-        virtualView.communicatePlayCard(game.getPlayers()[playerId].getUsername(), card, side, newPos);
+        PlayAreaModel playArea = game.getPlayers()[playerId].getPlayArea();
+
+        virtualView.communicatePlayCard(game.getPlayers()[playerId].getUsername(), card, side, newPos, playArea.getAddedLegalPositions(), playArea.getRemovedLegalPositions(), playArea.getResourceCounts(), playArea.getObjectCounts());
         virtualView.communicateGamePoints(game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getGamePoints());
         virtualView.communicateRemoveCard(playerId, card);
         for(PlayerModel player : game.getPlayers()) {
             if (player.getPlayerId() != playerId) {
                 virtualView.communicateRemoveOtherCard(player.getPlayerId(), game.getPlayers()[playerId].getUsername(), card.getRestrictedVersion());
-                virtualView.redrawView(player.getPlayerId());
             }
         }
         virtualView.redrawView();
@@ -428,7 +446,7 @@ public class GameController {
      * @param playerId The player's id. If the given id is invalid, or it is not the right moment to draw a card, or if it's not the given player's turn, this method does nothing.
      * @param drawType The type of draw the player has decided to perform.
      */
-    public void drawCard(int playerId, DrawType drawType) {
+    public synchronized void drawCard(int playerId, DrawType drawType) {
         if ((game.getState() != GameState.STARTED)
                 || !hasPlacedCard
                 || playerId != game.getActivePlayer()
@@ -449,9 +467,16 @@ public class GameController {
         }
 
         switch (drawType) {
-            case GOLD_DECK -> virtualView.communicateDeckTopType(PlayableCardType.GOLD, game.getGoldDeckTopType());
-            case RESOURCE_DECK -> virtualView.communicateDeckTopType(PlayableCardType.RESOURCE, game.getResourceDeckTopType());
-            default -> virtualView.communicateCommonCards(game.getCommonResourceCards(), game.getCommonGoldCards());
+            case RESOURCE_1, RESOURCE_2:
+                virtualView.communicateCommonCards(game.getCommonResourceCards(), game.getCommonGoldCards());
+            case RESOURCE_DECK:
+                virtualView.communicateDeckTopType(PlayableCardType.RESOURCE, game.getResourceDeckTopType());
+                break;
+            case GOLD_1, GOLD_2:
+                virtualView.communicateCommonCards(game.getCommonResourceCards(), game.getCommonGoldCards());
+            case GOLD_DECK:
+                virtualView.communicateDeckTopType(PlayableCardType.GOLD, game.getGoldDeckTopType());
+                break;
         }
 
         virtualView.communicateNewCard(playerId, drawnCard);
@@ -495,7 +520,7 @@ public class GameController {
      * @param senderUsername The sender's username.
      * @param text The message content.
      */
-    public void sendChatMessage(String senderUsername, String text) {
+    public synchronized void sendChatMessage(String senderUsername, String text) {
         chatController.sendMessage(senderUsername, text);
     }
 
@@ -505,7 +530,7 @@ public class GameController {
      * @param text The message content.
      * @param receiverUsernames The set of players who should receive the message.
      */
-    public void sendChatMessage(String senderUsername, String text, Set<String> receiverUsernames) {
+    public synchronized void sendChatMessage(String senderUsername, String text, Set<String> receiverUsernames) {
         chatController.sendMessage(senderUsername, text, receiverUsernames, true);
     }
 
@@ -513,8 +538,8 @@ public class GameController {
      * Ends the game because of the disconnection of the given player.
      * @param playerId The player who disconnected. If the given id is not valid, this method does nothing.
      */
-    public void disconnect(int playerId) {
-        if (playerId < 0 || playerId >= game.getCurrentPlayerCount()) return;
+    public synchronized void disconnect(int playerId) {
+        if (playerId < 0 || playerId >= game.getCurrentPlayerCount() || game.getState() == GameState.ENDED) return;
         //TODO maybe make it so that disconnections are allowed in the lobby (if the game has not started).
         virtualView.signalDisconnection(playerId, game.getPlayers()[playerId].getUsername());
 
@@ -522,16 +547,4 @@ public class GameController {
         lobbyManager.deleteGame(game);
     }
 
-    /**
-     * You saw nothing ;)
-     */
-    public void rick(String username) {
-        PlayerModel[] players = game.getPlayers();
-        for(PlayerModel player : players) {
-            if (player.getUsername().equals(username)) {
-                virtualView.rick(player.getPlayerId());
-                return;
-            }
-        }
-    }
 }

@@ -3616,20 +3616,20 @@
             "text": [
                 "╔═══════════════════╗",
                 "║                   ║",
-                "║              ███  ║",
-                "║   2       ███     ║",
-                "║        ███        ║",
+                "║ ╔─────╗       ███ ║",
+                "║ │  2  │    ███    ║",
+                "║ ╚─────╝ ███       ║",
                 "║                   ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "               RRR   ",
-                "            RRR      ",
-                "         RRR         ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y                   Y",
+                "Y YYYYYYY       RRR Y",
+                "Y Y     Y    RRR    Y",
+                "Y YYYYYYY RRR       Y",
+                "Y                   Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3639,20 +3639,20 @@
             "text": [
                 "╔═══════════════════╗",
                 "║                   ║",
-                "║        ███        ║",
-                "║   2       ███     ║",
-                "║              ███  ║",
+                "║ ╔─────╗ ███       ║",
+                "║ │  2  │    ███    ║",
+                "║ ╚─────╝       ███ ║",
                 "║                   ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "         GGG         ",
-                "            GGG      ",
-                "               GGG   ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y                   Y",
+                "Y YYYYYYY GGG       Y",
+                "Y Y     Y    GGG    Y",
+                "Y YYYYYYY       GGG Y",
+                "Y                   Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3662,20 +3662,20 @@
             "text": [
                 "╔═══════════════════╗",
                 "║                   ║",
-                "║              ███  ║",
-                "║   2       ███     ║",
-                "║        ███        ║",
+                "║ ╔─────╗       ███ ║",
+                "║ │  2  │    ███    ║",
+                "║ ╚─────╝ ███       ║",
                 "║                   ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "               BBB   ",
-                "            BBB      ",
-                "         BBB         ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y                   Y",
+                "Y YYYYYYY       BBB Y",
+                "Y Y     Y    BBB    Y",
+                "Y YYYYYYY BBB       Y",
+                "Y                   Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3685,20 +3685,20 @@
             "text": [
                 "╔═══════════════════╗",
                 "║                   ║",
-                "║        ███        ║",
-                "║   2       ███     ║",
-                "║              ███  ║",
+                "║ ╔─────╗ ███       ║",
+                "║ │  2  │    ███    ║",
+                "║ ╚─────╝       ███ ║",
                 "║                   ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "         PPP         ",
-                "            PPP      ",
-                "               PPP   ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y                   Y",
+                "Y YYYYYYY PPP       Y",
+                "Y Y     Y    PPP    Y",
+                "Y YYYYYYY       PPP Y",
+                "Y                   Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3708,20 +3708,20 @@
             "text": [
                 "╔═══════════════════╗",
                 "║                   ║",
-                "║          ███      ║",
-                "║   3      ███      ║",
-                "║             ███   ║",
+                "║ ╔─────╗   ███     ║",
+                "║ │  3  │   ███     ║",
+                "║ ╚─────╝      ███  ║",
                 "║                   ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "           RRR       ",
-                "           RRR       ",
-                "              GGG    ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y                   Y",
+                "Y YYYYYYY   RRR     Y",
+                "Y Y     Y   RRR     Y",
+                "Y YYYYYYY      GGG  Y",
+                "Y                   Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3731,20 +3731,20 @@
             "text": [
                 "╔═══════════════════╗",
                 "║                   ║",
-                "║             ███   ║",
-                "║   3         ███   ║",
-                "║          ███      ║",
+                "║ ╔─────╗      ███  ║",
+                "║ │  3  │      ███  ║",
+                "║ ╚─────╝   ███     ║",
                 "║                   ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "              GGG    ",
-                "              GGG    ",
-                "           PPP       ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y                   Y",
+                "Y YYYYYYY      GGG  Y",
+                "Y Y     Y      GGG  Y",
+                "Y YYYYYYY   PPP     Y",
+                "Y                   Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3754,20 +3754,20 @@
             "text": [
                 "╔═══════════════════╗",
                 "║                   ║",
-                "║             ███   ║",
-                "║   3      ███      ║",
-                "║          ███      ║",
+                "║ ╔─────╗      ███  ║",
+                "║ │  3  │   ███     ║",
+                "║ ╚─────╝   ███     ║",
                 "║                   ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "              RRR    ",
-                "           BBB       ",
-                "           BBB       ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y                   Y",
+                "Y YYYYYYY      RRR  Y",
+                "Y Y     Y   BBB     Y",
+                "Y YYYYYYY   BBB     Y",
+                "Y                   Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3777,20 +3777,20 @@
             "text": [
                 "╔═══════════════════╗",
                 "║                   ║",
-                "║          ███      ║",
-                "║   3         ███   ║",
-                "║             ███   ║",
+                "║ ╔─────╗   ███     ║",
+                "║ │  3  │      ███  ║",
+                "║ ╚─────╝      ███  ║",
                 "║                   ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "           BBB       ",
-                "              PPP    ",
-                "              PPP    ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y                   Y",
+                "Y YYYYYYY   BBB     Y",
+                "Y Y     Y      PPP  Y",
+                "Y YYYYYYY      PPP  Y",
+                "Y                   Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3798,22 +3798,22 @@
     "objective_resources_1": {
         "front": {
             "text": [
-                "╔═══════════════════╗",
-                "║                   ║",
-                "║                   ║",
-                "║   2      3 FUN    ║",
-                "║                   ║",
-                "║                   ║",
+                "╔══════╦═════╦══════╗",
+                "║      │  2  │      ║",
+                "║      ╚─────╝      ║",
+                "║ ╔───────────────╗ ║",
+                "║ │ FUN  FUN  FUN │ ║",
+                "║ ╚───────────────╝ ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y      R     R      Y",
+                "Y      RRRRRRR      Y",
+                "Y RRRRRRRRRRRRRRRRR Y",
+                "Y R               R Y",
+                "Y RRRRRRRRRRRRRRRRR Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3821,22 +3821,22 @@
     "objective_resources_2": {
         "front": {
             "text": [
-                "╔═══════════════════╗",
-                "║                   ║",
-                "║                   ║",
-                "║   2      3 PLA    ║",
-                "║                   ║",
-                "║                   ║",
+                "╔══════╦═════╦══════╗",
+                "║      │  2  │      ║",
+                "║      ╚─────╝      ║",
+                "║ ╔───────────────╗ ║",
+                "║ │ PLA  PLA  PLA │ ║",
+                "║ ╚───────────────╝ ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y      G     G      Y",
+                "Y      GGGGGGG      Y",
+                "Y GGGGGGGGGGGGGGGGG Y",
+                "Y G               G Y",
+                "Y GGGGGGGGGGGGGGGGG Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3844,22 +3844,22 @@
     "objective_resources_3": {
         "front": {
             "text": [
-                "╔═══════════════════╗",
-                "║                   ║",
-                "║                   ║",
-                "║   2      3 ANI    ║",
-                "║                   ║",
-                "║                   ║",
+                "╔══════╦═════╦══════╗",
+                "║      │  2  │      ║",
+                "║      ╚─────╝      ║",
+                "║ ╔───────────────╗ ║",
+                "║ │ ANI  ANI  ANI │ ║",
+                "║ ╚───────────────╝ ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y      B     B      Y",
+                "Y      BBBBBBB      Y",
+                "Y BBBBBBBBBBBBBBBBB Y",
+                "Y B               B Y",
+                "Y BBBBBBBBBBBBBBBBB Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3867,22 +3867,22 @@
     "objective_resources_4": {
         "front": {
             "text": [
-                "╔═══════════════════╗",
-                "║                   ║",
-                "║                   ║",
-                "║   2      3 INS    ║",
-                "║                   ║",
-                "║                   ║",
+                "╔══════╦═════╦══════╗",
+                "║      │  2  │      ║",
+                "║      ╚─────╝      ║",
+                "║ ╔───────────────╗ ║",
+                "║ │ INS  INS  INS │ ║",
+                "║ ╚───────────────╝ ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y      P     P      Y",
+                "Y      PPPPPPP      Y",
+                "Y PPPPPPPPPPPPPPPPP Y",
+                "Y P               P Y",
+                "Y PPPPPPPPPPPPPPPPP Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3890,22 +3890,22 @@
     "objective_object_1": {
         "front": {
             "text": [
-                "╔═══════════════════╗",
-                "║                   ║",
-                "║          1 QUI    ║",
-                "║   3      1 INK    ║",
-                "║          1 MAN    ║",
-                "║                   ║",
+                "╔══════╦═════╦══════╗",
+                "║      │  3  │      ║",
+                "║      ╚─────╝      ║",
+                "║ ╔───────────────╗ ║",
+                "║ │ INK  MAN  QUI │ ║",
+                "║ ╚───────────────╝ ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y      Y     Y      Y",
+                "Y      YYYYYYY      Y",
+                "Y YYYYYYYYYYYYYYYYY Y",
+                "Y Y               Y Y",
+                "Y YYYYYYYYYYYYYYYYY Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3913,22 +3913,22 @@
     "objective_object_2": {
         "front": {
             "text": [
-                "╔═══════════════════╗",
-                "║                   ║",
-                "║                   ║",
-                "║   2      2 MAN    ║",
-                "║                   ║",
-                "║                   ║",
+                "╔══════╦═════╦══════╗",
+                "║      │  2  │      ║",
+                "║      ╚─────╝      ║",
+                "║   ╔───────────╗   ║",
+                "║   │ INK   INK │   ║",
+                "║   ╚───────────╝   ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y      Y     Y      Y",
+                "Y      YYYYYYY      Y",
+                "Y   YYYYYYYYYYYYY   Y",
+                "Y   Y           Y   Y",
+                "Y   YYYYYYYYYYYYY   Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3936,22 +3936,22 @@
     "objective_object_3": {
         "front": {
             "text": [
-                "╔═══════════════════╗",
-                "║                   ║",
-                "║                   ║",
-                "║   2      2 INK    ║",
-                "║                   ║",
-                "║                   ║",
+                "╔══════╦═════╦══════╗",
+                "║      │  2  │      ║",
+                "║      ╚─────╝      ║",
+                "║   ╔───────────╗   ║",
+                "║   │ MAN   MAN │   ║",
+                "║   ╚───────────╝   ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y      Y     Y      Y",
+                "Y      YYYYYYY      Y",
+                "Y   YYYYYYYYYYYYY   Y",
+                "Y   Y           Y   Y",
+                "Y   YYYYYYYYYYYYY   Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null
@@ -3959,22 +3959,22 @@
     "objective_object_4": {
         "front": {
             "text": [
-                "╔═══════════════════╗",
-                "║                   ║",
-                "║                   ║",
-                "║   2      2 QUI    ║",
-                "║                   ║",
-                "║                   ║",
+                "╔══════╦═════╦══════╗",
+                "║      │  2  │      ║",
+                "║      ╚─────╝      ║",
+                "║   ╔───────────╗   ║",
+                "║   │ QUI   QUI │   ║",
+                "║   ╚───────────╝   ║",
                 "╚═══════════════════╝"
             ],
             "color": [
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     ",
-                "                     "
+                "YYYYYYYYYYYYYYYYYYYYY",
+                "Y      Y     Y      Y",
+                "Y      YYYYYYY      Y",
+                "Y   YYYYYYYYYYYYY   Y",
+                "Y   Y           Y   Y",
+                "Y   YYYYYYYYYYYYY   Y",
+                "YYYYYYYYYYYYYYYYYYYYY"
             ]
         },
         "back": null

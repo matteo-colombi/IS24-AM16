@@ -75,7 +75,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>it.polimi.ingsw.am16/it.polimi.ingsw.am16.HelloApplication</mainClass>
+                            <mainClass>it.polimi.ingsw.am16/it.polimi.ingsw.am16.CodexStart</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

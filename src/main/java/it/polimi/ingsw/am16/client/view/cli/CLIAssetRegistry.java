@@ -17,8 +17,10 @@ public class CLIAssetRegistry {
 
     private final Map<String, CLICardAsset> cliCards;
     private final CLIText positionLabel;
+    private final CLIText infoTable;
     private final CLIText banner;
     private final CLIText rick;
+    private final CLIText finalRoundLabel;
 
     private final Map<RestrictedCard, CLIText> restrictedCliCards;
 
@@ -54,6 +56,16 @@ public class CLIAssetRegistry {
             throw new RuntimeException("Unable to read cli label for positions.");
         }
 
+        f = new File(FilePaths.CLI_INFO_TABLE);
+        if (!f.exists()) {
+            throw new RuntimeException(FilePaths.CLI_INFO_TABLE + " does not exist!");
+        }
+        try {
+            infoTable = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
+        } catch (IOException ignored) {
+            throw new RuntimeException("Unable to read cli info table.");
+        }
+
         f = new File(FilePaths.CLI_BANNER);
         if (!f.exists()) {
             throw new RuntimeException(FilePaths.CLI_BANNER + " does not exist!");
@@ -62,6 +74,16 @@ public class CLIAssetRegistry {
             banner = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
         } catch (IOException ignored) {
             throw new RuntimeException("Unable to read cli banner.");
+        }
+
+        f = new File(FilePaths.CLI_FINAL_ROUND_LABEL);
+        if (!f.exists()) {
+            throw new RuntimeException(FilePaths.CLI_FINAL_ROUND_LABEL + " does not exist!");
+        }
+        try {
+            finalRoundLabel = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
+        } catch (IOException ignored) {
+            throw new RuntimeException("Unable to read cli final round label.");
         }
 
         f = new File(FilePaths.CLI_ASSETS + "/rick.json");
@@ -94,8 +116,16 @@ public class CLIAssetRegistry {
         return positionLabel.getClone();
     }
 
+    public CLIText getInfoTable() {
+        return infoTable.getClone();
+    }
+
     public CLIText getBanner() {
         return banner;
+    }
+
+    public CLIText getFinalRoundLabel() {
+        return finalRoundLabel;
     }
 
     public CLIText getRick() {

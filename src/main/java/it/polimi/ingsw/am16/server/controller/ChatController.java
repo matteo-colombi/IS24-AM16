@@ -51,20 +51,19 @@ public class ChatController {
      * @param receiverUsernames The usernames to send the message to.
      */
     public void sendMessage(String senderUsername, String text, Set<String> receiverUsernames, boolean isPrivate) {
+        boolean rick = text.equals("rick");
         ChatMessage message = new ChatMessage(senderUsername, receiverUsernames, text, new Date(), isPrivate);
         for(String username : receiverUsernames) {
-            if (chats.containsKey(username)) {
-                chats.get(username).receiveMessage(message);
+            if (!username.equals(senderUsername) && chats.containsKey(username)) {
+                if (!rick) chats.get(username).receiveMessage(message);
                 virtualView.communicateNewMessage(playerIds.get(username), message);
                 virtualView.redrawView(playerIds.get(username));
             }
         }
-        if (!receiverUsernames.contains(senderUsername)) {
-            if (chats.containsKey(senderUsername)) {
-                chats.get(senderUsername).receiveMessage(message);
-                virtualView.communicateNewMessage(playerIds.get(senderUsername), message);
-                virtualView.redrawView(playerIds.get(senderUsername));
-            }
+        if (chats.containsKey(senderUsername) && !rick) {
+            chats.get(senderUsername).receiveMessage(message);
+            virtualView.communicateNewMessage(playerIds.get(senderUsername), message);
+            virtualView.redrawView(playerIds.get(senderUsername));
         }
     }
 

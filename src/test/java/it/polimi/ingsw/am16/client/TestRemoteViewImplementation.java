@@ -10,8 +10,9 @@ import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-public class TestRemoteViewImplementation implements RemoteViewInterface {
+public class TestRemoteViewImplementation implements RemoteClientInterface {
 
     String username;
 
@@ -134,13 +135,13 @@ public class TestRemoteViewImplementation implements RemoteViewInterface {
     }
 
     @Override
-    public void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides) throws RemoteException {
+    public void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) throws RemoteException {
         System.out.print("[" + this.username + "]: ");
         System.out.println(username + "'s play area: " + cardPlacementOrder + ", " + field + ", " + activeSides);
     }
 
     @Override
-    public void playCard(String username, BoardCard card, SideType side, Position pos) throws RemoteException {
+    public void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) throws RemoteException {
         System.out.print("[" + this.username + "]: ");
         System.out.println(username + " played " + card.getName() + " on the " + side + " at " + pos);
     }
@@ -235,10 +236,13 @@ public class TestRemoteViewImplementation implements RemoteViewInterface {
     }
 
     /**
-     * You saw nothing ;)
+     * Ping request used by the server to check that the client is still connected.
+     *
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     @Override
-    public void rick() throws RemoteException {
+    public void ping() throws RemoteException {
 
     }
+
 }
