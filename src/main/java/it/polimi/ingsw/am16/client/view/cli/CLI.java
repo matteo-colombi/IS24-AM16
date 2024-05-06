@@ -99,6 +99,7 @@ public class CLI implements ViewInterface {
 
     /**
      * DOCME
+     *
      * @param serverInterface
      */
     public synchronized void setServerInterface(ServerInterface serverInterface) {
@@ -266,7 +267,7 @@ public class CLI implements ViewInterface {
         this.colorChoices = colorChoices;
 
         System.out.println("\nChoose a color between:");
-        for(PlayerColor color : colorChoices) {
+        for (PlayerColor color : colorChoices) {
             CLIText colorLabel = new CLIText("██", color);
             CLIText colorLabel2 = new CLIText(color.name().toLowerCase());
             System.out.print("\t");
@@ -396,11 +397,11 @@ public class CLI implements ViewInterface {
     /**
      * Adds the given card to the given player's play area.
      *
-     * @param username The username of the player who played the card.
-     * @param card     The played card.
-     * @param side     The card the new card was played on.
-     * @param pos      The position where the new card was played.
-     * @param addedLegalPositions DOCME
+     * @param username              The username of the player who played the card.
+     * @param card                  The played card.
+     * @param side                  The card the new card was played on.
+     * @param pos                   The position where the new card was played.
+     * @param addedLegalPositions   DOCME
      * @param removedLegalPositions DOCME
      */
     @Override
@@ -423,8 +424,8 @@ public class CLI implements ViewInterface {
     /**
      * Sets a player's number of game points.
      *
-     * @param username The username of the player whose points are being set.
-     * @param gamePoints  The given player's number of game points.
+     * @param username   The username of the player whose points are being set.
+     * @param gamePoints The given player's number of game points.
      */
     @Override
     public synchronized void setGamePoints(String username, int gamePoints) {
@@ -434,7 +435,7 @@ public class CLI implements ViewInterface {
     /**
      * Sets a player's number of objective points.
      *
-     * @param username     The username of the player whose points are being set.
+     * @param username        The username of the player whose points are being set.
      * @param objectivePoints The given player's number of objective points.
      */
     @Override
@@ -492,8 +493,8 @@ public class CLI implements ViewInterface {
     public synchronized void setStartOrder(List<String> usernames) {
         this.turnOrder = usernames;
         System.out.println("\nPlayers will play in the order:");
-        for(String username : usernames) {
-            System.out.printf("%s%s", usernames.indexOf(username) == 0 ? "" : ", ",username);
+        for (String username : usernames) {
+            System.out.printf("%s%s", usernames.indexOf(username) == 0 ? "" : ", ", username);
         }
         printCommandPrompt();
     }
@@ -505,12 +506,16 @@ public class CLI implements ViewInterface {
      */
     @Override
     public synchronized void turn(String username) {
-        if(username.equals(this.username)) {
-            System.out.println("\nIt's your turn! You can now play a card, then draw one.");
+        if (username.equals(this.username)) {
+            CLIText turnText = new CLIText("It's your turn! You can now play a card, then draw one.", this.playerColors.get(username));
+            System.out.println();
+            turnText.printText(true);
             cliState = CLIState.PLAYING_CARD;
             this.cliInputManager.addCommand(CLICommand.PLAY_CARD);
         } else {
-            System.out.printf("\nIt's %s's turn.\n", username);
+            CLIText turnText = new CLIText("It's " + username + "'s turn.", this.playerColors.get(username));
+            System.out.println();
+            turnText.printText(true);
         }
 
         printCommandPrompt();
@@ -647,14 +652,14 @@ public class CLI implements ViewInterface {
         System.out.println("\nYour hand is:\n");
         CLIText hand = new CLIText();
         hand.mergeText(frontLabel, 0, 0);
-        hand.mergeText(backLabel, CARD_HEIGHT+2, 0);
-        hand.mergeText(indexLabel, 2*CARD_HEIGHT+4, 0);
-        for(int i = 0; i<this.hand.size(); i++) {
+        hand.mergeText(backLabel, CARD_HEIGHT + 2, 0);
+        hand.mergeText(indexLabel, 2 * CARD_HEIGHT + 4, 0);
+        for (int i = 0; i < this.hand.size(); i++) {
             CLICardAsset cardAsset = CLIAssetRegistry.getCLIAssetRegistry().getCard(this.hand.get(i).getName());
-            CLIText thisIndexLabel = new CLIText(String.format("[%d]", i+1));
-            hand.mergeText(thisIndexLabel, 2*CARD_HEIGHT+4, 2+i*(CARD_WIDTH+2)+CARD_WIDTH/2);
-            hand.mergeText(cardAsset.front(), 1, 3+i*(CARD_WIDTH+2));
-            hand.mergeText(cardAsset.back(), CARD_HEIGHT+3, 3+i*(CARD_WIDTH+2));
+            CLIText thisIndexLabel = new CLIText(String.format("[%d]", i + 1));
+            hand.mergeText(thisIndexLabel, 2 * CARD_HEIGHT + 4, 2 + i * (CARD_WIDTH + 2) + CARD_WIDTH / 2);
+            hand.mergeText(cardAsset.front(), 1, 3 + i * (CARD_WIDTH + 2));
+            hand.mergeText(cardAsset.back(), CARD_HEIGHT + 3, 3 + i * (CARD_WIDTH + 2));
         }
         hand.printText();
         printCommandPrompt();
@@ -682,9 +687,9 @@ public class CLI implements ViewInterface {
 
         System.out.printf("\nThe backs of %s's cards are:\n", username);
         CLIText hand = new CLIText();
-        for(int i = 0; i<restrictedHand.size(); i++) {
+        for (int i = 0; i < restrictedHand.size(); i++) {
             CLIText backAsset = CLIAssetRegistry.getCLIAssetRegistry().getCardBack(restrictedHand.get(i));
-            hand.mergeText(backAsset, 0, 3+i*(CARD_WIDTH+2));
+            hand.mergeText(backAsset, 0, 3 + i * (CARD_WIDTH + 2));
         }
         hand.printText();
         printCommandPrompt();
@@ -704,8 +709,8 @@ public class CLI implements ViewInterface {
         System.out.println("\nThe draw options are:");
         CLIText drawOptions = new CLIText();
         drawOptions.mergeText(resourcesLabel, 0, 0);
-        drawOptions.mergeText(goldLabel, CARD_HEIGHT+2, 0);
-        drawOptions.mergeText(indexLabel, 2*CARD_HEIGHT+4, 0);
+        drawOptions.mergeText(goldLabel, CARD_HEIGHT + 2, 0);
+        drawOptions.mergeText(indexLabel, 2 * CARD_HEIGHT + 4, 0);
 
         CLIText resourceDeckTop = CLIAssetRegistry.getCLIAssetRegistry().getCardBack(new RestrictedCard(PlayableCardType.RESOURCE, resourceDeckTopType));
         CLIText goldDeckTop = CLIAssetRegistry.getCLIAssetRegistry().getCardBack(new RestrictedCard(PlayableCardType.GOLD, goldDeckTopType));
@@ -715,15 +720,15 @@ public class CLI implements ViewInterface {
         CLIText commonGold2 = CLIAssetRegistry.getCLIAssetRegistry().getCard(commonGoldCards[1].getName()).front();
 
         drawOptions.mergeText(resourceDeckTop, 1, 5);
-        drawOptions.mergeText(goldDeckTop, CARD_HEIGHT+3, 5);
-        drawOptions.mergeText(commonResource1, 1, 10+(CARD_WIDTH+2));
-        drawOptions.mergeText(commonResource2, 1, 10+2*(CARD_WIDTH+2));
-        drawOptions.mergeText(commonGold1, CARD_HEIGHT+3, 10+(CARD_WIDTH+2));
-        drawOptions.mergeText(commonGold2, CARD_HEIGHT+3, 10+2*(CARD_WIDTH+2));
+        drawOptions.mergeText(goldDeckTop, CARD_HEIGHT + 3, 5);
+        drawOptions.mergeText(commonResource1, 1, 10 + (CARD_WIDTH + 2));
+        drawOptions.mergeText(commonResource2, 1, 10 + 2 * (CARD_WIDTH + 2));
+        drawOptions.mergeText(commonGold1, CARD_HEIGHT + 3, 10 + (CARD_WIDTH + 2));
+        drawOptions.mergeText(commonGold2, CARD_HEIGHT + 3, 10 + 2 * (CARD_WIDTH + 2));
 
-        drawOptions.mergeText(deckLabel, 2*CARD_HEIGHT+4, 2+CARD_WIDTH/2);
-        drawOptions.mergeText(oneLabel, 2*CARD_HEIGHT+4, 9+(CARD_WIDTH+2)+CARD_WIDTH/2);
-        drawOptions.mergeText(twoLabel, 2*CARD_HEIGHT+4, 9+2*(CARD_WIDTH+2)+CARD_WIDTH/2);
+        drawOptions.mergeText(deckLabel, 2 * CARD_HEIGHT + 4, 2 + CARD_WIDTH / 2);
+        drawOptions.mergeText(oneLabel, 2 * CARD_HEIGHT + 4, 9 + (CARD_WIDTH + 2) + CARD_WIDTH / 2);
+        drawOptions.mergeText(twoLabel, 2 * CARD_HEIGHT + 4, 9 + 2 * (CARD_WIDTH + 2) + CARD_WIDTH / 2);
 
         drawOptions.printText();
         printCommandPrompt();
@@ -733,17 +738,17 @@ public class CLI implements ViewInterface {
         System.out.println();
         CLIText objectivesText = new CLIText();
         if (printIndices) {
-            objectivesText.mergeText(indexLabel, CARD_HEIGHT+1, 0);
+            objectivesText.mergeText(indexLabel, CARD_HEIGHT + 1, 0);
         }
 
-        for(int i = 0; i<objectives.size(); i++) {
+        for (int i = 0; i < objectives.size(); i++) {
             ObjectiveCard card = objectives.get(i);
             CLIText cardAsset = CLIAssetRegistry.getCLIAssetRegistry().getCard(card.getName()).front();
             if (printIndices) {
                 CLIText thisIndexLabel = new CLIText(String.format("[%d]", i + 1));
                 objectivesText.mergeText(thisIndexLabel, CARD_HEIGHT + 1, 2 + i * (CARD_WIDTH + 2) + CARD_WIDTH / 2);
             }
-            objectivesText.mergeText(cardAsset, 0, 3+i*(CARD_WIDTH+2));
+            objectivesText.mergeText(cardAsset, 0, 3 + i * (CARD_WIDTH + 2));
         }
         objectivesText.printText();
         printCommandPrompt();
@@ -755,11 +760,11 @@ public class CLI implements ViewInterface {
         CLIText commonObjective1 = CLIAssetRegistry.getCLIAssetRegistry().getCard(commonObjectiveCards[0].getName()).front();
         CLIText commonObjective2 = CLIAssetRegistry.getCLIAssetRegistry().getCard(commonObjectiveCards[1].getName()).front();
 
-        objectiveText.mergeText(commonObjectivesLabel, 0, 5+(CARD_WIDTH+2));
+        objectiveText.mergeText(commonObjectivesLabel, 0, 5 + (CARD_WIDTH + 2));
         objectiveText.mergeText(personalObjectivesLabel, 0, 0);
         objectiveText.mergeText(personalObjective, 1, 5);
-        objectiveText.mergeText(commonObjective1, 1, 10+(CARD_WIDTH+2));
-        objectiveText.mergeText(commonObjective2, 1, 10+2*(CARD_WIDTH+2));
+        objectiveText.mergeText(commonObjective1, 1, 10 + (CARD_WIDTH + 2));
+        objectiveText.mergeText(commonObjective2, 1, 10 + 2 * (CARD_WIDTH + 2));
 
         objectiveText.printText();
 
@@ -792,7 +797,7 @@ public class CLI implements ViewInterface {
     public synchronized void printPlayers() {
         System.out.println("Players currently in the game:");
 
-        for(String username : (turnOrder != null ? turnOrder : playerUsernames)) {
+        for (String username : (turnOrder != null ? turnOrder : playerUsernames)) {
             CLIText colorLabel = new CLIText("██", this.playerColors.get(username));
             CLIText userLabel = new CLIText(username + (turnOrder != null && turnOrder.indexOf(username) == 0 ? " (starter player)" : ""));
             userLabel.mergeText(colorLabel, 0, -3);
@@ -846,15 +851,15 @@ public class CLI implements ViewInterface {
 
         List<String> sortedUsernames =
                 this.playerUsernames
-                .stream()
-                .sorted(
-                        (s1, s2) -> Integer.compare(
-                                this.gamePoints.getOrDefault(s1, 0) + this.objectivePoints.getOrDefault(s1, 0),
-                                this.gamePoints.getOrDefault(s2, 0) + this.objectivePoints.getOrDefault(s2, 0)
-                        )
-                ).toList().reversed();
+                        .stream()
+                        .sorted(
+                                (s1, s2) -> Integer.compare(
+                                        this.gamePoints.getOrDefault(s1, 0) + this.objectivePoints.getOrDefault(s1, 0),
+                                        this.gamePoints.getOrDefault(s2, 0) + this.objectivePoints.getOrDefault(s2, 0)
+                                )
+                        ).toList().reversed();
 
-        for(String username : sortedUsernames) {
+        for (String username : sortedUsernames) {
             CLIText colorLabel = new CLIText("██", this.playerColors.get(username));
             CLIText pointsLabel;
             if (this.objectivePoints.get(username) != null && this.objectivePoints.get(username) != 0) {
@@ -878,7 +883,7 @@ public class CLI implements ViewInterface {
         }
 
         System.out.printf("\nThe winner%s...\n", winners.size() == 1 ? " is" : "s are");
-        for(String username : this.winners) {
+        for (String username : this.winners) {
             System.out.printf("%s%s", this.winners.indexOf(username) == 0 ? "" : ", ", username);
         }
         System.out.print("\n");
@@ -917,7 +922,7 @@ public class CLI implements ViewInterface {
         }
 
         System.out.printf("%d unread message%s:\n", unreadChat.size(), unreadChat.size() == 1 ? "" : "s");
-        for(ChatMessage message : unreadChat) {
+        for (ChatMessage message : unreadChat) {
             System.out.println(message);
         }
 
@@ -931,7 +936,7 @@ public class CLI implements ViewInterface {
         if (chatHistory.isEmpty()) {
             System.out.println("You have no messages in the chat history.");
         } else {
-            for(ChatMessage message : chatHistory) {
+            for (ChatMessage message : chatHistory) {
                 System.out.println(message);
             }
         }
@@ -976,7 +981,7 @@ public class CLI implements ViewInterface {
     }
 
     public synchronized ObjectiveCard getPersonalObjectiveOption(int index) {
-        return this.personalObjectiveOptions.get(index-1);
+        return this.personalObjectiveOptions.get(index - 1);
     }
 
     public synchronized List<PlayableCard> getHand() {

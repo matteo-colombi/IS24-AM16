@@ -113,8 +113,6 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                         }
                         case CREATE_GAME -> {
                             if (gameController != null) {
-                                //FIXME if a player has left the previous game this message is shown
-                                //      to other players who try to join another game
                                 promptError("You are already in a game.");
                                 break;
                             }

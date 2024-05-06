@@ -67,10 +67,10 @@ public class CLIPlayArea {
         this.legalPositions.addAll(addedLegalPositions);
         this.legalPositions.removeAll(removedLegalPositions);
 
-        for(Position p : removedLegalPositions) {
+        for (Position p : removedLegalPositions) {
             removePositionLabel(p);
         }
-        for(Position p : addedLegalPositions) {
+        for (Position p : addedLegalPositions) {
             addPositionLabel(p);
         }
 
@@ -81,13 +81,13 @@ public class CLIPlayArea {
     }
 
     private void initializeText() {
-        for(Position pos : cardPlacementOrder) {
+        for (Position pos : cardPlacementOrder) {
             BoardCard card = field.get(pos);
-            if(card == null) continue;
+            if (card == null) continue;
 
             mergeCard(card, pos);
         }
-        for(Position pos : legalPositions) {
+        for (Position pos : legalPositions) {
             if (!illegalPositions.contains(pos))
                 addPositionLabel(pos);
         }
@@ -97,8 +97,8 @@ public class CLIPlayArea {
         CLIText asset = CLIAssetRegistry.getCLIAssetRegistry().getCard(card.getName()).getSide(activeSides.get(card));
         int newPosCenterX = playAreaText.getOriginX() + (pos.x() * (CARD_WIDTH - OVERLAP_X));
         int newPosCenterY = playAreaText.getOriginY() + (-pos.y() * (CARD_HEIGHT - OVERLAP_Y));
-        int startCol = newPosCenterX - CARD_WIDTH/2;
-        int startRow = newPosCenterY - CARD_HEIGHT/2;
+        int startCol = newPosCenterX - CARD_WIDTH / 2;
+        int startRow = newPosCenterY - CARD_HEIGHT / 2;
         playAreaText.mergeText(asset, startRow, startCol);
     }
 
@@ -113,32 +113,35 @@ public class CLIPlayArea {
     }
 
     private void putPositionLabel(CLIPositionLabelAsset label, Position pos) {
-        int newPosCenterX = playAreaText.getOriginX() + (pos.x() * (CARD_WIDTH-OVERLAP_X));
-        int newPosCenterY = playAreaText.getOriginY() + (-pos.y() * (CARD_HEIGHT-OVERLAP_Y));
-        int startCol = newPosCenterX - LABEL_WIDTH/2;
-        int startRow = newPosCenterY - LABEL_HEIGHT/2;
+        int newPosCenterX = playAreaText.getOriginX() + (pos.x() * (CARD_WIDTH - OVERLAP_X));
+        int newPosCenterY = playAreaText.getOriginY() + (-pos.y() * (CARD_HEIGHT - OVERLAP_Y));
+        int startCol = newPosCenterX - LABEL_WIDTH / 2;
+        int startRow = newPosCenterY - LABEL_HEIGHT / 2;
         playAreaText.mergeText(label.getLabel(), startRow, startCol);
     }
 
-    private void placeInfoTable(CLIText toPrintText, int startX, int endX) {
-        int startRow = playAreaText.getHeight() - INFO_TABLE_HEIGHT;
-        startX = Math.max(startX, 0);
-        endX = Math.min(endX, playAreaText.getWidth()-1);
-        int startCol = endX - startX + 4;
+    private void placeInfoTable(CLIText toPrintText) {
+        int startRow = toPrintText.getHeight() - INFO_TABLE_HEIGHT;
+        int startCol = toPrintText.getWidth() + 10;
         toPrintText.mergeText(infoTable.getText(), startRow, startCol);
     }
 
     public void printPlayArea() {
-        int startX = playAreaText.getOriginX() + (viewCenter - VIEW_WIDTH/2) * (CARD_WIDTH - OVERLAP_X)-5;
-        int endX = playAreaText.getOriginX() + (viewCenter + VIEW_WIDTH/2) * (CARD_WIDTH - OVERLAP_X)+5;
-        CLIText subPlayArea = playAreaText.getSubText(startX, 0, endX, playAreaText.getHeight());
-        placeInfoTable(subPlayArea, startX, endX);
-        subPlayArea.printText(true);
+        int startX = playAreaText.getOriginX() + (viewCenter - VIEW_WIDTH / 2) * (CARD_WIDTH - OVERLAP_X) - 5;
+        int endX = playAreaText.getOriginX() + (viewCenter + VIEW_WIDTH / 2) * (CARD_WIDTH - OVERLAP_X) + 5;
+        CLIText framedSubPlayArea = playAreaText.getSubText(startX, -20, endX, playAreaText.getHeight()).addFrame();
+
+        // TODO show players' points above the info table only if there are at least two cards
+        // if(framedSubPlayArea.getHeight()>2*CARD_HEIGHT)
+        //    placePointsTable(framedSubPlayArea);
+
+        placeInfoTable(framedSubPlayArea);
+        framedSubPlayArea.printText();
     }
 
     public void moveView(int offset) {
-        if (offset > 0 && viewCenter + VIEW_WIDTH/2 > maxX) return;
-        if (offset < 0 && viewCenter - VIEW_WIDTH/2 < minX) return;
+        if (offset > 0 && viewCenter + VIEW_WIDTH / 2 > maxX) return;
+        if (offset < 0 && viewCenter - VIEW_WIDTH / 2 < minX) return;
         viewCenter += offset;
     }
 

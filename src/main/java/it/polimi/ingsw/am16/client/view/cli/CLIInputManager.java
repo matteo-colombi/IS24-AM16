@@ -121,11 +121,11 @@ public class CLIInputManager implements Runnable {
                 }
 
                 String username = args[1];
-                if (username.length() > 16) {
-                    System.out.println("Invalid argument. Username must be 16 characters or less.");
-                    cliView.printCommandPrompt();
-                    break;
-                }
+//                if (username.length() > 16) {
+//                    System.out.println("Invalid argument. Username must be 16 characters or less.");
+//                    cliView.printCommandPrompt();
+//                    break;
+//                }
                 String gameId = args[2].toUpperCase();
 
                 try {
