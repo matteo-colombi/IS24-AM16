@@ -29,6 +29,7 @@ public class WelcomeTCPServer implements Runnable {
             while (true) {
                 try {
                     final Socket socket = serverSocket.accept();
+                    System.out.println("New TCP client: " + socket.getInetAddress() + ":" + socket.getPort());
                     new Thread(new TCPClientHandler(socket, lobbyManager)).start();
                 } catch (IOException e) {
                     System.err.println("TCP server shutting down: " + e.getMessage());
