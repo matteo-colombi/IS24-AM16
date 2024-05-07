@@ -29,8 +29,11 @@ public class LobbyManager {
     /**
      * DOCME
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public LobbyManager() {
         this.games = new ConcurrentHashMap<>();
+        File saveDir = new File(FilePaths.SAVE_DIRECTORY);
+        saveDir.mkdirs();
     }
 
     /**
@@ -154,7 +157,6 @@ public class LobbyManager {
         final String finalSavedGame = savedGame;
         new Thread(() -> {
             File saveFile = new File(String.format("%s/%s.json", FilePaths.SAVE_DIRECTORY, game.getId()));
-
             try (PrintWriter writer = new PrintWriter(saveFile)) {
                 writer.print(finalSavedGame);
                 writer.flush();
