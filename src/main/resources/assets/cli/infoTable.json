@@ -1,26 +1,26 @@
 {
   "text": [
-    "╔════════════════════╗",
-    "║  FUNGI         00  ║",
-    "║  PLANT         01  ║",
-    "║  ANIMAL        02  ║",
-    "║  INSECT        03  ║",
-    "╠════════════════════╣",
-    "║  INKWELL       04  ║",
-    "║  MANUSCRIPT    05  ║",
-    "║  QUILL         06  ║",
-    "╚════════════════════╝"
+    "╔══════════════════════╗",
+    "║  FUNGI           00  ║",
+    "║  PLANT           01  ║",
+    "║  ANIMAL          02  ║",
+    "║  INSECT          03  ║",
+    "╠══════════════════════╣",
+    "║  INKWELL         04  ║",
+    "║  MANUSCRIPT      05  ║",
+    "║  QUILL           06  ║",
+    "╚══════════════════════╝"
   ],
   "color": [
-    "                      ",
-    "   RRRRR              ",
-    "   GGGGG              ",
-    "   BBBBBB             ",
-    "   PPPPPP             ",
-    "                      ",
-    "   YYYYYYY            ",
-    "   YYYYYYYYYY         ",
-    "   YYYYY              ",
-    "                      "
+    "                        ",
+    "   RRRRR                ",
+    "   GGGGG                ",
+    "   BBBBBB               ",
+    "   PPPPPP               ",
+    "                        ",
+    "   YYYYYYY              ",
+    "   YYYYYYYYYY           ",
+    "   YYYYY                ",
+    "                        "
   ]
 }

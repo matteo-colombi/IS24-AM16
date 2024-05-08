@@ -81,7 +81,7 @@ public class TCPClient implements Runnable, ServerInterface {
                     running.set(false);
                     continue;
                 }
-                
+
                 switch (message.messageType()) {
                     case JOIN_GAME_RESPONSE -> {
                         JoinGameResponse payload;

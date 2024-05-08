@@ -91,12 +91,13 @@ public class LobbyManager {
     public void deleteGame(GameModel game) {
         String gameId = game.getId();
         games.remove(gameId);
-        File f = new File(String.format("%s/%s.json", FilePaths.SAVE_DIRECTORY, gameId));
-        try {
-            Files.deleteIfExists(f.toPath());
-        } catch (IOException e) {
-            System.err.printf("Save file for game %s could not be deleted.\n", gameId);
-        }
+        // FIXME removed for debugging purpose
+//        File f = new File(String.format("%s/%s.json", FilePaths.SAVE_DIRECTORY, gameId));
+//        try {
+//            Files.deleteIfExists(f.toPath());
+//        } catch (IOException e) {
+//            System.err.printf("Save file for game %s could not be deleted.\n", gameId);
+//        }
     }
 
     /**

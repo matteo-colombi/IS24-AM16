@@ -388,7 +388,7 @@ public class CLI implements ViewInterface {
         }
         this.cliInputManager.addCommand(CLICommand.PLAY_AREA);
         this.cliInputManager.addCommand(CLICommand.SCROLL_VIEW);
-        this.playAreas.put(username, new CLIPlayArea(cardPlacementOrder, field, activeSides, legalPositions, illegalPositions, resourceCounts, objectCounts));
+        this.playAreas.put(username, new CLIPlayArea(cardPlacementOrder, field, activeSides, legalPositions, illegalPositions, resourceCounts, objectCounts, playerUsernames, playerColors, gamePoints, objectivePoints));
         if (username.equals(this.username)) {
             System.out.println("Starter card played! Type \"play_area\" to see your play area.");
             printCommandPrompt();
@@ -431,6 +431,10 @@ public class CLI implements ViewInterface {
     @Override
     public synchronized void setGamePoints(String username, int gamePoints) {
         this.gamePoints.put(username, gamePoints);
+
+        for (CLIPlayArea playArea : playAreas.values()) {
+            playArea.updatePoints(this.gamePoints, this.objectivePoints);
+        }
     }
 
     /**
@@ -442,6 +446,10 @@ public class CLI implements ViewInterface {
     @Override
     public synchronized void setObjectivePoints(String username, int objectivePoints) {
         this.objectivePoints.put(username, objectivePoints);
+
+        for (CLIPlayArea playArea : playAreas.values()) {
+            playArea.updatePoints(this.gamePoints, this.objectivePoints);
+        }
     }
 
     /**
@@ -852,19 +860,19 @@ public class CLI implements ViewInterface {
     public synchronized void printPoints() {
         System.out.println("\nCurrent points (in order from most to least points):");
         Map<String, Integer> totalPoints = new HashMap<>();
-        for(String username : playerUsernames) {
+        for (String username : playerUsernames) {
             totalPoints.put(username, gamePoints.getOrDefault(username, 0) + objectivePoints.getOrDefault(username, 0));
         }
         List<String> sortedUsernames = this.playerUsernames
-                        .stream()
-                        .sorted((s1, s2) -> {
-                                if (totalPoints.get(s1).equals(totalPoints.get(s2))) {
-                                    return Integer.compare(objectivePoints.getOrDefault(s1, 0), objectivePoints.getOrDefault(s2, 0));
-                                } else {
-                                    return Integer.compare(totalPoints.get(s1), totalPoints.get(s2));
-                                }
+                .stream()
+                .sorted((s1, s2) -> {
+                            if (totalPoints.get(s1).equals(totalPoints.get(s2))) {
+                                return Integer.compare(objectivePoints.getOrDefault(s1, 0), objectivePoints.getOrDefault(s2, 0));
+                            } else {
+                                return Integer.compare(totalPoints.get(s1), totalPoints.get(s2));
                             }
-                        ).toList().reversed();
+                        }
+                ).toList().reversed();
 
         for (String username : sortedUsernames) {
             CLIText colorLabel = new CLIText("██", this.playerColors.get(username));

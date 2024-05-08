@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class CLIInfoTable {
 
-    private final static int AMOUNT_COLUMN = 17;
+    private final static int AMOUNT_COLUMN = 19;
 
     private final Map<ResourceType, Integer> RESOURCE_ROWS = Map.of(
             ResourceType.FUNGI, 1,

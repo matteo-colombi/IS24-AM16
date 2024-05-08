@@ -337,8 +337,8 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
                     if (gameController != null) {
                         gameController.disconnect(playerId);
-
                     }
+
                     playerId = -1;
                     gameController = null;
                     running.set(false);
@@ -373,6 +373,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Sets the game controller.
+     *
      * @param username The new player's username.
      */
     @Override
@@ -394,6 +395,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Sets the game state.
+     *
      * @param state The new game state.
      */
     @Override
@@ -404,8 +406,9 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Sets the common cards for the game.
+     *
      * @param commonResourceCards The common resource cards (may also contain gold cards if the resource card deck is empty). Should always be of length 2.
-     * @param commonGoldCards The common gold cards (may also contain resource cards if the gold card deck is empty). Should always be of length 2.
+     * @param commonGoldCards     The common gold cards (may also contain resource cards if the gold card deck is empty). Should always be of length 2.
      */
     @Override
     public void setCommonCards(PlayableCard[] commonResourceCards, PlayableCard[] commonGoldCards) {
@@ -415,7 +418,8 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Sets the top card of a deck.
-     * @param whichDeck The deck which we are setting the top card of.
+     *
+     * @param whichDeck    The deck which we are setting the top card of.
      * @param resourceType The resource type of the card on top of the given deck.
      */
     @Override
@@ -426,6 +430,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Prompts the client with a choice of starter cards.
+     *
      * @param starterCard The starter card of the player.
      */
     @Override
@@ -445,6 +450,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Prompts the client with a choice of colors.
+     *
      * @param colorChoices The possible choices for the player's color.
      */
     @Override
@@ -455,8 +461,9 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Sets the color of a player.
+     *
      * @param username The username whose color is being given.
-     * @param color The color assigned to the player.
+     * @param color    The color assigned to the player.
      */
     @Override
     public void setColor(String username, PlayerColor color) {
@@ -475,6 +482,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Sets the player's hand.
+     *
      * @param hand The player's hand.
      */
     @Override
@@ -485,6 +493,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Adds a card to the player's hand.
+     *
      * @param card The card to be added.
      */
     @Override
@@ -495,6 +504,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Removes a card from the player's hand.
+     *
      * @param card The card to be removed.
      */
     @Override
@@ -505,8 +515,9 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Sets the hand of another player.
+     *
      * @param username The username of the player whose hand is being given.
-     * @param hand The restricted hand.
+     * @param hand     The restricted hand.
      */
     @Override
     public void setOtherHand(String username, List<RestrictedCard> hand) {
@@ -516,8 +527,9 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Adds a card to another player's hand.
+     *
      * @param username The user to add this card to.
-     * @param newCard The restricted card to be added.
+     * @param newCard  The restricted card to be added.
      */
     @Override
     public void addCardToOtherHand(String username, RestrictedCard newCard) {
@@ -527,7 +539,8 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Removes a card from another player's hand.
-     * @param username The user to remove this card from.
+     *
+     * @param username     The user to remove this card from.
      * @param cardToRemove The restricted card to be removed.
      */
     @Override
@@ -538,14 +551,15 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Sets the play area for a player.
-     * @param username The player whose play area is being given.
+     *
+     * @param username           The player whose play area is being given.
      * @param cardPlacementOrder The order in which the cards were played in this play area.
-     * @param field The user's field.
-     * @param activeSides The map keeping track of which side every card is placed on.
-     * @param legalPositions DOCME
-     * @param illegalPositions DOCME
-     * @param resourceCounts DOCME
-     * @param objectCounts DOCME
+     * @param field              The user's field.
+     * @param activeSides        The map keeping track of which side every card is placed on.
+     * @param legalPositions     DOCME
+     * @param illegalPositions   DOCME
+     * @param resourceCounts     DOCME
+     * @param objectCounts       DOCME
      */
     @Override
     public void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
@@ -555,14 +569,15 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Plays a card on the board.
-     * @param username The username of the player who played the card.
-     * @param card The played card.
-     * @param side The card the new card was played on.
-     * @param pos The position where the new card was played.
-     * @param addedLegalPositions DOCME
+     *
+     * @param username              The username of the player who played the card.
+     * @param card                  The played card.
+     * @param side                  The card the new card was played on.
+     * @param pos                   The position where the new card was played.
+     * @param addedLegalPositions   DOCME
      * @param removedLegalPositions DOCME
-     * @param resourceCounts DOCME
-     * @param objectCounts DOCME
+     * @param resourceCounts        DOCME
+     * @param objectCounts          DOCME
      */
     @Override
     public void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
@@ -572,8 +587,9 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Sets the game points for a player.
+     *
      * @param whosePoints The username of the player whose points are being set.
-     * @param gamePoints The given player's number of game points.
+     * @param gamePoints  The given player's number of game points.
      */
     @Override
     public void setGamePoints(String whosePoints, int gamePoints) {
@@ -583,7 +599,8 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Sets the objective points for a player.
-     * @param whosePoints The username of the player whose points are being set.
+     *
+     * @param whosePoints     The username of the player whose points are being set.
      * @param objectivePoints The given player's number of objective points.
      */
     @Override
@@ -594,6 +611,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Sets the common objectives for the game.
+     *
      * @param commonObjectives The common objectives. Should always contain 2 elements.
      */
     @Override
@@ -604,6 +622,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Prompts the client with a choice of personal objectives.
+     *
      * @param possiblePersonalObjectives The possible objectives the player can choose from. Should always contain 2 cards.
      */
     @Override
@@ -614,6 +633,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Sets the player's personal objective.
+     *
      * @param personalObjective The player's personal objective.
      */
     @Override
@@ -624,6 +644,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Sets the turn order for the game.
+     *
      * @param usernames The turn order. Should always contain as many usernames as were added at the beginning of the game.
      */
     @Override
@@ -634,6 +655,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Notifies the client that it is their turn.
+     *
      * @param username The player's username.
      */
     @Override
@@ -644,6 +666,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Sets the winners of the game.
+     *
      * @param winnerUsernames The winners of the game.
      */
     @Override
@@ -654,6 +677,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Adds chat messages to the chat.
+     *
      * @param messages The chat messages to add.
      */
     @Override
@@ -664,6 +688,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Adds a message to the chat.
+     *
      * @param message The new message.
      */
     @Override
@@ -674,6 +699,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Prompts the client with an error message.
+     *
      * @param errorMessage The message that should be displayed to the user.
      */
     @Override
@@ -702,6 +728,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Signals a disconnection to the client.
+     *
      * @param whoDisconnected The username of the player who disconnected.
      */
     @Override
@@ -715,6 +742,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     /**
      * Signals a deadlock to the client.
+     *
      * @param username The username of the player who skipped their turn.
      */
     @Override
