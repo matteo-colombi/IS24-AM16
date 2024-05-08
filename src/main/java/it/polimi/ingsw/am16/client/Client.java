@@ -1,11 +1,17 @@
 package it.polimi.ingsw.am16.client;
 
+import it.polimi.ingsw.am16.client.rmi.RMIClientImplementation;
 import it.polimi.ingsw.am16.client.tcp.TCPClient;
 import it.polimi.ingsw.am16.client.view.ViewInterface;
 import it.polimi.ingsw.am16.client.view.cli.CLI;
+import it.polimi.ingsw.am16.server.rmi.WelcomeRMIServer;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.UnknownHostException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 
 public class Client {
     public static void start(String[] args) {
@@ -57,7 +63,20 @@ public class Client {
                 tcpClient.run();
             }
             case "--rmi" -> {
-
+                try {
+                    WelcomeRMIServer welcomeRMIServer = (WelcomeRMIServer) Naming.lookup("rmi://" + host + ":" + port + "/CodexWelcomeServer");
+                    RMIClientImplementation rmiClient = new RMIClientImplementation(welcomeRMIServer, view);
+                    rmiClient.start();
+                } catch (RemoteException e) {
+                    System.err.println("Couldn't start RMI client: " + e.getMessage());
+                    System.exit(1);
+                } catch (NotBoundException e) {
+                    System.err.println("Couldn't find RMI server: " + e.getMessage());
+                    System.exit(1);
+                } catch (MalformedURLException e) {
+                    System.err.println("Invalid hostname: " + e.getMessage());
+                    System.exit(1);
+                }
             }
             default -> {
                 System.err.println("Invalid argument: \"" + args[2] + "\"");

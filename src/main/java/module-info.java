@@ -22,6 +22,16 @@ module it.polimi.ingsw.am16 {
     opens it.polimi.ingsw.am16.common.tcpMessages to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.am16.common.tcpMessages.response to com.fasterxml.jackson.databind;
     opens it.polimi.ingsw.am16.common.tcpMessages.request to com.fasterxml.jackson.databind;
-    exports it.polimi.ingsw.am16;
     opens it.polimi.ingsw.am16.server.controller to com.fasterxml.jackson.databind;
+    exports it.polimi.ingsw.am16.server to java.rmi;
+    exports it.polimi.ingsw.am16.server.rmi to java.rmi;
+    exports it.polimi.ingsw.am16.server.lobby to java.rmi;
+    exports it.polimi.ingsw.am16.client to java.rmi;
+    exports it.polimi.ingsw.am16.client.rmi to java.rmi;
+    exports it.polimi.ingsw.am16.client.view to java.rmi;
+    exports it.polimi.ingsw.am16.common.model.cards to java.rmi;
+    exports it.polimi.ingsw.am16.common.model.players to java.rmi;
+    exports it.polimi.ingsw.am16.common.model.game to java.rmi;
+    exports it.polimi.ingsw.am16.common.util to java.rmi;
+    exports it.polimi.ingsw.am16.common.model.chat to java.rmi;
 }
