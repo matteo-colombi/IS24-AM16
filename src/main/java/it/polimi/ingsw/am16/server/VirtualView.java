@@ -32,7 +32,7 @@ public class VirtualView {
             userView.joinGame(gameId, username);
             userView.setPlayers(new ArrayList<>(usernames));
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -47,7 +47,7 @@ public class VirtualView {
             try {
                 userViews.get(otherPlayerId).addPlayer(username);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
 
@@ -64,7 +64,7 @@ public class VirtualView {
             try {
                 userView.setGameState(state);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -79,7 +79,7 @@ public class VirtualView {
             try {
                 userView.setCommonCards(commonResourceCards, commonGoldCards);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -94,7 +94,7 @@ public class VirtualView {
             try {
                 userView.setDeckTopType(whichDeck, resourceType);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -109,7 +109,7 @@ public class VirtualView {
         try {
             userView.promptStarterChoice(card);
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -121,7 +121,7 @@ public class VirtualView {
             try {
                 userView.choosingColors();
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -136,7 +136,7 @@ public class VirtualView {
         try {
             userView.promptColorChoice(colorChoices);
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -150,7 +150,7 @@ public class VirtualView {
             try {
                 userView.setColor(username, color);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -163,7 +163,7 @@ public class VirtualView {
             try {
                 userView.drawingCards();
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -178,7 +178,7 @@ public class VirtualView {
         try {
             userView.setHand(hand);
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -192,7 +192,7 @@ public class VirtualView {
         try {
             userView.addCardToHand(card);
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -206,7 +206,7 @@ public class VirtualView {
         try {
             userView.removeCardFromHand(card);
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -221,7 +221,7 @@ public class VirtualView {
         try {
             userView.setOtherHand(username, hand);
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -236,7 +236,7 @@ public class VirtualView {
         try {
             userView.addCardToOtherHand(username, newCard);
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -251,7 +251,7 @@ public class VirtualView {
         try {
             userView.removeCardFromOtherHand(username, removedCard);
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -271,7 +271,7 @@ public class VirtualView {
             try {
                 userView.setPlayArea(username, cardPlacementOrder, field, activeSides, legalPositions, illegalPositions, resourceCounts, objectCounts);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -292,7 +292,7 @@ public class VirtualView {
             try {
                 userView.playCard(username, card, side, pos, addedLegalPositions, removedLegalPositions, resourceCounts, objectCounts);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -307,7 +307,7 @@ public class VirtualView {
             try {
                 userView.setGamePoints(username, gamePoints);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -322,7 +322,7 @@ public class VirtualView {
             try {
                 userView.setObjectivePoints(username, objectivePoints);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -337,7 +337,7 @@ public class VirtualView {
         try {
             userView.promptObjectiveChoice(possiblePersonalObjectives);
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -351,7 +351,7 @@ public class VirtualView {
         try {
             userView.setPersonalObjective(personalObjective);
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -364,7 +364,7 @@ public class VirtualView {
             try {
                 userView.setCommonObjectives(commonObjectives);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -378,7 +378,7 @@ public class VirtualView {
             try {
                 userView.setStartOrder(usernames);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -392,7 +392,7 @@ public class VirtualView {
             try {
                 userView.turn(username);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -406,7 +406,7 @@ public class VirtualView {
             try {
                 userView.setWinners(winnerUsernames);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -421,7 +421,7 @@ public class VirtualView {
         try {
             userView.addMessages(messages);
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -434,7 +434,7 @@ public class VirtualView {
             try {
                 userView.addMessage(newMessage);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -450,7 +450,7 @@ public class VirtualView {
         try {
             userView.addMessage(newMessage);
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -464,7 +464,7 @@ public class VirtualView {
         try {
             userView.promptError(errorMessage);
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -476,7 +476,7 @@ public class VirtualView {
             try {
                 userView.notifyDontDraw();
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }
@@ -491,7 +491,7 @@ public class VirtualView {
         try {
             userView.redrawView();
         } catch (RemoteException e) {
-            //TODO handle it
+            e.printStackTrace();
         }
     }
 
@@ -515,7 +515,7 @@ public class VirtualView {
                 try {
                     userView.signalDisconnection(disconnectedUsername);
                 } catch (RemoteException e) {
-                    //TODO handle it
+                    e.printStackTrace();
                 }
             }
         });
@@ -530,7 +530,7 @@ public class VirtualView {
             try {
                 userView.signalDeadlock(username);
             } catch (RemoteException e) {
-                //TODO handle it
+                e.printStackTrace();
             }
         });
     }

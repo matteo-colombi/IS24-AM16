@@ -9,13 +9,19 @@ import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.io.IOException;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.Function;
 
 /**
  * Class containing information about a card's side.
  */
-public class CardSide {
+public class CardSide implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -3473183287037952137L;
+
     private final int points;
     private final Map<ResourceType, Integer> cost;
     private final Map<ResourceType, Integer> permanentResourcesGiven;
@@ -234,6 +240,9 @@ public class CardSide {
      * Custom serializer for {@link CardSide}, used when saving a player's playing field. This serializer only saves the side type ("front" or "back").
      */
     public static class Serializer extends StdSerializer<CardSide> {
+        @Serial
+        private static final long serialVersionUID = -3085816960438795648L;
+
         protected Serializer() {
             super(CardSide.class);
         }

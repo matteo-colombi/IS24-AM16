@@ -52,11 +52,11 @@ public class TCPClient implements Runnable, ServerInterface {
         this.running = new AtomicBoolean(true);
         this.checkConnectionTimer = new Timer();
         this.view.setServerInterface(this);
-        this.view.start();
     }
 
     @Override
     public void run() {
+        this.view.start();
         checkConnectionRoutine();
         try {
             while (running.get()) {
@@ -419,7 +419,7 @@ public class TCPClient implements Runnable, ServerInterface {
             public void run() {
                 long diff = System.currentTimeMillis() - lastPinged.get();
                 if (diff > 15000) {
-                    System.err.println("Server hasn't pinged in a while. Considering connection as lost.");
+                    System.err.println("\nServer hasn't pinged in a while. Considering connection as lost.");
                     System.out.println("Good bye!");
                     running.set(false);
                 }

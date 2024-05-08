@@ -1,9 +1,16 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Class used to model all the cards in the game.
  */
-public abstract class Card {
+public abstract class Card implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -3155645170160408181L;
+
     private final String name;
 
     /**

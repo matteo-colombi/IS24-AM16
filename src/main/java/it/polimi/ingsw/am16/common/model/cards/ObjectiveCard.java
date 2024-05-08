@@ -3,6 +3,8 @@ package it.polimi.ingsw.am16.common.model.cards;
 import com.fasterxml.jackson.annotation.*;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 
+import java.io.Serial;
+
 /**
  * Class used to model objective cards.
  */
@@ -16,6 +18,9 @@ import it.polimi.ingsw.am16.common.model.players.PlayArea;
         @JsonSubTypes.Type(value = ObjectObjective.class, name = "object")
 })
 public abstract class ObjectiveCard extends Card {
+    @Serial
+    private static final long serialVersionUID = 1568945826917208503L;
+
     private final int points;
 
     /**

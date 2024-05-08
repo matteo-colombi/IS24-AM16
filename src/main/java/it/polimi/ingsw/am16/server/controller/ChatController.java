@@ -73,7 +73,7 @@ public class ChatController {
      * @param text The text body of the message.
      */
     public void sendMessage(String senderUsername, String text) {
-        sendMessage(senderUsername, text, chats.keySet(), false);
+        sendMessage(senderUsername, text, new HashSet<>(chats.keySet()), false);
     }
 
     /**

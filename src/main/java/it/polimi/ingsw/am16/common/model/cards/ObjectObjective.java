@@ -12,6 +12,7 @@ import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,9 @@ import java.util.Map;
  */
 @JsonDeserialize(using = ObjectObjective.Deserializer.class)
 public final class ObjectObjective extends ObjectiveCard {
+
+    @Serial
+    private static final long serialVersionUID = 2821468186146003837L;
 
     private final Map<ObjectType, Integer> objectsRequired;
 
@@ -68,6 +72,9 @@ public final class ObjectObjective extends ObjectiveCard {
     public static class Deserializer extends StdDeserializer<ObjectObjective> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+
+        @Serial
+        private static final long serialVersionUID = 3399273401755140369L;
 
         protected Deserializer() {
             super(ObjectObjective.class);

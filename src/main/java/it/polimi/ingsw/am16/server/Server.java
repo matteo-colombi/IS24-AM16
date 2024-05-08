@@ -2,9 +2,15 @@ package it.polimi.ingsw.am16.server;
 
 import it.polimi.ingsw.am16.common.util.FilePaths;
 import it.polimi.ingsw.am16.server.lobby.LobbyManager;
+import it.polimi.ingsw.am16.server.rmi.WelcomeRMIServer;
+import it.polimi.ingsw.am16.server.rmi.WelcomeRMIServerImplementation;
 import it.polimi.ingsw.am16.server.tcp.WelcomeTCPServer;
 
 import java.io.IOException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class Server {
     public static void start(String[] args) {
@@ -36,12 +42,18 @@ public class Server {
         }
 
         WelcomeTCPServer welcomeTCPServer = new WelcomeTCPServer(tcpPort, lobbyManager);
-        //TODO create RMI server
-
         Thread welcomeTCPServerThread = new Thread(welcomeTCPServer);
-        //TODO create RMI thread
-
         welcomeTCPServerThread.start();
-        //TODO start RMI thread
+
+        try {
+            WelcomeRMIServer welcomeRMIServer = new WelcomeRMIServerImplementation(lobbyManager);
+            Registry registry = LocateRegistry.createRegistry(rmiPort);
+            registry.bind("CodexWelcomeServer", welcomeRMIServer);
+            System.out.println("RMI server ready");
+        } catch (RemoteException e) {
+            System.err.println(e.getMessage() + ". RMI server couldn't start.");
+        } catch (AlreadyBoundException e) {
+            System.err.println("Error binding CodexWelcomeServer: RMI Server couldn't start.");
+        }
     }
 }

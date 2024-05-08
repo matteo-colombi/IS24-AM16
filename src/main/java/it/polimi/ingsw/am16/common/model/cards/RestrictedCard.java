@@ -1,6 +1,8 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
-public record RestrictedCard(PlayableCardType cardType, ResourceType resourceType) {
+import java.io.Serializable;
+
+public record RestrictedCard(PlayableCardType cardType, ResourceType resourceType) implements Serializable {
     @Override
     public String toString() {
         return "RestrictedCard{" +

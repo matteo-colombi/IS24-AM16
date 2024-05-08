@@ -14,6 +14,8 @@ import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.io.IOException;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
@@ -24,6 +26,9 @@ import java.util.Set;
  */
 @JsonDeserialize(using = PatternObjective.Deserializer.class)
 public final class PatternObjective extends ObjectiveCard {
+
+    @Serial
+    private static final long serialVersionUID = -8127300713970652154L;
 
     private final CardPattern pattern;
 
@@ -104,7 +109,10 @@ public final class PatternObjective extends ObjectiveCard {
     /**
      * Class used to model card patterns used by {@link PatternObjective}.
      */
-    public static class CardPattern {
+    public static class CardPattern implements Serializable {
+        @Serial
+        private static final long serialVersionUID = -2999566300628971026L;
+
         private final ResourceType[] types;
         private final Position[] offsets;
 
@@ -139,6 +147,9 @@ public final class PatternObjective extends ObjectiveCard {
     public static class Deserializer extends StdDeserializer<PatternObjective> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+
+        @Serial
+        private static final long serialVersionUID = -993192541415075995L;
 
         protected Deserializer() {
             super(PatternObjective.class);

@@ -11,12 +11,16 @@ import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
+import java.io.Serial;
 
 /**
  * Class used to model objective cards that award points based on the resources visible on the player's board.
  */
 @JsonDeserialize(using = ResourceObjective.Deserializer.class)
 public final class ResourceObjective extends ObjectiveCard {
+
+    @Serial
+    private static final long serialVersionUID = -7087420437409947830L;
 
     private final ResourceType type;
     private final int quantity;
@@ -60,6 +64,9 @@ public final class ResourceObjective extends ObjectiveCard {
     public static class Deserializer extends StdDeserializer<ResourceObjective> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+
+        @Serial
+        private static final long serialVersionUID = 728511743987093865L;
 
         protected Deserializer() {
             super(ResourceObjective.class);

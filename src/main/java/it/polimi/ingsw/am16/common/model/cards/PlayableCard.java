@@ -11,12 +11,16 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
+import java.io.Serial;
 
 /**
  * Class used to model the card's that can be given to the player to play during the game.
  */
 @JsonDeserialize(using = PlayableCard.Deserializer.class)
 public abstract class PlayableCard extends BoardCard {
+
+    @Serial
+    private static final long serialVersionUID = -2226725928591168462L;
 
     private final PlayableCardType playableCardType;
 
@@ -41,7 +45,7 @@ public abstract class PlayableCard extends BoardCard {
     }
 
     /**
-     * @return The card's type (RESOURCE or GOLD).
+     * @return The card's type {@link PlayableCardType}.
      */
     @JsonIgnore
     public PlayableCardType getPlayableCardType() {
@@ -54,6 +58,9 @@ public abstract class PlayableCard extends BoardCard {
     public static class Deserializer extends StdDeserializer<PlayableCard> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+
+        @Serial
+        private static final long serialVersionUID = 454913275658692510L;
 
         protected Deserializer() {
             super(PlayableCard.class);
