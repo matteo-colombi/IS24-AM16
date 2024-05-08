@@ -10,12 +10,16 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
+import java.io.Serial;
 
 /**
  * Class used to model resource cards.
  */
 @JsonDeserialize(using = ResourceCard.Deserializer.class)
 public final class ResourceCard extends PlayableCard {
+
+    @Serial
+    private static final long serialVersionUID = 4074661718914444457L;
 
     /**
      * Constructs a new resource card with the given name, sides and resource type.
@@ -41,9 +45,12 @@ public final class ResourceCard extends PlayableCard {
     /**
      * Deserializer class for {@link ResourceCard}. Used to handle different deserialization logic based on whether the {@link CardRegistry} has already been initialized.
      */
-    static class Deserializer extends StdDeserializer<ResourceCard> {
+    public static class Deserializer extends StdDeserializer<ResourceCard> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+
+        @Serial
+        private static final long serialVersionUID = -3922628914302256842L;
 
         protected Deserializer() {
             super(ResourceCard.class);

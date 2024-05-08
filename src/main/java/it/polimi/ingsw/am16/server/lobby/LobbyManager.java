@@ -64,10 +64,10 @@ public class LobbyManager {
     }
 
     /**
-     * Retrieves the lobby with the given id.
+     * Retrieves the controller for the game with the given id.
      *
      * @param id The lobby's id.
-     * @return The lobby with the given id.
+     * @return The controller for the game with the given id, or <code>null</code> if a game with the given id doesn't exist.
      */
     public GameController getGame(String id) {
         return games.get(id);

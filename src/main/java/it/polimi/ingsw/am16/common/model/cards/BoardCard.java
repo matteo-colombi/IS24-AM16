@@ -11,6 +11,7 @@ import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -18,6 +19,9 @@ import java.util.Map;
  */
 @JsonDeserialize(using = BoardCard.Deserializer.class, keyUsing = BoardCard.KeyDeserializer.class)
 public abstract class BoardCard extends Card {
+
+    @Serial
+    private static final long serialVersionUID = -5600428490529718311L;
 
     private final CardSide frontSide;
     private final CardSide backSide;
@@ -101,6 +105,9 @@ public abstract class BoardCard extends Card {
     public static class Deserializer extends StdDeserializer<BoardCard> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+
+        @Serial
+        private static final long serialVersionUID = -7278797648001955660L;
 
         protected Deserializer() {
             super(BoardCard.class);

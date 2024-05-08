@@ -16,6 +16,8 @@ import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.io.IOException;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,7 +25,10 @@ import java.util.stream.Collectors;
  * Class representing the player's play area. Contains info about card placement and resource/object counts.
  */
 @JsonDeserialize(using = PlayArea.Deserializer.class)
-public class PlayArea implements PlayAreaModel {
+public class PlayArea implements PlayAreaModel, Serializable {
+    @Serial
+    private static final long serialVersionUID = -5968965401567479628L;
+
     private int cardCount;
     private final Map<CornerType, Integer> resourceAndObjectCounts;
     private final List<Position> cardPlacementOrder;
@@ -472,6 +477,9 @@ public class PlayArea implements PlayAreaModel {
     static class Deserializer extends StdDeserializer<PlayArea> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+
+        @Serial
+        private static final long serialVersionUID = -3881814883370100568L;
 
         public Deserializer() {
             super(PlayArea.class);

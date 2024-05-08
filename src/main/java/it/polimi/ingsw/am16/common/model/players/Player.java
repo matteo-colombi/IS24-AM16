@@ -20,6 +20,7 @@ import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.model.game.Game;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -417,6 +418,9 @@ public class Player implements PlayerModel {
     public static class Deserializer extends StdDeserializer<Player> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+
+        @Serial
+        private static final long serialVersionUID = -3708720078355433100L;
 
         protected Deserializer() {
             super(Player.class);

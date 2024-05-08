@@ -4,6 +4,7 @@ import it.polimi.ingsw.am16.client.RemoteClientInterface;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 
+import java.io.Serial;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -11,6 +12,9 @@ import java.rmi.server.UnicastRemoteObject;
  * DOCME
  */
 public class WelcomeRMIServerImplementation extends UnicastRemoteObject implements WelcomeRMIServer {
+
+    @Serial
+    private static final long serialVersionUID = -2933588802156833189L;
 
     private final LobbyManager lobbyManager;
 

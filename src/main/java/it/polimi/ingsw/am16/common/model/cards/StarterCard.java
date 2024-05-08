@@ -10,12 +10,16 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
+import java.io.Serial;
 
 /**
  * Class used to model starter cards.
  */
 @JsonDeserialize(using = StarterCard.Deserializer.class)
 public final class StarterCard extends BoardCard {
+    @Serial
+    private static final long serialVersionUID = -6831903732320806226L;
+
     /**
      * Constructs a new starter card with the given name and sides.
      * @param name The card's name
@@ -38,9 +42,12 @@ public final class StarterCard extends BoardCard {
     /**
      * Deserializer class for {@link StarterCard}. Used to handle different deserialization logic based on whether the {@link CardRegistry} has already been initialized.
      */
-    static class Deserializer extends StdDeserializer<StarterCard> {
+    public static class Deserializer extends StdDeserializer<StarterCard> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+
+        @Serial
+        private static final long serialVersionUID = -8798454601198160842L;
 
         protected Deserializer() {
             super(StarterCard.class);

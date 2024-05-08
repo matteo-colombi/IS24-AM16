@@ -97,7 +97,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
                     switch (tcpMessage.messageType()) {
                         case LEAVE_GAME -> {
-                            if (gameController != null) {
+                            if (gameController != null && playerId != -1) {
                                 gameController.disconnect(playerId);
                             }
                             playerId = -1;
@@ -106,9 +106,9 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                         case DISCONNECT -> {
                             if (gameController != null && playerId != -1) {
                                 gameController.disconnect(playerId);
-                                playerId = -1;
-                                gameController = null;
                             }
+                            playerId = -1;
+                            gameController = null;
                             running.set(false);
                         }
                         case CREATE_GAME -> {
@@ -181,6 +181,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                                     promptError("Couldn't join game: " + e.getMessage());
                                     playerId = -1;
                                     gameController = null;
+                                    this.username = null;
                                     break;
                                 }
                             } else {
@@ -190,6 +191,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                                     promptError("Couldn't join game: " + e.getMessage());
                                     playerId = -1;
                                     gameController = null;
+                                    this.username = null;
                                     break;
                                 }
                             }
@@ -201,6 +203,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                                 promptError("User already rejoined the game.");
                                 gameController = null;
                                 playerId = -1;
+                                this.username = null;
                             }
                         }
                         case CHOOSE_STARTER_SIDE -> {

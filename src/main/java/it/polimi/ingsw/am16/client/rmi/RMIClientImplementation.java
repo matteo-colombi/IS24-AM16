@@ -10,16 +10,19 @@ import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import it.polimi.ingsw.am16.server.rmi.WelcomeRMIServer;
 
+import java.io.Serial;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * DOCME
  */
 public class RMIClientImplementation extends UnicastRemoteObject implements RemoteClientInterface {
+
+    @Serial
+    private static final long serialVersionUID = 2908073746520322817L;
 
     private final ViewInterface view;
 
@@ -70,7 +73,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void joinGame(String gameId, String username) throws RemoteException {
-
+        view.joinGame(gameId, username);
     }
 
     /**
@@ -81,7 +84,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void addPlayer(String username) throws RemoteException {
-
+        view.addPlayer(username);
     }
 
     /**
@@ -92,7 +95,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void setPlayers(List<String> usernames) throws RemoteException {
-
+        view.setPlayers(usernames);
     }
 
     /**
@@ -103,7 +106,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void setGameState(GameState state) throws RemoteException {
-
+        view.setGameState(state);
     }
 
     /**
@@ -115,7 +118,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void setCommonCards(PlayableCard[] commonResourceCards, PlayableCard[] commonGoldCards) throws RemoteException {
-
+        view.setCommonCards(commonResourceCards, commonGoldCards);
     }
 
     /**
@@ -127,7 +130,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void setDeckTopType(PlayableCardType whichDeck, ResourceType resourceType) throws RemoteException {
-
+        view.setDeckTopType(whichDeck, resourceType);
     }
 
     /**
@@ -138,7 +141,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void promptStarterChoice(StarterCard starterCard) throws RemoteException {
-
+        view.promptStarterChoice(starterCard);
     }
 
     /**
@@ -148,7 +151,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void choosingColors() throws RemoteException {
-
+        view.choosingColors();
     }
 
     /**
@@ -159,7 +162,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void promptColorChoice(List<PlayerColor> colorChoices) throws RemoteException {
-
+        view.promptColorChoice(colorChoices);
     }
 
     /**
@@ -171,7 +174,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void setColor(String username, PlayerColor color) throws RemoteException {
-
+        view.setColor(username, color);
     }
 
     /**
@@ -181,7 +184,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void drawingCards() throws RemoteException {
-
+        view.drawingCards();
     }
 
     /**
@@ -192,7 +195,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void setHand(List<PlayableCard> hand) throws RemoteException {
-
+        view.setHand(hand);
     }
 
     /**
@@ -203,7 +206,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void addCardToHand(PlayableCard card) throws RemoteException {
-
+        view.addCardToHand(card);
     }
 
     /**
@@ -214,7 +217,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void removeCardFromHand(PlayableCard card) throws RemoteException {
-
+        view.removeCardFromHand(card);
     }
 
     /**
@@ -226,7 +229,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void setOtherHand(String username, List<RestrictedCard> hand) throws RemoteException {
-
+        view.setOtherHand(username, hand);
     }
 
     /**
@@ -238,7 +241,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void addCardToOtherHand(String username, RestrictedCard newCard) throws RemoteException {
-
+        view.addCardToOtherHand(username, newCard);
     }
 
     /**
@@ -250,7 +253,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void removeCardFromOtherHand(String username, RestrictedCard cardToRemove) throws RemoteException {
-
+        view.removeCardFromOtherHand(username, cardToRemove);
     }
 
     /**
@@ -268,7 +271,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) throws RemoteException {
-
+        view.setPlayArea(username, cardPlacementOrder, field, activeSides, legalPositions, illegalPositions, resourceCounts, objectCounts);
     }
 
     /**
@@ -286,7 +289,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) throws RemoteException {
-
+        view.playCard(username, card, side, pos, addedLegalPositions, removedLegalPositions, resourceCounts, objectCounts);
     }
 
     /**
@@ -298,7 +301,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void setGamePoints(String username, int gamePoints) throws RemoteException {
-
+        view.setGamePoints(username, gamePoints);
     }
 
     /**
@@ -310,7 +313,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void setObjectivePoints(String username, int objectivePoints) throws RemoteException {
-
+        view.setObjectivePoints(username, objectivePoints);
     }
 
     /**
@@ -321,7 +324,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void setCommonObjectives(ObjectiveCard[] commonObjectives) throws RemoteException {
-
+        view.setCommonObjectives(commonObjectives);
     }
 
     /**
@@ -332,7 +335,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void promptObjectiveChoice(List<ObjectiveCard> possiblePersonalObjectives) throws RemoteException {
-
+        view.promptObjectiveChoice(possiblePersonalObjectives);
     }
 
     /**
@@ -343,7 +346,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void setPersonalObjective(ObjectiveCard personalObjective) throws RemoteException {
-
+        view.setPersonalObjective(personalObjective);
     }
 
     /**
@@ -354,7 +357,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void setStartOrder(List<String> usernames) throws RemoteException {
-
+        view.setStartOrder(usernames);
     }
 
     /**
@@ -365,7 +368,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void turn(String username) throws RemoteException {
-
+        view.turn(username);
     }
 
     /**
@@ -376,7 +379,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void setWinners(List<String> winnerUsernames) throws RemoteException {
-
+        view.setWinners(winnerUsernames);
     }
 
     /**
@@ -387,7 +390,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void addMessages(List<ChatMessage> messages) throws RemoteException {
-
+        view.addMessages(messages);
     }
 
     /**
@@ -398,7 +401,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void addMessage(ChatMessage message) throws RemoteException {
-
+        view.addMessage(message);
     }
 
     /**
@@ -409,7 +412,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void promptError(String errorMessage) throws RemoteException {
-
+        view.promptError(errorMessage);
     }
 
     /**
@@ -419,7 +422,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void redrawView() throws RemoteException {
-
+        view.redrawView();
     }
 
     /**
@@ -429,7 +432,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void notifyDontDraw() throws RemoteException {
-
+        view.notifyDontDraw();
     }
 
     /**
@@ -440,7 +443,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void signalDisconnection(String whoDisconnected) throws RemoteException {
-
+        view.signalDisconnection(whoDisconnected);
     }
 
     /**
@@ -451,7 +454,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void signalDeadlock(String username) throws RemoteException {
-
+        view.signalDeadlock(username);
     }
 
     /**
@@ -461,7 +464,6 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     @Override
     public void ping() throws RemoteException {
-        System.out.println("Pinged!");
         lastPinged.set(System.currentTimeMillis());
         serverInterface.pong();
     }

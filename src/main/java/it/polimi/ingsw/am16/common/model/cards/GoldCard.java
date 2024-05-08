@@ -10,12 +10,16 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
+import java.io.Serial;
 
 /**
  * Class used to model gold cards.
  */
 @JsonDeserialize(using = GoldCard.Deserializer.class)
 public final class GoldCard extends PlayableCard {
+
+    @Serial
+    private static final long serialVersionUID = 2778750596783805121L;
 
     /**
      * Constructs a new gold card with the given name, sides and resource type.
@@ -44,6 +48,9 @@ public final class GoldCard extends PlayableCard {
     static class Deserializer extends StdDeserializer<GoldCard> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+
+        @Serial
+        private static final long serialVersionUID = -4122843281346589840L;
 
         protected Deserializer() {
             super(GoldCard.class);
