@@ -27,7 +27,7 @@ public class CardSide implements Serializable {
     private final Map<ResourceType, Integer> permanentResourcesGiven;
     private final PointMultiplierPolicy pointMultiplierPolicy;
     private final SideType sideType;
-    private final Map<CornersIdx, CornerType> corners;
+    private final Map<CornersIdx, Cornerable> corners;
 
     /**
      * Enum containing the existing policies to award points.
@@ -132,7 +132,7 @@ public class CardSide implements Serializable {
             @JsonProperty("permanentResourcesGiven") EnumMap<ResourceType, Integer> permanentResourcesGiven,
             @JsonProperty("pointMultiplierPolicy") PointMultiplierPolicy pointMultiplierPolicy,
             @JsonProperty("sideType") SideType sideType,
-            @JsonProperty("corners") CornerType[] corners) {
+            @JsonProperty("corners") Cornerable[] corners) {
         this.points = points;
 
         cost.putIfAbsent(ResourceType.FUNGI, 0);
@@ -188,7 +188,7 @@ public class CardSide implements Serializable {
     /**
      * @return The card's corners.
      */
-    public Map<CornersIdx, CornerType> getCorners() {
+    public Map<CornersIdx, Cornerable> getCorners() {
         return corners;
     }
 
