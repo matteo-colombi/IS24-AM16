@@ -11,6 +11,9 @@ import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
 import java.io.Serial;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Interface implemented by all classes that represent an element that can be on one of a card's corners.
@@ -22,7 +25,12 @@ public interface Cornerable {
 
     //You're back! 09/05/2024
 
+    /**
+     * Custom deserializer for {@link Cornerable}.
+     */
     class Deserializer extends StdDeserializer<Cornerable> {
+
+        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         @Serial
         private static final long serialVersionUID = -8705803926228544623L;
@@ -31,6 +39,14 @@ public interface Cornerable {
             super(Cornerable.class);
         }
 
+        /**
+         * Deserializes a {@link Cornerable}
+         * @param jsonParser Parser used for reading JSON content
+         * @param deserializationContext Context that can be used to access information about this deserialization activity.
+         * @return The deserialized {@link BoardCard}.
+         * @throws IOException Thrown if an exception occurs when reading from the input data.
+         * @throws JacksonException Thrown if an exception occurs during JSON parsing.
+         */
         @Override
         public Cornerable deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
             JsonNode cornerNode = jsonParser.getCodec().readTree(jsonParser);
@@ -44,7 +60,7 @@ public interface Cornerable {
                 case "inkwell" -> ObjectType.INKWELL;
                 case "manuscript" -> ObjectType.MANUSCRIPT;
                 case "quill" -> ObjectType.QUILL;
-                default -> throw new IOException("Invalid corner: " + cornerNode.asText());
+                default -> throw new IOException("Unknown Cornerable Type: " + cornerNode.asText());
             };
         }
     }

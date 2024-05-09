@@ -126,7 +126,7 @@ public interface GameModel {
      * Draws the common objective cards and distributes the personal objectives to the players.
      * This method should only be called after everyone has chosen their starter card side and color.
      */
-    void initializeObjectives() throws UnexpectedActionException;
+    void initializeObjectives();
 
     /**
      * Sets the chosen objective card for a specific player.

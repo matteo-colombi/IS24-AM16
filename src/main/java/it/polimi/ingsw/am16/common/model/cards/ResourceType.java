@@ -13,5 +13,5 @@ public enum ResourceType implements Cornerable {
     @JsonProperty("insect")
     INSECT,
     @JsonProperty("plant")
-    PLANT;
+    PLANT
 }

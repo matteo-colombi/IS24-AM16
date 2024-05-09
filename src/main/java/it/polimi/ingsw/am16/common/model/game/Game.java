@@ -786,7 +786,7 @@ public class Game implements GameModel {
 
         /**
          * Reloads a {@link Game} object from the given JSON.
-         * @param p Parsed used for reading JSON content
+         * @param p Parser used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *

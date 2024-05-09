@@ -273,12 +273,7 @@ public class GameController {
      * Starts the objective distribution phase of the game.
      */
     private void distributeObjectives() {
-        try {
-            game.initializeObjectives();
-        } catch (UnexpectedActionException e) {
-            e.printStackTrace();
-            //TODO handle it
-        }
+        game.initializeObjectives();
 
         virtualView.communicateCommonObjectives(game.getCommonObjectiveCards());
         for(Player p : game.getPlayers().values()) {

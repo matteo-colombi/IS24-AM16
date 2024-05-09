@@ -103,7 +103,7 @@ public class Hand implements HandModel{
 
         /**
          * Deserializes a {@link Hand}, loading all the cards back from the given JSON. This method assumes that the {@link CardRegistry} has already been initialized.
-         * @param p Parsed used for reading JSON content
+         * @param p Parser used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *
