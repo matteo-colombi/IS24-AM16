@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * DOCME
+ * This class is the TCP client that connects to the server.
  */
 public class TCPClient implements Runnable, ServerInterface {
 
@@ -54,6 +54,10 @@ public class TCPClient implements Runnable, ServerInterface {
         this.view.setServerInterface(this);
     }
 
+    /**
+     * This method is the main loop of the client.
+     * It reads messages from the server and calls the appropriate methods on the view.
+     */
     @Override
     public void run() {
         this.view.start();
@@ -413,6 +417,9 @@ public class TCPClient implements Runnable, ServerInterface {
         System.exit(0);
     }
 
+    /**
+     * This method checks if the server has pinged in the last 15 seconds.
+     */
     private void checkConnectionRoutine() {
         TimerTask task = new TimerTask() {
             @Override
@@ -429,6 +436,10 @@ public class TCPClient implements Runnable, ServerInterface {
         checkConnectionTimer.schedule(task, 1000, 10000);
     }
 
+    /**
+     * This method sends a message to the server.
+     * @param tcpMessage the message to send.
+     */
     private void sendTCPMessage(TCPMessage tcpMessage) {
         try {
             out.println(mapper.writeValueAsString(tcpMessage));
@@ -439,60 +450,105 @@ public class TCPClient implements Runnable, ServerInterface {
         }
     }
 
+    /**
+     * This method creates a message to tell the server to create a game.
+     * @param username The username of the player that created the game.
+     * @param numPlayers The number of players that will play the game.
+     */
     @Override
     public void createGame(String username, int numPlayers) {
         TCPMessage message = new TCPMessage(MessageType.CREATE_GAME, new CreateGame(username, numPlayers));
         sendTCPMessage(message);
     }
 
+    /**
+     * This method creates a message to tell the server to join a game.
+     * @param gameId The id of the game to join.
+     * @param username The username of the player that wants to join the game.
+     */
     @Override
     public void joinGame(String gameId, String username) {
         TCPMessage message = new TCPMessage(MessageType.JOIN_GAME_REQUEST, new JoinGameRequest(gameId, username));
         sendTCPMessage(message);
     }
 
+    /**
+     * This method creates a message to tell the server to start the game
+     * @param side The side of the starter card.
+     */
     @Override
     public void setStarterCard(SideType side) {
         TCPMessage message = new TCPMessage(MessageType.CHOOSE_STARTER_SIDE, new ChooseStarterSide(side));
         sendTCPMessage(message);
     }
 
+    /**
+     * This method creates a message to tell the server which color was chosen.
+     * @param color The color to choose.
+     */
     @Override
     public void setColor(PlayerColor color) {
         TCPMessage message = new TCPMessage(MessageType.CHOOSE_COLOR, new ChooseColor(color));
         sendTCPMessage(message);
     }
 
+    /**
+     * This method creates a message to tell the server which objective card was chosen.
+     * @param objectiveCard The objective card to choose.
+     */
     @Override
     public void setPersonalObjective(ObjectiveCard objectiveCard) {
         TCPMessage message = new TCPMessage(MessageType.CHOOSE_OBJECTIVE, new ChooseObjective(objectiveCard));
         sendTCPMessage(message);
     }
 
+    /**
+     * This method creates a message to tell the server that the client played a card.
+     * @param playedCard The card to play.
+     * @param side The side on which the card will be played.
+     * @param pos The position where the card will be played.
+     */
     @Override
     public void playCard(PlayableCard playedCard, SideType side, Position pos) {
         TCPMessage message = new TCPMessage(MessageType.PLAY_CARD_REQUEST, new PlayCardRequest(playedCard, side, pos));
         sendTCPMessage(message);
     }
 
+    /**
+     * This method creates a message to tell the server that the client wants to draw a card
+     * from either a deck or the common cards.
+     * @param drawType The type of draw to perform (deck or common).
+     */
     @Override
     public void drawCard(DrawType drawType) {
         TCPMessage message = new TCPMessage(MessageType.DRAW_CARD, new DrawCard(drawType));
         sendTCPMessage(message);
     }
 
+    /**
+     * This method creates a message to be sent as a chat message to every other player in the lobby.
+     * @param text The text of the message.
+     */
     @Override
     public void sendChatMessage(String text) {
         TCPMessage message = new TCPMessage(MessageType.SEND_CHAT_MESSAGE, new SendChatMessage(text));
         sendTCPMessage(message);
     }
 
+    /**
+     * This method creates a message to be sent as a chat message to a specific player in the lobby.
+     * @param text The text of the message.
+     * @param receiverUsername The username of the player that will receive the message.
+     */
     @Override
     public void sendChatMessage(String text, String receiverUsername) {
         TCPMessage message = new TCPMessage(MessageType.SEND_PRIVATE_CHAT_MESSAGE, new SendPrivateChatMessage(text, receiverUsername));
         sendTCPMessage(message);
     }
 
+    /**
+     * This method creates a message to tell the server that the client wants to disconnect.
+     */
     @Override
     public void disconnect() {
         TCPMessage message = new TCPMessage(MessageType.DISCONNECT, null);
@@ -502,12 +558,19 @@ public class TCPClient implements Runnable, ServerInterface {
         System.exit(0);
     }
 
+    /**
+     * This method creates a message to tell the server that the client wants to leave the game.
+     */
     @Override
     public void leaveGame() {
         TCPMessage message = new TCPMessage(MessageType.LEAVE_GAME, null);
         sendTCPMessage(message);
     }
 
+    /**
+     * This method creates a message to respond to a ping from the server, to check that the
+     * connection is still alive.
+     */
     @Override
     public void pong() {
         TCPMessage message = new TCPMessage(MessageType.PONG, null);
