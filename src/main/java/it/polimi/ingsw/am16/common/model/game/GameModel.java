@@ -41,8 +41,8 @@ public interface GameModel {
     int getCurrentPlayerCount();
 
     /**
-     * DOCME
-     * @param playerId
+     *Marks a player as successfully reconnected.
+     *@param playerId The player's ID.
      */
     void reconnectionSuccessful(int playerId);
 

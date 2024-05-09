@@ -179,9 +179,8 @@ public class Game implements GameModel {
     }
 
     /**
-     * DOCME
-     *
-     * @param playerId
+     * Marks a player as successfully reconnected.
+     * @param playerId The player's ID.
      */
     @Override
     public void reconnectionSuccessful(int playerId) {
