@@ -20,6 +20,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Implementation of the {@link ServerInterface} for RMI connections.
+ */
 public class RMIServerImplementation extends UnicastRemoteObject implements ServerInterface {
 
     @Serial
@@ -47,6 +50,10 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         pingRoutine();
     }
 
+    /**
+     * Pings the client to check if the connection is still alive. A client is disconnected
+     * if it doesn't answer to the ping within 10 seconds.
+     */
     private void pingRoutine() {
         TimerTask task = new TimerTask() {
             @Override
@@ -75,6 +82,12 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         pingTimer.schedule(task, 1000, 10000);
     }
 
+    /**
+     * Creates a new game with the given number of players.
+     * @param username The username of the player who wants to create the game.
+     * @param numPlayers The number of players in the game.
+     * @throws RemoteException If an error occurs during the RMI communication.
+     */
     @Override
     public void createGame(String username, int numPlayers) throws RemoteException {
         if (gameController != null) {
@@ -113,6 +126,12 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         }
     }
 
+    /**
+     * Lets the client join a game with the given id.
+     * @param gameId The id of the game to join.
+     * @param username The username of the player who wants to join the game.
+     * @throws RemoteException If an error occurs during the RMI communication.
+     */
     @Override
     public void joinGame(String gameId, String username) throws RemoteException {
         if (gameController != null) {
@@ -158,6 +177,11 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         }
     }
 
+    /**
+     * Sets the starter card for the player.
+     * @param side The side of the card to set as starter.
+     * @throws RemoteException If an error occurs during the RMI communication.
+     */
     @Override
     public void setStarterCard(SideType side) throws RemoteException {
         if (gameController != null) {
@@ -165,6 +189,11 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         }
     }
 
+    /**
+     * Sets the in-game color for the player.
+     * @param color The color to set for the player.
+     * @throws RemoteException If an error occurs during the RMI communication.
+     */
     @Override
     public void setColor(PlayerColor color) throws RemoteException {
         if (gameController != null) {
@@ -172,6 +201,11 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         }
     }
 
+    /**
+     * Sets the personal objective card for the player.
+     * @param objectiveCard The objective card to set for the player.
+     * @throws RemoteException If an error occurs during the RMI communication.
+     */
     @Override
     public void setPersonalObjective(ObjectiveCard objectiveCard) throws RemoteException {
         if (gameController != null) {
@@ -179,6 +213,13 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         }
     }
 
+    /**
+     * Plays a card on the given side and position.
+     * @param playedCard The card to play.
+     * @param side The side to play the card on.
+     * @param pos The position to play the card at.
+     * @throws RemoteException If an error occurs during the RMI communication.
+     */
     @Override
     public void playCard(PlayableCard playedCard, SideType side, Position pos) throws RemoteException {
         if (gameController != null) {
@@ -186,6 +227,11 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         }
     }
 
+    /**
+     * Draws a card from the given deck.
+     * @param drawType The deck to draw the card from.
+     * @throws RemoteException If an error occurs during the RMI communication.
+     */
     @Override
     public void drawCard(DrawType drawType) throws RemoteException {
         if (gameController != null) {

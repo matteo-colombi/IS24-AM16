@@ -17,7 +17,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * DOCME
+ * Implementation of the client's RMI interface. This class is used to communicate with the server through Java RMI.
  */
 public class RMIClientImplementation extends UnicastRemoteObject implements RemoteClientInterface {
 
@@ -39,15 +39,24 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
         this.view.setServerInterface(rmiServer);
     }
 
+    /**
+     * DOCME
+     */
     public void start() {
         checkConnectionRoutine();
         this.view.start();
     }
 
+    /**
+     * Stops the RMI client
+     */
     public void stop() {
         System.exit(0);
     }
 
+    /**
+     * Checks if the server has pinged in the last 15 seconds. If it hasn't, the connection is considered lost and the client is stopped.
+     */
     private void checkConnectionRoutine() {
         TimerTask task = new TimerTask() {
             @Override
