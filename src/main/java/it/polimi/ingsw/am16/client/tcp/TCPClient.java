@@ -83,6 +83,16 @@ public class TCPClient implements Runnable, ServerInterface {
                 }
 
                 switch (message.messageType()) {
+                    case GET_GAMES_RESPONSE -> {
+                        GetGamesResponse payload;
+                        try {
+                            payload = (GetGamesResponse) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.printGames(payload.getGameIds(), payload.getCurrentPlayers(), payload.getMaxPlayers());
+                    }
                     case JOIN_GAME_RESPONSE -> {
                         JoinGameResponse payload;
                         try {
@@ -437,6 +447,12 @@ public class TCPClient implements Runnable, ServerInterface {
             //TODO see if this is appropriate
             System.err.println(e.getMessage());
         }
+    }
+
+    @Override
+    public void getGames() {
+        TCPMessage message = new TCPMessage(MessageType.GET_GAMES_REQUEST, null);
+        sendTCPMessage(message);
     }
 
     @Override

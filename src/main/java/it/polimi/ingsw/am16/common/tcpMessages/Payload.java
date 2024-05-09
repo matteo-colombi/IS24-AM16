@@ -15,6 +15,7 @@ import it.polimi.ingsw.am16.common.tcpMessages.response.*;
         @JsonSubTypes.Type(value = AddMessage.class, name = "addMessage"),
         @JsonSubTypes.Type(value = AddMessages.class, name = "addMessages"),
         @JsonSubTypes.Type(value = AddPlayer.class, name = "addPlayer"),
+        @JsonSubTypes.Type(value = GetGamesResponse.class, name = "getGamesResponse"),
         @JsonSubTypes.Type(value = JoinGameResponse.class, name = "joinGameResponse"),
         @JsonSubTypes.Type(value = PlayCardResponse.class, name = "playCard"),
         @JsonSubTypes.Type(value = PromptColorChoice.class, name = "promptColorChoice"),

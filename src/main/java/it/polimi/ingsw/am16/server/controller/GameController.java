@@ -36,6 +36,7 @@ public class GameController {
 
     /**
      * Constructs a new GameController for the given {@link GameModel}.
+     *
      * @param game The {@link GameModel} linked to this controller.
      */
     public GameController(LobbyManager lobbyManager, GameModel game) {
@@ -56,13 +57,14 @@ public class GameController {
 
     /**
      * Retrieves the given player's id.
+     *
      * @param username The player whose id is being queried.
      * @return The id of the player with the given username
      * @throws IllegalArgumentException Thrown if no player with the given username is found in the game.
      */
     public synchronized int getPlayerId(String username) throws IllegalArgumentException {
         PlayerModel[] players = game.getPlayers();
-        for(PlayerModel player : players) {
+        for (PlayerModel player : players) {
             if (player.getUsername().equals(username)) {
                 return player.getPlayerId();
             }
@@ -72,6 +74,7 @@ public class GameController {
 
     /**
      * Creates a new player and adds it to the game. By default, the player is considered disconnected.
+     *
      * @param username The player's username
      * @return The newly added player's id.
      * @throws UnexpectedActionException Thrown if the game is already full, if the game has already started, or if a player with the given username is already present in the game.
@@ -82,6 +85,7 @@ public class GameController {
 
     /**
      * Sets the player with the given playerId's status to connected, and adds it to the list of players which should receive updates about the game.
+     *
      * @param playerId The player's id. If an invalid id is given, this method does nothing.
      * @param userView The {@link RemoteClientInterface}, used to communicate with the player.
      */
@@ -130,14 +134,15 @@ public class GameController {
         virtualView.communicateDeckTopType(PlayableCardType.RESOURCE, game.getResourceDeckTopType());
         virtualView.communicateDeckTopType(PlayableCardType.GOLD, game.getGoldDeckTopType());
 
-        for(PlayerModel player : game.getPlayers()) {
+        for (PlayerModel player : game.getPlayers()) {
             virtualView.promptStarterChoice(player.getPlayerId(), player.getStarterCard());
         }
     }
 
     /**
      * Set's a player's starter card side. If the player has not yet been given a starter card, or if he has already placed his starter card, this method does nothing.
-     * @param playerId The player id. If an invalid id is given, this method does nothing.
+     *
+     * @param playerId    The player id. If an invalid id is given, this method does nothing.
      * @param starterSide The side on which the player decided to place the starter card.
      */
     public synchronized void setStarterCard(int playerId, SideType starterSide) {
@@ -196,8 +201,9 @@ public class GameController {
     /**
      * Sets a player's color. Will prompt the next player in line to choose their color.
      * If this is the last player to choose their color, the game will move on.
+     *
      * @param playerId The player's id. If an invalid id is given, or it is not the given player's turn to choose their color, this method does nothing.
-     * @param color The color chosen by the player. If <code>null</code>, a random color will be assigned.
+     * @param color    The color chosen by the player. If <code>null</code>, a random color will be assigned.
      */
     public synchronized void setPlayerColor(int playerId, PlayerColor color) {
         if (choosingColor == -1 || choosingColor != playerId) {
@@ -235,7 +241,7 @@ public class GameController {
         virtualView.communicateCommonObjectives(game.getCommonObjectiveCards());
         virtualView.communicateTurnOrder(game.getTurnOrder());
 
-        for(PlayerModel player : game.getPlayers()) {
+        for (PlayerModel player : game.getPlayers()) {
             virtualView.communicateHand(player.getPlayerId(), player.getHand().getCards());
             virtualView.communicatePlayArea(player.getUsername(), player.getPlayArea().getPlacementOrder(), player.getPlayArea().getField(), player.getPlayArea().getActiveSides(), player.getPlayArea().getLegalPositions(), player.getPlayArea().getIllegalPositions(), player.getPlayArea().getResourceCounts(), player.getPlayArea().getObjectCounts());
             virtualView.communicatePersonalObjective(player.getPlayerId(), player.getPersonalObjective());
@@ -275,10 +281,10 @@ public class GameController {
         virtualView.communicateDeckTopType(PlayableCardType.RESOURCE, game.getResourceDeckTopType());
         virtualView.communicateDeckTopType(PlayableCardType.GOLD, game.getGoldDeckTopType());
 
-        for(PlayerModel player : game.getPlayers()) {
+        for (PlayerModel player : game.getPlayers()) {
             virtualView.communicateHand(player.getPlayerId(), player.getHand().getCards());
 
-            for(PlayerModel player2 : game.getPlayers())
+            for (PlayerModel player2 : game.getPlayers())
                 if (player2 != player)
                     virtualView.communicateOtherHand(player2.getPlayerId(), player.getUsername(), player.getHand().getRestrictedVersion());
 
@@ -298,7 +304,7 @@ public class GameController {
         }
 
         virtualView.communicateCommonObjectives(game.getCommonObjectiveCards());
-        for(PlayerModel player : game.getPlayers()) {
+        for (PlayerModel player : game.getPlayers()) {
             virtualView.promptObjectiveChoice(player.getPlayerId(), player.getPersonalObjectiveOptions());
             virtualView.redrawView(player.getPlayerId());
         }
@@ -307,7 +313,8 @@ public class GameController {
     /**
      * Sets the player's objective.
      * If all players have chosen their objective, the game will move on.
-     * @param playerId The player's id. If an invalid id is given, this method does nothing.
+     *
+     * @param playerId      The player's id. If an invalid id is given, this method does nothing.
      * @param objectiveCard The chosen objective card. If the user doesn't have this card, this method will do nothing.
      */
     public synchronized void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) {
@@ -400,10 +407,11 @@ public class GameController {
 
     /**
      * Places a card on the player's board. If an illegal move was made, this method does nothing.
+     *
      * @param playerId The player's id. If the id is invalid, or not the current player's id, this method does nothing.
-     * @param card The played card.
-     * @param side The side on which the card is played.
-     * @param newPos The position of the newly placed card.
+     * @param card     The played card.
+     * @param side     The side on which the card is played.
+     * @param newPos   The position of the newly placed card.
      */
     public synchronized void placeCard(int playerId, PlayableCard card, SideType side, Position newPos) {
         if ((game.getState() != GameState.STARTED && game.getState() != GameState.FINAL_ROUND)
@@ -429,7 +437,7 @@ public class GameController {
         virtualView.communicatePlayCard(game.getPlayers()[playerId].getUsername(), card, side, newPos, playArea.getAddedLegalPositions(), playArea.getRemovedLegalPositions(), playArea.getResourceCounts(), playArea.getObjectCounts());
         virtualView.communicateGamePoints(game.getPlayers()[playerId].getUsername(), game.getPlayers()[playerId].getGamePoints());
         virtualView.communicateRemoveCard(playerId, card);
-        for(PlayerModel player : game.getPlayers()) {
+        for (PlayerModel player : game.getPlayers()) {
             if (player.getPlayerId() != playerId) {
                 virtualView.communicateRemoveOtherCard(player.getPlayerId(), game.getPlayers()[playerId].getUsername(), card.getRestrictedVersion());
             }
@@ -443,6 +451,7 @@ public class GameController {
 
     /**
      * Draws a card for the given player.
+     *
      * @param playerId The player's id. If the given id is invalid, or it is not the right moment to draw a card, or if it's not the given player's turn, this method does nothing.
      * @param drawType The type of draw the player has decided to perform.
      */
@@ -480,7 +489,7 @@ public class GameController {
         }
 
         virtualView.communicateNewCard(playerId, drawnCard);
-        for(PlayerModel player : game.getPlayers()) {
+        for (PlayerModel player : game.getPlayers()) {
             if (player.getPlayerId() != playerId) {
                 virtualView.communicateNewOtherCard(player.getPlayerId(), game.getPlayers()[playerId].getUsername(), drawnCard.getRestrictedVersion());
                 virtualView.redrawView(player.getPlayerId());
@@ -505,7 +514,7 @@ public class GameController {
         }
 
         virtualView.communicateGameState(game.getState());
-        for(PlayerModel player : game.getPlayers()) {
+        for (PlayerModel player : game.getPlayers()) {
             virtualView.communicateObjectivePoints(player.getUsername(), player.getObjectivePoints());
         }
         List<String> winnerUsernames = game.getWinnerIds().stream().map(id -> game.getPlayers()[id].getUsername()).toList();
@@ -517,8 +526,9 @@ public class GameController {
 
     /**
      * Sends a chat message to everyone in the game.
+     *
      * @param senderUsername The sender's username.
-     * @param text The message content.
+     * @param text           The message content.
      */
     public synchronized void sendChatMessage(String senderUsername, String text) {
         chatController.sendMessage(senderUsername, text);
@@ -526,8 +536,9 @@ public class GameController {
 
     /**
      * Sends a chat message to the given player.
-     * @param senderUsername The sender's username.
-     * @param text The message content.
+     *
+     * @param senderUsername    The sender's username.
+     * @param text              The message content.
      * @param receiverUsernames The set of players who should receive the message.
      */
     public synchronized void sendChatMessage(String senderUsername, String text, Set<String> receiverUsernames) {
@@ -536,6 +547,7 @@ public class GameController {
 
     /**
      * Ends the game because of the disconnection of the given player.
+     *
      * @param playerId The player who disconnected. If the given id is not valid, this method does nothing.
      */
     public synchronized void disconnect(int playerId) {
@@ -545,6 +557,20 @@ public class GameController {
 
         //TODO maybe the save file shouldn't be deleted? The requirements say that we should save in case the server crashes, not one of the clients.
         lobbyManager.deleteGame(game);
+    }
+
+    /**
+     * @return The non-variable number of players expected to play the game.
+     */
+    public synchronized int getNumPlayers() {
+        return game.getNumPlayers();
+    }
+
+    /**
+     * @return The number of players who joined the game.
+     */
+    public synchronized int getCurrentPlayerCount() {
+        return game.getCurrentPlayerCount();
     }
 
 }

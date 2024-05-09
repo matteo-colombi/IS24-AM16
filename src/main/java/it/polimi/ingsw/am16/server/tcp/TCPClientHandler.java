@@ -22,6 +22,7 @@ import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 
 import java.io.*;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -110,6 +111,25 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                             playerId = -1;
                             gameController = null;
                             running.set(false);
+                        }
+                        case GET_GAMES_REQUEST -> {
+                            if (gameController != null) {
+                                promptError("You are already in a game.");
+                                break;
+                            }
+
+                            Set<String> gameIds = lobbyManager.getGameIds();
+                            Map<String, Integer> currentPlayers = new HashMap<>();
+                            Map<String, Integer> maxPlayers = new HashMap<>();
+
+                            for (String gameId : gameIds) {
+                                GameController game = lobbyManager.getGame(gameId);
+
+                                currentPlayers.put(gameId, game.getCurrentPlayerCount());
+                                maxPlayers.put(gameId, game.getNumPlayers());
+                            }
+
+                            getGames(gameIds, currentPlayers, maxPlayers);
                         }
                         case CREATE_GAME -> {
                             if (gameController != null) {
@@ -357,6 +377,20 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
             //TODO see if this is appropriate
             System.err.println(e.getMessage());
         }
+    }
+
+    /**
+     * Show the existing game IDs to the player.
+     *
+     * @param gameIds        The existing games' IDs.
+     * @param currentPlayers The number of current players
+     * @param maxPlayers     The maximum number of players
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    @Override
+    public void getGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) throws RemoteException {
+        TCPMessage tcpMessage = new TCPMessage(MessageType.GET_GAMES_RESPONSE, new GetGamesResponse(gameIds, currentPlayers, maxPlayers));
+        sendTCPMessage(tcpMessage);
     }
 
     /**

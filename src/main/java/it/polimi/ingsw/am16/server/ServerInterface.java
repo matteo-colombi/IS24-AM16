@@ -12,6 +12,8 @@ import java.rmi.RemoteException;
 
 public interface ServerInterface extends Remote {
 
+    void getGames() throws RemoteException;
+
     void createGame(String username, int numPlayers) throws RemoteException;
 
     void joinGame(String gameId, String username) throws RemoteException;

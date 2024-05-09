@@ -15,9 +15,7 @@ import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 import java.io.Serial;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RMIServerImplementation extends UnicastRemoteObject implements ServerInterface {
@@ -73,6 +71,23 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         };
 
         pingTimer.schedule(task, 1000, 10000);
+    }
+
+    @Override
+    public void getGames() throws RemoteException {
+        Set<String> gameIds = lobbyManager.getGameIds();
+        Map<String, Integer> currentPlayers = new HashMap<>();
+        Map<String, Integer> maxPlayers = new HashMap<>();
+
+        for (String gameId : gameIds) {
+            GameController game = lobbyManager.getGame(gameId);
+
+            currentPlayers.put(gameId, game.getCurrentPlayerCount());
+            maxPlayers.put(gameId, game.getNumPlayers());
+        }
+
+        //FIXME throws the Exception
+        clientInterface.getGames(gameIds, currentPlayers, maxPlayers);
     }
 
     @Override

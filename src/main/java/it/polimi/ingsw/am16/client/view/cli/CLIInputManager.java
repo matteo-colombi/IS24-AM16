@@ -82,6 +82,13 @@ public class CLIInputManager implements Runnable {
             case HELP -> {
                 cliView.printHelp();
             }
+            case GET_GAMES -> {
+                try {
+                    serverInterface.getGames();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             case CREATE_GAME -> {
                 if (args.length < 3 || args[1] == null || args[1].isEmpty() || args[2] == null || args[2].isEmpty()) {
                     System.out.println("Invalid arguments. Usage: " + CLICommand.CREATE_GAME.getUsage());

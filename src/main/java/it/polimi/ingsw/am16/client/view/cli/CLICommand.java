@@ -10,6 +10,11 @@ public enum CLICommand {
             "help",
             "",
             "Prints the list of available commands."),
+    GET_GAMES(
+            false,
+            "get_games",
+            "",
+            "Prints the list of available games."),
     CREATE_GAME(false,
             "create_game",
             "<username> <numPlayers>",

@@ -69,6 +69,7 @@ public class CLI implements ViewInterface {
         this.cliState = CLIState.STARTUP;
         this.cliInputManager = new CLIInputManager(this, System.in);
         this.cliInputManager.addCommand(CLICommand.HELP);
+        this.cliInputManager.addCommand(CLICommand.GET_GAMES);
         this.cliInputManager.addCommand(CLICommand.JOIN_GAME);
         this.cliInputManager.addCommand(CLICommand.CREATE_GAME);
         this.cliInputManager.addCommand(CLICommand.EXIT);
@@ -118,6 +119,23 @@ public class CLI implements ViewInterface {
     }
 
     /**
+     * Show the existing game IDs to the player.
+     *
+     * @param gameIds The existing games' IDs.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    @Override
+    public void printGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) {
+        System.out.println("\nAvailable games:");
+
+        for (String gameId : gameIds) {
+            System.out.printf("\t- %s %d/%d\n", gameId, currentPlayers.get(gameId), maxPlayers.get(gameId));
+        }
+
+        printCommandPrompt();
+    }
+
+    /**
      * Tells the view that they have joined a game with the given username.
      *
      * @param username The username the player has joined the game with.
@@ -136,6 +154,7 @@ public class CLI implements ViewInterface {
         this.playAreas = new HashMap<>();
         this.chatHistory = new ArrayList<>();
         this.unreadChat = new ArrayList<>();
+        this.cliInputManager.removeCommand(CLICommand.GET_GAMES);
         this.cliInputManager.removeCommand(CLICommand.JOIN_GAME);
         this.cliInputManager.removeCommand(CLICommand.CREATE_GAME);
         this.cliInputManager.removeCommand(CLICommand.EXIT);
@@ -637,6 +656,7 @@ public class CLI implements ViewInterface {
 
         cliInputManager.clearCommands();
         cliInputManager.addCommand(CLICommand.HELP);
+        cliInputManager.addCommand(CLICommand.GET_GAMES);
         cliInputManager.addCommand(CLICommand.JOIN_GAME);
         cliInputManager.addCommand(CLICommand.CREATE_GAME);
         cliInputManager.addCommand(CLICommand.EXIT);

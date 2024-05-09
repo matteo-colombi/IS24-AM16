@@ -18,7 +18,18 @@ import java.util.Set;
 public interface RemoteClientInterface extends Remote {
 
     /**
+     * Show the existing game IDs to the player.
+     *
+     * @param gameIds        The existing games' IDs.
+     * @param currentPlayers The number of current players
+     * @param maxPlayers     The maximum number of players
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    void getGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) throws RemoteException;
+
+    /**
      * Tells the view that they have joined a game with the given username.
+     *
      * @param username The username the player has joined the game with.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -26,6 +37,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Adds a player to the game. Used to communicate the connection of a new player.
+     *
      * @param username The new player's username.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -33,6 +45,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * DOCME
+     *
      * @param usernames
      * @throws RemoteException
      */
@@ -40,6 +53,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Sets the game state. To be called when the game's state changes.
+     *
      * @param state The new game state.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -47,15 +61,17 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Sets the common cards for the game. Should be called whenever these change.
+     *
      * @param commonResourceCards The common resource cards (may also contain gold cards if the resource card deck is empty). Should always be of length 2.
-     * @param commonGoldCards The common gold cards (may also contain resource cards if the gold card deck is empty). Should always be of length 2.
+     * @param commonGoldCards     The common gold cards (may also contain resource cards if the gold card deck is empty). Should always be of length 2.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void setCommonCards(PlayableCard[] commonResourceCards, PlayableCard[] commonGoldCards) throws RemoteException;
 
     /**
      * Sets the types of cards at the top of the respective deck.
-     * @param whichDeck The deck which we are setting the top card of.
+     *
+     * @param whichDeck    The deck which we are setting the top card of.
      * @param resourceType The resource type of the card on top of the given deck.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -63,6 +79,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Prompts the user to choose the side of the given starter card.
+     *
      * @param starterCard The starter card of the player.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -70,12 +87,14 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Tells the client that the color-choosing phase has begun.
+     *
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void choosingColors() throws RemoteException;
 
     /**
      * Prompts the client to choose their color.
+     *
      * @param colorChoices The possible choices for the player's color.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -83,20 +102,23 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Sets the player's color. If the player is still in the prompt because he didn't choose in time, the prompt is invalidated
+     *
      * @param username The username whose color is being given.
-     * @param color The color assigned to the player.
+     * @param color    The color assigned to the player.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void setColor(String username, PlayerColor color) throws RemoteException;
 
     /**
      * Tells the client that the cards for the game are being drawn.
+     *
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void drawingCards() throws RemoteException;
 
     /**
      * Sets the player's hand.
+     *
      * @param hand The player's hand.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -104,6 +126,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Adds the given card to this player's hand.
+     *
      * @param card The card to be added.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -111,6 +134,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Removed the given card from this player's hand.
+     *
      * @param card The card to be removed.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -118,23 +142,26 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Sets the given player's restricted hand.
+     *
      * @param username The username of the player whose hand is being given.
-     * @param hand The restricted hand.
+     * @param hand     The restricted hand.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void setOtherHand(String username, List<RestrictedCard> hand) throws RemoteException;
 
     /**
      * Adds the given restricted card to the given user's hand.
+     *
      * @param username The user to add this card to.
-     * @param newCard The restricted card to be added.
+     * @param newCard  The restricted card to be added.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void addCardToOtherHand(String username, RestrictedCard newCard) throws RemoteException;
 
     /**
      * Removes the given restricted card from the given user's hand.
-     * @param username The user to remove this card from.
+     *
+     * @param username     The user to remove this card from.
      * @param cardToRemove The restricted card to be removed.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -142,35 +169,38 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Sets the given player's play area.
-     * @param username The player whose play area is being given.
+     *
+     * @param username           The player whose play area is being given.
      * @param cardPlacementOrder The order in which the cards were played in this play area.
-     * @param field The user's field.
-     * @param activeSides The map keeping track of which side every card is placed on.
-     * @param legalPositions DOCME
-     * @param illegalPositions DOCME
-     * @param resourceCounts DOCME
-     * @param objectCounts DOCME
+     * @param field              The user's field.
+     * @param activeSides        The map keeping track of which side every card is placed on.
+     * @param legalPositions     DOCME
+     * @param illegalPositions   DOCME
+     * @param resourceCounts     DOCME
+     * @param objectCounts       DOCME
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) throws RemoteException;
 
     /**
      * Adds the given card to the given player's play area.
-     * @param username The username of the player who played the card.
-     * @param card The played card.
-     * @param side The card the new card was played on.
-     * @param pos The position where the new card was played.
-     * @param addedLegalPositions DOCME
+     *
+     * @param username              The username of the player who played the card.
+     * @param card                  The played card.
+     * @param side                  The card the new card was played on.
+     * @param pos                   The position where the new card was played.
+     * @param addedLegalPositions   DOCME
      * @param removedLegalPositions DOCME
-     * @param resourceCounts DOCME
-     * @param objectCounts DOCME
+     * @param resourceCounts        DOCME
+     * @param objectCounts          DOCME
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) throws RemoteException;
 
     /**
      * Sets a player's number of game points.
-     * @param username The username of the player whose points are being set.
+     *
+     * @param username   The username of the player whose points are being set.
      * @param gamePoints The given player's number of game points.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -178,7 +208,8 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Sets a player's number of objective points.
-     * @param username The username of the player whose points are being set.
+     *
+     * @param username        The username of the player whose points are being set.
      * @param objectivePoints The given player's number of objective points.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -186,6 +217,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Sets the common objectives for the game.
+     *
      * @param commonObjectives The common objectives. Should always contain 2 elements.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -193,6 +225,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Prompts the player to choose their objective from the ones given.
+     *
      * @param possiblePersonalObjectives The possible objectives the player can choose from. Should always contain 2 cards.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -200,6 +233,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Sets the player's personal objective.
+     *
      * @param personalObjective The player's personal objective.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -207,6 +241,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Sets the turn order for the game.
+     *
      * @param usernames The turn order. Should always contain as many usernames as were added at the beginning of the game.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -214,6 +249,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Tells the client that it is the given player's turn to play.
+     *
      * @param username The player's username.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -221,6 +257,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Tells the client the winners of the game.
+     *
      * @param winnerUsernames The winners of the game.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -228,6 +265,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Adds all the messages given to the player's chat.
+     *
      * @param messages The chat messages to add.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -235,6 +273,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Adds the given message to the player's chat.
+     *
      * @param message The new message.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -242,6 +281,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Tells the client that an error has occured.
+     *
      * @param errorMessage The message that should be displayed to the user.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -249,18 +289,21 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Forces the client to redraw the view.
+     *
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void redrawView() throws RemoteException;
 
     /**
      * Notifies the client that from now on they shouldn't draw cards anymore.
+     *
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void notifyDontDraw() throws RemoteException;
 
     /**
      * Tells the client that another client has disconnected. This ends the game, if it had started. If the game hadn't started already, the player is simply removed.
+     *
      * @param whoDisconnected The username of the player who disconnected.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -268,6 +311,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Tells the client that a player has skipped their turn because of a deadlock.
+     *
      * @param username The username of the player who skipped their turn.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -275,6 +319,7 @@ public interface RemoteClientInterface extends Remote {
 
     /**
      * Ping request used by the server to check that the client is still connected.
+     *
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void ping() throws RemoteException;

@@ -65,6 +65,19 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
     }
 
     /**
+     * Show the existing game IDs to the player.
+     *
+     * @param gameIds        The existing games' IDs.
+     * @param currentPlayers The number of current players
+     * @param maxPlayers     The maximum number of players
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    @Override
+    public void getGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) throws RemoteException {
+        view.printGames(gameIds, currentPlayers, maxPlayers);
+    }
+
+    /**
      * Tells the view that they have joined a game with the given username.
      *
      * @param gameId
