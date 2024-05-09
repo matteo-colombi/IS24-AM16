@@ -7,7 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * DOCME
+ * Class used to handle the creation of new instances of {@link TCPClientHandler}.
  */
 public class WelcomeTCPServer implements Runnable {
     private final int port;
@@ -18,11 +18,17 @@ public class WelcomeTCPServer implements Runnable {
         this.lobbyManager = lobbyManager;
     }
 
+    /**
+     * Starts the TCP server and listens for incoming connections.
+     */
     @Override
     public void run() {
         startServer();
     }
 
+    /**
+     * Starts the TCP server and listens for incoming connections.
+     */
     public void startServer() {
         try(ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("TCP server ready");
