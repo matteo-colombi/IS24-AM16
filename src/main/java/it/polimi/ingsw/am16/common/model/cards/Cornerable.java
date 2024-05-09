@@ -11,9 +11,7 @@ import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
 import java.io.Serial;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Interface implemented by all classes that represent an element that can be on one of a card's corners.
@@ -29,8 +27,6 @@ public interface Cornerable {
      * Custom deserializer for {@link Cornerable}.
      */
     class Deserializer extends StdDeserializer<Cornerable> {
-
-        private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         @Serial
         private static final long serialVersionUID = -8705803926228544623L;
@@ -50,21 +46,18 @@ public interface Cornerable {
         @Override
         public Cornerable deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
             JsonNode cornerNode = jsonParser.getCodec().readTree(jsonParser);
-            return switch (cornerNode.asText()) {
-                case "blocked" -> SpecialType.BLOCKED;
-                case "empty" -> SpecialType.EMPTY;
-                case "fungi" -> ResourceType.FUNGI;
-                case "plant" -> ResourceType.PLANT;
-                case "animal" -> ResourceType.ANIMAL;
-                case "insect" -> ResourceType.INSECT;
-                case "inkwell" -> ObjectType.INKWELL;
-                case "manuscript" -> ObjectType.MANUSCRIPT;
-                case "quill" -> ObjectType.QUILL;
-                default -> throw new IOException("Unknown Cornerable Type: " + cornerNode.asText());
-            };
+
+            return Stream.of(ResourceType.values(), ObjectType.values(), SpecialType.values())
+                    .flatMap(Stream::of)
+                    .filter(el -> el.name().equalsIgnoreCase(cornerNode.asText()))
+                    .findAny()
+                    .orElseThrow(() -> new IOException("Unknown corner type: " + cornerNode.asText()));
         }
     }
 
+    /**
+     * Custom serializer for {@link Cornerable} that serializes corner types with their name.
+     */
     class Serializer extends JsonSerializer<Cornerable> {
         @Override
         public void serialize(Cornerable value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
@@ -72,6 +65,9 @@ public interface Cornerable {
         }
     }
 
+    /**
+     * Key deserializer for when {@link Cornerable} is used as a Map key.
+     */
     class KeyDeserializer extends com.fasterxml.jackson.databind.KeyDeserializer {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
