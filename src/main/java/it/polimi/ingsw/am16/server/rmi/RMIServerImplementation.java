@@ -239,6 +239,11 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         }
     }
 
+    /**
+     * Sends a chat message to all the players in the game.
+     * @param text The text of the message.
+     * @throws RemoteException If an error occurs during the RMI communication.
+     */
     @Override
     public void sendChatMessage(String text) throws RemoteException {
         if (gameController != null) {
@@ -246,6 +251,12 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         }
     }
 
+    /**
+     * Sends a chat message to the given player.
+     * @param text The text of the message.
+     * @param receiverUsername The username of the player to send the message to.
+     * @throws RemoteException If an error occurs during the RMI communication.
+     */
     @Override
     public void sendChatMessage(String text, String receiverUsername) throws RemoteException {
         if (gameController != null) {
@@ -253,6 +264,10 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         }
     }
 
+    /**
+     * Disconnects the client from the server.
+     * @throws RemoteException If an error occurs during the RMI communication.
+     */
     @Override
     public void disconnect() throws RemoteException {
         if (gameController != null && playerId != -1) {
@@ -262,6 +277,10 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         gameController = null;
     }
 
+    /**
+     * Also disconnects the client from the server.
+     * @throws RemoteException If an error occurs during the RMI communication.
+     */
     @Override
     public void leaveGame() throws RemoteException {
         if (gameController != null && playerId != -1) {
@@ -271,6 +290,10 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         gameController = null;
     }
 
+    /**
+     * Pings the client to check if the connection is still alive.
+     * @throws RemoteException If an error occurs during the RMI communication.
+     */
     @Override
     public void pong() throws RemoteException {
         ponged.set(true);
