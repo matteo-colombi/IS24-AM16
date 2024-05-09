@@ -40,7 +40,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
     }
 
     /**
-     * DOCME
+     * Starts the RMI client; that includes the connection check routine and the user interface.
      */
     public void start() {
         checkConnectionRoutine();
@@ -76,7 +76,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
     /**
      * Tells the view that they have joined a game with the given username.
      *
-     * @param gameId
+     * @param gameId The id of the game which the player just joined.
      * @param username The username the player has joined the game with.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
@@ -97,10 +97,9 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
     }
 
     /**
-     * DOCME
-     *
-     * @param usernames
-     * @throws RemoteException
+     * Tells the client all the usernames of the players present in the game.
+     * @param usernames The list of usernames of the players present in the game.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     @Override
     public void setPlayers(List<String> usernames) throws RemoteException {
@@ -267,15 +266,14 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
 
     /**
      * Sets the given player's play area.
-     *
-     * @param username           The player whose play area is being given.
+     * @param username The player whose play area is being given.
      * @param cardPlacementOrder The order in which the cards were played in this play area.
-     * @param field              The user's field.
-     * @param activeSides        The map keeping track of which side every card is placed on.
-     * @param legalPositions     DOCME
-     * @param illegalPositions   DOCME
-     * @param resourceCounts     DOCME
-     * @param objectCounts       DOCME
+     * @param field The user's field.
+     * @param activeSides The map keeping track of which side every card is placed on.
+     * @param legalPositions The set of positions on which the player can place cards.
+     * @param illegalPositions The set of positions on which the player must not place cards.
+     * @param resourceCounts A map containing the amount of each resource that the player has.
+     * @param objectCounts A map containing the amount of each object that the player has.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     @Override
@@ -285,15 +283,14 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
 
     /**
      * Adds the given card to the given player's play area.
-     *
-     * @param username              The username of the player who played the card.
-     * @param card                  The played card.
-     * @param side                  The card the new card was played on.
-     * @param pos                   The position where the new card was played.
-     * @param addedLegalPositions   DOCME
-     * @param removedLegalPositions DOCME
-     * @param resourceCounts        DOCME
-     * @param objectCounts          DOCME
+     * @param username The username of the player who played the card.
+     * @param card The played card.
+     * @param side The card the new card was played on.
+     * @param pos The position where the new card was played.
+     * @param addedLegalPositions The set of new positions in which the player can play a card, following the move which was just made.
+     * @param removedLegalPositions The set of positions in which the player can no longer play a card, following the move which was just made.
+     * @param resourceCounts A map containing the amount of each resource that the player has, following the move which was just made.
+     * @param objectCounts A map containing the amount of each object that the player has, following the move which was just made.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     @Override

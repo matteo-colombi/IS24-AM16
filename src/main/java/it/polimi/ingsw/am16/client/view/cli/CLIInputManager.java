@@ -55,6 +55,8 @@ public class CLIInputManager implements Runnable {
             System.err.println("An error occured.");
             e.printStackTrace();
         }
+
+        System.exit(0);
     }
 
     private void parseCommand(String input) {

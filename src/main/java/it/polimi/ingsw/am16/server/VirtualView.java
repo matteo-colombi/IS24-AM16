@@ -260,10 +260,10 @@ public class VirtualView {
      * @param username The username of the player whose play area is being given.
      * @param cardPlacementOrder The order in which the cards were played in this play area.
      * @param field The play area's field.
-     * @param legalPositions DOCME
-     * @param illegalPositions DOCME
-     * @param resourceCounts DOCME
-     * @param objectCounts DOCME
+     * @param legalPositions The set of positions on which the player can place cards.
+     * @param illegalPositions The set of positions on which the player must not place cards.
+     * @param resourceCounts A map containing the amount of each resource that the player has.
+     * @param objectCounts A map containing the amount of each object that the player has.
      * @param activeSides The map that keeps track of what side each card was played on.
      */
     public void communicatePlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
@@ -282,10 +282,10 @@ public class VirtualView {
      * @param card The played card.
      * @param side The side on which the card was placed on.
      * @param pos The position where the new card was placed.
-     * @param addedLegalPositions DOCME
-     * @param removedLegalPositions DOCME
-     * @param resourceCounts DOCME,
-     * @param objectCounts DOCME
+     * @param addedLegalPositions The set of new positions in which the player can play a card, following the move which was just made.
+     * @param removedLegalPositions The set of positions in which the player can no longer play a card, following the move which was just made.
+     * @param resourceCounts A map containing the amount of each resource that the player has, following the move which was just made.
+     * @param objectCounts A map containing the amount of each object that the player has, following the move which was just made.
      */
     public void communicatePlayCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         userViews.values().forEach(userView -> {
