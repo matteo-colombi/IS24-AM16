@@ -275,6 +275,8 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         }
         playerId = -1;
         gameController = null;
+        pingTimer.cancel();
+        System.out.println("RMI client disconnected.");
     }
 
     /**

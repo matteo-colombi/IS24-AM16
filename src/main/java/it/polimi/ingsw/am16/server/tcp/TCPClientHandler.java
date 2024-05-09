@@ -26,7 +26,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * DOCME
+ * Class that is used by the server to handle a single client connected via TCP/Socket.
+ * This class handles both incoming and outgoing TCP messages to and from the client which it is handling.
  */
 public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
@@ -44,7 +45,6 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
     private final AtomicBoolean ponged;
 
     private final Timer pingTimer;
-
 
     public TCPClientHandler(Socket clientSocket, LobbyManager lobbyManager) throws IOException {
         this.lobbyManager = lobbyManager;
@@ -79,7 +79,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
                     //Connection lost with client.
 
-                    System.out.println("Client disconnected.");
+                    System.out.println("TCP client disconnected.");
 
                     pingTimer.cancel();
 
@@ -354,7 +354,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
             out.println(mapper.writeValueAsString(tcpMessage));
             out.flush();
         } catch (IOException e) {
-            //TODO see if this is appropriate
+            System.err.println("Error serializing object to send to a TCP client. Printing the error message:");
             System.err.println(e.getMessage());
         }
     }
@@ -362,7 +362,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
     /**
      * Tells the view that they have joined a game with the given username.
      *
-     * @param gameId
+     * @param gameId The id of the game which the player just joined.
      * @param username The username the player has joined the game with.
      */
     @Override
@@ -383,9 +383,8 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
     }
 
     /**
-     * DOCME
-     *
-     * @param usernames
+     * Tells the client all the usernames of the players present in the game.
+     * @param usernames The list of usernames of the players present in the game.
      */
     @Override
     public void setPlayers(List<String> usernames) {
@@ -556,10 +555,10 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
      * @param cardPlacementOrder The order in which the cards were played in this play area.
      * @param field              The user's field.
      * @param activeSides        The map keeping track of which side every card is placed on.
-     * @param legalPositions     DOCME
-     * @param illegalPositions   DOCME
-     * @param resourceCounts     DOCME
-     * @param objectCounts       DOCME
+     * @param legalPositions The set of positions on which the player can place cards.
+     * @param illegalPositions The set of positions on which the player must not place cards.
+     * @param resourceCounts A map containing the amount of each resource that the player has.
+     * @param objectCounts A map containing the amount of each object that the player has.
      */
     @Override
     public void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
@@ -574,10 +573,10 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
      * @param card                  The played card.
      * @param side                  The card the new card was played on.
      * @param pos                   The position where the new card was played.
-     * @param addedLegalPositions   DOCME
-     * @param removedLegalPositions DOCME
-     * @param resourceCounts        DOCME
-     * @param objectCounts          DOCME
+     * @param addedLegalPositions The set of new positions in which the player can play a card, following the move which was just made.
+     * @param removedLegalPositions The set of positions in which the player can no longer play a card, following the move which was just made.
+     * @param resourceCounts A map containing the amount of each resource that the player has, following the move which was just made.
+     * @param objectCounts A map containing the amount of each object that the player has, following the move which was just made.
      */
     @Override
     public void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
