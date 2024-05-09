@@ -27,13 +27,12 @@ public class LobbyManager {
     private final Map<String, GameController> games;
 
     /**
-     * DOCME
+     * Constructs a new empty lobby manager.
      */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public LobbyManager() {
         this.games = new ConcurrentHashMap<>();
         File saveDir = new File(FilePaths.SAVE_DIRECTORY);
-        saveDir.mkdirs();
+        boolean ignored = saveDir.mkdirs();
     }
 
     /**
@@ -58,15 +57,6 @@ public class LobbyManager {
     }
 
     /**
-     * Removes the game with the given id from the lobby manager, if present; does nothing if the game with the given id does not exist in this manager.
-     *
-     * @param id The id of the game to remove.
-     */
-    public void removeGame(String id) {
-        games.remove(id);
-    }
-
-    /**
      * Retrieves the controller for the game with the given id.
      *
      * @param id The lobby's id.
@@ -84,20 +74,19 @@ public class LobbyManager {
     }
 
     /**
-     * DOCME
+     * Removes the game with the given id from the lobby manager, if present; does nothing if the game with the given id does not exist in this manager.
      *
-     * @param game
+     * @param gameId The id of the game to remove.
      */
-    public void deleteGame(GameModel game) {
-        String gameId = game.getId();
+    public void deleteGame(String gameId) {
         games.remove(gameId);
-        // FIXME removed for debugging purpose
-//        File f = new File(String.format("%s/%s.json", FilePaths.SAVE_DIRECTORY, gameId));
-//        try {
-//            Files.deleteIfExists(f.toPath());
-//        } catch (IOException e) {
-//            System.err.printf("Save file for game %s could not be deleted.\n", gameId);
-//        }
+
+        File f = new File(String.format("%s/%s.json", FilePaths.SAVE_DIRECTORY, gameId));
+        try {
+            Files.deleteIfExists(f.toPath());
+        } catch (IOException e) {
+            System.err.printf("Save file for game %s could not be deleted.\n", gameId);
+        }
     }
 
     /**
@@ -142,9 +131,10 @@ public class LobbyManager {
     }
 
     /**
-     * DOCME
-     *
-     * @param game
+     * Saves the given game to a file, so that it can be restored in the case of a server crash.
+     * This method operates partially asynchronously: the game is serialized in JSON format, and then the
+     * actual saving of the data on the disk is performed on a separate thread.
+     * @param game The game to be saved.
      */
     public void saveGame(GameModel game) {
         String savedGame;

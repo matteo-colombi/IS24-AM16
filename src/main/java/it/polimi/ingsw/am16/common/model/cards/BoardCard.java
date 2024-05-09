@@ -115,7 +115,7 @@ public abstract class BoardCard extends Card {
 
         /**
          * Deserializes the given {@link BoardCard} from JSON. This deserializer calls the deserializers for {@link PlayableCard} and {@link StarterCard}.
-         * @param p Parsed used for reading JSON content
+         * @param p Parser used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *

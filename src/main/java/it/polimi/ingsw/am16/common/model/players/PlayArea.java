@@ -30,7 +30,8 @@ public class PlayArea implements PlayAreaModel, Serializable {
     private static final long serialVersionUID = -5968965401567479628L;
 
     private int cardCount;
-    private final Map<CornerType, Integer> resourceAndObjectCounts;
+    @JsonSerialize(keyUsing = Cornerable.Serializer.class)
+    private final Map<Cornerable, Integer> resourceAndObjectCounts;
     private final List<Position> cardPlacementOrder;
     @JsonSerialize(keyUsing = Position.Serializer.class)
     private final Map<Position, BoardCard> field;
@@ -51,7 +52,7 @@ public class PlayArea implements PlayAreaModel, Serializable {
      */
     public PlayArea() {
         this.cardCount = 0;
-        this.resourceAndObjectCounts = new EnumMap<>(CornerType.class);
+        this.resourceAndObjectCounts = new HashMap<>();
         this.cardPlacementOrder = new ArrayList<>();
         this.field = new HashMap<>();
         this.activeSides = new HashMap<>();
@@ -65,7 +66,10 @@ public class PlayArea implements PlayAreaModel, Serializable {
         addedLegalPositions = new HashSet<>();
         removedLegalPositions = new HashSet<>();
 
-        for (CornerType cornerType : CornerType.values()) {
+        for (Cornerable cornerType : ResourceType.values()) {
+            resourceAndObjectCounts.put(cornerType, 0);
+        }
+        for (Cornerable cornerType : ObjectType.values()) {
             resourceAndObjectCounts.put(cornerType, 0);
         }
     }
@@ -87,7 +91,7 @@ public class PlayArea implements PlayAreaModel, Serializable {
      */
     private PlayArea(
             int cardCount,
-            Map<CornerType, Integer> resourceAndObjectCounts,
+            Map<Cornerable, Integer> resourceAndObjectCounts,
             List<Position> cardPlacementOrder,
             Map<Position, BoardCard> field,
             Map<BoardCard, SideType> activeSideTypes,
@@ -132,9 +136,7 @@ public class PlayArea implements PlayAreaModel, Serializable {
         Map<ResourceType, Integer> resourceCounts = new EnumMap<>(ResourceType.class);
 
         for (ResourceType resource : ResourceType.values()) {
-            CornerType mappedCorner = resource.mappedCorner();
-            Integer counter = resourceAndObjectCounts.get(mappedCorner);
-
+            Integer counter = resourceAndObjectCounts.get(resource);
             resourceCounts.put(resource, counter);
         }
 
@@ -150,8 +152,7 @@ public class PlayArea implements PlayAreaModel, Serializable {
         Map<ObjectType, Integer> objectCounts = new EnumMap<>(ObjectType.class);
 
         for (ObjectType object : ObjectType.values()) {
-            CornerType mappedCorner = object.mappedCorner();
-            Integer counter = resourceAndObjectCounts.get(mappedCorner);
+            Integer counter = resourceAndObjectCounts.get(object);
             objectCounts.put(object, counter);
         }
 
@@ -161,7 +162,7 @@ public class PlayArea implements PlayAreaModel, Serializable {
     /**
      * @return The {@link Map} containing the resources and objects currently visible on the player's field.
      */
-    public Map<CornerType, Integer> getResourceAndObjectCounts() {
+    public Map<Cornerable, Integer> getResourceAndObjectCounts() {
         return resourceAndObjectCounts;
     }
 
@@ -311,13 +312,13 @@ public class PlayArea implements PlayAreaModel, Serializable {
         addedLegalPositions.clear();
         removedLegalPositions.clear();
 
-        Map<CornersIdx, CornerType> corners = activeSide.getCorners();
+        Map<CornersIdx, Cornerable> corners = activeSide.getCorners();
 
         for(CornersIdx idx : corners.keySet()) {
             Position neighbourPosition = playedCardPosition.addOffset(idx.getOffset());
 
             if (!illegalPositions.contains(neighbourPosition)) {
-                if (corners.get(idx) == CornerType.BLOCKED) {
+                if (corners.get(idx) == SpecialType.BLOCKED) {
                     removedLegalPositions.add(neighbourPosition);
                 } else {
                     addedLegalPositions.add(neighbourPosition);
@@ -343,8 +344,8 @@ public class PlayArea implements PlayAreaModel, Serializable {
         CardSide activeSide = activeSides.get(playedCard);
 
         // increases the resources and objects that are in the corners of the new card
-        for (CornerType corner : activeSide.getCorners().values()) {
-            if (corner == CornerType.BLOCKED || corner == CornerType.EMPTY)
+        for (Cornerable corner : activeSide.getCorners().values()) {
+            if (corner == SpecialType.BLOCKED || corner == SpecialType.EMPTY)
                 continue;
 
             resourceAndObjectCounts.merge(corner, 1, Integer::sum);
@@ -354,10 +355,9 @@ public class PlayArea implements PlayAreaModel, Serializable {
         Map<ResourceType, Integer> permanentResourcesGiven = activeSide.getPermanentResourcesGiven();
 
         for (ResourceType resource : permanentResourcesGiven.keySet()) {
-            CornerType mappedCorner = resource.mappedCorner();
             Integer resourceCounts = permanentResourcesGiven.get(resource);
 
-            resourceAndObjectCounts.merge(mappedCorner, resourceCounts, Integer::sum);
+            resourceAndObjectCounts.merge(resource, resourceCounts, Integer::sum);
         }
 
         // decrements the resources and objects that have been hidden by the new card
@@ -367,8 +367,8 @@ public class PlayArea implements PlayAreaModel, Serializable {
 
             BoardCard neighbourCard = field.get(neighbourPosition);
             CardSide neighbourCardSide = activeSides.get(neighbourCard);
-            Map<CornersIdx, CornerType> corners = neighbourCardSide.getCorners();
-            CornerType corner = null;
+            Map<CornersIdx, Cornerable> corners = neighbourCardSide.getCorners();
+            Cornerable corner = null;
 
             if (playedCardPosition.neighbourIsTopLeft(neighbourPosition)) {
                 corner = corners.get(CornersIdx.BOTTOM_RIGHT);
@@ -382,7 +382,7 @@ public class PlayArea implements PlayAreaModel, Serializable {
 
             assert corner != null;
 
-            if (corner == CornerType.BLOCKED || corner == CornerType.EMPTY)
+            if (corner == SpecialType.BLOCKED || corner == SpecialType.EMPTY)
                 continue;
 
             resourceAndObjectCounts.merge(corner, -1, Integer::sum);
@@ -458,9 +458,8 @@ public class PlayArea implements PlayAreaModel, Serializable {
         Map<ResourceType, Integer> cardCost = cardSide.getCost();
 
         for (ResourceType resource : cardCost.keySet()) {
-            CornerType mappedCorner = resource.mappedCorner();
 
-            if (cardCost.get(resource) > resourceAndObjectCounts.get(mappedCorner))
+            if (cardCost.get(resource) > resourceAndObjectCounts.get(resource))
                 return false;
         }
 
@@ -501,8 +500,8 @@ public class PlayArea implements PlayAreaModel, Serializable {
 
             int cardCount = playAreaNode.get("cardCount").asInt();
 
-            TypeReference<HashMap<CornerType, Integer>> typeReferenceResObjCounts = new TypeReference<>(){};
-            Map<CornerType, Integer> resourceAndObjectCounts = mapper.readValue(playAreaNode.get("resourceAndObjectCounts").toString(), typeReferenceResObjCounts);
+            TypeReference<HashMap<Cornerable, Integer>> typeReferenceResObjCounts = new TypeReference<>(){};
+            Map<Cornerable, Integer> resourceAndObjectCounts = mapper.readValue(playAreaNode.get("resourceAndObjectCounts").toString(), typeReferenceResObjCounts);
 
             TypeReference<ArrayList<Position>> typeReferenceCardPlacementOrder = new TypeReference<>() {};
             List<Position> cardPlacementOrder = mapper.readValue(playAreaNode.get("placementOrder").toString(), typeReferenceCardPlacementOrder);

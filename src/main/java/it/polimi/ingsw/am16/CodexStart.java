@@ -16,6 +16,10 @@ public class CodexStart /* extends Application */ {
     }
      */
 
+    /**
+     * Main method to start the client or the server.
+     * @param args The arguments to start the client or the server.
+     */
     public static void main(String[] args) {
         if (args.length == 0) {
             printUsage();
@@ -43,6 +47,9 @@ public class CodexStart /* extends Application */ {
         }
     }
 
+    /**
+     * Prints a help message to show the syntax of the command to start the client.
+     */
     private static void printUsage() {
         System.err.println("Invalid arguments.");
         System.out.println("Arguments should be:");

@@ -13,6 +13,10 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class Server {
+    /**
+     * Starts the server.
+     * @param args The command line arguments.
+     */
     public static void start(String[] args) {
         int tcpPort;
         int rmiPort;

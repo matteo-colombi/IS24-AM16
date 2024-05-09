@@ -29,7 +29,7 @@ public class TestPlayerReloading {
 
         File f = new File("src/test/resources/json/testPlayerReloading.json");
 
-        Player player = new Player(5, "matteo");
+        Player player = new Player("matteo");
 
         player.giveStarterCard(registry.getStarterCardFromName("starter_3"));
         player.setColor(PlayerColor.RED);
@@ -48,7 +48,7 @@ public class TestPlayerReloading {
 
         ChatController chatController = new ChatController(new VirtualView());
 
-        Player fakePlayer = new Player(5, "L2C");
+        Player fakePlayer = new Player("L2C");
         fakePlayer.getChat().subscribe(chatController);
         player.getChat().subscribe(chatController);
 
@@ -61,7 +61,6 @@ public class TestPlayerReloading {
 
         Player reloadedPlayer = mapper.readValue(f, Player.class);
 
-        assertEquals(player.getPlayerId(), reloadedPlayer.getPlayerId());
         assertEquals(player.getUsername(), reloadedPlayer.getUsername());
         assertEquals(player.getGamePoints(), reloadedPlayer.getGamePoints());
         assertEquals(player.getObjectivePoints(), reloadedPlayer.getObjectivePoints());
@@ -83,7 +82,6 @@ public class TestPlayerReloading {
         assertEquals(player.getPlayArea().getMaxX(), reloadedPlayer.getPlayArea().getMaxX());
         assertEquals(player.getPlayArea().getMinY(), reloadedPlayer.getPlayArea().getMinY());
         assertEquals(player.getPlayArea().getMaxY(), reloadedPlayer.getPlayArea().getMaxY());
-        assertEquals(player.getChat().getPlayerId(), reloadedPlayer.getChat().getPlayerId());
         assertEquals(player.getChat().getUsername(), reloadedPlayer.getChat().getUsername());
         assertEquals(player.getChat().getMessages(), reloadedPlayer.getChat().getMessages());
     }

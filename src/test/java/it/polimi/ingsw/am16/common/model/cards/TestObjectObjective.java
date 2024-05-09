@@ -22,10 +22,10 @@ public class TestObjectObjective {
 
         StarterCard starter = registry.getStarterCards().getFirst();
 
-        Player pObj1 = new Player(0, "testPlayer");
-        Player pObj2 = new Player(0, "testPlayer");
-        Player pObj3 = new Player(0, "testPlayer");
-        Player pObj4 = new Player(0, "testPlayer");
+        Player pObj1 = new Player("testPlayer");
+        Player pObj2 = new Player("testPlayer");
+        Player pObj3 = new Player("testPlayer");
+        Player pObj4 = new Player("testPlayer");
 
         pObj1.giveStarterCard(starter);
         pObj1.chooseStarterCardSide(SideType.FRONT);

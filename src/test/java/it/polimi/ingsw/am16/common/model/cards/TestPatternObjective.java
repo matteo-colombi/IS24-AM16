@@ -35,7 +35,7 @@ public class TestPatternObjective {
         starterCard = registry.getStarterCards().getFirst();
         assertEquals("starter_1", starterCard.getName());
 
-        testPlayer = new Player(0, "testPlayer");
+        testPlayer = new Player("testPlayer");
     }
 
     private void testObjective1() throws IllegalMoveException, NoStarterCardException {
@@ -60,7 +60,7 @@ public class TestPatternObjective {
 
         assertEquals(2, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        testPlayer = new Player(0, "testPlayer");
+        testPlayer = new Player("testPlayer");
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
@@ -73,7 +73,7 @@ public class TestPatternObjective {
 
         assertEquals(2, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        testPlayer = new Player(0, "testPlayer");
+        testPlayer = new Player("testPlayer");
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
@@ -95,7 +95,7 @@ public class TestPatternObjective {
 
         assertEquals(4, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        testPlayer = new Player(0, "testPlayer");
+        testPlayer = new Player("testPlayer");
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
@@ -115,7 +115,7 @@ public class TestPatternObjective {
 
         assertEquals(2, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        testPlayer = new Player(0, "testPlayer");
+        testPlayer = new Player("testPlayer");
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
@@ -134,7 +134,7 @@ public class TestPatternObjective {
 
         assertEquals(4, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        testPlayer = new Player(0, "testPlayer");
+        testPlayer = new Player("testPlayer");
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
@@ -147,7 +147,7 @@ public class TestPatternObjective {
 
         assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        testPlayer = new Player(0, "testPlayer");
+        testPlayer = new Player("testPlayer");
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
@@ -160,7 +160,7 @@ public class TestPatternObjective {
 
         assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        testPlayer = new Player(0, "testPlayer");
+        testPlayer = new Player("testPlayer");
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);
@@ -173,7 +173,7 @@ public class TestPatternObjective {
 
         assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
 
-        testPlayer = new Player(0, "testPlayer");
+        testPlayer = new Player("testPlayer");
 
         testPlayer.giveStarterCard(starterCard);
         testPlayer.chooseStarterCardSide(SideType.FRONT);

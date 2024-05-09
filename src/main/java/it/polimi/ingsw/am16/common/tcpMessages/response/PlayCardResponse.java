@@ -17,6 +17,7 @@ import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.*;
 
 @JsonDeserialize(using = PlayCardResponse.Deserializer.class)
@@ -88,6 +89,9 @@ public class PlayCardResponse extends Payload {
     static class Deserializer extends StdDeserializer<PlayCardResponse> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+        
+        @Serial
+        private static final long serialVersionUID = 102992346601770629L;
 
         public Deserializer() {
             super(PlayCardResponse.class);

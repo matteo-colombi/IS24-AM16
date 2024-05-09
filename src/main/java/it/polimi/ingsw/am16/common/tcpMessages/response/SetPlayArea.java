@@ -20,6 +20,7 @@ import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.*;
 
 @JsonDeserialize(using = SetPlayArea.Deserializer.class)
@@ -93,6 +94,9 @@ public class SetPlayArea extends Payload {
     static class Deserializer extends StdDeserializer<SetPlayArea> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+        
+        @Serial
+        private static final long serialVersionUID = 3996686422519830172L;
 
         public Deserializer() {
             super(SetPlayArea.class);

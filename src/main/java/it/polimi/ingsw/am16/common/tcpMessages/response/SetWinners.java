@@ -24,6 +24,7 @@ import it.polimi.ingsw.am16.common.tcpMessages.Payload;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,13 +48,16 @@ public class SetWinners extends Payload {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
+        @Serial
+        private static final long serialVersionUID = 3239793850141577087L;
+
         protected Deserializer() {
             super(SetWinners.class);
         }
 
         /**
          * Reloads a {@link SetWinners} object from the given JSON.
-         * @param p Parsed used for reading JSON content
+         * @param p Parser used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *

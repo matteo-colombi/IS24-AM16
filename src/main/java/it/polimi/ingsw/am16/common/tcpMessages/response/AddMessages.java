@@ -16,6 +16,7 @@ import it.polimi.ingsw.am16.common.tcpMessages.Payload;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +40,16 @@ public class AddMessages extends Payload {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
+        @Serial
+        private static final long serialVersionUID = 5704199573489871246L;
+
         protected Deserializer() {
             super(AddMessages.class);
         }
 
         /**
          * Reloads a {@link AddMessages} object from the given JSON.
-         * @param p Parsed used for reading JSON content
+         * @param p Parser used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *

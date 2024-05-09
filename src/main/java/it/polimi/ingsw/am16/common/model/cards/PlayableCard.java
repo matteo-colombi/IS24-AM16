@@ -45,14 +45,6 @@ public abstract class PlayableCard extends BoardCard {
     }
 
     /**
-     * @return The card's type {@link PlayableCardType}.
-     */
-    @JsonIgnore
-    public PlayableCardType getPlayableCardType() {
-        return playableCardType;
-    }
-
-    /**
      * Custom deserializer for {@link PlayableCard}. Used to deserialize these cards when they are already in the {@link CardRegistry}.
      */
     public static class Deserializer extends StdDeserializer<PlayableCard> {
@@ -68,7 +60,7 @@ public abstract class PlayableCard extends BoardCard {
 
         /**
          * Deserializes a {@link PlayableCard} from the given JSON. This deserializer calls the deserializers for {@link ResourceCard} and {@link GoldCard}.
-         * @param p Parsed used for reading JSON content
+         * @param p Parser used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *

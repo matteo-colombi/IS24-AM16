@@ -31,13 +31,15 @@ public class TestGameSaving {
 
         game.addPlayer("leonardo");
         game.addPlayer("andrea");
+        game.setConnected("leonardo", true);
+        game.setConnected("andrea", true);
         game.initializeGame();
-        game.setPlayerStarterSide(0, SideType.FRONT);
-        game.setPlayerStarterSide(1, SideType.FRONT);
-        game.setPlayerColor(0, PlayerColor.BLUE);
-        game.setPlayerColor(1, PlayerColor.RED);
+        game.setPlayerStarterSide("leonardo", SideType.FRONT);
+        game.setPlayerStarterSide("andrea", SideType.FRONT);
+        game.setPlayerColor("leonardo", PlayerColor.BLUE);
+        game.setPlayerColor("andrea", PlayerColor.RED);
         game.initializeObjectives();
-        game.setPlayerObjective(0, game.getPlayers()[0].getPersonalObjectiveOptions().getFirst());
+        game.setPlayerObjective("leonardo", game.getPlayers().get("leonardo").getPersonalObjectiveOptions().getFirst());
 
         String path = "src/test/resources/json/testSaves/ABCD.json";
 
@@ -50,9 +52,9 @@ public class TestGameSaving {
         assertEquals(0, reloadedGame.getCurrentPlayerCount());
         assertEquals(game.getActivePlayer(), reloadedGame.getActivePlayer());
         assertEquals(game.getStartingPlayer(), reloadedGame.getStartingPlayer());
-        assertEquals(game.getWinnerIds(), reloadedGame.getWinnerIds());
+        assertEquals(game.getWinnerUsernames(), reloadedGame.getWinnerUsernames());
         assertEquals(game.getAvailableColors(), reloadedGame.getAvailableColors());
-        assertArrayEquals(game.getPlayers(), reloadedGame.getPlayers());
+        assertEquals(game.getPlayers(), reloadedGame.getPlayers());
         assertArrayEquals(game.getCommonObjectiveCards(), reloadedGame.getCommonObjectiveCards());
         assertArrayEquals(game.getCommonGoldCards(), reloadedGame.getCommonGoldCards());
         assertArrayEquals(game.getCommonResourceCards(), reloadedGame.getCommonResourceCards());

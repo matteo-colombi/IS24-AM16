@@ -11,7 +11,6 @@ import java.util.*;
  */
 public class ChatController {
 
-    private final Map<String, Integer> playerIds;
     private final Map<String, ChatModel> chats;
     private final VirtualView virtualView;
 
@@ -19,7 +18,6 @@ public class ChatController {
      * Creates a new empty chat manager.
      */
     public ChatController(VirtualView virtualView) {
-        playerIds = new HashMap<>();
         chats = new HashMap<>();
         this.virtualView = virtualView;
     }
@@ -30,9 +28,8 @@ public class ChatController {
      * @param username The user's username.
      * @param chat     The user's chat.
      */
-    public void subscribe(int playerId, String username, ChatModel chat) {
+    public void subscribe(String username, ChatModel chat) {
         chats.put(username, chat);
-        playerIds.put(username, playerId);
     }
 
     /**
@@ -41,7 +38,6 @@ public class ChatController {
      */
     public void unsubscribe(String username) {
         chats.remove(username);
-        playerIds.remove(username);
     }
 
     /**
@@ -56,14 +52,14 @@ public class ChatController {
         for(String username : receiverUsernames) {
             if (!username.equals(senderUsername) && chats.containsKey(username)) {
                 if (!rick) chats.get(username).receiveMessage(message);
-                virtualView.communicateNewMessage(playerIds.get(username), message);
-                virtualView.redrawView(playerIds.get(username));
+                virtualView.communicateNewMessage(username, message);
+                virtualView.redrawView(username);
             }
         }
         if (chats.containsKey(senderUsername) && !rick) {
             chats.get(senderUsername).receiveMessage(message);
-            virtualView.communicateNewMessage(playerIds.get(senderUsername), message);
-            virtualView.redrawView(playerIds.get(senderUsername));
+            virtualView.communicateNewMessage(senderUsername, message);
+            virtualView.redrawView(senderUsername);
         }
     }
 

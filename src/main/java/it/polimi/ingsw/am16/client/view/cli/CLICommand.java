@@ -135,10 +135,6 @@ public enum CLICommand {
         return command.equals(input);
     }
 
-    public String getCommand() {
-        return command;
-    }
-
     public String getUsage() {
         return String.format("%s %s", command, arguments);
     }

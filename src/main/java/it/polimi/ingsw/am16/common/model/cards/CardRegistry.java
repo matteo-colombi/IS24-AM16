@@ -34,6 +34,7 @@ public class CardRegistry {
             try {
                 instance = new CardRegistry();
             } catch (IOException e) {
+                e.printStackTrace();
                 System.err.println("Error initializing card registry: IOException");
             }
         }
@@ -56,11 +57,6 @@ public class CardRegistry {
      * the paths specified in {@link FilePaths}.
      */
     private void initializeRegistry() throws IOException {
-        //FIXME maybe move this somewhere else where it makes more sense
-        CornerType.bindToResourcesAndObjects();
-        ObjectType.bindToCorners();
-        ResourceType.bindToCorners();
-
         initializePlayableCardsBackSides();
         initializeResourceCards();
         initializeGoldCards();

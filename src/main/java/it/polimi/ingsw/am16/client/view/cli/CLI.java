@@ -8,7 +8,6 @@ import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
 
-import java.rmi.RemoteException;
 import java.util.*;
 
 import static it.polimi.ingsw.am16.client.view.cli.CLIConstants.CARD_HEIGHT;
@@ -99,16 +98,15 @@ public class CLI implements ViewInterface {
     }
 
     /**
-     * DOCME
-     *
-     * @param serverInterface
+     * Set's the view's {@link ServerInterface}. This interface will be used by the view to send communications to the server.
+     * @param serverInterface The interface which this view should use to communicate with the server.
      */
     public synchronized void setServerInterface(ServerInterface serverInterface) {
         cliInputManager.setServerInterface(serverInterface);
     }
 
     /**
-     * DOCME
+     * Starts the view. This includes the view's user input manager.
      */
     @Override
     public synchronized void start() {
@@ -181,10 +179,8 @@ public class CLI implements ViewInterface {
     }
 
     /**
-     * DOCME
-     *
-     * @param usernames
-     * @throws RemoteException
+     * Tells the view all the usernames of the players present in the game.
+     * @param usernames The list of usernames of the players present in the game.
      */
     @Override
     public synchronized void setPlayers(List<String> usernames) {
@@ -335,9 +331,8 @@ public class CLI implements ViewInterface {
     }
 
     /**
-     * DOCME
-     *
-     * @param card
+     * Adds the given card to this player's hand.
+     * @param card The card to be added.
      */
     @Override
     public synchronized void addCardToHand(PlayableCard card) {
@@ -349,9 +344,8 @@ public class CLI implements ViewInterface {
     }
 
     /**
-     * DOCME
-     *
-     * @param card
+     * Removed the given card from this player's hand.
+     * @param card The card to be removed.
      */
     @Override
     public synchronized void removeCardFromHand(PlayableCard card) {
@@ -371,10 +365,9 @@ public class CLI implements ViewInterface {
     }
 
     /**
-     * DOCME
-     *
-     * @param username
-     * @param newCard
+     * Adds the given restricted card to the given user's hand.
+     * @param username The user to add this card to.
+     * @param newCard The restricted card to be added.
      */
     @Override
     public synchronized void addCardToOtherHand(String username, RestrictedCard newCard) {
@@ -382,10 +375,9 @@ public class CLI implements ViewInterface {
     }
 
     /**
-     * DOCME
-     *
-     * @param username
-     * @param cardToRemove
+     * Removes the given restricted card from the given user's hand.
+     * @param username The user to remove this card from.
+     * @param cardToRemove The restricted card to be removed.
      */
     @Override
     public synchronized void removeCardFromOtherHand(String username, RestrictedCard cardToRemove) {
@@ -393,12 +385,15 @@ public class CLI implements ViewInterface {
     }
 
     /**
-     * DOCME
-     *
-     * @param username
-     * @param cardPlacementOrder
-     * @param field
-     * @param activeSides
+     * Sets the given player's play area.
+     * @param username The player whose play area is being given.
+     * @param cardPlacementOrder The order in which the cards were played in this play area.
+     * @param field The user's field.
+     * @param activeSides The map keeping track of which side every card is placed on.
+     * @param legalPositions The set of positions on which the player can place cards.
+     * @param illegalPositions The set of positions on which the player must not place cards.
+     * @param resourceCounts A map containing the amount of each resource that the player has.
+     * @param objectCounts A map containing the amount of each object that the player has.
      */
     @Override
     public synchronized void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
@@ -421,8 +416,10 @@ public class CLI implements ViewInterface {
      * @param card                  The played card.
      * @param side                  The card the new card was played on.
      * @param pos                   The position where the new card was played.
-     * @param addedLegalPositions   DOCME
-     * @param removedLegalPositions DOCME
+     * @param addedLegalPositions The set of new positions in which the player can play a card, following the move which was just made.
+     * @param removedLegalPositions The set of positions in which the player can no longer play a card, following the move which was just made.
+     * @param resourceCounts A map containing the amount of each resource that the player has, following the move which was just made.
+     * @param objectCounts A map containing the amount of each object that the player has, following the move which was just made.
      */
     @Override
     public synchronized void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
@@ -591,13 +588,13 @@ public class CLI implements ViewInterface {
     }
 
     /**
-     * Tells the client that an error has occured.
+     * Tells the client that an error has occurred.
      *
      * @param errorMessage The message that should be displayed to the user.
      */
     @Override
     public synchronized void promptError(String errorMessage) {
-        System.err.println(errorMessage);
+        System.out.println(errorMessage);
         printCommandPrompt();
     }
 
@@ -665,9 +662,9 @@ public class CLI implements ViewInterface {
     @Override
     public synchronized void signalDeadlock(String username) {
         if (username.equals(this.username)) {
-            System.out.println("\nYou have deadlocked yourself!");
+            System.out.println("\nYou have deadlocked yourself! Your turn is skipped.");
         } else {
-            System.out.printf("\n%s has deadlocked themselves!\n", username);
+            System.out.printf("\n%s has deadlocked themselves! Their turn is skipped.\n", username);
         }
 
     }

@@ -15,6 +15,7 @@ import it.polimi.ingsw.am16.common.tcpMessages.Payload;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +44,9 @@ public class SetOtherHand extends Payload {
     public static class Deserializer extends StdDeserializer<SetOtherHand> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+        
+        @Serial
+        private static final long serialVersionUID = 856787037370720064L;
 
         protected Deserializer() {
             super(SetOtherHand.class);
@@ -50,7 +54,7 @@ public class SetOtherHand extends Payload {
 
         /**
          * Reloads a {@link SetOtherHand} object from the given JSON.
-         * @param p Parsed used for reading JSON content
+         * @param p Parser used for reading JSON content
          * @param ctxt Context that can be used to access information about
          *   this deserialization activity.
          *

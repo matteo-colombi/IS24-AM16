@@ -25,26 +25,23 @@ class TestGameController {
         RemoteClientInterface xLordeInterface = new TestRemoteViewImplementation("xLorde");
         RemoteClientInterface l2cInterface = new TestRemoteViewImplementation("l2c");
 
-        int xLordeId = controller.createPlayer("xLorde");
-        int l2cId = controller.createPlayer("l2c");
+        controller.joinPlayer("xLorde", xLordeInterface);
+        controller.joinPlayer("l2c", l2cInterface);
 
-        controller.joinPlayer(xLordeId, xLordeInterface);
-        controller.joinPlayer(l2cId, l2cInterface);
+        controller.setStarterCard("xLorde", SideType.BACK);
+        controller.setStarterCard("l2c", SideType.FRONT);
 
-        controller.setStarterCard(xLordeId, SideType.BACK);
-        controller.setStarterCard(l2cId, SideType.FRONT);
+        controller.setPlayerColor("l2c", PlayerColor.BLUE);
+        controller.setPlayerColor("xLorde", PlayerColor.BLUE);
+        controller.setPlayerColor("l2c", PlayerColor.BLUE);
 
-        controller.setPlayerColor(l2cId, PlayerColor.BLUE);
-        controller.setPlayerColor(xLordeId, PlayerColor.BLUE);
-        controller.setPlayerColor(l2cId, PlayerColor.BLUE);
+        controller.setPlayerObjective("l2c", CardRegistry.getRegistry().getObjectiveCardFromName("objective_pattern_7"));
+        controller.setPlayerObjective("l2c", CardRegistry.getRegistry().getObjectiveCardFromName("objective_pattern_5"));
 
-        controller.setPlayerObjective(l2cId, CardRegistry.getRegistry().getObjectiveCardFromName("objective_pattern_7"));
-        controller.setPlayerObjective(l2cId, CardRegistry.getRegistry().getObjectiveCardFromName("objective_pattern_5"));
+        controller.setPlayerObjective("xLorde", CardRegistry.getRegistry().getObjectiveCardFromName("objective_resources_3"));
 
-        controller.setPlayerObjective(xLordeId, CardRegistry.getRegistry().getObjectiveCardFromName("objective_resources_3"));
-
-        controller.placeCard(l2cId, CardRegistry.getRegistry().getResourceCardFromName("resource_fungi_3"), SideType.BACK, new Position(1, 1));
-        controller.drawCard(l2cId, DrawType.GOLD_DECK);
+        controller.placeCard("l2c", CardRegistry.getRegistry().getResourceCardFromName("resource_fungi_3"), SideType.BACK, new Position(1, 1));
+        controller.drawCard("l2c", DrawType.GOLD_DECK);
 
         controller.sendChatMessage("xLorde", "Ciao leo!!!", Set.of("l2c"));
         controller.sendChatMessage("l2c", "Ciao a tutti!");

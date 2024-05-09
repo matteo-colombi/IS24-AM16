@@ -7,10 +7,16 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
- * DOCME
+ * Interface used to handle the creation of new instances of {@link RMIServerImplementation}.
  */
 public interface WelcomeRMIServer extends Remote {
 
+    /**
+     * Creates a new instance of {@link RMIServerImplementation} for the given client.
+     * @param clientInterface The client that connected to the server.
+     * @return A new instance of {@link RMIServerImplementation}.
+     * @throws RemoteException If an error occurs while creating the new instance.
+     */
     ServerInterface getClientHandler(RemoteClientInterface clientInterface) throws RemoteException;
 
 }

@@ -9,7 +9,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- * DOCME
+ * Implementation of the RMI server that handles the creation of new instances of {@link RMIServerImplementation}.
  */
 public class WelcomeRMIServerImplementation extends UnicastRemoteObject implements WelcomeRMIServer {
 
@@ -22,6 +22,12 @@ public class WelcomeRMIServerImplementation extends UnicastRemoteObject implemen
         this.lobbyManager = lobbyManager;
     }
 
+    /**
+     * Creates a new instance of {@link RMIServerImplementation} for the given client.
+     * @param clientInterface The client that connected to the server.
+     * @return A new instance of {@link RMIServerImplementation}.
+     * @throws RemoteException If an error occurs while creating the new instance.
+     */
     @Override
     public ServerInterface getClientHandler(RemoteClientInterface clientInterface) throws RemoteException {
         System.out.println("New RMI client connected.");

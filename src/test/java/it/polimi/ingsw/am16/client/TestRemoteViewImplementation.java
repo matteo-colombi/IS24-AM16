@@ -50,12 +50,7 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
         System.out.println("Player " + username + " joined the game");
     }
 
-    /**
-     * DOCME
-     *
-     * @param usernames
-     * @throws RemoteException
-     */
+
     @Override
     public void setPlayers(List<String> usernames) throws RemoteException {
 

@@ -17,12 +17,12 @@ import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.cards.decks.*;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
-import it.polimi.ingsw.am16.common.model.players.PlayerModel;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.util.RNG;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.*;
 
 /**
@@ -32,10 +32,9 @@ import java.util.*;
 public class Game implements GameModel {
     private final String id;
     private final int numPlayers;
-    private int currentPlayerCount;
-    private int activePlayer;
-    private int startingPlayer;
-    private final List<Integer> winnerIds;
+    private String activePlayer;
+    private String startingPlayer;
+    private final List<String> winnerUsernames;
     private final ObjectiveCardsDeck objectiveCardsDeck;
     private final StarterCardsDeck starterCardsDeck;
     private final GoldCardsDeck goldCardsDeck;
@@ -45,7 +44,8 @@ public class Game implements GameModel {
     private final PlayableCard[] commonResourceCards;
     private GameState state;
     private boolean rejoiningAfterCrash;
-    private final Player[] players;
+    private final Map<String, Player> players;
+    private final List<String> turnOrder;
     private final List<PlayerColor> availableColors;
 
     /**
@@ -58,9 +58,9 @@ public class Game implements GameModel {
     public Game(String id, int numPlayers) {
         this.id = id;
         this.numPlayers = numPlayers;
-        this.startingPlayer = -1;
-        this.activePlayer = -1;
-        this.winnerIds = new ArrayList<>();
+        this.startingPlayer = null;
+        this.activePlayer = null;
+        this.winnerUsernames = new ArrayList<>();
         this.objectiveCardsDeck = DeckFactory.getObjectiveCardsDeck();
         this.starterCardsDeck = DeckFactory.getStarterCardsDeck();
         this.goldCardsDeck = DeckFactory.getGoldCardsDeck();
@@ -70,9 +70,9 @@ public class Game implements GameModel {
         this.commonResourceCards = new PlayableCard[2];
         this.state = GameState.JOINING;
         this.rejoiningAfterCrash = false;
-        this.players = new Player[numPlayers];
-        this.currentPlayerCount = 0;
+        this.players = new HashMap<>();
         this.availableColors = new ArrayList<>(List.of(PlayerColor.values()));
+        this.turnOrder = new ArrayList<>();
     }
 
     /**
@@ -82,7 +82,7 @@ public class Game implements GameModel {
      * @param numPlayers           The number of players expected in this game.
      * @param activePlayer         The currently active player in this game.
      * @param startingPlayer       The starting player for this game.
-     * @param winnerIds            The list of players who have won this game.
+     * @param winnerUsernames      The list of players who have won this game.
      * @param objectiveCardsDeck   The deck of objective cards used for this game.
      * @param starterCardsDeck     The deck of starter cards used for this game.
      * @param goldCardsDeck        The deck of gold cards used for this game.
@@ -93,13 +93,14 @@ public class Game implements GameModel {
      * @param state                The game's state.
      * @param players              The players for this game.
      * @param availableColors      The currently available colors from which players can choose.
+     * @param turnOrder            DOCME
      */
     private Game(
             String id,
             int numPlayers,
-            int activePlayer,
-            int startingPlayer,
-            List<Integer> winnerIds,
+            String activePlayer,
+            String startingPlayer,
+            List<String> winnerUsernames,
             ObjectiveCardsDeck objectiveCardsDeck,
             StarterCardsDeck starterCardsDeck,
             GoldCardsDeck goldCardsDeck,
@@ -108,14 +109,14 @@ public class Game implements GameModel {
             PlayableCard[] commonGoldCards,
             PlayableCard[] commonResourceCards,
             GameState state,
-            Player[] players,
-            List<PlayerColor> availableColors) {
+            Map<String, Player> players,
+            List<PlayerColor> availableColors,
+            List<String> turnOrder) {
         this.id = id;
         this.numPlayers = numPlayers;
-        this.currentPlayerCount = 0;
         this.activePlayer = activePlayer;
         this.startingPlayer = startingPlayer;
-        this.winnerIds = winnerIds;
+        this.winnerUsernames = winnerUsernames;
         this.objectiveCardsDeck = objectiveCardsDeck;
         this.starterCardsDeck = starterCardsDeck;
         this.goldCardsDeck = goldCardsDeck;
@@ -127,6 +128,7 @@ public class Game implements GameModel {
         this.rejoiningAfterCrash = true;
         this.players = players;
         this.availableColors = availableColors;
+        this.turnOrder = turnOrder;
     }
 
     /**
@@ -141,25 +143,35 @@ public class Game implements GameModel {
      * Adds a new player into the game. The number of players cannot exceed numPlayers.
      *
      * @param username The player's username.
-     * @return The newly added player's id.
      * @throws UnexpectedActionException Thrown if the game is already full, if the game has already started, or if there is already a player with the same username present in the game.
      */
     @Override
-    public int addPlayer(String username) throws UnexpectedActionException {
-        for (Player player : players) {
-            if (player != null && player.getUsername().equals(username))
-                throw new UnexpectedActionException("Player already present with the same username");
-        }
-        if (currentPlayerCount >= numPlayers)
+    public void addPlayer(String username) throws UnexpectedActionException {
+        if (players.containsKey(username))
+            throw new UnexpectedActionException("Player already present with the same username");
+        if (players.size() >= numPlayers)
             throw new UnexpectedActionException("Maximum player count reached");
         if (state != GameState.JOINING)
             throw new UnexpectedActionException("Game already started");
 
 
-        Player player = new Player(currentPlayerCount, username);
-        players[currentPlayerCount] = player;
-        currentPlayerCount++;
-        return currentPlayerCount - 1;
+        Player player = new Player(username);
+        players.put(username, player);
+    }
+
+    /**
+     * Removes a player from the game. This method can only be used in the initial phase of the game.
+     *
+     * @param username The username of the player to be removed. If a player with the given username does not exist, this method does nothing.
+     * @throws UnexpectedActionException Thrown if an attempt was made to remove a player from a game which has already started.
+     */
+    @Override
+    public void removePlayer(String username) throws UnexpectedActionException {
+        if (state != GameState.JOINING) {
+            throw new UnexpectedActionException("Game already started.");
+        }
+
+        players.remove(username);
     }
 
     /**
@@ -171,30 +183,32 @@ public class Game implements GameModel {
     }
 
     /**
-     * @return The number of players who joined the game.
+     * @return The number of players who joined the game and are currently connected.
      */
     @Override
     @JsonIgnore
     public int getCurrentPlayerCount() {
-        return currentPlayerCount;
+        return players.values().stream().filter(Player::isConnected).toList().size();
     }
 
     /**
-     * DOCME
+     * Sets a player's connection status.
      *
-     * @param playerId
+     * @param username  The player's username.
+     * @param connected Whether the player is connected.
      */
     @Override
-    public void reconnectionSuccessful(int playerId) {
-        players[playerId].setConnected(true);
-        currentPlayerCount++;
+    public void setConnected(String username, boolean connected) {
+        if (!players.containsKey(username)) return;
+
+        players.get(username).setConnected(connected);
     }
 
     /**
      * @return whether all the players in this game are connected.
      */
     public boolean everybodyConnected() {
-        for (Player p : players) {
+        for (Player p : players.values()) {
             if (!p.isConnected()) return false;
         }
         return true;
@@ -204,7 +218,7 @@ public class Game implements GameModel {
      * @return The id of the player who has to finish their turn.
      */
     @Override
-    public int getActivePlayer() {
+    public String getActivePlayer() {
         return activePlayer;
     }
 
@@ -212,7 +226,7 @@ public class Game implements GameModel {
      * @return The id of the player whose turn is the first.
      */
     @Override
-    public int getStartingPlayer() {
+    public String getStartingPlayer() {
         return startingPlayer;
     }
 
@@ -220,8 +234,8 @@ public class Game implements GameModel {
      * @return The id(s) of the player(s) who won.
      */
     @Override
-    public List<Integer> getWinnerIds() {
-        return winnerIds;
+    public List<String> getWinnerUsernames() {
+        return winnerUsernames;
     }
 
     /**
@@ -233,7 +247,7 @@ public class Game implements GameModel {
     public void initializeGame() throws UnexpectedActionException {
         if (state != GameState.JOINING && !rejoiningAfterCrash)
             throw new UnexpectedActionException("Game already started");
-        if (currentPlayerCount != numPlayers)
+        if (getCurrentPlayerCount() != numPlayers)
             throw new UnexpectedActionException("Missing players");
         if (!rejoiningAfterCrash) {
             state = GameState.INIT;
@@ -258,42 +272,40 @@ public class Game implements GameModel {
      * Draws numPlayers starter cards and gives one to each player.
      */
     private void drawStarterCards() {
-        for (int i = 0; i < numPlayers; i++) {
-            players[i].giveStarterCard(starterCardsDeck.drawCard());
-        }
+        players.values().forEach(p -> p.giveStarterCard(starterCardsDeck.drawCard()));
     }
 
     /**
      * Lets the player choose the side of their starter card. It can be either front or back.
      *
-     * @param playerId The player's ID.
+     * @param username The player's username.
      * @param side     The card's side.
      * @throws UnexpectedActionException Thrown if the game has already started, hence all players should have already chosen their starter card side.
      */
     @Override
-    public void setPlayerStarterSide(int playerId, SideType side) throws UnexpectedActionException, NoStarterCardException {
+    public void setPlayerStarterSide(String username, SideType side) throws UnexpectedActionException, NoStarterCardException {
         if (state != GameState.INIT)
             throw new UnexpectedActionException("Game already started");
 
-        players[playerId].chooseStarterCardSide(side);
+        players.get(username).chooseStarterCardSide(side);
     }
 
     /**
      * Sets the color of a player.
      *
-     * @param playerId The player's ID.
+     * @param username The player's username.
      * @param color    The color a player chose.
      * @throws UnexpectedActionException Thrown if the game has already started, hence all the players should have already chosen their color, or if the given color has already been chosen by another player.
      */
     @Override
-    public void setPlayerColor(int playerId, PlayerColor color) throws UnexpectedActionException {
+    public void setPlayerColor(String username, PlayerColor color) throws UnexpectedActionException {
         if (state != GameState.INIT)
             throw new UnexpectedActionException("Game already started");
 
         if (!availableColors.contains(color))
             throw new UnexpectedActionException("Color already chosen");
 
-        players[playerId].setColor(color);
+        players.get(username).setColor(color);
         availableColors.remove(color);
     }
 
@@ -379,12 +391,12 @@ public class Game implements GameModel {
      * @throws UnexpectedActionException     Thrown if the objectives have not yet been distributed, or the game has already started, or the given player has already chosen their objective.
      */
     @Override
-    public void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) throws UnknownObjectiveCardException, UnexpectedActionException {
+    public void setPlayerObjective(String username, ObjectiveCard objectiveCard) throws UnexpectedActionException, UnknownObjectiveCardException {
         if (state != GameState.INIT)
             throw new UnexpectedActionException("Objectives not yet distributed, or game already started");
-        if (players[playerId].getPersonalObjective() != null)
+        if (players.get(username).getPersonalObjective() != null)
             throw new UnexpectedActionException("Player already chose their objective");
-        players[playerId].setObjectiveCard(objectiveCard);
+        players.get(username).setObjectiveCard(objectiveCard);
     }
 
 
@@ -423,8 +435,11 @@ public class Game implements GameModel {
      *
      * @return The starting player's ID.
      */
-    private int chooseStartingPlayer() {
-        return RNG.getRNG().nextInt(numPlayers);
+    private String chooseStartingPlayer() {
+        turnOrder.clear();
+        turnOrder.addAll(players.keySet());
+        Collections.shuffle(turnOrder, RNG.getRNG());
+        return turnOrder.getFirst();
     }
 
     /**
@@ -455,7 +470,7 @@ public class Game implements GameModel {
      * @throws IllegalMoveException      Thrown if a draw is attempted from an empty deck, or from an empty common card slot.
      */
     @Override
-    public PlayableCard drawCard(int playerId, DrawType drawType) throws UnexpectedActionException, IllegalMoveException {
+    public PlayableCard drawCard(String username, DrawType drawType) throws UnexpectedActionException, IllegalMoveException {
         if (state != GameState.STARTED) throw new UnexpectedActionException("Game not started");
 
         PlayableCard drawnCard = null;
@@ -466,7 +481,7 @@ public class Game implements GameModel {
                     throw new IllegalMoveException("Illegal draw: no card");
 
                 drawnCard = commonGoldCards[0];
-                players[playerId].giveCard(commonGoldCards[0]);
+                players.get(username).giveCard(commonGoldCards[0]);
                 commonGoldCards[0] = goldCardsDeck.drawCard();
                 if (commonGoldCards[0] == null) {
                     commonGoldCards[0] = resourceCardsDeck.drawCard();
@@ -477,7 +492,7 @@ public class Game implements GameModel {
                     throw new IllegalMoveException("Illegal draw: no card");
 
                 drawnCard = commonGoldCards[1];
-                players[playerId].giveCard(commonGoldCards[1]);
+                players.get(username).giveCard(commonGoldCards[1]);
                 commonGoldCards[1] = goldCardsDeck.drawCard();
                 if (commonGoldCards[1] == null) {
                     commonGoldCards[1] = resourceCardsDeck.drawCard();
@@ -489,14 +504,14 @@ public class Game implements GameModel {
 
                 drawnCard = goldCardsDeck.drawCard();
 
-                players[playerId].giveCard(drawnCard);
+                players.get(username).giveCard(drawnCard);
             }
             case RESOURCE_1 -> {
                 if (commonResourceCards[0] == null)
                     throw new IllegalMoveException("Illegal draw: no card");
 
                 drawnCard = commonResourceCards[0];
-                players[playerId].giveCard(commonResourceCards[0]);
+                players.get(username).giveCard(commonResourceCards[0]);
                 commonResourceCards[0] = resourceCardsDeck.drawCard();
                 if (commonResourceCards[0] == null) {
                     commonResourceCards[0] = goldCardsDeck.drawCard();
@@ -507,7 +522,7 @@ public class Game implements GameModel {
                     throw new IllegalMoveException("Illegal draw: no card");
 
                 drawnCard = commonResourceCards[1];
-                players[playerId].giveCard(commonResourceCards[1]);
+                players.get(username).giveCard(commonResourceCards[1]);
                 commonResourceCards[1] = resourceCardsDeck.drawCard();
                 if (commonResourceCards[1] == null) {
                     commonResourceCards[1] = goldCardsDeck.drawCard();
@@ -519,7 +534,7 @@ public class Game implements GameModel {
 
                 drawnCard = resourceCardsDeck.drawCard();
 
-                players[playerId].giveCard(drawnCard);
+                players.get(username).giveCard(drawnCard);
             }
         }
 
@@ -536,8 +551,10 @@ public class Game implements GameModel {
         if (state != GameState.STARTED && state != GameState.FINAL_ROUND)
             throw new UnexpectedActionException("Game has not started or has already ended");
 
-        activePlayer++;
-        activePlayer %= numPlayers;
+        int activePlayerIndex = turnOrder.indexOf(activePlayer);
+        activePlayerIndex++;
+        activePlayerIndex %= numPlayers;
+        activePlayer = turnOrder.get(activePlayerIndex);
     }
 
     /**
@@ -598,8 +615,10 @@ public class Game implements GameModel {
      * Chooses the winner(s) of the game.
      */
     private void selectWinners() {
+        //TODO check that this actually works.
+        // there's probably a better way to do it too
         int tmpPoints = 0;
-        int tmpId = -1;
+        String tmpUsername = null;
         int tmpObjPoints = 0;
         List<Integer> tmpWinners = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++) {
@@ -638,7 +657,7 @@ public class Game implements GameModel {
      * @return The players inside the game.
      */
     @Override
-    public PlayerModel[] getPlayers() {
+    public Map<String, Player> getPlayers() {
         return players;
     }
 
@@ -709,13 +728,23 @@ public class Game implements GameModel {
      * @return a list containing the ids of the players in the order in which they play.
      */
     @Override
-    @JsonIgnore
     public List<String> getTurnOrder() {
         List<String> turnOrder = new ArrayList<>();
         for (int id = 0; id < numPlayers; id++) {
             turnOrder.add(players[(id + startingPlayer) % numPlayers].getUsername());
         }
         return turnOrder;
+    }
+
+    /**
+     * Pauses the game. Used when a player disconnects from the game.
+     */
+    @Override
+    public void pause() {
+        this.rejoiningAfterCrash = true;
+        for (Player p : players.values()) {
+            p.setConnected(false);
+        }
     }
 
     /**
@@ -757,6 +786,9 @@ public class Game implements GameModel {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
+        @Serial
+        private static final long serialVersionUID = -1629341944590439653L;
+
         protected Deserializer() {
             super(Game.class);
         }
@@ -778,8 +810,8 @@ public class Game implements GameModel {
             String id = node.get("id").asText();
 
             int numPlayers = node.get("numPlayers").asInt();
-            int activePlayer = node.get("activePlayer").asInt();
-            int startingPlayer = node.get("startingPlayer").asInt();
+            String activePlayer = mapper.readValue(node.get("activePlayer").toString(), String.class);
+            String startingPlayer = mapper.readValue(node.get("startingPlayer").toString(), String.class);
 
             TypeReference<ArrayList<Integer>> winnerIdsTypeRef = new TypeReference<>() {
             };
@@ -796,18 +828,24 @@ public class Game implements GameModel {
 
             GameState state = mapper.readValue(node.get("state").toString(), GameState.class);
 
-            Player[] players = mapper.readValue(node.get("players").toString(), Player[].class);
+            TypeReference<HashMap<String, Player>> playersTypeRef = new TypeReference<>() {
+            };
+            Map<String, Player> players = mapper.readValue(node.get("players").toString(), playersTypeRef);
 
             TypeReference<ArrayList<PlayerColor>> availableColorsTypeRef = new TypeReference<>() {
             };
             List<PlayerColor> availableColors = mapper.readValue(node.get("availableColors").toString(), availableColorsTypeRef);
+
+            TypeReference<ArrayList<String>> turnOrderTypeRef = new TypeReference<>() {
+            };
+            List<String> turnOrder = mapper.readValue(node.get("turnOrder").toString(), turnOrderTypeRef);
 
             return new Game(
                     id,
                     numPlayers,
                     activePlayer,
                     startingPlayer,
-                    winnerIds,
+                    winnerUsernames,
                     objectiveCardsDeck,
                     starterCardsDeck,
                     goldCardsDeck,
@@ -817,7 +855,8 @@ public class Game implements GameModel {
                     commonResourceCards,
                     state,
                     players,
-                    availableColors
+                    availableColors,
+                    turnOrder
             );
         }
     }

@@ -162,10 +162,6 @@ public class CLIText {
     }
 
     public void printText(boolean frame) {
-        printText(0, 0, width - 1, height - 1, frame);
-    }
-
-    public void printText(int startX, int startY, int endX, int endY, boolean frame) {
         CLIText tmpText = this;
 
         if (frame)
