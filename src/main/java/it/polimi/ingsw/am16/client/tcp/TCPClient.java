@@ -445,8 +445,8 @@ public class TCPClient implements Runnable, ServerInterface {
             out.println(mapper.writeValueAsString(tcpMessage));
             out.flush();
         } catch (IOException e) {
-            //TODO see if this is appropriate
-            System.err.println(e.getMessage());
+            System.out.println("An error occurred while communicating with the server.");
+            System.out.println("No action was not performed.");
         }
     }
 

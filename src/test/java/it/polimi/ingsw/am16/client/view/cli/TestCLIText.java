@@ -31,6 +31,6 @@ public class TestCLIText {
 
         System.out.println("---------------SEPARATOR----------------");
 
-        text.printText(9, 4, 11, 5, true);
+        text.printText(true);
     }
 }

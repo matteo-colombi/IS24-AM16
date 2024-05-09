@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class to handle players in a game.
@@ -32,7 +33,6 @@ import java.util.List;
  */
 @JsonDeserialize(using = Player.Deserializer.class)
 public class Player implements PlayerModel {
-    private final int playerId;
     private final String username;
     private int currGamePoints;
     private int currObjectivePoints;
@@ -51,11 +51,9 @@ public class Player implements PlayerModel {
     /**
      * Creates a new player, initializing their ID and username to a chosen value, and their
      * other attributes to standard values.
-     * @param playerId The player's ID
      * @param username The player's in-game name
      */
-    public Player(int playerId, String username) {
-        this.playerId = playerId;
+    public Player(String username) {
         this.username = username;
         this.currGamePoints = 0;
         this.currObjectivePoints = 0;
@@ -66,14 +64,13 @@ public class Player implements PlayerModel {
         this.choseObjectiveCard = false;
         this.choseStarterCardSide = false;
         this.choseColor = false;
-        this.chat = new Chat(playerId, username);
+        this.chat = new Chat(username);
         this.isConnected = false;
     }
 
     /**
      * Constructs a new Player with the given attributes. Used when reloading players from a game save file.
      * This constructor is private because it should only be used by {@link Player.Deserializer}
-     * @param playerId The player's id.
      * @param username The player's username.
      * @param currGamePoints The player's current game points, which are points that are scored throughout the game.
      * @param currObjectivePoints The player's objective points, tallied up at the end of the game.
@@ -88,7 +85,6 @@ public class Player implements PlayerModel {
      * @param choseColor Whether the player has already chosen their color.
      */
     private Player(
-            int playerId,
             String username,
             int currGamePoints,
             int currObjectivePoints,
@@ -103,7 +99,6 @@ public class Player implements PlayerModel {
             boolean choseColor,
             Chat chat
     ) {
-        this.playerId = playerId;
         this.username = username;
         this.currGamePoints = currGamePoints;
         this.currObjectivePoints = currObjectivePoints;
@@ -135,15 +130,6 @@ public class Player implements PlayerModel {
     @Override
     public PlayerColor getPlayerColor() {
         return color;
-    }
-
-    /**
-     *
-     * @return The player's ID
-     */
-    @Override
-    public int getPlayerId() {
-        return playerId;
     }
 
     /**
@@ -258,12 +244,11 @@ public class Player implements PlayerModel {
 
     /**
      * Removes a card from the player's hand, if present.
+     *
      * @param card The card to remove from the player's hand
-     * @return True if the card was present and was removed, false if it wasn't
-     * (and thus wasn't removed)
      */
-    public boolean removeCard(PlayableCard card) {
-        return this.hand.removeCard(card);
+    public void removeCard(PlayableCard card) {
+        this.hand.removeCard(card);
     }
 
     /**
@@ -277,7 +262,7 @@ public class Player implements PlayerModel {
         if (!hand.contains(card)) throw new IllegalMoveException("No such card.");
         this.playArea.playCard(card, side, newCardPos);
         this.currGamePoints += this.playArea.awardGamePoints(card);
-        hand.removeCard(card);
+        removeCard(card);
     }
 
     /**
@@ -389,7 +374,7 @@ public class Player implements PlayerModel {
     }
 
     /**
-     * Checks an object is equal to the player by comparing their IDs (if the parameter object is also a player).
+     * Checks an object is equal to the player by comparing their usernames (if the parameter object is also a player).
      * @param o The object to compare the player to
      * @return true if the two are equal, false if they aren't
      */
@@ -400,16 +385,15 @@ public class Player implements PlayerModel {
 
         Player player = (Player) o;
 
-        return playerId == player.playerId;
+        return Objects.equals(username, player.username);
     }
 
     /**
-     *
-     * @return the ID of the player as its hash code
+     * @return the player's username's hash code.
      */
     @Override
     public int hashCode() {
-        return playerId;
+        return username.hashCode();
     }
 
     /**
@@ -441,7 +425,6 @@ public class Player implements PlayerModel {
             JsonNode node  = p.getCodec().readTree(p);
 
             // Deserialize player attributes
-            int playerId = node.get("playerId").asInt();
 
             String username = node.get("username").asText();
 
@@ -467,7 +450,6 @@ public class Player implements PlayerModel {
             Chat chat = mapper.readValue(node.get("chat").toString(), Chat.class);
 
             return new Player(
-                    playerId,
                     username,
                     currGamePoints,
                     currObjectivePoints,

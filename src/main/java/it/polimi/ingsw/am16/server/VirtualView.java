@@ -15,22 +15,26 @@ import java.util.*;
  */
 public class VirtualView {
 
-    private final Map<Integer, RemoteClientInterface> userViews;
-    private final List<String> usernames;
+    private final Map<String, RemoteClientInterface> userViews;
 
     /**
      * Creates a new empty VirtualView.
      */
     public VirtualView() {
         this.userViews = new HashMap<>();
-        this.usernames = new ArrayList<>();
     }
 
-    public void joinGame(int playerId, String gameId, String username) {
-        RemoteClientInterface userView = userViews.get(playerId);
+    /**
+     * Communicates to the given player that they have joined the game with the given id.
+     * Also tells the client the list of players that are present in the game.
+     * @param gameId The id of the game that the player just joined.
+     * @param username The username of the player who joined.
+     */
+    public void joinGame(String gameId, String username) {
+        RemoteClientInterface userView = userViews.get(username);
         try {
             userView.joinGame(gameId, username);
-            userView.setPlayers(new ArrayList<>(usernames));
+            userView.setPlayers(new ArrayList<>(userViews.keySet()));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -38,21 +42,19 @@ public class VirtualView {
 
     /**
      * Communicates to all the players that a new player has joined. Then adds the new player to the VirtualView.
-     * @param playerId The new player's id.
      * @param newUserView The player's view interface.
      * @param username The username of the new player.
      */
-    public void addPlayer(int playerId, RemoteClientInterface newUserView, String username) {
-        userViews.keySet().forEach(otherPlayerId -> {
+    public void addPlayer(RemoteClientInterface newUserView, String username) {
+        userViews.keySet().forEach(otherPlayerUsername -> {
             try {
-                userViews.get(otherPlayerId).addPlayer(username);
+                userViews.get(otherPlayerUsername).addPlayer(username);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
         });
 
-        this.userViews.put(playerId, newUserView);
-        this.usernames.add(username);
+        this.userViews.put(username, newUserView);
     }
 
     /**
@@ -100,12 +102,12 @@ public class VirtualView {
     }
 
     /**
-     * Prompts the player with the given id to choose their starter card side.
-     * @param receiverPlayerId The player which this communication should be sent to.
+     * Prompts the player with the given username to choose their starter card side.
+     * @param receiverPlayerUsername The player which this communication should be sent to.
      * @param card The starter card.
      */
-    public void promptStarterChoice(int receiverPlayerId, StarterCard card) {
-        RemoteClientInterface userView = userViews.get(receiverPlayerId);
+    public void promptStarterChoice(String receiverPlayerUsername, StarterCard card) {
+        RemoteClientInterface userView = userViews.get(receiverPlayerUsername);
         try {
             userView.promptStarterChoice(card);
         } catch (RemoteException e) {
@@ -127,12 +129,12 @@ public class VirtualView {
     }
 
     /**
-     * Prompts the player with the given id to choose their color.
-     * @param receiverPlayerId The player which this communication should be sent to.
+     * Prompts the player with the given username to choose their color.
+     * @param receiverPlayerUsername The player which this communication should be sent to.
      * @param colorChoices The list of colors the player can choose from.
      */
-    public void promptColorChoice(int receiverPlayerId, List<PlayerColor> colorChoices) {
-        RemoteClientInterface userView = userViews.get(receiverPlayerId);
+    public void promptColorChoice(String receiverPlayerUsername, List<PlayerColor> colorChoices) {
+        RemoteClientInterface userView = userViews.get(receiverPlayerUsername);
         try {
             userView.promptColorChoice(colorChoices);
         } catch (RemoteException e) {
@@ -169,12 +171,12 @@ public class VirtualView {
     }
 
     /**
-     * Communicates the hand to the player with the given id.
-     * @param receiverPlayerId The player which this communication should be sent to.
+     * Communicates the hand to the player with the given username.
+     * @param receiverPlayerUsername The player which this communication should be sent to.
      * @param hand The player's hand.
      */
-    public void communicateHand(int receiverPlayerId, List<PlayableCard> hand) {
-        RemoteClientInterface userView = userViews.get(receiverPlayerId);
+    public void communicateHand(String receiverPlayerUsername, List<PlayableCard> hand) {
+        RemoteClientInterface userView = userViews.get(receiverPlayerUsername);
         try {
             userView.setHand(hand);
         } catch (RemoteException e) {
@@ -184,11 +186,11 @@ public class VirtualView {
 
     /**
      * Communicates to the given player that they have a new card in their hand.
-     * @param receiverPlayerId The player which this communication should be sent to.
+     * @param receiverPlayerUsername The player which this communication should be sent to.
      * @param card The new card in the player's hand.
      */
-    public void communicateNewCard(int receiverPlayerId, PlayableCard card) {
-        RemoteClientInterface userView = userViews.get(receiverPlayerId);
+    public void communicateNewCard(String receiverPlayerUsername, PlayableCard card) {
+        RemoteClientInterface userView = userViews.get(receiverPlayerUsername);
         try {
             userView.addCardToHand(card);
         } catch (RemoteException e) {
@@ -198,11 +200,11 @@ public class VirtualView {
 
     /**
      * Communicates to the given player that they no longer have a card in their hand.
-     * @param receiverPlayerId The player which this communication should be sent to.
+     * @param receiverPlayerUsername The player which this communication should be sent to.
      * @param card The card to be removed from the player's hand.
      */
-    public void communicateRemoveCard(int receiverPlayerId, PlayableCard card) {
-        RemoteClientInterface userView = userViews.get(receiverPlayerId);
+    public void communicateRemoveCard(String receiverPlayerUsername, PlayableCard card) {
+        RemoteClientInterface userView = userViews.get(receiverPlayerUsername);
         try {
             userView.removeCardFromHand(card);
         } catch (RemoteException e) {
@@ -211,13 +213,13 @@ public class VirtualView {
     }
 
     /**
-     * Communicates the restricted hand view of a player to the player with the given id.
-     * @param receiverPlayerId The player which this communication should be sent to.
+     * Communicates the restricted hand view of a player to the player with the given username.
+     * @param receiverPlayerUsername The player which this communication should be sent to.
      * @param username The player whose hand is being sent.
      * @param hand The restricted hand.
      */
-    public void communicateOtherHand(int receiverPlayerId, String username, List<RestrictedCard> hand) {
-        RemoteClientInterface userView = userViews.get(receiverPlayerId);
+    public void communicateOtherHand(String receiverPlayerUsername, String username, List<RestrictedCard> hand) {
+        RemoteClientInterface userView = userViews.get(receiverPlayerUsername);
         try {
             userView.setOtherHand(username, hand);
         } catch (RemoteException e) {
@@ -227,12 +229,12 @@ public class VirtualView {
 
     /**
      * Communicates to the given player that another player has a new card in their hand.
-     * @param receiverPlayerId The player which this communication should be sent to.
+     * @param receiverPlayerUsername The player which this communication should be sent to.
      * @param username The player whose hand the card should be added to.
      * @param newCard The restricted card to be added to the player's hand.
      */
-    public void communicateNewOtherCard(int receiverPlayerId, String username, RestrictedCard newCard) {
-        RemoteClientInterface userView = userViews.get(receiverPlayerId);
+    public void communicateNewOtherCard(String receiverPlayerUsername, String username, RestrictedCard newCard) {
+        RemoteClientInterface userView = userViews.get(receiverPlayerUsername);
         try {
             userView.addCardToOtherHand(username, newCard);
         } catch (RemoteException e) {
@@ -242,12 +244,12 @@ public class VirtualView {
 
     /**
      * Communicates to the given player that another player no longer has a card in their hand.
-     * @param receiverPlayerId The player which this communication should be sent to.
+     * @param receiverPlayerUsername The player which this communication should be sent to.
      * @param username The player whose hand the card should be removed from.
      * @param removedCard The restricted card to be removed from the player's hand.
      */
-    public void communicateRemoveOtherCard(int receiverPlayerId, String username, RestrictedCard removedCard) {
-        RemoteClientInterface userView = userViews.get(receiverPlayerId);
+    public void communicateRemoveOtherCard(String receiverPlayerUsername, String username, RestrictedCard removedCard) {
+        RemoteClientInterface userView = userViews.get(receiverPlayerUsername);
         try {
             userView.removeCardFromOtherHand(username, removedCard);
         } catch (RemoteException e) {
@@ -328,12 +330,12 @@ public class VirtualView {
     }
 
     /**
-     * Prompts the player with the given id to choose their objective.
-     * @param receiverPlayerId The player which this communication should be sent to.
+     * Prompts the player with the given username to choose their objective.
+     * @param receiverPlayerUsername The player which this communication should be sent to.
      * @param possiblePersonalObjectives The possible objectives which the player can choose from.
      */
-    public void promptObjectiveChoice(int receiverPlayerId, List<ObjectiveCard> possiblePersonalObjectives) {
-        RemoteClientInterface userView = userViews.get(receiverPlayerId);
+    public void promptObjectiveChoice(String receiverPlayerUsername, List<ObjectiveCard> possiblePersonalObjectives) {
+        RemoteClientInterface userView = userViews.get(receiverPlayerUsername);
         try {
             userView.promptObjectiveChoice(possiblePersonalObjectives);
         } catch (RemoteException e) {
@@ -343,11 +345,11 @@ public class VirtualView {
 
     /**
      * Communicates to a player their personal objective.
-     * @param receiverPlayerId The player which this communication should be sent to.
+     * @param receiverPlayerUsername The player which this communication should be sent to.
      * @param personalObjective The player's personal objective.
      */
-    public void communicatePersonalObjective(int receiverPlayerId, ObjectiveCard personalObjective) {
-        RemoteClientInterface userView = userViews.get(receiverPlayerId);
+    public void communicatePersonalObjective(String receiverPlayerUsername, ObjectiveCard personalObjective) {
+        RemoteClientInterface userView = userViews.get(receiverPlayerUsername);
         try {
             userView.setPersonalObjective(personalObjective);
         } catch (RemoteException e) {
@@ -413,11 +415,11 @@ public class VirtualView {
 
     /**
      * Communicates to the given player that they have new messages in the chat.
-     * @param playerId The player which this communication should be sent to.
+     * @param receiverUsername The player which this communication should be sent to.
      * @param messages The list of new messages.
      */
-    public void communicateNewMessages(int playerId, List<ChatMessage> messages) {
-        RemoteClientInterface userView = userViews.get(playerId);
+    public void communicateNewMessages(String receiverUsername, List<ChatMessage> messages) {
+        RemoteClientInterface userView = userViews.get(receiverUsername);
         try {
             userView.addMessages(messages);
         } catch (RemoteException e) {
@@ -441,11 +443,11 @@ public class VirtualView {
 
     /**
      * Communicates to the given player that they have a new message in chat.
-     * @param playerId The player which this communication should be sent to.
+     * @param receiverUsername The player which this communication should be sent to.
      * @param newMessage The new message.
      */
-    public void communicateNewMessage(int playerId, ChatMessage newMessage) {
-        RemoteClientInterface userView = userViews.get(playerId);
+    public void communicateNewMessage(String receiverUsername, ChatMessage newMessage) {
+        RemoteClientInterface userView = userViews.get(receiverUsername);
         if (userView == null) return;
         try {
             userView.addMessage(newMessage);
@@ -455,12 +457,12 @@ public class VirtualView {
     }
 
     /**
-     * Tells the player with the given id that an error has occurred.
-     * @param playerId The player which this communication should be sent to.
+     * Tells the player with the given username that an error has occurred.
+     * @param receiverUsername The player which this communication should be sent to.
      * @param errorMessage The error message.
      */
-    public void promptError(int playerId, String errorMessage) {
-        RemoteClientInterface userView = userViews.get(playerId);
+    public void promptError(String receiverUsername, String errorMessage) {
+        RemoteClientInterface userView = userViews.get(receiverUsername);
         try {
             userView.promptError(errorMessage);
         } catch (RemoteException e) {
@@ -482,11 +484,11 @@ public class VirtualView {
     }
 
     /**
-     * Tells the player with the given player id to redraw their view.
-     * @param playerId The player which this communication should be sent to.
+     * Tells the player with the given player username to redraw their view.
+     * @param receiverUsername The player which this communication should be sent to.
      */
-    public void redrawView(int playerId) {
-        RemoteClientInterface userView = userViews.get(playerId);
+    public void redrawView(String receiverUsername) {
+        RemoteClientInterface userView = userViews.get(receiverUsername);
         if (userView == null) return;
         try {
             userView.redrawView();
@@ -499,19 +501,22 @@ public class VirtualView {
      * Tells all the players in this VirtualView that they should redraw their view.
      */
     public void redrawView() {
-        for(int id : userViews.keySet()) {
-            redrawView(id);
-        }
+        userViews.values().forEach(userView -> {
+            try {
+                userView.redrawView();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
      * Communicates to all players that a player has disconnected from the game.
-     * @param disconnectedId The id of the player who disconnected.
      * @param disconnectedUsername The username of the player who disconnected.
      */
-    public void signalDisconnection(int disconnectedId, String disconnectedUsername) {
-        userViews.forEach((id, userView) -> {
-            if (id != disconnectedId) {
+    public void signalDisconnection(String disconnectedUsername) {
+        userViews.forEach((username, userView) -> {
+            if (!username.equals(disconnectedUsername)) {
                 try {
                     userView.signalDisconnection(disconnectedUsername);
                 } catch (RemoteException e) {
@@ -526,7 +531,7 @@ public class VirtualView {
      * @param username The player who skipped the turn because of a deadlock.
      */
     public void communicateDeadlock(String username) {
-        userViews.forEach((id, userView) -> {
+        userViews.values().forEach(userView -> {
             try {
                 userView.signalDeadlock(username);
             } catch (RemoteException e) {

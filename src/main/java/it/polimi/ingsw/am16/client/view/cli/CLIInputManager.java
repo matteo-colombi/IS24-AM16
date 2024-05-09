@@ -81,9 +81,8 @@ public class CLIInputManager implements Runnable {
         CLICommand command = matchingCommands.iterator().next();
 
         switch (command) {
-            case HELP -> {
-                cliView.printHelp();
-            }
+            case HELP -> cliView.printHelp();
+
             case CREATE_GAME -> {
                 if (args.length < 3 || args[1] == null || args[1].isEmpty() || args[2] == null || args[2].isEmpty()) {
                     System.out.println("Invalid arguments. Usage: " + CLICommand.CREATE_GAME.getUsage());
@@ -137,18 +136,15 @@ public class CLIInputManager implements Runnable {
                     e.printStackTrace();
                 }
             }
-            case ID -> {
-                cliView.printGameId();
-            }
-            case PLAYERS -> {
-                cliView.printPlayers();
-            }
-            case DRAW_OPTIONS -> {
-                cliView.printDrawOptions();
-            }
-            case COMMON_OBJECTIVES -> {
-                cliView.printCommonObjectives();
-            }
+
+            case ID -> cliView.printGameId();
+
+            case PLAYERS -> cliView.printPlayers();
+
+            case DRAW_OPTIONS -> cliView.printDrawOptions();
+
+            case COMMON_OBJECTIVES -> cliView.printCommonObjectives();
+
             case STARTER -> {
                 if (args.length == 1) {
                     cliView.printStarterCard();
@@ -223,9 +219,9 @@ public class CLIInputManager implements Runnable {
                     e.printStackTrace();
                 }
             }
-            case OBJECTIVES -> {
-                cliView.printAllObjectives();
-            }
+
+            case OBJECTIVES -> cliView.printAllObjectives();
+
             case HAND -> {
                 if (args.length == 1) {
                     cliView.printHand();
@@ -383,12 +379,11 @@ public class CLIInputManager implements Runnable {
 
                 cliView.printCommandPrompt();
             }
-            case POINTS -> {
-                cliView.printPoints();
-            }
-            case WINNERS -> {
-                cliView.printWinners();
-            }
+
+            case POINTS -> cliView.printPoints();
+
+            case WINNERS -> cliView.printWinners();
+
             case CHAT -> {
                 if (args.length == 1) {
                     cliView.printUnreadChat();
@@ -405,9 +400,9 @@ public class CLIInputManager implements Runnable {
                     cliView.printCommandPrompt();
                 }
             }
-            case CHAT_HISTORY -> {
-                cliView.printChatHistory();
-            }
+
+            case CHAT_HISTORY -> cliView.printChatHistory();
+
             case WHISPER -> {
                 if (args.length < 3) {
                     System.out.println("Invalid arguments. Usage: " + CLICommand.WHISPER.getUsage());

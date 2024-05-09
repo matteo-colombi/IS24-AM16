@@ -13,12 +13,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Interface that contains the methods used by the server to communicate with client views.
+ * Interface that contains the methods used by the server to communicate with the client.
  */
 public interface RemoteClientInterface extends Remote {
 
     /**
-     * Tells the view that they have joined a game with the given username.
+     * Tells the client that they have joined a game with the given username.
      *
      * @param gameId The id of the game which the player just joined.
      * @param username The username the player has joined the game with.
@@ -243,7 +243,7 @@ public interface RemoteClientInterface extends Remote {
     void addMessage(ChatMessage message) throws RemoteException;
 
     /**
-     * Tells the client that an error has occured.
+     * Tells the client that an error has occurred.
      * @param errorMessage The message that should be displayed to the user.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */

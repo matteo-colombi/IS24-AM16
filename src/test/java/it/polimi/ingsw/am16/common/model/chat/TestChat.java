@@ -12,9 +12,9 @@ class TestChat {
     void testChat() {
         ChatController manager = new ChatController(new VirtualView());
 
-        Chat chatAldo = new Chat(1,"Aldo");
-        Chat chatGiovanni = new Chat(2, "Giovanni42");
-        Chat chatGiacomo = new Chat(3, "xXGiacomoXx");
+        Chat chatAldo = new Chat("Aldo");
+        Chat chatGiovanni = new Chat("Giovanni42");
+        Chat chatGiacomo = new Chat("xXGiacomoXx");
         chatAldo.subscribe(manager);
         chatGiacomo.subscribe(manager);
         chatGiovanni.subscribe(manager);

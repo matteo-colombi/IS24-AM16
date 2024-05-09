@@ -12,6 +12,7 @@ import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,10 +60,9 @@ public class Hand implements HandModel{
      * Removes the given card from the Hand. This method does nothing if the given card is not present in the hand.
      *
      * @param card The card to remove.
-     * @return
      */
-    public boolean removeCard(PlayableCard card) {
-        return this.cards.remove(card);
+    public void removeCard(PlayableCard card) {
+        this.cards.remove(card);
     }
 
     /**
@@ -93,6 +93,9 @@ public class Hand implements HandModel{
     public static class Deserializer extends StdDeserializer<Hand> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+
+        @Serial
+        private static final long serialVersionUID = 493340358494962780L;
 
         protected Deserializer() {
             super(Hand.class);

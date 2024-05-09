@@ -18,7 +18,7 @@ public class TestPlayArea {
     public void testPlayArea() throws IllegalMoveException, UnknownObjectiveCardException {
         CardRegistry registry = CardRegistry.getRegistry();
 
-        Player p = new Player(0, "cornerable");
+        Player p = new Player("cornerable");
         PlayArea playArea = p.getPlayArea();
 
         ResourceCard plantResource = registry.getResourceCards().get(10);

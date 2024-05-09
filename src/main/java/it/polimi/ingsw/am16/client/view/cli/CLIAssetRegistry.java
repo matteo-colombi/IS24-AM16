@@ -17,7 +17,6 @@ public class CLIAssetRegistry {
 
     private final Map<String, CLICardAsset> cliCards;
     private final CLIText positionLabel;
-    private final CLIText pointsTable;
     private final CLIText infoTable;
     private final CLIText banner;
     private final CLIText rick;
@@ -55,16 +54,6 @@ public class CLIAssetRegistry {
             positionLabel = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
         } catch (IOException ignored) {
             throw new RuntimeException("Unable to read cli label for positions.");
-        }
-
-        f = new File(FilePaths.CLI_POINTS_TABLE);
-        if (!f.exists()) {
-            throw new RuntimeException(FilePaths.CLI_POINTS_TABLE + " does not exist!");
-        }
-        try {
-            pointsTable = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
-        } catch (IOException ignored) {
-            throw new RuntimeException("Unable to read cli points table.");
         }
 
         f = new File(FilePaths.CLI_INFO_TABLE);
@@ -125,10 +114,6 @@ public class CLIAssetRegistry {
 
     public CLIText getPositionLabel() {
         return positionLabel.getClone();
-    }
-
-    public CLIText getPointsTable() {
-        return pointsTable.getClone();
     }
 
     public CLIText getInfoTable() {

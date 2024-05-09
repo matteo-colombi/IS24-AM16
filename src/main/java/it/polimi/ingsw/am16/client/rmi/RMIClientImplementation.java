@@ -411,7 +411,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
     }
 
     /**
-     * Tells the client that an error has occured.
+     * Tells the client that an error has occurred.
      *
      * @param errorMessage The message that should be displayed to the user.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.

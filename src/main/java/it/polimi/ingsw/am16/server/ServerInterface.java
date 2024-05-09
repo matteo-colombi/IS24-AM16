@@ -97,7 +97,7 @@ public interface ServerInterface extends Remote {
 
     /**
      * Pings the server to check if it's still alive.
-     * @throws RemoteException
+     * @throws RemoteException If an error occurs while leaving the game.
      */
     void pong() throws RemoteException;
 }

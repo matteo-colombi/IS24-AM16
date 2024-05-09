@@ -45,14 +45,6 @@ public abstract class PlayableCard extends BoardCard {
     }
 
     /**
-     * @return The card's type {@link PlayableCardType}.
-     */
-    @JsonIgnore
-    public PlayableCardType getPlayableCardType() {
-        return playableCardType;
-    }
-
-    /**
      * Custom deserializer for {@link PlayableCard}. Used to deserialize these cards when they are already in the {@link CardRegistry}.
      */
     public static class Deserializer extends StdDeserializer<PlayableCard> {

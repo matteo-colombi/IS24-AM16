@@ -26,12 +26,6 @@ public interface PlayerModel {
 
     /**
      *
-     * @return The player's ID
-     */
-    int getPlayerId();
-
-    /**
-     *
      * @return The total points the player got at the end of the game, after evaluating
      * their completion of the objectives
      */

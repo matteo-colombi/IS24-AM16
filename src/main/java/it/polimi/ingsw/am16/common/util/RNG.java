@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am16.common.util;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.Random;
 
@@ -9,6 +10,9 @@ import java.util.Random;
  * Initialized with a seed (by default, the system's time, obtained through {@link System}'s <code>nanoTime()</code>).
  */
 public class RNG extends Random {
+
+    @Serial
+    private static final long serialVersionUID = 1354633369837069111L;
 
     private static RNG instance = null;
     private static final char[] symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();

@@ -5,11 +5,12 @@ import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
-import it.polimi.ingsw.am16.common.model.players.PlayerModel;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The game's interface. It contains all the methods a game can use.
@@ -24,10 +25,17 @@ public interface GameModel {
     /**
      * Adds a new player into the game. The number of players cannot exceed numPlayers.
      * @param username The player's username.
-     * @return The newly added player's id.
      * @throws UnexpectedActionException Thrown if the game is already full, if the game has already started, or if there is already a player with the same username present in the game.
      */
-    int addPlayer(String username) throws UnexpectedActionException;
+    void addPlayer(String username) throws UnexpectedActionException;
+
+    /**
+     * Removes a player from the game. This method can only be used in the initial phase of the game.
+     *
+     * @param username The username of the player to be removed. If a player with the given username does not exist, this method does nothing.
+     * @throws UnexpectedActionException Thrown if an attempt was made to remove a player from a game which has already started.
+     */
+    void removePlayer(String username) throws UnexpectedActionException;
 
     /**
      *
@@ -41,10 +49,11 @@ public interface GameModel {
     int getCurrentPlayerCount();
 
     /**
-     *Marks a player as successfully reconnected.
-     *@param playerId The player's ID.
+     * Sets a player's connection status.
+     * @param username The player's username.
+     * @param connected Whether the player is connected.
      */
-    void reconnectionSuccessful(int playerId);
+    void setConnected(String username, boolean connected);
 
     /**
      * @return whether all the players in this game are connected.
@@ -53,21 +62,21 @@ public interface GameModel {
 
     /**
      *
-     * @return The id of the player who has to finish their turn.
+     * @return The username of the player who has to finish their turn.
      */
-    int getActivePlayer();
+    String getActivePlayer();
 
     /**
      *
-     * @return The id of the player whose turn is the first.
+     * @return The username of the player whose turn is the first.
      */
-    int getStartingPlayer();
+    String getStartingPlayer();
 
     /**
      *
      * @return The id(s) of the player(s) who won.
      */
-    List<Integer> getWinnerIds();
+    List<String> getWinnerUsernames();
 
     /**
      * Initializes the game by drawing the common gold and resource cards, and distributing the starter cards to the players.
@@ -77,19 +86,19 @@ public interface GameModel {
 
     /**
      * Lets the player choose the side of their starter card. It can be either front or back.
-     * @param playerId The player's ID.
+     * @param username The player's username.
      * @param side The card's side.
      * @throws UnexpectedActionException Thrown if the game has already started, hence all players should have already chosen their starter card side.
      */
-    void setPlayerStarterSide(int playerId, SideType side) throws UnexpectedActionException, NoStarterCardException;
+    void setPlayerStarterSide(String username, SideType side) throws UnexpectedActionException, NoStarterCardException;
 
     /**
      * Sets the color of a player.
-     * @param playerId The player's ID.
+     * @param username The player's username.
      * @param color The color a player chose.
      * @throws UnexpectedActionException Thrown if the game has already started, hence all the players should have already chosen their color, or if the given color has already been chosen by another player.
      */
-    void setPlayerColor(int playerId, PlayerColor color) throws UnexpectedActionException;
+    void setPlayerColor(String username, PlayerColor color) throws UnexpectedActionException;
 
     /**
      * @return A {@link List} containing all the colors that are still available for a player to choose.
@@ -121,12 +130,11 @@ public interface GameModel {
 
     /**
      * Sets the chosen objective card for a specific player.
-     * @param playerId The player's ID.
+     * @param username The player's username.
      * @param objectiveCard The chosen objective card.
-     * @throws UnknownObjectiveCardException Thrown when the given objective card is not in the player's objective card options.
      * @throws UnexpectedActionException Thrown if the objectives have not yet been distributed, or the game has already started, or the given player has already chosen their objective.
      */
-    void setPlayerObjective(int playerId, ObjectiveCard objectiveCard) throws UnknownObjectiveCardException, UnexpectedActionException;
+    void setPlayerObjective(String username, ObjectiveCard objectiveCard) throws UnexpectedActionException, UnknownObjectiveCardException;
 
     /**
      *
@@ -142,24 +150,25 @@ public interface GameModel {
 
     /**
      * Lets a player place a card.
-     * @param playerId The player's ID.
+     * @param username The player's username.
      * @param placedCard The card the player wants to place.
      * @param side The chosen card's side.
      * @param newCardPos The position of the card.
      * @throws IllegalMoveException Thrown if the player made an illegal move.
      * @throws UnexpectedActionException Thrown if this method is called before the game has been started.
      */
-    void placeCard(int playerId, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException, UnexpectedActionException;
+    void placeCard(String username, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException, UnexpectedActionException;
 
     /**
      * Lets the player draw a card. A card can be drawn from the deck or from the currently visible cards.
-     * @param playerId The player's ID.
+     * If the card is drawn from one of the common cards, it is replaced with a card of the same type if available. If a card of the same type is not available, it is replaced with a card of the other type.
+     * @param username The player's username.
      * @param drawType The place a player wants to draw a card from.
      * @return The drawn card.
      * @throws UnexpectedActionException Thrown if this method is called before the game has been started.
      * @throws IllegalMoveException Thrown if a draw is attempted from an empty deck, or from an empty common card slot.
      */
-    PlayableCard drawCard(int playerId, DrawType drawType) throws UnexpectedActionException, IllegalMoveException;
+    PlayableCard drawCard(String username, DrawType drawType) throws UnexpectedActionException, IllegalMoveException;
 
     /**
      * Advances the turn to the next player.
@@ -188,7 +197,7 @@ public interface GameModel {
      *
      * @return The players inside the game.
      */
-    PlayerModel[] getPlayers();
+    Map<String, Player> getPlayers();
 
     /**
      *
@@ -229,7 +238,12 @@ public interface GameModel {
     ResourceType getGoldDeckTopType();
 
     /**
-     * @return an array containing the ids of the players in the order in which they play.
+     * @return a list containing the usernames of the players in the order in which they play.
      */
     List<String> getTurnOrder();
+
+    /**
+     * Pauses the game. Used when a player disconnects from the game.
+     */
+    void pause();
 }

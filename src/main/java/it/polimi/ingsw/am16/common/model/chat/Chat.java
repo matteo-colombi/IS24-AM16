@@ -12,6 +12,7 @@ import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.server.controller.ChatController;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,6 @@ import java.util.List;
 @JsonDeserialize(using = Chat.Deserializer.class)
 public class Chat implements ChatModel {
 
-    private final int playerId;
     private final String username;
     private final List<ChatMessage> messages;
     private ChatController chatController;
@@ -30,8 +30,7 @@ public class Chat implements ChatModel {
      * Creates a new chat for the player with the given username.
      * @param username The player's username.
      */
-    public Chat(int playerId, String username) {
-        this.playerId = playerId;
+    public Chat(String username) {
         this.username = username;
         this.chatController = null;
         messages = new ArrayList<>();
@@ -43,10 +42,8 @@ public class Chat implements ChatModel {
      * @param messages The messages present in this chat.
      */
     private Chat(
-            int playerId,
             String username,
             List<ChatMessage> messages) {
-        this.playerId = playerId;
         this.username = username;
         this.messages = messages;
         this.chatController = null;
@@ -60,20 +57,13 @@ public class Chat implements ChatModel {
     }
 
     /**
-     * @return The player's id.
-     */
-    public int getPlayerId() {
-        return playerId;
-    }
-
-    /**
      * Subscribes this chat to the given {@link ChatController}. This allows it to receive messages from the chat manager.
      * This method overwrites the current chat manager if there is one.
      * @param chatController The chat manager to subscribe this chat to.
      */
     public void subscribe(ChatController chatController) {
         this.chatController = chatController;
-        this.chatController.subscribe(playerId, username, this);
+        this.chatController.subscribe(username, this);
     }
 
     /**
@@ -107,6 +97,9 @@ public class Chat implements ChatModel {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
+        @Serial
+        private static final long serialVersionUID = -1310186140707579530L;
+
         public Deserializer() {
             super(Chat.class);
         }
@@ -124,14 +117,12 @@ public class Chat implements ChatModel {
         @Override
         public Chat deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
             JsonNode node = p.getCodec().readTree(p);
-
-            int playerId = node.get("playerId").asInt();
             String username = node.get("username").asText();
 
             TypeReference<ArrayList<ChatMessage>> messagesTypeRef = new TypeReference<>() {};
             List<ChatMessage> messages = mapper.readValue(node.get("messages").toString(), messagesTypeRef);
 
-            return new Chat(playerId, username, messages);
+            return new Chat(username, messages);
         }
     }
 }

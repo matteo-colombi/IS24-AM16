@@ -31,11 +31,6 @@ public final class FilePaths {
     public static final String CLI_POSITION_LABEL = CLI_ASSETS + "/label.json";
 
     /**
-     * The path for the table used to signal the players' points
-     */
-    public static final String CLI_POINTS_TABLE = CLI_ASSETS + "/pointsTable.json";
-
-    /**
      * The path for the table used to signal the amount of resources and objects in the CLI play area
      */
     public static final String CLI_INFO_TABLE = CLI_ASSETS + "/infoTable.json";

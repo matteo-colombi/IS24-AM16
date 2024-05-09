@@ -35,7 +35,6 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
     private final AtomicBoolean ponged;
 
     private GameController gameController;
-    private int playerId;
     private String username;
 
     public RMIServerImplementation(RemoteClientInterface clientInterface, LobbyManager lobbyManager) throws RemoteException {
@@ -44,7 +43,6 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         this.pingTimer = new Timer();
         this.ponged = new AtomicBoolean(true);
         this.gameController = null;
-        this.playerId = -1;
         this.username = null;
 
         pingRoutine();
@@ -70,10 +68,10 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
                     pingTimer.cancel();
 
                     if (gameController != null) {
-                        gameController.disconnect(playerId);
+                        gameController.disconnect(username);
 
                     }
-                    playerId = -1;
+                    username = null;
                     gameController = null;
                 }
             }
@@ -106,23 +104,20 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
 
         gameController = lobbyManager.getGame(gameId);
         try {
-            playerId = gameController.createPlayer(username);
+            gameController.createPlayer(username);
         } catch (UnexpectedActionException e) {
             clientInterface.promptError("Couldn't join game: " + e.getMessage());
             gameController = null;
-            playerId = -1;
             return;
         }
 
         try {
-            gameController.joinPlayer(playerId, clientInterface);
+            gameController.joinPlayer(username, clientInterface);
             this.username = username;
         } catch (UnexpectedActionException e) {
             System.err.println("Unexpected error: " + e.getMessage());
             this.username = null;
             gameController = null;
-            playerId = -1;
-            e.printStackTrace();
         }
     }
 
@@ -145,21 +140,11 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
             return;
         }
 
-        if (gameController.isRejoiningAfterCrash()) {
+        if (!gameController.isRejoiningAfterCrash()) {
             try {
-                playerId = gameController.getPlayerId(username);
-            } catch (IllegalArgumentException e) {
-                clientInterface.promptError("Couldn't join game: " + e.getMessage());
-                playerId = -1;
-                gameController = null;
-                return;
-            }
-        } else {
-            try {
-                playerId = gameController.createPlayer(username);
+                gameController.createPlayer(username);
             } catch (UnexpectedActionException e) {
                 clientInterface.promptError("Couldn't join game: " + e.getMessage());
-                playerId = -1;
                 gameController = null;
                 this.username = null;
                 return;
@@ -167,12 +152,11 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         }
 
         try {
-            gameController.joinPlayer(playerId, clientInterface);
+            gameController.joinPlayer(username, clientInterface);
             this.username = username;
         } catch (UnexpectedActionException e) {
             clientInterface.promptError("User already rejoined the game.");
             gameController = null;
-            playerId = -1;
             this.username = null;
         }
     }
@@ -185,7 +169,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
     @Override
     public void setStarterCard(SideType side) throws RemoteException {
         if (gameController != null) {
-            gameController.setStarterCard(playerId, side);
+            gameController.setStarterCard(username, side);
         }
     }
 
@@ -197,7 +181,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
     @Override
     public void setColor(PlayerColor color) throws RemoteException {
         if (gameController != null) {
-            gameController.setPlayerColor(playerId, color);
+            gameController.setPlayerColor(username, color);
         }
     }
 
@@ -209,7 +193,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
     @Override
     public void setPersonalObjective(ObjectiveCard objectiveCard) throws RemoteException {
         if (gameController != null) {
-            gameController.setPlayerObjective(playerId, objectiveCard);
+            gameController.setPlayerObjective(username, objectiveCard);
         }
     }
 
@@ -223,7 +207,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
     @Override
     public void playCard(PlayableCard playedCard, SideType side, Position pos) throws RemoteException {
         if (gameController != null) {
-            gameController.placeCard(playerId, playedCard, side, pos);
+            gameController.placeCard(username, playedCard, side, pos);
         }
     }
 
@@ -235,7 +219,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
     @Override
     public void drawCard(DrawType drawType) throws RemoteException {
         if (gameController != null) {
-            gameController.drawCard(playerId, drawType);
+            gameController.drawCard(username, drawType);
         }
     }
 
@@ -270,10 +254,10 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
      */
     @Override
     public void disconnect() throws RemoteException {
-        if (gameController != null && playerId != -1) {
-            gameController.disconnect(playerId);
+        if (gameController != null && username != null) {
+            gameController.disconnect(username);
         }
-        playerId = -1;
+        username = null;
         gameController = null;
         pingTimer.cancel();
         System.out.println("RMI client disconnected.");
@@ -285,10 +269,10 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
      */
     @Override
     public void leaveGame() throws RemoteException {
-        if (gameController != null && playerId != -1) {
-            gameController.disconnect(playerId);
+        if (gameController != null && username != null) {
+            gameController.disconnect(username);
         }
-        playerId = -1;
+        username = null;
         gameController = null;
     }
 

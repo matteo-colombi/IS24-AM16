@@ -5,15 +5,15 @@ import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
-import it.polimi.ingsw.am16.common.model.players.PlayerModel;
 import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.util.RNG;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,49 +31,60 @@ public class TestGameModel {
 
         assertThrows(UnexpectedActionException.class, game::initializeGame);
 
-        game.addPlayer("L2C");
+        game.addPlayer("teo");
 
         assertThrows(UnexpectedActionException.class, () -> game.addPlayer("teo"));
         assertThrows(UnexpectedActionException.class, game::startGame);
 
+        game.setConnected("xLorde", true);
+        game.setConnected("teo", true);
+
         game.initializeGame();
 
-        PlayerModel[] players = game.getPlayers();
-        PlayerModel xLorde = players[0];
-        PlayerModel l2c = players[1];
+        Map<String, Player> players = game.getPlayers();
+        Player xLorde = players.get("xLorde");
+        Player teo = players.get("teo");
         HandModel xLordeHand = xLorde.getHand();
-        HandModel l2cHand = l2c.getHand();
+        HandModel teoHand = teo.getHand();
 
         System.out.println("\nPlayer starter cards:");
         System.out.println("xLorde:");
         System.out.println(xLorde.getStarterCard());
-        System.out.println("l2c:");
-        System.out.println(l2c.getStarterCard());
+        System.out.println("teo:");
+        System.out.println(teo.getStarterCard());
 
-        game.setPlayerStarterSide(0, SideType.BACK);
-        game.setPlayerStarterSide(1, SideType.BACK);
+        game.setPlayerStarterSide("xLorde", SideType.BACK);
+        game.setPlayerStarterSide("teo", SideType.BACK);
 
         assertTrue(game.allPlayersChoseStarterSide());
 
-        game.setPlayerColor(0, PlayerColor.BLUE);
+        game.setPlayerColor("xLorde", PlayerColor.BLUE);
 
-        assertThrows(UnexpectedActionException.class, () -> game.setPlayerColor(1, PlayerColor.BLUE));
+        assertThrows(UnexpectedActionException.class, () -> game.setPlayerColor("teo", PlayerColor.BLUE));
 
-        game.setPlayerColor(1, PlayerColor.RED);
+        game.setPlayerColor("teo", PlayerColor.RED);
 
         assertTrue(game.allPlayersChoseColor());
 
         game.initializeObjectives();
 
         System.out.println("\nPlayer objective options:");
-        Arrays.stream(players).forEach(p -> System.out.println(p.getPersonalObjectiveOptions()));
+        players.values().forEach(p -> System.out.println(p.getPersonalObjectiveOptions()));
 
         printCommonObjectives();
 
-        game.setPlayerObjective(1, l2c.getPersonalObjectiveOptions().get(0));
-        game.setPlayerObjective(0, xLorde.getPersonalObjectiveOptions().get(0));
+        game.setPlayerObjective("teo", teo.getPersonalObjectiveOptions().get(0));
+        game.setPlayerObjective("xLorde", xLorde.getPersonalObjectiveOptions().get(0));
 
         assertTrue(game.allPlayersChoseObjective());
+
+        //This test was written before playerIds were removed.
+        //Hence, when player ids got removed, the logic to choose the starting player changed and this test
+        //broke only because the starting player was now teo instead of xLorde.
+        //These two nextInt calls make it so that xLorde is the starting player again.
+        //The rest of the test is unchanged.
+        RNG.getRNG().nextInt();
+        RNG.getRNG().nextInt();
 
         game.startGame();
         game.distributeCards();
@@ -83,163 +94,165 @@ public class TestGameModel {
 
         assertEquals(game.getStartingPlayer(), game.getActivePlayer());
 
-        System.out.println(game.getStartingPlayer());
+        System.out.println(game.getTurnOrder());
 
         printHand(xLorde);
 
-        printHand(l2c);
+        printHand(teo);
 
-        assertThrows(IllegalMoveException.class, () -> game.placeCard(1, l2cHand.getCards().get(2), SideType.FRONT, new Position(1, 1)));
-        assertThrows(IllegalMoveException.class, () -> game.placeCard(1, l2cHand.getCards().get(1), SideType.FRONT, new Position(0, 1)));
+        assertThrows(IllegalMoveException.class, () -> game.placeCard("teo", teoHand.getCards().get(2), SideType.FRONT, new Position(1, 1)));
+        assertThrows(IllegalMoveException.class, () -> game.placeCard("teo", teoHand.getCards().get(1), SideType.FRONT, new Position(0, 1)));
 
-        game.placeCard(0, xLordeHand.getCards().get(0), SideType.FRONT, new Position(-1, 1));
+        game.placeCard("xLorde", xLordeHand.getCards().get(0), SideType.FRONT, new Position(-1, 1));
 
-        game.drawCard(0, DrawType.RESOURCE_DECK);
-
-        printHand(xLorde);
-
-        game.advanceTurn();
-        assertEquals(1, game.getActivePlayer());
-
-        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(-1, 1));
-        game.drawCard(1, DrawType.RESOURCE_2);
-
-        assertEquals(1, l2c.getGamePoints());
-
-        game.placeCard(0, xLordeHand.getCards().get(0), SideType.FRONT, new Position(0, 2));
-
-        game.drawCard(0, DrawType.GOLD_DECK);
+        game.drawCard("xLorde", DrawType.RESOURCE_DECK);
 
         printHand(xLorde);
 
         game.advanceTurn();
+        assertEquals("teo", game.getActivePlayer());
 
-        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(1, 1));
-        game.drawCard(1, DrawType.RESOURCE_2);
+        game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(-1, 1));
+        game.drawCard("teo", DrawType.RESOURCE_2);
 
-        printHand(l2c);
-
+        assertEquals(1, teo.getGamePoints());
         game.advanceTurn();
+        assertEquals("xLorde", game.getActivePlayer());
 
-        game.placeCard(0, xLordeHand.getCards().get(1), SideType.FRONT, new Position(1, 1));
-        game.drawCard(0, DrawType.RESOURCE_2);
+        game.placeCard("xLorde", xLordeHand.getCards().get(0), SideType.FRONT, new Position(0, 2));
+
+        game.drawCard("xLorde", DrawType.GOLD_DECK);
 
         printHand(xLorde);
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCards().get(2), SideType.FRONT, new Position(0, 2));
-        game.drawCard(1, DrawType.RESOURCE_DECK);
+        game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(1, 1));
+        game.drawCard("teo", DrawType.RESOURCE_2);
 
-        printHand(l2c);
+        printHand(teo);
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCards().get(1), SideType.BACK, new Position(1, -1));
-        game.drawCard(0, DrawType.RESOURCE_DECK);
+        game.placeCard("xLorde", xLordeHand.getCards().get(1), SideType.FRONT, new Position(1, 1));
+        game.drawCard("xLorde", DrawType.RESOURCE_2);
 
         printHand(xLorde);
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(1, 3));
-        game.drawCard(1, DrawType.GOLD_DECK);
+        game.placeCard("teo", teoHand.getCards().get(2), SideType.FRONT, new Position(0, 2));
+        game.drawCard("teo", DrawType.RESOURCE_DECK);
 
-        printHand(l2c);
+        printHand(teo);
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCards().get(1), SideType.FRONT, new Position(2, 2));
-        game.drawCard(0, DrawType.RESOURCE_DECK);
+        game.placeCard("xLorde", xLordeHand.getCards().get(1), SideType.BACK, new Position(1, -1));
+        game.drawCard("xLorde", DrawType.RESOURCE_DECK);
 
         printHand(xLorde);
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(0, 4));
-        game.drawCard(1, DrawType.GOLD_2);
+        game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(1, 3));
+        game.drawCard("teo", DrawType.GOLD_DECK);
 
-        printHand(l2c);
+        printHand(teo);
+
+        game.advanceTurn();
+
+        game.placeCard("xLorde", xLordeHand.getCards().get(1), SideType.FRONT, new Position(2, 2));
+        game.drawCard("xLorde", DrawType.RESOURCE_DECK);
+
+        printHand(xLorde);
+
+        game.advanceTurn();
+
+        game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(0, 4));
+        game.drawCard("teo", DrawType.GOLD_2);
+
+        printHand(teo);
 
         printCommonGoldCards();
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCards().get(2), SideType.FRONT, new Position(2, -2));
-        game.drawCard(0, DrawType.RESOURCE_2);
+        game.placeCard("xLorde", xLordeHand.getCards().get(2), SideType.FRONT, new Position(2, -2));
+        game.drawCard("xLorde", DrawType.RESOURCE_2);
 
         printCommonResourceCards();
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(-2, 0));
-        game.drawCard(1, DrawType.RESOURCE_1);
+        game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(-2, 0));
+        game.drawCard("teo", DrawType.RESOURCE_1);
 
         printCommonResourceCards();
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCards().get(2), SideType.FRONT, new Position(1, -3));
-        game.drawCard(0, DrawType.GOLD_1);
+        game.placeCard("xLorde", xLordeHand.getCards().get(2), SideType.FRONT, new Position(1, -3));
+        game.drawCard("xLorde", DrawType.GOLD_1);
 
         printCommonGoldCards();
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCards().get(2), SideType.FRONT, new Position(-3, -1));
-        game.drawCard(1, DrawType.RESOURCE_DECK);
+        game.placeCard("teo", teoHand.getCards().get(2), SideType.FRONT, new Position(-3, -1));
+        game.drawCard("teo", DrawType.RESOURCE_DECK);
 
-        printHand(l2c);
+        printHand(teo);
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCards().get(1), SideType.FRONT, new Position(3, -1));
-        game.drawCard(0, DrawType.GOLD_DECK);
+        game.placeCard("xLorde", xLordeHand.getCards().get(1), SideType.FRONT, new Position(3, -1));
+        game.drawCard("xLorde", DrawType.GOLD_DECK);
 
         printHand(xLorde);
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCards().get(2), SideType.FRONT, new Position(-1, 5));
-        game.drawCard(1, DrawType.GOLD_DECK);
+        game.placeCard("teo", teoHand.getCards().get(2), SideType.FRONT, new Position(-1, 5));
+        game.drawCard("teo", DrawType.GOLD_DECK);
 
-        printHand(l2c);
+        printHand(teo);
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCards().get(2), SideType.FRONT, new Position(2, -4));
-        game.drawCard(0, DrawType.GOLD_DECK);
+        game.placeCard("xLorde", xLordeHand.getCards().get(2), SideType.FRONT, new Position(2, -4));
+        game.drawCard("xLorde", DrawType.GOLD_DECK);
 
         printHand(xLorde);
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCards().get(2), SideType.FRONT, new Position(-2, 2));
-        game.drawCard(1, DrawType.RESOURCE_DECK);
+        game.placeCard("teo", teoHand.getCards().get(2), SideType.FRONT, new Position(-2, 2));
+        game.drawCard("teo", DrawType.RESOURCE_DECK);
 
-        printHand(l2c);
+        printHand(teo);
 
         assertEquals(1, xLorde.getGamePoints());
-        assertEquals(9, l2c.getGamePoints());
+        assertEquals(9, teo.getGamePoints());
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCards().get(0), SideType.FRONT, new Position(3, 1));
-        game.drawCard(0, DrawType.GOLD_DECK);
+        game.placeCard("xLorde", xLordeHand.getCards().get(0), SideType.FRONT, new Position(3, 1));
+        game.drawCard("xLorde", DrawType.GOLD_DECK);
 
         printHand(xLorde);
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCards().get(1), SideType.FRONT, new Position(-2, 4));
-        game.drawCard(1, DrawType.GOLD_DECK);
+        game.placeCard("teo", teoHand.getCards().get(1), SideType.FRONT, new Position(-2, 4));
+        game.drawCard("teo", DrawType.GOLD_DECK);
 
-        printHand(l2c);
+        printHand(teo);
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCards().get(0), SideType.FRONT, new Position(2, 0));
-        game.drawCard(0, DrawType.GOLD_DECK);
+        game.placeCard("xLorde", xLordeHand.getCards().get(0), SideType.FRONT, new Position(2, 0));
+        game.drawCard("xLorde", DrawType.GOLD_DECK);
 
         printHand(xLorde);
 
@@ -247,17 +260,17 @@ public class TestGameModel {
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(-1, 3));
-        game.drawCard(1, DrawType.RESOURCE_DECK);
+        game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(-1, 3));
+        game.drawCard("teo", DrawType.RESOURCE_DECK);
 
-        printHand(l2c);
+        printHand(teo);
 
-        assertEquals(19, l2c.getGamePoints());
+        assertEquals(19, teo.getGamePoints());
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCards().get(2), SideType.FRONT, new Position(-1, -1));
-        game.drawCard(0, DrawType.GOLD_1);
+        game.placeCard("xLorde", xLordeHand.getCards().get(2), SideType.FRONT, new Position(-1, -1));
+        game.drawCard("xLorde", DrawType.GOLD_1);
 
         printCommonGoldCards();
 
@@ -265,15 +278,15 @@ public class TestGameModel {
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(-3, 3));
-        game.drawCard(1, DrawType.GOLD_DECK);
+        game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(-3, 3));
+        game.drawCard("teo", DrawType.GOLD_DECK);
 
-        printHand(l2c);
+        printHand(teo);
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCards().get(1), SideType.FRONT, new Position(4, 2));
-        game.drawCard(0, DrawType.GOLD_DECK);
+        game.placeCard("xLorde", xLordeHand.getCards().get(1), SideType.FRONT, new Position(4, 2));
+        game.drawCard("xLorde", DrawType.GOLD_DECK);
 
         printHand(xLorde);
 
@@ -283,12 +296,12 @@ public class TestGameModel {
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCards().get(0), SideType.FRONT, new Position(1, 5));
-        game.drawCard(1, DrawType.GOLD_DECK);
+        game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(1, 5));
+        game.drawCard("teo", DrawType.GOLD_DECK);
 
-        printHand(l2c);
+        printHand(teo);
 
-        assertEquals(24, l2c.getGamePoints());
+        assertEquals(24, teo.getGamePoints());
 
         game.triggerFinalRound();
 
@@ -297,26 +310,26 @@ public class TestGameModel {
 
         game.advanceTurn();
 
-        game.placeCard(0, xLordeHand.getCards().getFirst(), SideType.FRONT, new Position(0, -2));
+        game.placeCard("xLorde", xLordeHand.getCards().getFirst(), SideType.FRONT, new Position(0, -2));
 
         assertEquals(21, xLorde.getGamePoints());
 
         game.advanceTurn();
 
-        game.placeCard(1, l2cHand.getCards().get(1), SideType.FRONT, new Position(2, 0));
+        game.placeCard("teo", teoHand.getCards().get(1), SideType.FRONT, new Position(2, 0));
 
-        assertEquals(27, l2c.getGamePoints());
+        assertEquals(27, teo.getGamePoints());
 
         game.endGame();
 
         assertEquals(21, xLorde.getGamePoints());
         assertEquals(7, xLorde.getObjectivePoints());
         assertEquals(28, xLorde.getTotalPoints());
-        assertEquals(27, l2c.getGamePoints());
-        assertEquals(10, l2c.getObjectivePoints());
-        assertEquals(37, l2c.getTotalPoints());
+        assertEquals(27, teo.getGamePoints());
+        assertEquals(10, teo.getObjectivePoints());
+        assertEquals(37, teo.getTotalPoints());
 
-        assertEquals(List.of(1), game.getWinnerIds());
+        assertEquals(List.of("teo"), game.getWinnerUsernames());
     }
 
     private void printDeckTopTypes() {
@@ -326,7 +339,7 @@ public class TestGameModel {
         System.out.println();
     }
 
-    private void printHand(PlayerModel playerModel) {
+    private void printHand(Player playerModel) {
         String name = playerModel.getUsername();
         HandModel hand = playerModel.getHand();
         System.out.println(name + " hand:");
@@ -360,7 +373,7 @@ public class TestGameModel {
         System.out.println();
     }
 
-    private void printPersonalObjective(PlayerModel playerMode) {
+    private void printPersonalObjective(Player playerMode) {
         System.out.println(playerMode.getUsername() + " personal objective:");
         System.out.println(playerMode.getPersonalObjective());
         System.out.println();

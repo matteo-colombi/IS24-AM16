@@ -38,7 +38,6 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
     private final Scanner in;
     private final LobbyManager lobbyManager;
     private GameController gameController;
-    private int playerId;
     private String username;
     private final AtomicBoolean running;
 
@@ -53,7 +52,6 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
         this.in = new Scanner(clientSocket.getInputStream());
         this.gameController = null;
         this.username = null;
-        this.playerId = -1;
         this.ponged = new AtomicBoolean(true);
         this.pingTimer = new Timer();
         this.running = new AtomicBoolean(true);
@@ -83,9 +81,9 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
                     pingTimer.cancel();
 
-                    if (gameController != null && playerId != -1) {
-                        gameController.disconnect(playerId);
-                        playerId = -1;
+                    if (gameController != null && username != null) {
+                        gameController.disconnect(username);
+                        username = null;
                         gameController = null;
                     }
                     running.set(false);
@@ -97,17 +95,17 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
                     switch (tcpMessage.messageType()) {
                         case LEAVE_GAME -> {
-                            if (gameController != null && playerId != -1) {
-                                gameController.disconnect(playerId);
+                            if (gameController != null && username != null) {
+                                gameController.disconnect(username);
                             }
-                            playerId = -1;
+                            username = null;
                             gameController = null;
                         }
                         case DISCONNECT -> {
-                            if (gameController != null && playerId != -1) {
-                                gameController.disconnect(playerId);
+                            if (gameController != null && username != null) {
+                                gameController.disconnect(username);
                             }
-                            playerId = -1;
+                            username = null;
                             gameController = null;
                             running.set(false);
                         }
@@ -138,16 +136,17 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
                             gameController = lobbyManager.getGame(gameId);
                             try {
-                                playerId = gameController.createPlayer(username);
+                                gameController.createPlayer(username);
                             } catch (UnexpectedActionException e) {
                                 promptError("Couldn't join game: " + e.getMessage());
                                 break;
                             }
 
                             try {
-                                gameController.joinPlayer(playerId, this);
+                                gameController.joinPlayer(username, this);
                                 this.username = username;
                             } catch (UnexpectedActionException e) {
+                                gameController = null;
                                 System.err.println("Unexpected error: " + e.getMessage());
                                 e.printStackTrace();
                             }
@@ -174,22 +173,11 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                                 break;
                             }
 
-                            if (gameController.isRejoiningAfterCrash()) {
+                            if (!gameController.isRejoiningAfterCrash()) {
                                 try {
-                                    playerId = gameController.getPlayerId(username);
-                                } catch (IllegalArgumentException e) {
-                                    promptError("Couldn't join game: " + e.getMessage());
-                                    playerId = -1;
-                                    gameController = null;
-                                    this.username = null;
-                                    break;
-                                }
-                            } else {
-                                try {
-                                    playerId = gameController.createPlayer(username);
+                                    gameController.createPlayer(username);
                                 } catch (UnexpectedActionException e) {
                                     promptError("Couldn't join game: " + e.getMessage());
-                                    playerId = -1;
                                     gameController = null;
                                     this.username = null;
                                     break;
@@ -197,12 +185,11 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                             }
 
                             try {
-                                gameController.joinPlayer(playerId, this);
+                                gameController.joinPlayer(username, this);
                                 this.username = username;
                             } catch (UnexpectedActionException e) {
                                 promptError("User already rejoined the game.");
                                 gameController = null;
-                                playerId = -1;
                                 this.username = null;
                             }
                         }
@@ -217,7 +204,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                             SideType side = payload.getSide();
 
                             if (gameController != null) {
-                                gameController.setStarterCard(playerId, side);
+                                gameController.setStarterCard(username, side);
                             }
                         }
                         case CHOOSE_COLOR -> {
@@ -231,7 +218,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                             PlayerColor color = payload.getColor();
 
                             if (gameController != null) {
-                                gameController.setPlayerColor(playerId, color);
+                                gameController.setPlayerColor(username, color);
                             }
                         }
                         case CHOOSE_OBJECTIVE -> {
@@ -245,7 +232,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                             ObjectiveCard objective = payload.getObjective();
 
                             if (gameController != null) {
-                                gameController.setPlayerObjective(playerId, objective);
+                                gameController.setPlayerObjective(username, objective);
                             }
                         }
                         case PLAY_CARD_REQUEST -> {
@@ -261,7 +248,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                             Position pos = payload.getPos();
 
                             if (gameController != null) {
-                                gameController.placeCard(playerId, playedCard, side, pos);
+                                gameController.placeCard(username, playedCard, side, pos);
                             }
                         }
                         case DRAW_CARD -> {
@@ -275,7 +262,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                             DrawType drawType = payload.getDrawType();
 
                             if (gameController != null) {
-                                gameController.drawCard(playerId, drawType);
+                                gameController.drawCard(username, drawType);
                             }
                         }
                         case SEND_CHAT_MESSAGE -> {
@@ -336,10 +323,10 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                     pingTimer.cancel();
 
                     if (gameController != null) {
-                        gameController.disconnect(playerId);
+                        gameController.disconnect(username);
                     }
 
-                    playerId = -1;
+                    username = null;
                     gameController = null;
                     running.set(false);
                 }
@@ -733,7 +720,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
     @Override
     public void signalDisconnection(String whoDisconnected) {
         gameController = null;
-        playerId = -1;
+        username = null;
 
         TCPMessage tcpMessage = new TCPMessage(MessageType.SIGNAL_DISCONNECTION, new SignalDisconnection(whoDisconnected));
         sendTCPMessage(tcpMessage);
