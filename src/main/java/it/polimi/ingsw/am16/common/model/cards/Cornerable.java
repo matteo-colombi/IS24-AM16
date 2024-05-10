@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  * Interface implemented by all classes that represent an element that can be on one of a card's corners.
  */
 @JsonDeserialize(using = Cornerable.Deserializer.class, keyUsing = Cornerable.KeyDeserializer.class)
-@JsonSerialize(using = Cornerable.Serializer.class)
+@JsonSerialize(using = Cornerable.Serializer.class, keyUsing = Cornerable.KeySerializer.class)
 public interface Cornerable {
     // RIP Cornerable, we hardly knew ya. 16/03/2024
 
@@ -61,7 +61,7 @@ public interface Cornerable {
     class Serializer extends JsonSerializer<Cornerable> {
         @Override
         public void serialize(Cornerable value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-            gen.writeFieldName(value.toString().toLowerCase());
+            gen.writeString(value.toString().toLowerCase());
         }
     }
 
@@ -82,6 +82,13 @@ public interface Cornerable {
         @Override
         public Cornerable deserializeKey(String key, DeserializationContext ctxt) throws IOException {
             return mapper.readValue("\"" + key + "\"", Cornerable.class);
+        }
+    }
+
+    class KeySerializer extends JsonSerializer<Cornerable> {
+        @Override
+        public void serialize(Cornerable value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+            gen.writeFieldName(value.toString().toLowerCase());
         }
     }
 }

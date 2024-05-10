@@ -363,6 +363,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
         } catch (IOException e) {
             System.err.println("Error serializing object to send to a TCP client. Printing the error message:");
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 

@@ -30,7 +30,6 @@ public class PlayArea implements PlayAreaModel, Serializable {
     private static final long serialVersionUID = -5968965401567479628L;
 
     private int cardCount;
-    @JsonSerialize(keyUsing = Cornerable.Serializer.class)
     private final Map<Cornerable, Integer> resourceAndObjectCounts;
     private final List<Position> cardPlacementOrder;
     @JsonSerialize(keyUsing = Position.Serializer.class)
