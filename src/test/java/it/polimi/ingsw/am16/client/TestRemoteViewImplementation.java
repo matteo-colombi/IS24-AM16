@@ -29,7 +29,7 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     @Override
-    public void getGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) throws RemoteException {
+    public void notifyGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) throws RemoteException {
         //TODO
     }
 
@@ -235,6 +235,18 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
     public void signalDisconnection(String whoDisconnected) throws RemoteException {
         System.out.print("[" + username + "]: ");
         System.err.println("Player " + whoDisconnected + " has disconnected!");
+    }
+
+    /**
+     * DOCME
+     *
+     * @param whoDisconnected
+     * @throws RemoteException
+     */
+    @Override
+    public void signalGameSuspension(String whoDisconnected) throws RemoteException {
+        System.out.print("[" + username + "]: ");
+        System.err.println("Player " + whoDisconnected + " has disconnected! The game is suspended.");
     }
 
     @Override

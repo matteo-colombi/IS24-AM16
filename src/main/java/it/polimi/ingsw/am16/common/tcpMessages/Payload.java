@@ -49,8 +49,8 @@ import it.polimi.ingsw.am16.common.tcpMessages.response.*;
         @JsonSubTypes.Type(value = JoinGameRequest.class, name = "joinGameRequest"),
         @JsonSubTypes.Type(value = PlayCardRequest.class, name = "playCardRequest"),
         @JsonSubTypes.Type(value = SendChatMessage.class, name = "sendChatMessage"),
-        @JsonSubTypes.Type(value = SendPrivateChatMessage.class, name = "sendPrivateChatMessage")
-
+        @JsonSubTypes.Type(value = SendPrivateChatMessage.class, name = "sendPrivateChatMessage"),
+        @JsonSubTypes.Type(value = SignalGameSuspension.class, name = "signalGameSuspension")
 })
 public abstract class Payload {
 }

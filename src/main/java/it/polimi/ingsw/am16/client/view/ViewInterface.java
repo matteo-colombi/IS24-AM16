@@ -284,6 +284,12 @@ public interface ViewInterface {
     void signalDisconnection(String whoDisconnected);
 
     /**
+     * DOCME
+     * @param whoDisconnected
+     */
+    void signalGameSuspension(String whoDisconnected);
+
+    /**
      * Tells the client that a player has skipped their turn because of a deadlock.
      *
      * @param username The username of the player who skipped their turn.

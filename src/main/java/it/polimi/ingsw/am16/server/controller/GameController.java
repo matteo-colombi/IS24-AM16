@@ -528,13 +528,20 @@ public class GameController {
         if (!players.containsKey(username) || game.getState() == GameState.ENDED) return;
 
         if (game.getState() != GameState.JOINING) {
-            virtualView.signalDisconnection(username);
+            virtualView.signalGameSuspension(username);
+            chatController.clear();
             game.pause();
-            //FIXME this isn't enough (?)
         } else {
-            //TODO keep all the players in the game (except who disconnected)
-            //  notify the remaining players that someone has disconnected.
-            //  if everyone disconnected, delete the game from the lobbymanager as well
+            virtualView.signalDisconnection(username);
+            try {
+                game.removePlayer(username);
+            } catch (UnexpectedActionException ignored) {
+                System.err.println("Unexpected error.");
+            }
+            chatController.unsubscribe(username);
+            if (game.getCurrentPlayerCount() == 0 && !game.isRejoiningAfterCrash()) {
+                lobbyManager.deleteGame(game.getId());
+            }
         }
     }
 

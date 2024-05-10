@@ -545,6 +545,8 @@ public class VirtualView {
      * @param disconnectedUsername The username of the player who disconnected.
      */
     public void signalDisconnection(String disconnectedUsername) {
+        userViews.remove(disconnectedUsername);
+
         userViews.forEach((username, userView) -> {
             if (!username.equals(disconnectedUsername)) {
                 try {
@@ -554,6 +556,24 @@ public class VirtualView {
                 }
             }
         });
+    }
+
+    /**
+     * Communicates to all players that a player has disconnected from the game, and thus the game has been paused.
+     *
+     * @param disconnectedUsername The username of the player who disconnected.
+     */
+    public void signalGameSuspension(String disconnectedUsername) {
+        userViews.forEach((username, userView) -> {
+            if (!username.equals(disconnectedUsername)) {
+                try {
+                    userView.signalGameSuspension(disconnectedUsername);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        userViews.clear();
     }
 
     /**

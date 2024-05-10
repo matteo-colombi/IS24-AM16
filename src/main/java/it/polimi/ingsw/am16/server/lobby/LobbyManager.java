@@ -70,7 +70,7 @@ public class LobbyManager {
      * @return A {@link Set} containing all the current ids of games.
      */
     public Set<String> getGameIds() {
-        return games.keySet();
+        return new HashSet<>(games.keySet());
     }
 
     /**

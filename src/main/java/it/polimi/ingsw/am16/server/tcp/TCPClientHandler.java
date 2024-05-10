@@ -127,7 +127,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                                 maxPlayers.put(gameId, game.getNumPlayers());
                             }
 
-                            getGames(gameIds, currentPlayers, maxPlayers);
+                            notifyGames(gameIds, currentPlayers, maxPlayers);
                         }
                         case CREATE_GAME -> {
                             if (gameController != null) {
@@ -357,6 +357,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
     }
 
     private void sendTCPMessage(TCPMessage tcpMessage) {
+        System.out.println("Sending message of type " + tcpMessage.messageType() + " to  " + username);
         try {
             out.println(mapper.writeValueAsString(tcpMessage));
             out.flush();
@@ -376,7 +377,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     @Override
-    public void getGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) throws RemoteException {
+    public void notifyGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) throws RemoteException {
         TCPMessage tcpMessage = new TCPMessage(MessageType.GET_GAMES_RESPONSE, new GetGamesResponse(gameIds, currentPlayers, maxPlayers));
         sendTCPMessage(tcpMessage);
     }
@@ -754,10 +755,22 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
      */
     @Override
     public void signalDisconnection(String whoDisconnected) {
+        TCPMessage tcpMessage = new TCPMessage(MessageType.SIGNAL_DISCONNECTION, new SignalDisconnection(whoDisconnected));
+        sendTCPMessage(tcpMessage);
+    }
+
+    /**
+     * DOCME
+     *
+     * @param whoDisconnected
+     * @throws RemoteException
+     */
+    @Override
+    public void signalGameSuspension(String whoDisconnected) throws RemoteException {
         gameController = null;
         username = null;
 
-        TCPMessage tcpMessage = new TCPMessage(MessageType.SIGNAL_DISCONNECTION, new SignalDisconnection(whoDisconnected));
+        TCPMessage tcpMessage = new TCPMessage(MessageType.SIGNAL_GAME_SUSPENSION, new SignalGameSuspension(whoDisconnected));
         sendTCPMessage(tcpMessage);
     }
 

@@ -82,7 +82,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     @Override
-    public void getGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) throws RemoteException {
+    public void notifyGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) throws RemoteException {
         view.printGames(gameIds, currentPlayers, maxPlayers);
     }
 
@@ -463,6 +463,17 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
     @Override
     public void signalDisconnection(String whoDisconnected) throws RemoteException {
         view.signalDisconnection(whoDisconnected);
+    }
+
+    /**
+     * DOCME
+     *
+     * @param whoDisconnected
+     * @throws RemoteException
+     */
+    @Override
+    public void signalGameSuspension(String whoDisconnected) throws RemoteException {
+        view.signalGameSuspension(whoDisconnected);
     }
 
     /**

@@ -52,6 +52,7 @@ public class ChatController {
         for(String username : receiverUsernames) {
             if (!username.equals(senderUsername) && chats.containsKey(username)) {
                 if (!rick) chats.get(username).receiveMessage(message);
+
                 virtualView.communicateNewMessage(username, message);
                 virtualView.redrawView(username);
             }
@@ -78,5 +79,12 @@ public class ChatController {
      */
     public void broadcast(String text) {
         sendMessage("Server", text);
+    }
+
+    /**
+     * DOCME
+     */
+    public void clear() {
+        chats.clear();
     }
 }

@@ -96,8 +96,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
             maxPlayers.put(gameId, game.getNumPlayers());
         }
 
-        //FIXME throws the Exception
-        clientInterface.getGames(gameIds, currentPlayers, maxPlayers);
+        clientInterface.notifyGames(gameIds, currentPlayers, maxPlayers);
     }
 
     @Override

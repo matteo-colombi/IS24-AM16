@@ -25,7 +25,7 @@ public interface RemoteClientInterface extends Remote {
      * @param maxPlayers     The maximum number of players
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void getGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) throws RemoteException;
+    void notifyGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) throws RemoteException;
 
     /**
      * Tells the client that they have joined a game with the given username.
@@ -309,6 +309,13 @@ public interface RemoteClientInterface extends Remote {
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void signalDisconnection(String whoDisconnected) throws RemoteException;
+
+    /**
+     * DOCME
+     * @param whoDisconnected
+     * @throws RemoteException
+     */
+    void signalGameSuspension(String whoDisconnected) throws RemoteException;
 
     /**
      * Tells the client that a player has skipped their turn because of a deadlock.

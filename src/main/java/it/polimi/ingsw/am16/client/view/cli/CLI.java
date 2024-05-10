@@ -632,7 +632,20 @@ public class CLI implements ViewInterface {
      */
     @Override
     public synchronized void signalDisconnection(String whoDisconnected) {
-        System.out.printf("\n%s disconnected. The game ends here.\n\n", whoDisconnected);
+        System.out.printf("\n%s disconnected.\n", whoDisconnected);
+
+        printCommandPrompt();
+        playerUsernames.remove(whoDisconnected);
+    }
+
+    /**
+     * DOCME
+     *
+     * @param whoDisconnected
+     */
+    @Override
+    public void signalGameSuspension(String whoDisconnected) {
+        System.out.printf("\n%s disconnected. The game is suspended and all players have to rejoin.\n\n", whoDisconnected);
         resetToStartup();
 
         printWelcome();
