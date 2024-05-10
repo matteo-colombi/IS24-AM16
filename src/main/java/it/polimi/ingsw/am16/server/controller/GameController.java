@@ -73,7 +73,9 @@ public class GameController {
     public synchronized void joinPlayer(String username, RemoteClientInterface userView) throws UnexpectedActionException {
         Map<String, Player> players = game.getPlayers();
 
-        if (!players.containsKey(username)) return;
+        if (!players.containsKey(username)) {
+            throw new UnexpectedActionException("User " + username + " not found.");
+        }
 
         if (players.get(username) != null && players.get(username).isConnected()) {
             throw new UnexpectedActionException("User " + username + " already reconnected.");
@@ -528,6 +530,7 @@ public class GameController {
         if (game.getState() != GameState.JOINING) {
             virtualView.signalDisconnection(username);
             game.pause();
+            //FIXME this isn't enough (?)
         } else {
             //TODO keep all the players in the game (except who disconnected)
             //  notify the remaining players that someone has disconnected.

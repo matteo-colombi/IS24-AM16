@@ -120,7 +120,6 @@ public class CLI implements ViewInterface {
      * Show the existing game IDs to the player.
      *
      * @param gameIds The existing games' IDs.
-     * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     @Override
     public void printGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) {

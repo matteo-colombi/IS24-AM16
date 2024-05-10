@@ -208,7 +208,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                                 gameController.joinPlayer(username, this);
                                 this.username = username;
                             } catch (UnexpectedActionException e) {
-                                promptError("User already rejoined the game.");
+                                promptError(e.getMessage());
                                 gameController = null;
                                 this.username = null;
                             }
