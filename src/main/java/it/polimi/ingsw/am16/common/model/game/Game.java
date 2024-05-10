@@ -208,8 +208,9 @@ public class Game implements GameModel {
      * @return whether all the players in this game are connected.
      */
     public boolean everybodyConnected() {
-        for (Player p : players.values()) {
-            if (!p.isConnected()) return false;
+        for (Player player : players.values()) {
+            if (!player.isConnected())
+                return false;
         }
         return true;
     }
@@ -322,8 +323,8 @@ public class Game implements GameModel {
      */
     @Override
     public boolean allPlayersChoseStarterSide() {
-        for (int i = 0; i < numPlayers; i++) {
-            if (!players[i].getChoseStarterCardSide()) {
+        for (Player player : players.values()) {
+            if (!player.getChoseStarterCardSide()) {
                 return false;
             }
         }
@@ -335,8 +336,8 @@ public class Game implements GameModel {
      */
     @Override
     public boolean allPlayersChoseColor() {
-        for (int i = 0; i < numPlayers; i++) {
-            if (!players[i].getChoseColor()) {
+        for (Player player : players.values()) {
+            if (!player.getChoseColor()) {
                 return false;
             }
         }
@@ -358,10 +359,10 @@ public class Game implements GameModel {
      */
     @Override
     public void distributeCards() {
-        for (int i = 0; i < numPlayers; i++) {
-            players[i].giveCard(resourceCardsDeck.drawCard());
-            players[i].giveCard(resourceCardsDeck.drawCard());
-            players[i].giveCard(goldCardsDeck.drawCard());
+        for (Player player : players.values()) {
+            player.giveCard(resourceCardsDeck.drawCard());
+            player.giveCard(resourceCardsDeck.drawCard());
+            player.giveCard(goldCardsDeck.drawCard());
         }
     }
 
@@ -377,15 +378,15 @@ public class Game implements GameModel {
      * Gives every player two objective cards.
      */
     private void distributePersonalObjectives() {
-        for (int i = 0; i < numPlayers; i++) {
-            players[i].giveObjectiveOptions(objectiveCardsDeck.drawCard(), objectiveCardsDeck.drawCard());
+        for (Player player : players.values()) {
+            player.giveObjectiveOptions(objectiveCardsDeck.drawCard(), objectiveCardsDeck.drawCard());
         }
     }
 
     /**
      * Sets the chosen objective card for a specific player.
      *
-     * @param playerId      The player's ID.
+     * @param username      The player's username.
      * @param objectiveCard The chosen objective card.
      * @throws UnknownObjectiveCardException Thrown when the given objective card is not in the player's objective card options.
      * @throws UnexpectedActionException     Thrown if the objectives have not yet been distributed, or the game has already started, or the given player has already chosen their objective.
@@ -399,17 +400,17 @@ public class Game implements GameModel {
         players.get(username).setObjectiveCard(objectiveCard);
     }
 
-
     /**
      * @return Whether all the players have chosen their personal objective.
      */
     @Override
     public boolean allPlayersChoseObjective() {
-        for (int i = 0; i < numPlayers; i++) {
-            if (!players[i].getChosePersonalObjective()) {
+        for (Player player : players.values()) {
+            if (!player.getChosePersonalObjective()) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -445,7 +446,7 @@ public class Game implements GameModel {
     /**
      * Lets a player place a card.
      *
-     * @param playerId   The player's ID.
+     * @param username   The player's username.
      * @param placedCard The card the player wants to place.
      * @param side       The chosen card's side.
      * @param newCardPos The position of the card.
@@ -453,17 +454,17 @@ public class Game implements GameModel {
      * @throws UnexpectedActionException Thrown if this method is called before the game has been started.
      */
     @Override
-    public void placeCard(int playerId, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException, UnexpectedActionException {
+    public void placeCard(String username, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException, UnexpectedActionException {
         if (state != GameState.STARTED && state != GameState.FINAL_ROUND)
             throw new UnexpectedActionException("Game not started");
-        players[playerId].playCard(placedCard, side, newCardPos);
+        players.get(username).playCard(placedCard, side, newCardPos);
     }
 
     /**
      * Lets the player draw a card. A card can be drawn from the deck or from the currently visible cards.
      * If the card is drawn from one of the common cards, it is replaced with a card of the same type if available. If a card of the same type is not available, it is replaced with a card of the other type.
      *
-     * @param playerId The player's ID.
+     * @param username The player's username.
      * @param drawType The place a player wants to draw a card from.
      * @return The drawn card.
      * @throws UnexpectedActionException Thrown if this method is called before the game has been started.
@@ -565,8 +566,8 @@ public class Game implements GameModel {
         if (resourceCardsDeck.isEmpty() && goldCardsDeck.isEmpty())
             return true;
 
-        for (int i = 0; i < numPlayers; i++) {
-            if (players[i].getGamePoints() >= 20) {
+        for (Player p : players.values()) {
+            if (p.getGamePoints() >= 20) {
                 return true;
             }
         }
@@ -577,10 +578,10 @@ public class Game implements GameModel {
      * Evaluates every player's points earned by fulfilling the objective cards' (both common and personal) requests.
      */
     private void evaluateObjectivePoints() {
-        for (int i = 0; i < numPlayers; i++) {
-            players[i].evaluateCommonObjectives(getCommonObjectiveCards()[0]);
-            players[i].evaluateCommonObjectives(getCommonObjectiveCards()[1]);
-            players[i].evaluatePersonalObjective();
+        for (Player p : players.values()) {
+            p.evaluateCommonObjectives(getCommonObjectiveCards()[0]);
+            p.evaluateCommonObjectives(getCommonObjectiveCards()[1]);
+            p.evaluatePersonalObjective();
         }
     }
 
@@ -620,35 +621,35 @@ public class Game implements GameModel {
         int tmpPoints = 0;
         String tmpUsername = null;
         int tmpObjPoints = 0;
-        List<Integer> tmpWinners = new ArrayList<>();
-        for (int i = 0; i < numPlayers; i++) {
-            if (players[i].getTotalPoints() > tmpPoints) {
-                tmpPoints = players[i].getTotalPoints();
-                tmpId = players[i].getPlayerId();
+        List<String> tmpWinners = new ArrayList<>();
+        for (Player p : players.values()) {
+            if (p.getTotalPoints() > tmpPoints) {
+                tmpPoints = p.getTotalPoints();
+                tmpUsername = p.getUsername();
             }
         }
-        tmpWinners.add(tmpId);
-        for (int j = 0; j < numPlayers; j++) {
-            if (players[j].getTotalPoints() == tmpPoints && players[j].getPlayerId() != tmpId) {
-                tmpWinners.add(players[j].getPlayerId());
+        tmpWinners.add(tmpUsername);
+        for (Player p : players.values()) {
+            if (p.getTotalPoints() == tmpPoints && !p.getUsername().equals(tmpUsername)) {
+                tmpWinners.add(p.getUsername());
             }
         }
         if (tmpWinners.size() == 1) {
-            winnerIds.add(tmpId);
+            winnerUsernames.add(tmpUsername);
             return;
         }
         if (tmpWinners.size() > 1) {
-            for (int k = 0; k < numPlayers; k++) {
-                if (players[k].getObjectivePoints() > tmpObjPoints && tmpWinners.contains(players[k].getPlayerId())) {
-                    tmpObjPoints = players[k].getObjectivePoints();
-                    tmpId = players[k].getPlayerId();
+            for (Player p : players.values()) {
+                if (p.getObjectivePoints() > tmpObjPoints && tmpWinners.contains(p.getUsername())) {
+                    tmpObjPoints = p.getObjectivePoints();
+                    tmpUsername = p.getUsername();
                 }
             }
         }
-        winnerIds.add(tmpId);
-        for (int l = 0; l < numPlayers; l++) {
-            if (players[l].getObjectivePoints() == tmpObjPoints && players[l].getPlayerId() != tmpId && tmpWinners.contains(players[l].getPlayerId())) {
-                winnerIds.add(players[l].getPlayerId());
+        winnerUsernames.add(tmpUsername);
+        for (Player p : players.values()) {
+            if (p.getObjectivePoints() == tmpObjPoints && !p.getUsername().equals(tmpUsername) && tmpWinners.contains(p.getUsername())) {
+                winnerUsernames.add(p.getUsername());
             }
         }
     }
@@ -729,10 +730,6 @@ public class Game implements GameModel {
      */
     @Override
     public List<String> getTurnOrder() {
-        List<String> turnOrder = new ArrayList<>();
-        for (int id = 0; id < numPlayers; id++) {
-            turnOrder.add(players[(id + startingPlayer) % numPlayers].getUsername());
-        }
         return turnOrder;
     }
 
@@ -813,9 +810,9 @@ public class Game implements GameModel {
             String activePlayer = mapper.readValue(node.get("activePlayer").toString(), String.class);
             String startingPlayer = mapper.readValue(node.get("startingPlayer").toString(), String.class);
 
-            TypeReference<ArrayList<Integer>> winnerIdsTypeRef = new TypeReference<>() {
+            TypeReference<ArrayList<String>> winnerUsernamesTypeRef = new TypeReference<>() {
             };
-            List<Integer> winnerIds = mapper.readValue(node.get("winnerIds").toString(), winnerIdsTypeRef);
+            List<String> winnerUsernames = mapper.readValue(node.get("winnerUsernames").toString(), winnerUsernamesTypeRef);
 
             ObjectiveCardsDeck objectiveCardsDeck = mapper.readValue(node.get("objectiveCardsDeck").toString(), ObjectiveCardsDeck.class);
             StarterCardsDeck starterCardsDeck = mapper.readValue(node.get("starterCardsDeck").toString(), StarterCardsDeck.class);
