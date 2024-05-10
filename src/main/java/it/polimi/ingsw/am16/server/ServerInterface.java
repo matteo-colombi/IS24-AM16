@@ -17,6 +17,7 @@ public interface ServerInterface extends Remote {
 
     /**
      * DOCME
+     *
      * @throws RemoteException
      */
     void getGames() throws RemoteException;

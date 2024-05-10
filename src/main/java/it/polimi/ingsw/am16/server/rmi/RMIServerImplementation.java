@@ -79,10 +79,9 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
     }
 
     /**
-     * Creates a new game with the given number of players.
-     * @param username The username of the player who wants to create the game.
-     * @param numPlayers The number of players in the game.
-     * @throws RemoteException If an error occurs during the RMI communication.
+     * DOCME
+     *
+     * @throws RemoteException
      */
     @Override
     public void getGames() throws RemoteException {
@@ -138,7 +137,8 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
 
     /**
      * Lets the client join a game with the given id.
-     * @param gameId The id of the game to join.
+     *
+     * @param gameId   The id of the game to join.
      * @param username The username of the player who wants to join the game.
      * @throws RemoteException If an error occurs during the RMI communication.
      */
@@ -178,6 +178,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
 
     /**
      * Sets the starter card for the player.
+     *
      * @param side The side of the card to set as starter.
      * @throws RemoteException If an error occurs during the RMI communication.
      */
@@ -190,6 +191,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
 
     /**
      * Sets the in-game color for the player.
+     *
      * @param color The color to set for the player.
      * @throws RemoteException If an error occurs during the RMI communication.
      */
@@ -202,6 +204,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
 
     /**
      * Sets the personal objective card for the player.
+     *
      * @param objectiveCard The objective card to set for the player.
      * @throws RemoteException If an error occurs during the RMI communication.
      */
@@ -214,9 +217,10 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
 
     /**
      * Plays a card on the given side and position.
+     *
      * @param playedCard The card to play.
-     * @param side The side to play the card on.
-     * @param pos The position to play the card at.
+     * @param side       The side to play the card on.
+     * @param pos        The position to play the card at.
      * @throws RemoteException If an error occurs during the RMI communication.
      */
     @Override
@@ -228,6 +232,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
 
     /**
      * Draws a card from the given deck.
+     *
      * @param drawType The deck to draw the card from.
      * @throws RemoteException If an error occurs during the RMI communication.
      */
@@ -240,6 +245,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
 
     /**
      * Sends a chat message to all the players in the game.
+     *
      * @param text The text of the message.
      * @throws RemoteException If an error occurs during the RMI communication.
      */
@@ -252,7 +258,8 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
 
     /**
      * Sends a chat message to the given player.
-     * @param text The text of the message.
+     *
+     * @param text             The text of the message.
      * @param receiverUsername The username of the player to send the message to.
      * @throws RemoteException If an error occurs during the RMI communication.
      */
@@ -265,6 +272,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
 
     /**
      * Disconnects the client from the server.
+     *
      * @throws RemoteException If an error occurs during the RMI communication.
      */
     @Override
@@ -280,6 +288,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
 
     /**
      * Also disconnects the client from the server.
+     *
      * @throws RemoteException If an error occurs during the RMI communication.
      */
     @Override
@@ -293,6 +302,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
 
     /**
      * Pings the client to check if the connection is still alive.
+     *
      * @throws RemoteException If an error occurs during the RMI communication.
      */
     @Override

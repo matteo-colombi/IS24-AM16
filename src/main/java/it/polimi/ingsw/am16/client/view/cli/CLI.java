@@ -99,6 +99,7 @@ public class CLI implements ViewInterface {
 
     /**
      * Set's the view's {@link ServerInterface}. This interface will be used by the view to send communications to the server.
+     *
      * @param serverInterface The interface which this view should use to communicate with the server.
      */
     public synchronized void setServerInterface(ServerInterface serverInterface) {
@@ -123,10 +124,14 @@ public class CLI implements ViewInterface {
      */
     @Override
     public void printGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) {
-        System.out.println("\nAvailable games:");
+        if (gameIds.isEmpty()) {
+            System.out.println("\nThere are no available games.");
+        } else {
+            System.out.println("\nAvailable games:");
 
-        for (String gameId : gameIds) {
-            System.out.printf("\t- %s %d/%d\n", gameId, currentPlayers.get(gameId), maxPlayers.get(gameId));
+            for (String gameId : gameIds) {
+                System.out.printf("\t- %s %d/%d\n", gameId, currentPlayers.get(gameId), maxPlayers.get(gameId));
+            }
         }
 
         printCommandPrompt();
@@ -179,6 +184,7 @@ public class CLI implements ViewInterface {
 
     /**
      * Tells the view all the usernames of the players present in the game.
+     *
      * @param usernames The list of usernames of the players present in the game.
      */
     @Override
@@ -331,6 +337,7 @@ public class CLI implements ViewInterface {
 
     /**
      * Adds the given card to this player's hand.
+     *
      * @param card The card to be added.
      */
     @Override
@@ -344,6 +351,7 @@ public class CLI implements ViewInterface {
 
     /**
      * Removed the given card from this player's hand.
+     *
      * @param card The card to be removed.
      */
     @Override
@@ -365,8 +373,9 @@ public class CLI implements ViewInterface {
 
     /**
      * Adds the given restricted card to the given user's hand.
+     *
      * @param username The user to add this card to.
-     * @param newCard The restricted card to be added.
+     * @param newCard  The restricted card to be added.
      */
     @Override
     public synchronized void addCardToOtherHand(String username, RestrictedCard newCard) {
@@ -375,7 +384,8 @@ public class CLI implements ViewInterface {
 
     /**
      * Removes the given restricted card from the given user's hand.
-     * @param username The user to remove this card from.
+     *
+     * @param username     The user to remove this card from.
      * @param cardToRemove The restricted card to be removed.
      */
     @Override
@@ -385,14 +395,15 @@ public class CLI implements ViewInterface {
 
     /**
      * Sets the given player's play area.
-     * @param username The player whose play area is being given.
+     *
+     * @param username           The player whose play area is being given.
      * @param cardPlacementOrder The order in which the cards were played in this play area.
-     * @param field The user's field.
-     * @param activeSides The map keeping track of which side every card is placed on.
-     * @param legalPositions The set of positions on which the player can place cards.
-     * @param illegalPositions The set of positions on which the player must not place cards.
-     * @param resourceCounts A map containing the amount of each resource that the player has.
-     * @param objectCounts A map containing the amount of each object that the player has.
+     * @param field              The user's field.
+     * @param activeSides        The map keeping track of which side every card is placed on.
+     * @param legalPositions     The set of positions on which the player can place cards.
+     * @param illegalPositions   The set of positions on which the player must not place cards.
+     * @param resourceCounts     A map containing the amount of each resource that the player has.
+     * @param objectCounts       A map containing the amount of each object that the player has.
      */
     @Override
     public synchronized void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
@@ -415,10 +426,10 @@ public class CLI implements ViewInterface {
      * @param card                  The played card.
      * @param side                  The card the new card was played on.
      * @param pos                   The position where the new card was played.
-     * @param addedLegalPositions The set of new positions in which the player can play a card, following the move which was just made.
+     * @param addedLegalPositions   The set of new positions in which the player can play a card, following the move which was just made.
      * @param removedLegalPositions The set of positions in which the player can no longer play a card, following the move which was just made.
-     * @param resourceCounts A map containing the amount of each resource that the player has, following the move which was just made.
-     * @param objectCounts A map containing the amount of each object that the player has, following the move which was just made.
+     * @param resourceCounts        A map containing the amount of each resource that the player has, following the move which was just made.
+     * @param objectCounts          A map containing the amount of each object that the player has, following the move which was just made.
      */
     @Override
     public synchronized void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
@@ -621,7 +632,7 @@ public class CLI implements ViewInterface {
      */
     @Override
     public synchronized void signalDisconnection(String whoDisconnected) {
-        System.out.printf("\n%s disconnected. The game ends here.\n", whoDisconnected);
+        System.out.printf("\n%s disconnected. The game ends here.\n\n", whoDisconnected);
         resetToStartup();
 
         printWelcome();
