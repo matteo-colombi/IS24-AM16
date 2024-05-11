@@ -460,17 +460,17 @@ public class TCPClient implements Runnable, ServerInterface {
         }
     }
 
-    /**
-     * This method creates a message to tell the server to create a game.
-     * @param username The username of the player that created the game.
-     * @param numPlayers The number of players that will play the game.
-     */
     @Override
     public void getGames() {
         TCPMessage message = new TCPMessage(MessageType.GET_GAMES_REQUEST, null);
         sendTCPMessage(message);
     }
 
+    /**
+     * This method creates a message to tell the server to create a game.
+     * @param username The username of the player that created the game.
+     * @param numPlayers The number of players that will play the game.
+     */
     @Override
     public void createGame(String username, int numPlayers) {
         TCPMessage message = new TCPMessage(MessageType.CREATE_GAME, new CreateGame(username, numPlayers));
