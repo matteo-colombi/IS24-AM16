@@ -397,6 +397,16 @@ public class TCPClient implements Runnable, ServerInterface {
                         view.signalDisconnection(payload.getWhoDisconnected());
 
                     }
+                    case SIGNAL_GAME_SUSPENSION -> {
+                        SignalGameSuspension payload;
+                        try {
+                            payload = (SignalGameSuspension) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.signalGameSuspension(payload.getWhoDisconnected());
+                    }
                     case PROMPT_ERROR -> {
                         PromptError payload;
                         try {
@@ -438,7 +448,13 @@ public class TCPClient implements Runnable, ServerInterface {
                 if (diff > 15000) {
                     System.err.println("\nServer hasn't pinged in a while. Considering connection as lost.");
                     System.out.println("Good bye!");
-                    running.set(false);
+                    checkConnectionTimer.cancel();
+                    in.close();
+                    out.close();
+                    try {
+                        socket.close();
+                    } catch (IOException ignored) {}
+                    System.exit(0);
                 }
             }
         };
@@ -460,11 +476,6 @@ public class TCPClient implements Runnable, ServerInterface {
         }
     }
 
-    /**
-     * This method creates a message to tell the server to create a game.
-     * @param username The username of the player that created the game.
-     * @param numPlayers The number of players that will play the game.
-     */
     @Override
     public void getGames() {
         TCPMessage message = new TCPMessage(MessageType.GET_GAMES_REQUEST, null);

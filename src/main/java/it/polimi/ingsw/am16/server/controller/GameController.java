@@ -527,7 +527,7 @@ public class GameController {
 
         if (!players.containsKey(username) || game.getState() == GameState.ENDED) return;
 
-        if (game.getState() != GameState.JOINING) {
+        if (game.getState() == GameState.STARTED || game.getState() == GameState.FINAL_ROUND) {
             virtualView.signalGameSuspension(username);
             chatController.clear();
             game.pause();
@@ -539,7 +539,7 @@ public class GameController {
                 System.err.println("Unexpected error.");
             }
             chatController.unsubscribe(username);
-            if (game.getCurrentPlayerCount() == 0 && !game.isRejoiningAfterCrash()) {
+            if (game.getState() == GameState.INIT || (game.getCurrentPlayerCount() == 0 && !game.isRejoiningAfterCrash())) {
                 lobbyManager.deleteGame(game.getId());
             }
         }

@@ -50,14 +50,15 @@ public class Server {
         welcomeTCPServerThread.start();
 
         try {
+            System.setProperty("java.rmi.server.hostname", "192.168.1.10");
+
             WelcomeRMIServer welcomeRMIServer = new WelcomeRMIServerImplementation(lobbyManager);
             Registry registry = LocateRegistry.createRegistry(rmiPort);
-            registry.bind("CodexWelcomeServer", welcomeRMIServer);
+            registry.rebind("CodexWelcomeServer", welcomeRMIServer);
+
             System.out.println("RMI server ready");
         } catch (RemoteException e) {
             System.err.println(e.getMessage() + ". RMI server couldn't start.");
-        } catch (AlreadyBoundException e) {
-            System.err.println("Error binding CodexWelcomeServer: RMI Server couldn't start.");
         }
     }
 }
