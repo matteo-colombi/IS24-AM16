@@ -1,19 +1,17 @@
 package it.polimi.ingsw.am16.common.util;
 
+import java.net.URL;
+
 /**
  * Class that contains all the static paths for resources.
  */
 public final class FilePaths {
     private FilePaths() {}
-    /**
-     * The main path for resources.
-     */
-    public static final String RESOURCES = "src/main/resources";
 
     /**
      * The path for game assets.
      */
-    public static final String ASSETS = RESOURCES + "/assets";
+    public static final String ASSETS = "/assets";
 
     /**
      * The path for assets for the command line interface.
@@ -48,7 +46,7 @@ public final class FilePaths {
     /**
      * The path for JSON files.
      */
-    public static final String JSON = RESOURCES + "/json";
+    public static final String JSON = "/json";
 
     /**
      * The path for card JSON files.

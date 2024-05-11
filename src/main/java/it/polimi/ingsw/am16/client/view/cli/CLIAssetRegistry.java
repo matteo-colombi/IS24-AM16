@@ -9,6 +9,7 @@ import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,16 +25,10 @@ public class CLIAssetRegistry {
 
     private final Map<RestrictedCard, CLIText> restrictedCliCards;
 
-    private CLIAssetRegistry() {
+    private CLIAssetRegistry() throws IOException {
         TypeReference<HashMap<String, CLICardAsset>> cliCardsTypeRef = new TypeReference<>() {};
-        File f = new File(FilePaths.CLI_CARDS);
-        if (!f.exists()) {
-            throw new RuntimeException(FilePaths.CLI_CARDS + " does not exist!");
-        }
-        try {
+        try (InputStream f = CLIAssetRegistry.class.getResourceAsStream(FilePaths.CLI_CARDS)) {
             cliCards = JsonMapper.getObjectMapper().readValue(f, cliCardsTypeRef);
-        } catch (IOException ignored) {
-            throw new RuntimeException("Unable to read cli cards!");
         }
 
         restrictedCliCards = new HashMap<>();
@@ -46,60 +41,34 @@ public class CLIAssetRegistry {
             }
         }
 
-        f = new File(FilePaths.CLI_POSITION_LABEL);
-        if (!f.exists()) {
-            throw new RuntimeException(FilePaths.CLI_POSITION_LABEL + " does not exist!");
-        }
-        try {
+        try (InputStream f = CLIAssetRegistry.class.getResourceAsStream(FilePaths.CLI_POSITION_LABEL)) {
             positionLabel = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
-        } catch (IOException ignored) {
-            throw new RuntimeException("Unable to read cli label for positions.");
         }
 
-        f = new File(FilePaths.CLI_INFO_TABLE);
-        if (!f.exists()) {
-            throw new RuntimeException(FilePaths.CLI_INFO_TABLE + " does not exist!");
-        }
-        try {
+        try (InputStream f = CLIAssetRegistry.class.getResourceAsStream(FilePaths.CLI_INFO_TABLE)) {
             infoTable = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
-        } catch (IOException ignored) {
-            throw new RuntimeException("Unable to read cli info table.");
         }
 
-        f = new File(FilePaths.CLI_BANNER);
-        if (!f.exists()) {
-            throw new RuntimeException(FilePaths.CLI_BANNER + " does not exist!");
-        }
-        try {
+        try (InputStream f = CLIAssetRegistry.class.getResourceAsStream(FilePaths.CLI_BANNER)) {
             banner = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
-        } catch (IOException ignored) {
-            throw new RuntimeException("Unable to read cli banner.");
         }
 
-        f = new File(FilePaths.CLI_FINAL_ROUND_LABEL);
-        if (!f.exists()) {
-            throw new RuntimeException(FilePaths.CLI_FINAL_ROUND_LABEL + " does not exist!");
-        }
-        try {
+        try (InputStream f = CLIAssetRegistry.class.getResourceAsStream(FilePaths.CLI_FINAL_ROUND_LABEL)) {
             finalRoundLabel = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
-        } catch (IOException ignored) {
-            throw new RuntimeException("Unable to read cli final round label.");
         }
 
-        f = new File(FilePaths.CLI_ASSETS + "/rick.json");
-        if (!f.exists()) {
-            throw new RuntimeException("Unable to rickroll.");
-        }
-        try {
+        try (InputStream f = CLIAssetRegistry.class.getResourceAsStream(FilePaths.CLI_ASSETS + "/rick.json")) {
             rick = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
-        } catch (IOException ignored) {
-            throw new RuntimeException("Unable to rickroll.");
         }
     }
 
     public static CLIAssetRegistry getCLIAssetRegistry() {
         if (instance == null) {
-            instance = new CLIAssetRegistry();
+            try {
+                instance = new CLIAssetRegistry();
+            } catch (IOException e) {
+                System.out.println("Unable to initiate CLI asset registry: " + e.getMessage());
+            }
         }
         return instance;
     }

@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.am16.common.util.FilePaths;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -70,12 +70,13 @@ public class CardRegistry {
      * @throws IOException If the JSON file is not found.
      */
     private void initializePlayableCardsBackSides() throws IOException {
-        File f = new File(FilePaths.PLAYABLE_CARDS_BACK_SIDES_JSON);
-        JsonNode root = mapper.readTree(f);
-        CardSide.addCommonSide("fungiBack", mapper.readValue(root.get("fungiBack").toString(), CardSide.class));
-        CardSide.addCommonSide("plantBack", mapper.readValue(root.get("plantBack").toString(), CardSide.class));
-        CardSide.addCommonSide("animalBack", mapper.readValue(root.get("animalBack").toString(), CardSide.class));
-        CardSide.addCommonSide("insectBack", mapper.readValue(root.get("insectBack").toString(), CardSide.class));
+        try (InputStream f = CardRegistry.class.getResourceAsStream(FilePaths.PLAYABLE_CARDS_BACK_SIDES_JSON)) {
+            JsonNode root = mapper.readTree(f);
+            CardSide.addCommonSide("fungiBack", mapper.readValue(root.get("fungiBack").toString(), CardSide.class));
+            CardSide.addCommonSide("plantBack", mapper.readValue(root.get("plantBack").toString(), CardSide.class));
+            CardSide.addCommonSide("animalBack", mapper.readValue(root.get("animalBack").toString(), CardSide.class));
+            CardSide.addCommonSide("insectBack", mapper.readValue(root.get("insectBack").toString(), CardSide.class));
+        }
     }
 
     /**
@@ -84,21 +85,22 @@ public class CardRegistry {
      * @throws IOException If the JSON file is not found.
      */
     private void initializeResourceCards() throws IOException {
-        File f = new File(FilePaths.RESOURCE_CARDS_JSON);
-        JsonNode root = mapper.readTree(f);
-        ResourceCard[] fungiResourceCards = mapper.readValue(root.get("fungiCards").toString(), ResourceCard[].class);
-        ResourceCard[] plantResourceCards = mapper.readValue(root.get("plantCards").toString(), ResourceCard[].class);
-        ResourceCard[] animalResourceCards = mapper.readValue(root.get("animalCards").toString(), ResourceCard[].class);
-        ResourceCard[] insectResourceCards = mapper.readValue(root.get("insectCards").toString(), ResourceCard[].class);
-        List<ResourceCard> allResourceCards = new ArrayList<>();
-        allResourceCards.addAll(List.of(fungiResourceCards));
-        allResourceCards.addAll(List.of(plantResourceCards));
-        allResourceCards.addAll(List.of(animalResourceCards));
-        allResourceCards.addAll(List.of(insectResourceCards));
-        resourceCards = Collections.unmodifiableList(allResourceCards);
-        resourceCardsMap = new HashMap<>();
-        for(ResourceCard card : resourceCards) {
-            resourceCardsMap.put(card.getName(), card);
+        try (InputStream f = CardRegistry.class.getResourceAsStream(FilePaths.RESOURCE_CARDS_JSON)) {
+            JsonNode root = mapper.readTree(f);
+            ResourceCard[] fungiResourceCards = mapper.readValue(root.get("fungiCards").toString(), ResourceCard[].class);
+            ResourceCard[] plantResourceCards = mapper.readValue(root.get("plantCards").toString(), ResourceCard[].class);
+            ResourceCard[] animalResourceCards = mapper.readValue(root.get("animalCards").toString(), ResourceCard[].class);
+            ResourceCard[] insectResourceCards = mapper.readValue(root.get("insectCards").toString(), ResourceCard[].class);
+            List<ResourceCard> allResourceCards = new ArrayList<>();
+            allResourceCards.addAll(List.of(fungiResourceCards));
+            allResourceCards.addAll(List.of(plantResourceCards));
+            allResourceCards.addAll(List.of(animalResourceCards));
+            allResourceCards.addAll(List.of(insectResourceCards));
+            resourceCards = Collections.unmodifiableList(allResourceCards);
+            resourceCardsMap = new HashMap<>();
+            for(ResourceCard card : resourceCards) {
+                resourceCardsMap.put(card.getName(), card);
+            }
         }
     }
 
@@ -108,21 +110,22 @@ public class CardRegistry {
      * @throws IOException If the JSON file is not found.
      */
     private void initializeGoldCards() throws IOException {
-        File f = new File(FilePaths.GOLD_CARDS_JSON);
-        JsonNode root = mapper.readTree(f);
-        GoldCard[] fungiGoldCards = mapper.readValue(root.get("fungiCards").toString(), GoldCard[].class);
-        GoldCard[] plantGoldCards = mapper.readValue(root.get("plantCards").toString(), GoldCard[].class);
-        GoldCard[] animalGoldCards = mapper.readValue(root.get("animalCards").toString(), GoldCard[].class);
-        GoldCard[] insectGoldCards = mapper.readValue(root.get("insectCards").toString(), GoldCard[].class);
-        List<GoldCard> allGoldCards = new ArrayList<>();
-        allGoldCards.addAll(List.of(fungiGoldCards));
-        allGoldCards.addAll(List.of(plantGoldCards));
-        allGoldCards.addAll(List.of(animalGoldCards));
-        allGoldCards.addAll(List.of(insectGoldCards));
-        goldCards = Collections.unmodifiableList(allGoldCards);
-        goldCardsMap = new HashMap<>();
-        for(GoldCard card : goldCards) {
-            goldCardsMap.put(card.getName(), card);
+        try (InputStream f = CardRegistry.class.getResourceAsStream(FilePaths.GOLD_CARDS_JSON)) {
+            JsonNode root = mapper.readTree(f);
+            GoldCard[] fungiGoldCards = mapper.readValue(root.get("fungiCards").toString(), GoldCard[].class);
+            GoldCard[] plantGoldCards = mapper.readValue(root.get("plantCards").toString(), GoldCard[].class);
+            GoldCard[] animalGoldCards = mapper.readValue(root.get("animalCards").toString(), GoldCard[].class);
+            GoldCard[] insectGoldCards = mapper.readValue(root.get("insectCards").toString(), GoldCard[].class);
+            List<GoldCard> allGoldCards = new ArrayList<>();
+            allGoldCards.addAll(List.of(fungiGoldCards));
+            allGoldCards.addAll(List.of(plantGoldCards));
+            allGoldCards.addAll(List.of(animalGoldCards));
+            allGoldCards.addAll(List.of(insectGoldCards));
+            goldCards = Collections.unmodifiableList(allGoldCards);
+            goldCardsMap = new HashMap<>();
+            for(GoldCard card : goldCards) {
+                goldCardsMap.put(card.getName(), card);
+            }
         }
     }
 
@@ -132,12 +135,13 @@ public class CardRegistry {
      * @throws IOException If the JSON file is not found.
      */
     private void initializeStarterCards() throws IOException {
-        File f = new File(FilePaths.STARTER_CARDS_JSON);
-        JsonNode root = mapper.readTree(f);
-        starterCards = List.of(mapper.readValue(root.get("starterCards").toString(), StarterCard[].class));
-        starterCardsMap = new HashMap<>();
-        for(StarterCard card : starterCards) {
-            starterCardsMap.put(card.getName(), card);
+        try (InputStream f = CardRegistry.class.getResourceAsStream(FilePaths.STARTER_CARDS_JSON)) {
+            JsonNode root = mapper.readTree(f);
+            starterCards = List.of(mapper.readValue(root.get("starterCards").toString(), StarterCard[].class));
+            starterCardsMap = new HashMap<>();
+            for(StarterCard card : starterCards) {
+                starterCardsMap.put(card.getName(), card);
+            }
         }
     }
 
@@ -147,12 +151,14 @@ public class CardRegistry {
      * @throws IOException If the JSON file is not found.
      */
     private void initializeObjectiveCards() throws IOException {
-        File f = new File(FilePaths.OBJECTIVE_CARDS_JSON);
-        JsonNode root = mapper.readTree(f);
-        objectiveCards = List.of(mapper.readValue(root.get("objectiveCards").toString(), ObjectiveCard[].class));
-        objectiveCardsMap = new HashMap<>();
-        for(ObjectiveCard card : objectiveCards) {
-            objectiveCardsMap.put(card.getName(), card);
+        try (InputStream f = CardRegistry.class.getResourceAsStream(FilePaths.OBJECTIVE_CARDS_JSON)) {
+            JsonNode root = mapper.readTree(f);
+            objectiveCards = List.of(mapper.readValue(root.get("objectiveCards").toString(), ObjectiveCard[].class));
+            objectiveCardsMap = new HashMap<>();
+            for(ObjectiveCard card : objectiveCards) {
+                objectiveCardsMap.put(card.getName(), card);
+            }
+
         }
     }
 

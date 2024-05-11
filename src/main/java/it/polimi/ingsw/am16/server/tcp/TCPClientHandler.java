@@ -357,7 +357,6 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
     }
 
     private void sendTCPMessage(TCPMessage tcpMessage) {
-        System.out.println("Sending message of type " + tcpMessage.messageType() + " to  " + username);
         try {
             out.println(mapper.writeValueAsString(tcpMessage));
             out.flush();
