@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="543.0" prefWidth="911.0" style="-fx-background-color: #E8E1B7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.MainScreenController">
+   <children>
+      <StackPane fx:id="logo" layoutX="256.0" layoutY="18.0" prefHeight="200.0" prefWidth="911.0">
+         <children>
+            <ImageView fitHeight="146.0" fitWidth="317.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@assets/gui/banner.png" />
+               </image>
+            </ImageView>
+         </children>
+      </StackPane>
+      <ListView fx:id="gamesList" layoutX="256.0" layoutY="172.0" prefHeight="200.0" prefWidth="418.0" />
+      <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshGamesList" text="Button" />
+   </children>
+</FlowPane>

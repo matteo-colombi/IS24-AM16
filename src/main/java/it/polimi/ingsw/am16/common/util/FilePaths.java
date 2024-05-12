@@ -44,6 +44,21 @@ public final class FilePaths {
     public static final String CLI_FINAL_ROUND_LABEL = CLI_ASSETS + "/cliFinalRoundLabel.json";
 
     /**
+     * The path for GUI assets.
+     */
+    public static final String GUI_ASSETS = ASSETS + "/gui";
+
+    /**
+     * The path for the GUI app logo.
+     */
+    public static final String GUI_LOGO = GUI_ASSETS + "/logo.png";
+
+    /**
+     * The path for the GUI banner.
+     */
+    public static final String GUI_BANNER = GUI_ASSETS + "/banner.png";
+
+    /**
      * The path for JSON files.
      */
     public static final String JSON = "/json";

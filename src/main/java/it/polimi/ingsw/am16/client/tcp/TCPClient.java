@@ -33,7 +33,7 @@ public class TCPClient implements Runnable, ServerInterface {
     private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
     private final Socket socket;
-    private final ViewInterface view;
+    private ViewInterface view;
     private final PrintWriter out;
     private final Scanner in;
     private final AtomicBoolean running;
@@ -47,11 +47,10 @@ public class TCPClient implements Runnable, ServerInterface {
         socket = new Socket(address, port);
         out = new PrintWriter(socket.getOutputStream());
         in = new Scanner(socket.getInputStream());
-        this.view = view;
         this.lastPinged = new AtomicLong(System.currentTimeMillis());
         this.running = new AtomicBoolean(true);
         this.checkConnectionTimer = new Timer();
-        this.view.setServerInterface(this);
+        this.view = view;
     }
 
     /**
@@ -60,7 +59,6 @@ public class TCPClient implements Runnable, ServerInterface {
      */
     @Override
     public void run() {
-        this.view.start();
         checkConnectionRoutine();
         try {
             while (running.get()) {

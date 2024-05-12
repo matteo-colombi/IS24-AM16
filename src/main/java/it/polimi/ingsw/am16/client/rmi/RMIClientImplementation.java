@@ -31,12 +31,14 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
     private final ServerInterface serverInterface;
 
     public RMIClientImplementation(WelcomeRMIServer welcomeRMIServer, ViewInterface view) throws RemoteException {
-        ServerInterface rmiServer = welcomeRMIServer.getClientHandler(this);
-        this.serverInterface = rmiServer;
+        this.serverInterface = welcomeRMIServer.getClientHandler(this);
         this.lastPinged = new AtomicLong(System.currentTimeMillis());
         this.checkConnectionTimer = new Timer();
         this.view = view;
-        this.view.setServerInterface(rmiServer);
+    }
+
+    public ServerInterface getServerInterface() {
+        return serverInterface;
     }
 
     /**
@@ -44,7 +46,6 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      */
     public void start() {
         checkConnectionRoutine();
-        this.view.start();
     }
 
     /**

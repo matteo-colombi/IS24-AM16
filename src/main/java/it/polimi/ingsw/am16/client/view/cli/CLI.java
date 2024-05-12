@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
+import it.polimi.ingsw.am16.client.Client;
 import it.polimi.ingsw.am16.client.view.ViewInterface;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
@@ -110,7 +111,22 @@ public class CLI implements ViewInterface {
      * Starts the view. This includes the view's user input manager.
      */
     @Override
-    public synchronized void start() {
+    public synchronized void startView(String[] args) {
+        String[] hostAndPort = args[3].split(":");
+
+        int port = -1;
+
+        try {
+            port = Integer.parseInt(hostAndPort[1]);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid port: " + hostAndPort[1]);
+            System.exit(1);
+        }
+
+        ServerInterface serverInterface = Client.serverInterfaceFactory(args[2], hostAndPort[0], port, this);
+
+        this.cliInputManager.setServerInterface(serverInterface);
+
         printBanner();
         printWelcome();
 
@@ -690,6 +706,11 @@ public class CLI implements ViewInterface {
             System.out.printf("\n%s has deadlocked themselves! Their turn is skipped.\n", username);
         }
 
+    }
+
+    @Override
+    public ServerInterface getServerInterface() {
+        return null;
     }
 
     public synchronized void printHand() {

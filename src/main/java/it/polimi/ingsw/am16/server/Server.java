@@ -50,7 +50,7 @@ public class Server {
         welcomeTCPServerThread.start();
 
         try {
-            System.setProperty("java.rmi.server.hostname", "192.168.1.10");
+//            System.setProperty("java.rmi.server.hostname", "192.168.1.10");
 
             WelcomeRMIServer welcomeRMIServer = new WelcomeRMIServerImplementation(lobbyManager);
             Registry registry = LocateRegistry.createRegistry(rmiPort);

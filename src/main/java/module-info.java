@@ -38,4 +38,6 @@ module it.polimi.ingsw.am16 {
     exports it.polimi.ingsw.am16.common.util to java.rmi;
     exports it.polimi.ingsw.am16.common.exceptions to java.rmi;
     exports it.polimi.ingsw.am16.common.model.chat to java.rmi;
+
+    opens it.polimi.ingsw.am16.client.view.gui;
 }
