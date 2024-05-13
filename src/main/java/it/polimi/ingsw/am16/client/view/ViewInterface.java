@@ -297,5 +297,4 @@ public interface ViewInterface {
      */
     void signalDeadlock(String username);
 
-    ServerInterface getServerInterface();
 }

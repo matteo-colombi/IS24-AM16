@@ -11,19 +11,14 @@ import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -480,7 +475,4 @@ public class CodexGUI extends Application implements ViewInterface {
 
     }
 
-    public ServerInterface getServerInterface() {
-        return serverInterface;
-    }
 }

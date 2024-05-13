@@ -708,11 +708,6 @@ public class CLI implements ViewInterface {
 
     }
 
-    @Override
-    public ServerInterface getServerInterface() {
-        return null;
-    }
-
     public synchronized void printHand() {
         if (this.hand.isEmpty()) {
             System.out.println("\nYour hand is empty.\n");
