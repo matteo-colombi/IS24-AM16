@@ -169,7 +169,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
             gameController.joinPlayer(username, clientInterface);
             this.username = username;
         } catch (UnexpectedActionException e) {
-            clientInterface.promptError("User already rejoined the game.");
+            clientInterface.promptError(e.getMessage());
             gameController = null;
             this.username = null;
         }
