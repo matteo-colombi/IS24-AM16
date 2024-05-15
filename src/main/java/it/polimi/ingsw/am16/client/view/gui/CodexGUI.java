@@ -51,7 +51,7 @@ public class CodexGUI extends Application implements ViewInterface {
 
         this.stage = stage;
 
-        FXMLLoader splashScreenLoader = new FXMLLoader(CodexGUI.class.getResource("/splash-screen.fxml"));
+        FXMLLoader splashScreenLoader = new FXMLLoader(CodexGUI.class.getResource("/assets/gui/screens/splash-screen.fxml"));
         Scene scene = new Scene(splashScreenLoader.load());
         Image icon = new Image(Objects.requireNonNull(CodexGUI.class.getResourceAsStream("/assets/gui/logo.png")));
 
@@ -62,7 +62,7 @@ public class CodexGUI extends Application implements ViewInterface {
         stage.setScene(scene);
         stage.show();
 
-        FXMLLoader mainScreenLoader = new FXMLLoader(CodexGUI.class.getResource("/main-screen.fxml"));
+        FXMLLoader mainScreenLoader = new FXMLLoader(CodexGUI.class.getResource("/assets/gui/screens/games-screen.fxml"));
 
         PauseTransition delay = new PauseTransition(Duration.seconds(3));
         delay.setOnFinished(event -> {
