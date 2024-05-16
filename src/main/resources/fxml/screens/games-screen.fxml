@@ -60,7 +60,7 @@
          <children>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
-                  <Button mnemonicParsing="false" onAction="#back" prefHeight="40.0" prefWidth="140.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#back" prefHeight="40.0" prefWidth="140.0" style="-fx-background-radius: 5px;" stylesheets="@stylesheet.css" StackPane.alignment="CENTER">
                      <font>
                         <Font name="System Italic" size="14.0" />
                      </font>
