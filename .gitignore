@@ -37,3 +37,4 @@ mvnw.cmd
 AM16.iml
 /src/test/resources/
 /src/main/resources/assets/gui/
+!/src/main/resources/assets/gui/screens/
