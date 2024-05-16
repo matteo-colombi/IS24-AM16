@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: #E8E1B7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: #E8E1B7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.WelcomeScreenController">
    <children>
       <Text fill="#3c2313" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to" textOrigin="CENTER" translateY="50.0" StackPane.alignment="TOP_CENTER">
          <font>
@@ -22,7 +22,7 @@
             <Rectangle2D />
          </viewport>
          <image>
-            <Image url="@../banner.png" />
+            <Image url="@../../assets/gui/banner.png" />
          </image>
       </ImageView>
       <Text fill="#922790" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your username:" textOrigin="CENTER" translateY="10.0" StackPane.alignment="CENTER">
@@ -30,7 +30,7 @@
             <Font name="System Bold Italic" size="24.0" />
          </font>
       </Text>
-      <TextField alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="500.0" promptText="CodexLover" style="-fx-background-radius: 5px;" translateY="60.0" StackPane.alignment="CENTER">
+      <TextField fx:id="usernameField" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="500.0" promptText="CodexLover" style="-fx-background-radius: 5px;" translateY="60.0" StackPane.alignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
@@ -38,7 +38,7 @@
       <Text fill="#ef3f36" strokeType="OUTSIDE" strokeWidth="0.0" text="Max 10 characters" textOrigin="CENTER" translateY="90.0" StackPane.alignment="CENTER" />
       <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateX="-110.0" translateY="205.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+            <Button fx:id="joinButton" mnemonicParsing="false" onAction="#join" prefHeight="50.0" prefWidth="200.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
                <font>
                   <Font name="System Italic" size="18.0" />
                </font>
@@ -47,7 +47,7 @@
                <children>
                   <ImageView fitHeight="24.0" fitWidth="24.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../icons/game-controller.png" />
+                        <Image url="@../../assets/gui/icons/game-controller.png" />
                      </image>
                   </ImageView>
                   <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Join" textOrigin="CENTER">
@@ -61,7 +61,7 @@
       </StackPane>
       <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateX="110.0" translateY="205.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="200.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+            <Button fx:id="createButton" mnemonicParsing="false" onAction="#create" prefHeight="50.0" prefWidth="200.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
                <font>
                   <Font name="System Italic" size="18.0" />
                </font>
@@ -70,7 +70,7 @@
                <children>
                   <ImageView fitHeight="18.0" fitWidth="18.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../icons/add.png" />
+                        <Image url="@../../assets/gui/icons/add.png" />
                      </image>
                   </ImageView>
                   <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Create" textOrigin="CENTER">
@@ -84,7 +84,7 @@
       </StackPane>
       <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateY="270.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+            <Button fx:id="quitButton" mnemonicParsing="false" onAction="#quit" prefHeight="40.0" prefWidth="160.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
                <font>
                   <Font name="System Italic" size="18.0" />
                </font>
@@ -93,7 +93,7 @@
                <children>
                   <ImageView fitHeight="18.0" fitWidth="18.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../icons/door.png" />
+                        <Image url="@../../assets/gui/icons/door.png" />
                      </image>
                   </ImageView>
                   <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Quit" textOrigin="CENTER">

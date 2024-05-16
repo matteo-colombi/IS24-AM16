@@ -6,6 +6,7 @@ import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.util.FilePaths;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.animation.PauseTransition;
@@ -14,7 +15,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -26,14 +26,37 @@ import java.util.Set;
 
 public class CodexGUI extends Application implements ViewInterface {
 
+    private static CodexGUI guiInstance;
+
+    private GUIState guiState;
+
     private Stage stage;
 
     private ServerInterface serverInterface;
 
-    private MainScreenController mainScreenController;
+    private WelcomeScreenController welcomeScreenController;
+
+    public static CodexGUI getGUI() {
+        return guiInstance;
+    }
+
+    public ServerInterface getServerInterface() {
+        return serverInterface;
+    }
+
+    public GUIState getGuiState() {
+        return guiState;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
+        guiInstance = this;
+        guiState = new GUIState();
+
         List<String> args = getParameters().getRaw();
 
         String[] hostAndPort = args.get(3).split(":");
@@ -51,9 +74,9 @@ public class CodexGUI extends Application implements ViewInterface {
 
         this.stage = stage;
 
-        FXMLLoader splashScreenLoader = new FXMLLoader(CodexGUI.class.getResource("/assets/gui/screens/splash-screen.fxml"));
+        FXMLLoader splashScreenLoader = new FXMLLoader(CodexGUI.class.getResource(FilePaths.GUI_SCREENS + "/splash-screen.fxml"));
         Scene scene = new Scene(splashScreenLoader.load());
-        Image icon = new Image(Objects.requireNonNull(CodexGUI.class.getResourceAsStream("/assets/gui/logo.png")));
+        Image icon = new Image(Objects.requireNonNull(CodexGUI.class.getResourceAsStream(FilePaths.GUI_LOGO)));
 
         stage.setFullScreen(true);
         stage.setResizable(false);
@@ -62,17 +85,14 @@ public class CodexGUI extends Application implements ViewInterface {
         stage.setScene(scene);
         stage.show();
 
-        FXMLLoader mainScreenLoader = new FXMLLoader(CodexGUI.class.getResource("/assets/gui/screens/games-screen.fxml"));
+        FXMLLoader welcomeScreenLoader = new FXMLLoader(CodexGUI.class.getResource(FilePaths.GUI_SCREENS + "/welcome-screen.fxml"));
 
         PauseTransition delay = new PauseTransition(Duration.seconds(3));
         delay.setOnFinished(event -> {
             try {
-                Parent mainScreen = mainScreenLoader.load();
-                mainScreenController = mainScreenLoader.getController();
-                mainScreenController.setServerInterface(serverInterface);
-                StackPane logo = (StackPane) mainScreen.lookup("#logo");
-                logo.setPrefWidth(scene.getWidth());
-                scene.setRoot(mainScreen);
+                Parent welcomeScreen = welcomeScreenLoader.load();
+                welcomeScreenController = welcomeScreenLoader.getController();
+                scene.setRoot(welcomeScreen);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -107,7 +127,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public void printGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) {
-        mainScreenController.setGamesList(gameIds.stream().toList());
+        guiState.getGamesScreenController().setGamesList(gameIds.stream().toList(), currentPlayers, maxPlayers);
     }
 
     /**
