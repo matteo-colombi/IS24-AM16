@@ -7,7 +7,6 @@ import it.polimi.ingsw.am16.server.rmi.WelcomeRMIServerImplementation;
 import it.polimi.ingsw.am16.server.tcp.WelcomeTCPServer;
 
 import java.io.IOException;
-import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -17,7 +16,7 @@ public class Server {
      * Starts the server.
      * @param args The command line arguments.
      */
-    public static void start(String[] args) {
+    public static void main(String[] args) {
         String host = args[1];
         int tcpPort;
         int rmiPort;

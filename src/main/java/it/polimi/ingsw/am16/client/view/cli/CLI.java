@@ -123,7 +123,13 @@ public class CLI implements ViewInterface {
             System.exit(1);
         }
 
-        ServerInterface serverInterface = Client.serverInterfaceFactory(args[2], hostAndPort[0], port, this);
+        ServerInterface serverInterface;
+
+        try {
+            serverInterface = Client.serverInterfaceFactory(args[2], hostAndPort[0], port, this);
+        } catch (IllegalArgumentException e) {
+            return;
+        }
 
         this.cliInputManager.setServerInterface(serverInterface);
 

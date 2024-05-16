@@ -25,14 +25,14 @@ public class CodexStart {
                     printUsage();
                     return;
                 }
-                Client.start(args);
+                Client.main(args);
             }
             case "--server" -> {
                 if (args.length != 4) {
                     printUsage();
                     return;
                 }
-                Server.start(args);
+                Server.main(args);
             }
             default -> printUsage();
         }

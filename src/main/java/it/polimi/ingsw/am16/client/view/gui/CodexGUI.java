@@ -11,14 +11,17 @@ import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -70,7 +73,11 @@ public class CodexGUI extends Application implements ViewInterface {
             System.exit(1);
         }
 
-        serverInterface = Client.serverInterfaceFactory(args.get(2), hostAndPort[0], port, this);
+        try {
+            serverInterface = Client.serverInterfaceFactory(args.get(2), hostAndPort[0], port, this);
+        } catch (IllegalArgumentException e) {
+            return;
+        }
 
         this.stage = stage;
 
@@ -100,6 +107,15 @@ public class CodexGUI extends Application implements ViewInterface {
         delay.play();
     }
 
+    @Override
+    public void stop() {
+        try{
+            serverInterface.disconnect();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Starts the view. This includes the view's user input manager.
      */
@@ -127,7 +143,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public void printGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) {
-        guiState.getGamesScreenController().setGamesList(gameIds.stream().toList(), currentPlayers, maxPlayers);
+        GamesScreenController controller = guiState.getGamesScreenController();
+        if (controller != null) {
+            controller.setGamesList(gameIds.stream().toList(), currentPlayers, maxPlayers);
+        }
     }
 
     /**
@@ -446,7 +465,12 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public void promptError(String errorMessage) {
-
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("An error occured");
+            alert.setContentText(errorMessage);
+            alert.showAndWait();
+        });
     }
 
     /**

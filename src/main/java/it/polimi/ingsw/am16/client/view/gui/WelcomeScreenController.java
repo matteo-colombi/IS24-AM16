@@ -31,12 +31,7 @@ public class WelcomeScreenController implements Initializable {
 
     @FXML
     public void quit(ActionEvent ignored) {
-        try{
-            serverInterface.disconnect();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        System.exit(0);
+        CodexGUI.getGUI().getStage().close();
     }
 
     @FXML

@@ -16,17 +16,13 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 public class Client {
-    public static void start(String[] args) {
+    public static void main(String[] args) {
 
-        ViewInterface view = null;
+        ViewInterface view;
 
         switch (args[1].toLowerCase()) {
-            case "--gui" -> {
-                view = new CodexGUI();
-            }
-            case "--cli" -> {
-                view = new CLI();
-            }
+            case "--gui" -> view = new CodexGUI();
+            case "--cli" -> view = new CLI();
             default -> {
                 System.err.println("Invalid argument: \"" + args[1] + "\"");
                 System.out.println("Please use --gui or --cli.");
@@ -37,20 +33,7 @@ public class Client {
         view.startView(args);
     }
 
-    public static ServerInterface serverInterfaceFactory(String protocol, String host, int port, ViewInterface view) {
-//        String[] hostAndPort = args[3].split(":");
-//        String host = hostAndPort[0];
-//        int port;
-//        try {
-//            port = Integer.parseInt(hostAndPort[1]);
-//            if (port < 1024 || port > 65535) {
-//                throw new NumberFormatException();
-//            }
-//        } catch (NumberFormatException e) {
-//            System.err.println("Invalid port.");
-//            return;
-//        }
-
+    public static ServerInterface serverInterfaceFactory(String protocol, String host, int port, ViewInterface view) throws IllegalArgumentException {
         ServerInterface serverInterface = null;
 
         switch (protocol.toLowerCase()) {
@@ -88,6 +71,7 @@ public class Client {
             default -> {
                 System.err.println("Invalid argument: \"" + protocol + "\"");
                 System.out.println("Please use --socket or --rmi.");
+                throw new IllegalArgumentException();
             }
         }
         return serverInterface;
