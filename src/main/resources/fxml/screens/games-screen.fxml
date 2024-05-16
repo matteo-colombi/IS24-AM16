@@ -12,8 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<StackPane prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: #E8E1B7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.MainScreenController">
+<StackPane prefHeight="1080.0" prefWidth="1920.0" style="-fx-background-color: #E8E1B7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.GamesScreenController">
    <children>
       <ImageView fitHeight="150.0" fitWidth="320.0" pickOnBounds="true" preserveRatio="true" translateY="50.0" StackPane.alignment="TOP_CENTER">
          <image>
@@ -27,7 +26,7 @@
       </Text>
       <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="230.0" prefWidth="520.0" style="-fx-border-color: #57402B; -fx-border-radius: 5;" translateY="50.0" vbarPolicy="ALWAYS" StackPane.alignment="CENTER">
         <content>
-            <VBox alignment="TOP_CENTER" fillWidth="false" minHeight="225.0" spacing="1.5" style="-fx-background-color: #CAC6A0;">
+            <VBox fx:id="gamesList" alignment="TOP_CENTER" fillWidth="false" minHeight="225.0" spacing="1.5" style="-fx-background-color: #CAC6A0;">
                <children>
                   <StackPane>
                      <children>
@@ -371,10 +370,10 @@
       </ScrollPane>
       <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" translateY="200.0" StackPane.alignment="CENTER">
          <children>
-            <TextField prefHeight="30.0" prefWidth="350.0" promptText="Enter a game code" />
+            <TextField fx:id="gameIdField" prefHeight="30.0" prefWidth="350.0" promptText="Already have a code? Enter it here!" />
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#manualJoin" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
                      <font>
                         <Font name="System Italic" size="14.0" />
                      </font>
@@ -401,7 +400,7 @@
          <children>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="140.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#back" prefHeight="40.0" prefWidth="140.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
                      <font>
                         <Font name="System Italic" size="14.0" />
                      </font>
@@ -424,7 +423,7 @@
             </StackPane>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="140.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#refreshGamesList" prefHeight="40.0" prefWidth="140.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
                      <font>
                         <Font name="System Italic" size="14.0" />
                      </font>
