@@ -31,7 +31,7 @@ public class WelcomeTCPServer implements Runnable {
      */
     public void startServer() {
         try(ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("TCP server ready");
+            System.out.println("TCP server ready: listening on port " + port);
             while (true) {
                 try {
                     final Socket socket = serverSocket.accept();

@@ -59,6 +59,26 @@ public final class FilePaths {
     public static final String GUI_BANNER = GUI_ASSETS + "/banner.png";
 
     /**
+     * The path for the GUI icons.
+     */
+    public static final String GUI_ICONS = GUI_ASSETS + "/icons";
+
+    /**
+     * The path for .fxml files.
+     */
+    public static final String GUI_FXML = "/fxml";
+
+    /**
+     * The path for GUI screens.
+     */
+    public static final String GUI_SCREENS = GUI_FXML + "/screens";
+
+    /**
+     * The path for GUI elements.
+     */
+    public static final String GUI_ELEMENTS = GUI_FXML + "/elements";
+
+    /**
      * The path for JSON files.
      */
     public static final String JSON = "/json";
