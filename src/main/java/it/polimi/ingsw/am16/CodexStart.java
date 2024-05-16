@@ -28,7 +28,7 @@ public class CodexStart {
                 Client.start(args);
             }
             case "--server" -> {
-                if (args.length != 3) {
+                if (args.length != 4) {
                     printUsage();
                     return;
                 }
@@ -46,7 +46,7 @@ public class CodexStart {
         System.out.println("Arguments should be:");
         System.out.println("--client [--gui or --cli] [--socket or --rmi] serverAddress:port");
         System.out.println("or, to start a server");
-        System.out.println("--server socketPort rmiPort");
+        System.out.println("--server serverHost socketPort rmiPort");
     }
 }
 

@@ -18,12 +18,13 @@ public class Server {
      * @param args The command line arguments.
      */
     public static void start(String[] args) {
+        String host = args[1];
         int tcpPort;
         int rmiPort;
 
         try {
-            tcpPort = Integer.parseInt(args[1]);
-            rmiPort = Integer.parseInt(args[2]);
+            tcpPort = Integer.parseInt(args[2]);
+            rmiPort = Integer.parseInt(args[3]);
             if (tcpPort < 1024 || rmiPort < 1024 || tcpPort > 65535 || rmiPort > 65535) {
                 System.err.println("Ports under 1024 or over 65535 cannot be used.");
                 return;
@@ -45,18 +46,20 @@ public class Server {
             System.err.println("Couldn't load game saves: " + e.getMessage());
         }
 
+        System.out.println("Starting server on host " + host);
+
         WelcomeTCPServer welcomeTCPServer = new WelcomeTCPServer(tcpPort, lobbyManager);
         Thread welcomeTCPServerThread = new Thread(welcomeTCPServer);
         welcomeTCPServerThread.start();
 
         try {
-//            System.setProperty("java.rmi.server.hostname", "192.168.1.10");
+            System.setProperty("java.rmi.server.hostname", host);
 
             WelcomeRMIServer welcomeRMIServer = new WelcomeRMIServerImplementation(lobbyManager);
             Registry registry = LocateRegistry.createRegistry(rmiPort);
             registry.rebind("CodexWelcomeServer", welcomeRMIServer);
 
-            System.out.println("RMI server ready");
+            System.out.println("RMI server ready: registry listening on port " + rmiPort);
         } catch (RemoteException e) {
             System.err.println(e.getMessage() + ". RMI server couldn't start.");
         }

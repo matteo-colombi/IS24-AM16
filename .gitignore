@@ -36,3 +36,4 @@ mvnw.cmd
 #Custom added
 AM16.iml
 /src/test/resources/
+/src/main/resources/assets/gui/
