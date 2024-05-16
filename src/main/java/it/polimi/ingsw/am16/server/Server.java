@@ -15,6 +15,7 @@ import java.rmi.registry.Registry;
 public class Server {
     /**
      * Starts the server.
+     *
      * @param args The command line arguments.
      */
     public static void start(String[] args) {
@@ -50,7 +51,8 @@ public class Server {
         welcomeTCPServerThread.start();
 
         try {
-//            System.setProperty("java.rmi.server.hostname", "192.168.1.10");
+//            System.setProperty("java.rmi.server.hostname", "192.168.1.241");
+//            System.setProperty("java.rmi.server.logCalls", "true");
 
             WelcomeRMIServer welcomeRMIServer = new WelcomeRMIServerImplementation(lobbyManager);
             Registry registry = LocateRegistry.createRegistry(rmiPort);

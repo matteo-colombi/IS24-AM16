@@ -59,7 +59,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
                     try {
                         clientInterface.ping();
                     } catch (RemoteException ignored) {
-
+//                        System.err.println(ignored.getMessage());
                     }
                 } else {
                     System.out.println("Client didn't answer the last ping.");
