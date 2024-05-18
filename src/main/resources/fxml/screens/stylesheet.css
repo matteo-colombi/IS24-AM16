@@ -1,0 +1,68 @@
+.button {
+    -fx-background-color: linear-gradient(#e8dfcc, #c4b8a0);
+    -fx-text-fill: #663300;
+    -fx-border-color: #663300;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 10 20;
+    -fx-font-size: 16px;
+    -fx-font-family: 'Cinzel', serif;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 5, 0.5, 0, 0);
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(#d8cdbf, #b8a992);
+}
+
+.button:pressed {
+    -fx-background-color: linear-gradient(#c4b8a0, #a89778);
+    -fx-effect: none;
+}
+
+/* CSS per il TextField */
+.text-field {
+    -fx-background-color: #f9f5e3;
+    -fx-text-fill: #663300;
+    -fx-border-color: #663300;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 5;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Cinzel', serif;
+}
+
+.text-field:focused {
+    -fx-border-color: #855a33;
+}
+
+/* CSS per lo ScrollPane */
+.scroll-pane {
+    -fx-background: #f9f5e3;
+    -fx-border-color: #663300;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.scroll-pane .viewport {
+    -fx-background: #ffffff;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .thumb, .scroll-bar:horizontal .thumb {
+    -fx-background-color: #c4b8a0;
+    -fx-background-radius: 5;
+    -fx-border-color: #663300;
+    -fx-border-width: 1px;
+}
+
+.scroll-bar:vertical .track, .scroll-bar:horizontal .track {
+    -fx-background-color: #e8dfcc;
+    -fx-background-radius: 5;
+}
