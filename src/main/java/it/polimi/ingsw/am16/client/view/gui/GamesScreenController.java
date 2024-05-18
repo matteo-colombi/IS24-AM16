@@ -7,9 +7,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -29,11 +29,15 @@ public class GamesScreenController implements Initializable {
     private VBox gamesList;
 
     @FXML
+    private ImageView borderImage;
+
+    @FXML
     private TextField gameIdField;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         CodexGUI.getGUI().getGuiState().setGamesScreenController(this);
+        borderImage.setMouseTransparent(true);
         this.serverInterface = CodexGUI.getGUI().getServerInterface();
         refresh();
     }
@@ -45,13 +49,7 @@ public class GamesScreenController implements Initializable {
 
     @FXML
     public void back(ActionEvent ignored) {
-        FXMLLoader welcomeScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/welcome-screen.fxml"));
-        try {
-            Parent welcomeScreen = welcomeScreenLoader.load();
-            CodexGUI.getGUI().getStage().getScene().setRoot(welcomeScreen);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        CodexGUI.getGUI().switchToWelcomeScreen();
     }
 
     @FXML
@@ -66,7 +64,7 @@ public class GamesScreenController implements Initializable {
         join(gameId);
     }
 
-    public void refresh() {
+    private void refresh() {
         try {
             serverInterface.getGames();
         } catch (RemoteException e) {
@@ -74,7 +72,7 @@ public class GamesScreenController implements Initializable {
         }
     }
 
-    public void join(String gameId) {
+    private void join(String gameId) {
         try {
             serverInterface.joinGame(gameId, CodexGUI.getGUI().getGuiState().getUsername());
         } catch (RemoteException e) {
@@ -82,7 +80,7 @@ public class GamesScreenController implements Initializable {
         }
     }
 
-    public void setGamesList(List<String> games, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) {
+    public synchronized void setGamesList(List<String> games, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) {
         Platform.runLater(() -> {
             gamesList.getChildren().clear();
             for(String gameId : games) {
@@ -91,7 +89,7 @@ public class GamesScreenController implements Initializable {
         });
     }
 
-    public StackPane createGameCard(String gameId, int currentPlayers, int maxPlayers) {
+    private StackPane createGameCard(String gameId, int currentPlayers, int maxPlayers) {
         FXMLLoader cardLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_ELEMENTS + "/game-card.fxml"));
         try {
             StackPane card = cardLoader.load();

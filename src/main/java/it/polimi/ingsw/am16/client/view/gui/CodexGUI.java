@@ -37,8 +37,6 @@ public class CodexGUI extends Application implements ViewInterface {
 
     private ServerInterface serverInterface;
 
-    private WelcomeScreenController welcomeScreenController;
-
     public static CodexGUI getGUI() {
         return guiInstance;
     }
@@ -92,19 +90,31 @@ public class CodexGUI extends Application implements ViewInterface {
         stage.setScene(scene);
         stage.show();
 
-        FXMLLoader welcomeScreenLoader = new FXMLLoader(CodexGUI.class.getResource(FilePaths.GUI_SCREENS + "/welcome-screen.fxml"));
-
         PauseTransition delay = new PauseTransition(Duration.seconds(3));
         delay.setOnFinished(event -> {
-            try {
-                Parent welcomeScreen = welcomeScreenLoader.load();
-                welcomeScreenController = welcomeScreenLoader.getController();
-                scene.setRoot(welcomeScreen);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            switchToWelcomeScreen();
         });
         delay.play();
+    }
+
+    public void switchToWelcomeScreen() {
+        FXMLLoader welcomeScreenLoader = new FXMLLoader(CodexGUI.class.getResource(FilePaths.GUI_SCREENS + "/welcome-screen.fxml"));
+        try {
+            Parent welcomeScreen = welcomeScreenLoader.load();
+            stage.getScene().setRoot(welcomeScreen);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void switchToGamesScreen() {
+        FXMLLoader gamesScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/games-screen.fxml"));
+        try {
+            Parent gamesScreen = gamesScreenLoader.load();
+            stage.getScene().setRoot(gamesScreen);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -130,7 +140,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param serverInterface The interface which this view should use to communicate with the server.
      */
     @Override
-    public void setServerInterface(ServerInterface serverInterface) {
+    public synchronized void setServerInterface(ServerInterface serverInterface) {
         this.serverInterface = serverInterface;
     }
 
@@ -142,7 +152,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param maxPlayers     The maximum number of players
      */
     @Override
-    public void printGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) {
+    public synchronized void printGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) {
         GamesScreenController controller = guiState.getGamesScreenController();
         if (controller != null) {
             controller.setGamesList(gameIds.stream().toList(), currentPlayers, maxPlayers);
@@ -156,7 +166,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param username The username the player has joined the game with.
      */
     @Override
-    public void joinGame(String gameId, String username) {
+    public synchronized void joinGame(String gameId, String username) {
 
     }
 
@@ -166,7 +176,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param username The new player's username.
      */
     @Override
-    public void addPlayer(String username) {
+    public synchronized void addPlayer(String username) {
 
     }
 
@@ -176,7 +186,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param usernames The list of usernames of the players present in the game.
      */
     @Override
-    public void setPlayers(List<String> usernames) {
+    public synchronized void setPlayers(List<String> usernames) {
 
     }
 
@@ -186,7 +196,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param state The new game state.
      */
     @Override
-    public void setGameState(GameState state) {
+    public synchronized void setGameState(GameState state) {
 
     }
 
@@ -197,7 +207,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param commonGoldCards     The common gold cards (may also contain resource cards if the gold card deck is empty). Should always be of length 2.
      */
     @Override
-    public void setCommonCards(PlayableCard[] commonResourceCards, PlayableCard[] commonGoldCards) {
+    public synchronized void setCommonCards(PlayableCard[] commonResourceCards, PlayableCard[] commonGoldCards) {
 
     }
 
@@ -208,7 +218,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param resourceType The resource type of the card on top of the given deck.
      */
     @Override
-    public void setDeckTopType(PlayableCardType whichDeck, ResourceType resourceType) {
+    public synchronized void setDeckTopType(PlayableCardType whichDeck, ResourceType resourceType) {
 
     }
 
@@ -218,7 +228,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param starterCard The starter card of the player.
      */
     @Override
-    public void promptStarterChoice(StarterCard starterCard) {
+    public synchronized void promptStarterChoice(StarterCard starterCard) {
 
     }
 
@@ -226,7 +236,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * Tells the client that the color-choosing phase has begun.
      */
     @Override
-    public void choosingColors() {
+    public synchronized void choosingColors() {
 
     }
 
@@ -236,7 +246,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param colorChoices The possible choices for the player's color.
      */
     @Override
-    public void promptColorChoice(List<PlayerColor> colorChoices) {
+    public synchronized void promptColorChoice(List<PlayerColor> colorChoices) {
 
     }
 
@@ -247,7 +257,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param color    The color assigned to the player.
      */
     @Override
-    public void setColor(String username, PlayerColor color) {
+    public synchronized void setColor(String username, PlayerColor color) {
 
     }
 
@@ -255,7 +265,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * Tells the client that the cards for the game are being drawn.
      */
     @Override
-    public void drawingCards() {
+    public synchronized void drawingCards() {
 
     }
 
@@ -265,7 +275,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param hand The player's hand.
      */
     @Override
-    public void setHand(List<PlayableCard> hand) {
+    public synchronized void setHand(List<PlayableCard> hand) {
 
     }
 
@@ -275,7 +285,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param card The card to be added.
      */
     @Override
-    public void addCardToHand(PlayableCard card) {
+    public synchronized void addCardToHand(PlayableCard card) {
 
     }
 
@@ -285,7 +295,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param card The card to be removed.
      */
     @Override
-    public void removeCardFromHand(PlayableCard card) {
+    public synchronized void removeCardFromHand(PlayableCard card) {
 
     }
 
@@ -296,7 +306,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param hand     The restricted hand.
      */
     @Override
-    public void setOtherHand(String username, List<RestrictedCard> hand) {
+    public synchronized void setOtherHand(String username, List<RestrictedCard> hand) {
 
     }
 
@@ -307,7 +317,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param newCard  The restricted card to be added.
      */
     @Override
-    public void addCardToOtherHand(String username, RestrictedCard newCard) {
+    public synchronized void addCardToOtherHand(String username, RestrictedCard newCard) {
 
     }
 
@@ -318,7 +328,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param cardToRemove The restricted card to be removed.
      */
     @Override
-    public void removeCardFromOtherHand(String username, RestrictedCard cardToRemove) {
+    public synchronized void removeCardFromOtherHand(String username, RestrictedCard cardToRemove) {
 
     }
 
@@ -335,7 +345,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param objectCounts       A map containing the amount of each object that the player has.
      */
     @Override
-    public void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
+    public synchronized void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
 
     }
 
@@ -352,7 +362,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param objectCounts          A map containing the amount of each object that the player has, following the move which was just made.
      */
     @Override
-    public void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
+    public synchronized void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
 
     }
 
@@ -363,7 +373,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param gamePoints The given player's number of game points.
      */
     @Override
-    public void setGamePoints(String username, int gamePoints) {
+    public synchronized void setGamePoints(String username, int gamePoints) {
 
     }
 
@@ -374,7 +384,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param objectivePoints The given player's number of objective points.
      */
     @Override
-    public void setObjectivePoints(String username, int objectivePoints) {
+    public synchronized void setObjectivePoints(String username, int objectivePoints) {
 
     }
 
@@ -384,7 +394,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param commonObjectives The common objectives. Should always contain 2 elements.
      */
     @Override
-    public void setCommonObjectives(ObjectiveCard[] commonObjectives) {
+    public synchronized void setCommonObjectives(ObjectiveCard[] commonObjectives) {
 
     }
 
@@ -394,7 +404,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param possiblePersonalObjectives The possible objectives the player can choose from. Should always contain 2 cards.
      */
     @Override
-    public void promptObjectiveChoice(List<ObjectiveCard> possiblePersonalObjectives) {
+    public synchronized void promptObjectiveChoice(List<ObjectiveCard> possiblePersonalObjectives) {
 
     }
 
@@ -404,7 +414,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param personalObjective The player's personal objective.
      */
     @Override
-    public void setPersonalObjective(ObjectiveCard personalObjective) {
+    public synchronized void setPersonalObjective(ObjectiveCard personalObjective) {
 
     }
 
@@ -414,7 +424,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param usernames The turn order. Should always contain as many usernames as were added at the beginning of the game.
      */
     @Override
-    public void setStartOrder(List<String> usernames) {
+    public synchronized void setStartOrder(List<String> usernames) {
 
     }
 
@@ -424,7 +434,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param username The player's username.
      */
     @Override
-    public void turn(String username) {
+    public synchronized void turn(String username) {
 
     }
 
@@ -434,7 +444,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param winnerUsernames The winners of the game.
      */
     @Override
-    public void setWinners(List<String> winnerUsernames) {
+    public synchronized void setWinners(List<String> winnerUsernames) {
 
     }
 
@@ -444,7 +454,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param messages The chat messages to add.
      */
     @Override
-    public void addMessages(List<ChatMessage> messages) {
+    public synchronized void addMessages(List<ChatMessage> messages) {
 
     }
 
@@ -454,7 +464,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param message The new message.
      */
     @Override
-    public void addMessage(ChatMessage message) {
+    public synchronized void addMessage(ChatMessage message) {
 
     }
 
@@ -464,7 +474,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param errorMessage The message that should be displayed to the user.
      */
     @Override
-    public void promptError(String errorMessage) {
+    public synchronized void promptError(String errorMessage) {
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("An error occured");
@@ -477,7 +487,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * Forces the client to redraw the view.
      */
     @Override
-    public void redrawView() {
+    public synchronized void redrawView() {
 
     }
 
@@ -485,7 +495,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * Notifies the client that from now on they shouldn't draw cards anymore.
      */
     @Override
-    public void notifyDontDraw() {
+    public synchronized void notifyDontDraw() {
 
     }
 
@@ -495,7 +505,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param whoDisconnected The username of the player who disconnected.
      */
     @Override
-    public void signalDisconnection(String whoDisconnected) {
+    public synchronized void signalDisconnection(String whoDisconnected) {
 
     }
 
@@ -505,7 +515,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param whoDisconnected
      */
     @Override
-    public void signalGameSuspension(String whoDisconnected) {
+    public synchronized void signalGameSuspension(String whoDisconnected) {
 
     }
 
@@ -515,7 +525,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * @param username The username of the player who skipped their turn.
      */
     @Override
-    public void signalDeadlock(String username) {
+    public synchronized void signalDeadlock(String username) {
 
     }
 

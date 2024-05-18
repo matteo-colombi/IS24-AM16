@@ -8,27 +8,27 @@ public class GUIState {
     private WelcomeScreenController welcomeScreenController;
     private GamesScreenController gamesScreenController;
 
-    public WelcomeScreenController getWelcomeScreenController() {
+    public synchronized WelcomeScreenController getWelcomeScreenController() {
         return welcomeScreenController;
     }
 
-    public void setWelcomeScreenController(WelcomeScreenController welcomeScreenController) {
+    public synchronized void setWelcomeScreenController(WelcomeScreenController welcomeScreenController) {
         this.welcomeScreenController = welcomeScreenController;
     }
 
-    public GamesScreenController getGamesScreenController() {
+    public synchronized GamesScreenController getGamesScreenController() {
         return gamesScreenController;
     }
 
-    public void setGamesScreenController(GamesScreenController gamesScreenController) {
+    public synchronized void setGamesScreenController(GamesScreenController gamesScreenController) {
         this.gamesScreenController = gamesScreenController;
     }
 
-    public void setUsername(String username) {
+    public synchronized void setUsername(String username) {
         this.username = username;
     }
 
-    public String getUsername() {
+    public synchronized String getUsername() {
         return username;
     }
 }
