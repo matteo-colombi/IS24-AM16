@@ -27,32 +27,72 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * The main class of the GUI. This class is responsible for starting the GUI and switching between the different screens.
+ */
 public class CodexGUI extends Application implements ViewInterface {
 
+    /**
+     * The instance of the GUI.
+     */
     private static CodexGUI guiInstance;
 
+    /**
+     * The state of the GUI.
+     */
     private GUIState guiState;
 
+    /**
+     * The stage of the GUI.
+     */
     private Stage stage;
 
+    /**
+     * The server interface.
+     */
     private ServerInterface serverInterface;
 
+    /**
+     * Gets the instance of the GUI.
+     *
+     * @return The instance of the GUI.
+     */
     public static CodexGUI getGUI() {
         return guiInstance;
     }
 
+    /**
+     * Gets the server interface.
+     *
+     * @return The server interface.
+     */
     public ServerInterface getServerInterface() {
         return serverInterface;
     }
 
+    /**
+     * Gets the GUI state.
+     *
+     * @return The GUI state.
+     */
     public GUIState getGuiState() {
         return guiState;
     }
 
+    /**
+     * Gets the stage.
+     *
+     * @return The stage.
+     */
     public Stage getStage() {
         return stage;
     }
 
+    /**
+     * Starts the GUI, connecting it to the server and displaying the splash screen for 3 seconds before switching to the welcome screen.
+     *
+     * @param stage The arguments of the GUI.
+     */
     @Override
     public void start(Stage stage) throws IOException {
         guiInstance = this;
@@ -97,6 +137,9 @@ public class CodexGUI extends Application implements ViewInterface {
         delay.play();
     }
 
+    /**
+     * Switches to the welcome screen.
+     */
     public void switchToWelcomeScreen() {
         FXMLLoader welcomeScreenLoader = new FXMLLoader(CodexGUI.class.getResource(FilePaths.GUI_SCREENS + "/welcome-screen.fxml"));
         try {
@@ -107,6 +150,9 @@ public class CodexGUI extends Application implements ViewInterface {
         }
     }
 
+    /**
+     * Switches to the games screen.
+     */
     public void switchToGamesScreen() {
         FXMLLoader gamesScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/games-screen.fxml"));
         try {
@@ -117,6 +163,9 @@ public class CodexGUI extends Application implements ViewInterface {
         }
     }
 
+    /**
+     * Switches to the game screen.
+     */
     @Override
     public void stop() {
         try{

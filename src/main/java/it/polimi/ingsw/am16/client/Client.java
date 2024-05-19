@@ -15,6 +15,10 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
+
+/**
+ * Class to handle a client. It'll handle the creation of the view (CLI or GUI) and the server interface (TCP or RMI).
+ */
 public class Client {
     public static void main(String[] args) {
 
