@@ -1,5 +1,6 @@
-package it.polimi.ingsw.am16.client.view.gui;
+package it.polimi.ingsw.am16.client.view.gui.controllers;
 
+import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.common.util.FilePaths;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.application.Platform;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class GamesScreenController implements Initializable {
+public class GamesScreenController implements ScreenController, Initializable {
 
     private ServerInterface serverInterface;
 
@@ -37,6 +38,7 @@ public class GamesScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         CodexGUI.getGUI().getGuiState().setGamesScreenController(this);
+        CodexGUI.getGUI().getGuiState().setCurrentController(this);
         borderImage.setMouseTransparent(true);
         this.serverInterface = CodexGUI.getGUI().getServerInterface();
         refresh();
@@ -103,5 +105,10 @@ public class GamesScreenController implements Initializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void showError(String errorMessage) {
+        //TODO implement
     }
 }

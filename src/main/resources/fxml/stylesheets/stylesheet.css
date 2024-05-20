@@ -66,6 +66,7 @@
     -fx-background-color: #e8dfcc;
     -fx-background-radius: 5;
 }
+
 #background {
     -fx-background-image: url("../../assets/gui/background.png");
 }
@@ -87,4 +88,33 @@
 
 .scroll-pane .scroll-bar {
     -fx-background-color: transparent;
+}
+
+.card_group {
+    -fx-background-color: #CACCA0;
+    -fx-background-radius: 3;
+    -fx-border-color: #573B21;
+    -fx-border-radius: 3;
+    -fx-border-width: 3;
+}
+
+.info_table {
+    -fx-background-color: #CACCA0;
+    -fx-background-radius: 3;
+}
+
+.info_table .resources_info_table_section {
+    -fx-border-color: #573B21;
+    -fx-border-radius: 3 3 0 0;
+    -fx-border-width: 3;
+}
+
+.info_table .objects_info_table_section {
+    -fx-border-color: #573B21;
+    -fx-border-radius: 0 0 3 3;
+    -fx-border-width: 0 3 3 3;
+}
+
+#background_no_image {
+    -fx-background-color: #E8E1B7
 }

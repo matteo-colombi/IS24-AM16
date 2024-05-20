@@ -64,6 +64,21 @@ public final class FilePaths {
     public static final String GUI_ICONS = GUI_ASSETS + "/icons";
 
     /**
+     * The path for GUI card assets.
+     */
+    public static final String GUI_CARDS = GUI_ASSETS + "/cards";
+
+    /**
+     * The path for the fronts of GUI cards.
+     */
+    public static final String GUI_CARD_FRONTS = GUI_CARDS + "/fronts";
+
+    /**
+     * The path for the backs of GUI cards.
+     */
+    public static final String GUI_CARD_BACKS = GUI_CARDS + "/backs";
+
+    /**
      * The path for .fxml files.
      */
     public static final String GUI_FXML = "/fxml";

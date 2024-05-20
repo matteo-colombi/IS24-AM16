@@ -1,0 +1,29 @@
+.black {
+    -fx-fill: #383838;
+    -fx-stroke: black;
+    -fx-stroke-width: 3;
+}
+
+.blue {
+    -fx-fill: #00a2e8;
+    -fx-stroke: #0079ad;
+    -fx-stroke-width: 3;
+}
+
+.yellow {
+    -fx-fill: #fff200;
+    -fx-stroke: #bda003;
+    -fx-stroke-width: 3;
+}
+
+.red {
+    -fx-fill: #ed1c24;
+    -fx-stroke: #961117;
+    -fx-stroke-width: 3;
+}
+
+.green {
+    -fx-fill: #22b14c;
+    -fx-stroke: #1a873a;
+    -fx-stroke-width: 3;
+}

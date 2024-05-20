@@ -2,6 +2,9 @@ package it.polimi.ingsw.am16.client.view.gui;
 
 import it.polimi.ingsw.am16.client.Client;
 import it.polimi.ingsw.am16.client.view.ViewInterface;
+import it.polimi.ingsw.am16.client.view.gui.controllers.GamesScreenController;
+import it.polimi.ingsw.am16.client.view.gui.controllers.PlayScreenController;
+import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
@@ -15,7 +18,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -117,6 +119,8 @@ public class CodexGUI extends Application implements ViewInterface {
             return;
         }
 
+        guiState.setServerInterface(serverInterface);
+
         this.stage = stage;
 
         FXMLLoader splashScreenLoader = new FXMLLoader(CodexGUI.class.getResource(FilePaths.GUI_SCREENS + "/splash-screen.fxml"));
@@ -132,7 +136,8 @@ public class CodexGUI extends Application implements ViewInterface {
 
         PauseTransition delay = new PauseTransition(Duration.seconds(3));
         delay.setOnFinished(event -> {
-            switchToWelcomeScreen();
+            //switchToWelcomeScreen();
+            switchToPlayScreen();
         });
         delay.play();
     }
@@ -141,6 +146,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * Switches to the welcome screen.
      */
     public void switchToWelcomeScreen() {
+        guiState.setChatListener(null);
         FXMLLoader welcomeScreenLoader = new FXMLLoader(CodexGUI.class.getResource(FilePaths.GUI_SCREENS + "/welcome-screen.fxml"));
         try {
             Parent welcomeScreen = welcomeScreenLoader.load();
@@ -154,6 +160,7 @@ public class CodexGUI extends Application implements ViewInterface {
      * Switches to the games screen.
      */
     public void switchToGamesScreen() {
+        guiState.setChatListener(null);
         FXMLLoader gamesScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/games-screen.fxml"));
         try {
             Parent gamesScreen = gamesScreenLoader.load();
@@ -166,6 +173,17 @@ public class CodexGUI extends Application implements ViewInterface {
     /**
      * Switches to the game screen.
      */
+    public void switchToPlayScreen() {
+        guiState.setChatListener(null);
+        FXMLLoader gamesScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/play-screen.fxml"));
+        try {
+            Parent gamesScreen = gamesScreenLoader.load();
+            stage.getScene().setRoot(gamesScreen);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void stop() {
         try{

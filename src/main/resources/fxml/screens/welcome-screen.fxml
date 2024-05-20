@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.WelcomeScreenController">
+<StackPane id="background" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.WelcomeScreenController">
    <children>
       <Text fill="#3c2313" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to" textOrigin="CENTER" translateY="50.0" StackPane.alignment="TOP_CENTER">
          <font>
@@ -30,38 +30,20 @@
             <Font name="System Bold Italic" size="24.0" />
          </font>
       </Text>
-      <TextField fx:id="usernameField" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="500.0" promptText="CodexLover" style="-fx-background-radius: 5px;" translateY="60.0" StackPane.alignment="CENTER">
+      <TextField fx:id="usernameField" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="500.0" promptText="CodexLover" translateY="60.0" StackPane.alignment="CENTER">
          <font>
             <Font size="14.0" />
          </font>
       </TextField>
       <Text fill="#ef3f36" strokeType="OUTSIDE" strokeWidth="0.0" text="Max 10 characters" textOrigin="CENTER" translateY="90.0" StackPane.alignment="CENTER" />
-      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateX="-110.0" translateY="205.0">
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateX="150.0" translateY="205.0">
          <children>
-            <Button fx:id="joinButton" mnemonicParsing="false" onAction="#join" prefHeight="50.0" prefWidth="200.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+            <TextField fx:id="numPlayersField" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="39.0" prefWidth="200.0" promptText="Number of players" styleClass="text-field" translateY="-60.0">
                <font>
-                  <Font name="System Italic" size="18.0" />
+                  <Font size="14.0" />
                </font>
-            </Button>
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" spacing="10.0" StackPane.alignment="CENTER">
-               <children>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/gui/icons/game-controller.png" />
-                     </image>
-                  </ImageView>
-                  <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Join" textOrigin="CENTER">
-                     <font>
-                        <Font name="System Italic" size="24.0" />
-                     </font>
-                  </Text>
-               </children>
-            </HBox>
-         </children>
-      </StackPane>
-      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateX="110.0" translateY="205.0">
-         <children>
-            <Button fx:id="createButton" mnemonicParsing="false" onAction="#create" prefHeight="50.0" prefWidth="200.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+            </TextField>
+            <Button mnemonicParsing="false" onAction="#create" prefHeight="50.0" prefWidth="200.0" StackPane.alignment="CENTER">
                <font>
                   <Font name="System Italic" size="18.0" />
                </font>
@@ -84,7 +66,7 @@
       </StackPane>
       <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateY="270.0">
          <children>
-            <Button fx:id="quitButton" mnemonicParsing="false" onAction="#quit" prefHeight="40.0" prefWidth="160.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+            <Button fx:id="quitButton" mnemonicParsing="false" onAction="#quit" prefHeight="40.0" prefWidth="160.0" StackPane.alignment="CENTER">
                <font>
                   <Font name="System Italic" size="18.0" />
                </font>
@@ -99,6 +81,29 @@
                   <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Quit" textOrigin="CENTER">
                      <font>
                         <Font name="System Italic" size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+         </children>
+      </StackPane>
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateX="-150.0" translateY="205.0">
+         <children>
+            <Button fx:id="joinButton" mnemonicParsing="false" onAction="#join" prefHeight="50.0" prefWidth="200.0" StackPane.alignment="CENTER">
+               <font>
+                  <Font name="System Italic" size="18.0" />
+               </font>
+            </Button>
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" spacing="10.0" StackPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/gui/icons/game-controller.png" />
+                     </image>
+                  </ImageView>
+                  <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Join" textOrigin="CENTER">
+                     <font>
+                        <Font name="System Italic" size="24.0" />
                      </font>
                   </Text>
                </children>
