@@ -13,15 +13,12 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.input.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -55,12 +52,26 @@ public class PlayScreenController implements ChatListener, ScreenController, Ini
     private HBox handSlot;
     @FXML
     private StackPane personalObjectiveSlot;
+    @FXML
+    private StackPane resourceDeckSlot;
+    @FXML
+    private StackPane goldDeckSlot;
+    @FXML
+    private HBox commonResourceCardsSlot;
+    @FXML
+    private HBox commonGoldCardsSlot;
+    @FXML
+    private StackPane pointsBoardSlot;
 
     private ServerInterface serverInterface;
 
+    private PointsBoardController pointsBoardController;
+
+    private GUIState guiState;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        GUIState guiState = CodexGUI.getGUI().getGuiState();
+        guiState = CodexGUI.getGUI().getGuiState();
         guiState.setPlayScreenController(this);
         guiState.setCurrentController(this);
         guiState.setChatListener(this);
@@ -73,6 +84,9 @@ public class PlayScreenController implements ChatListener, ScreenController, Ini
 
         this.serverInterface = CodexGUI.getGUI().getServerInterface();
 
+        pointsBoardController = ElementFactory.getPointsBoard();
+        pointsBoardSlot.getChildren().add(pointsBoardController.getRoot());
+
         chatBox.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 sendChatMessage();
@@ -84,7 +98,6 @@ public class PlayScreenController implements ChatListener, ScreenController, Ini
         setCommonObjectives(new ObjectiveCard[]{CardRegistry.getRegistry().getObjectiveCardFromName("objective_pattern_5"), CardRegistry.getRegistry().getObjectiveCardFromName("objective_object_1")});
         setHand(List.of(CardRegistry.getRegistry().getResourceCardFromName("resource_animal_9"), CardRegistry.getRegistry().getGoldCardFromName("gold_insect_10")));
         setPersonalObjective(CardRegistry.getRegistry().getObjectiveCardFromName("objective_resources_3"));
-        setPegColor(PlayerColor.RED);
         setIsStartingPlayer();
 
         PlayAreaGridController playAreaGridController = ElementFactory.getPlayAreaGrid();
@@ -107,8 +120,27 @@ public class PlayScreenController implements ChatListener, ScreenController, Ini
         testCard6.setCardAndShowSide(CardRegistry.getRegistry().getGoldCardFromName("gold_animal_1"), SideType.FRONT);
         playAreaGridController.putCard(testCard6, new Position(1,-3));
 
-
         setCenterContent(playAreaGridController.getRoot());
+
+        setDeckTopType(PlayableCardType.RESOURCE, ResourceType.ANIMAL);
+        setDeckTopType(PlayableCardType.GOLD,ResourceType.INSECT);
+
+        setCommonCards(new PlayableCard[]{CardRegistry.getRegistry().getResourceCardFromName("resource_fungi_4"), CardRegistry.getRegistry().getResourceCardFromName("resource_insect_1")}, new PlayableCard[]{CardRegistry.getRegistry().getGoldCardFromName("gold_plant_3"), CardRegistry.getRegistry().getGoldCardFromName("gold_animal_10")});
+
+        addCardToHand(CardRegistry.getRegistry().getGoldCardFromName("gold_animal_6"));
+        addCardToHand(CardRegistry.getRegistry().getGoldCardFromName("gold_animal_6"));
+        addCardToHand(CardRegistry.getRegistry().getGoldCardFromName("gold_animal_6"));
+        addCardToHand(CardRegistry.getRegistry().getGoldCardFromName("gold_animal_6"));
+
+        guiState.setUsername("teo");
+        guiState.addPlayer("andre");
+        guiState.addPlayer("xLorde");
+
+        setPlayerColor("teo", PlayerColor.BLUE);
+        setPlayerColor("andre", PlayerColor.YELLOW);
+        setPlayerColor("xLorde", PlayerColor.GREEN);
+
+        setGamePoints("xLorde", 35);
     }
 
     @Override
@@ -119,6 +151,7 @@ public class PlayScreenController implements ChatListener, ScreenController, Ini
     public void setPegColor(PlayerColor color) {
         PegController pegController  = ElementFactory.getPeg();
         pegController.setPegColor(color);
+        pegController.setPegRadius(20);
         Platform.runLater(() -> {
             pegContainer.getChildren().clear();
             pegContainer.getChildren().add(pegController.getRoot());
@@ -127,7 +160,8 @@ public class PlayScreenController implements ChatListener, ScreenController, Ini
 
     public void setIsStartingPlayer() {
         PegController pegController = ElementFactory.getPeg();
-        pegController.setPegColor(null);
+        pegController.setPegColor((PlayerColor) null);
+        pegController.setPegRadius(20);
         Platform.runLater(() -> {
             pegContainer.getChildren().addFirst(pegController.getRoot());
         });
@@ -199,13 +233,33 @@ public class PlayScreenController implements ChatListener, ScreenController, Ini
     }
 
     public void setHand(List<PlayableCard> hand) {
+        guiState.setHand(hand);
         for(int i = 0; i<hand.size(); i++) {
             CardController cardController = ElementFactory.getCard();
             cardController.setCard(hand.get(i));
             cardController.showSide(SideType.FRONT);
-            cardController.setDraggable(true);
             final int finalI = i;
             Platform.runLater(() -> handSlot.getChildren().set(finalI, cardController.getRoot()));
+        }
+    }
+
+    public void addCardToHand(PlayableCard card) {
+        if (guiState.getHandSize() >= 3) return;
+        guiState.addCardToHand(card);
+        CardController cardController = ElementFactory.getCard();
+        cardController.setCardAndShowSide(card, SideType.FRONT);
+        cardController.setShadowColor(card.getType());
+        cardController.setDraggable(true);
+        cardController.setInteractable(true);
+        Platform.runLater(() -> handSlot.getChildren().set(guiState.getHandSize()-1, cardController.getRoot()));
+
+    }
+
+    public void removeCardFromHand(PlayableCard card) {
+        int index = guiState.removeCardFromHand(card);
+        if (index != -1) {
+            CardController placeholder = ElementFactory.getCard();
+            Platform.runLater(() -> handSlot.getChildren().set(index, placeholder.getRoot()));
         }
     }
 
@@ -223,6 +277,72 @@ public class PlayScreenController implements ChatListener, ScreenController, Ini
             centerContentPane.getChildren().clear();
             centerContentPane.getChildren().add(node);
         });
+    }
+
+    public void playCard() {
+        //TODO
+    }
+
+    public void setDeckTopType(PlayableCardType whichDeck, ResourceType deckTopType) {
+        CardController cardBack = ElementFactory.getCardBackOnly(whichDeck, deckTopType);
+
+        if (cardBack == null) throw new RuntimeException("Unknown Card Type: " + whichDeck);
+
+        cardBack.setShadowColor(deckTopType);
+        Parent cardPane = cardBack.getRoot();
+
+        switch (whichDeck) {
+            case RESOURCE -> resourceDeckSlot.getChildren().set(0, cardPane);
+            case GOLD -> goldDeckSlot.getChildren().set(0, cardPane);
+        }
+    }
+
+    public void setCommonCards(PlayableCard[] resourceCards, PlayableCard[] goldCards) {
+        for (int i = 0; i<resourceCards.length; i++) {
+            CardController cardController = ElementFactory.getCard();
+            if (resourceCards[i] != null) {
+                PlayableCard card = resourceCards[i];
+                cardController.setCardAndShowSide(card, SideType.FRONT);
+                cardController.setShadowColor(card.getType());
+            }
+            int finalI = i;
+            Platform.runLater(() -> commonResourceCardsSlot.getChildren().set(finalI, cardController.getRoot()));
+        }
+        for (int i = 0; i<goldCards.length; i++) {
+            CardController cardController = ElementFactory.getCard();
+            if (goldCards[i] != null) {
+                PlayableCard card = goldCards[i];
+                cardController.setCardAndShowSide(card, SideType.FRONT);
+                cardController.setShadowColor(card.getType());
+            }
+            int finalI = i;
+            Platform.runLater(() -> commonGoldCardsSlot.getChildren().set(finalI, cardController.getRoot()));
+        }
+    }
+
+    public void setPlayerColor(String username, PlayerColor color) {
+        guiState.setPlayerColor(username, color);
+        if (username.equals(guiState.getUsername())) {
+            setPegColor(color);
+        }
+        guiState.setGamePoints(username, 0);
+        pointsBoardController.addPegInSlot(0, color);
+    }
+
+    public void setGamePoints(String username, int gamePoints) {
+        int tempGamePoints = gamePoints;
+        if (tempGamePoints > 29) {
+            tempGamePoints = 29;
+        }
+
+        PlayerColor color = guiState.getPlayerColor(username);
+        pointsBoardController.removePegInSlot(guiState.getGamePoints(username), color);
+        guiState.setGamePoints(username, gamePoints);
+        pointsBoardController.addPegInSlot(tempGamePoints, color);
+    }
+
+    public void setObjectivePoints(String username, int objectivePoints) {
+        guiState.setObjectivePoints(username, objectivePoints);
     }
 
     private static boolean inHierarchy(Node node, Node potentialHierarchyElement) {

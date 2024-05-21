@@ -1,15 +1,27 @@
 package it.polimi.ingsw.am16.client.view.gui.util;
 
-import it.polimi.ingsw.am16.client.view.gui.controllers.CardController;
-import it.polimi.ingsw.am16.client.view.gui.controllers.GridFillerController;
-import it.polimi.ingsw.am16.client.view.gui.controllers.PegController;
-import it.polimi.ingsw.am16.client.view.gui.controllers.PlayAreaGridController;
+import it.polimi.ingsw.am16.client.view.gui.controllers.*;
+import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.util.FilePaths;
 import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class ElementFactory {
+
+    private static final Map<ResourceType, ResourceCard> resourceBacks = Map.of(
+            ResourceType.FUNGI, CardRegistry.getRegistry().getResourceCardFromName("resource_fungi_1"),
+            ResourceType.PLANT, CardRegistry.getRegistry().getResourceCardFromName("resource_plant_1"),
+            ResourceType.ANIMAL, CardRegistry.getRegistry().getResourceCardFromName("resource_animal_1"),
+            ResourceType.INSECT, CardRegistry.getRegistry().getResourceCardFromName("resource_insect_1")
+    );
+    private static final Map<ResourceType, GoldCard> goldBacks = Map.of(
+            ResourceType.FUNGI, CardRegistry.getRegistry().getGoldCardFromName("gold_fungi_1"),
+            ResourceType.PLANT, CardRegistry.getRegistry().getGoldCardFromName("gold_plant_1"),
+            ResourceType.ANIMAL, CardRegistry.getRegistry().getGoldCardFromName("gold_animal_1"),
+            ResourceType.INSECT, CardRegistry.getRegistry().getGoldCardFromName("gold_insect_1")
+    );
 
     public static CardController getCard() {
         FXMLLoader cardLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/card.fxml"));
@@ -21,11 +33,41 @@ public class ElementFactory {
         }
     }
 
+    public static CardController getCardBackOnly(PlayableCardType playableCardType, ResourceType resourceType) {
+        FXMLLoader cardLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/card.fxml"));
+        try {
+            cardLoader.load();
+            CardController cardController = cardLoader.getController();
+            switch (playableCardType) {
+                case RESOURCE -> {
+                    cardController.setCardAndShowSide(resourceBacks.get(resourceType), SideType.BACK);
+                }
+                case GOLD -> {
+                    cardController.setCardAndShowSide(goldBacks.get(resourceType), SideType.BACK);
+                }
+                default -> {return null;}
+            }
+            return cardController;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static PegController getPeg() {
         FXMLLoader pegLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/peg.fxml"));
         try {
             pegLoader.load();
             return pegLoader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static PointsBoardController getPointsBoard() {
+        FXMLLoader boardLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/points-board.fxml"));
+        try {
+            boardLoader.load();
+            return boardLoader.getController();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

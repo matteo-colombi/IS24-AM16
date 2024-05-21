@@ -18,7 +18,10 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -136,7 +139,7 @@ public class CodexGUI extends Application implements ViewInterface {
 
         PauseTransition delay = new PauseTransition(Duration.seconds(3));
         delay.setOnFinished(event -> {
-            //switchToWelcomeScreen();
+//            switchToWelcomeScreen();
             switchToPlayScreen();
         });
         delay.play();
@@ -168,6 +171,10 @@ public class CodexGUI extends Application implements ViewInterface {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void switchToLobbyScreen() {
+        //TODO
     }
 
     /**
@@ -234,7 +241,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void joinGame(String gameId, String username) {
+        guiState.setGameId(gameId);
+        guiState.setUsername(username);
 
+        switchToLobbyScreen();
     }
 
     /**
@@ -244,7 +254,8 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void addPlayer(String username) {
-
+        guiState.addPlayer(username);
+        //TODO notify the LobbyScreenController
     }
 
     /**
@@ -254,7 +265,8 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setPlayers(List<String> usernames) {
-
+        guiState.setPlayerUsernames(usernames);
+        //TODO notify the LobbyScreenController
     }
 
     /**
@@ -264,7 +276,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setGameState(GameState state) {
-
+        //TODO
     }
 
     /**
@@ -275,7 +287,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setCommonCards(PlayableCard[] commonResourceCards, PlayableCard[] commonGoldCards) {
-
+        PlayScreenController playScreenController = guiState.getPlayScreenController();
+        if (playScreenController != null) {
+            playScreenController.setCommonCards(commonResourceCards, commonGoldCards);
+        }
     }
 
     /**
@@ -286,7 +301,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setDeckTopType(PlayableCardType whichDeck, ResourceType resourceType) {
-
+        PlayScreenController playScreenController = guiState.getPlayScreenController();
+        if (playScreenController != null) {
+            playScreenController.setDeckTopType(whichDeck, resourceType);
+        }
     }
 
     /**
@@ -325,7 +343,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setColor(String username, PlayerColor color) {
-
+        PlayScreenController playScreenController = guiState.getPlayScreenController();
+        if (playScreenController != null) {
+            playScreenController.setPlayerColor(username, color);
+        }
     }
 
     /**
@@ -353,7 +374,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void addCardToHand(PlayableCard card) {
-
+        PlayScreenController playScreenController = guiState.getPlayScreenController();
+        if (playScreenController != null) {
+            playScreenController.addCardToHand(card);
+        }
     }
 
     /**
@@ -363,7 +387,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void removeCardFromHand(PlayableCard card) {
-
+        PlayScreenController playScreenController = guiState.getPlayScreenController();
+        if (playScreenController != null) {
+            playScreenController.removeCardFromHand(card);
+        }
     }
 
     /**
@@ -441,7 +468,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setGamePoints(String username, int gamePoints) {
-
+        PlayScreenController playScreenController = guiState.getPlayScreenController();
+        if (playScreenController != null) {
+            playScreenController.setGamePoints(username, gamePoints);
+        }
     }
 
     /**
@@ -452,7 +482,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setObjectivePoints(String username, int objectivePoints) {
-
+        PlayScreenController playScreenController = guiState.getPlayScreenController();
+        if (playScreenController != null) {
+            playScreenController.setGamePoints(username, objectivePoints);
+        }
     }
 
     /**
@@ -542,11 +575,13 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void promptError(String errorMessage) {
+        //TODO make a proper error popup Pane
         Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("An error occured");
-            alert.setContentText(errorMessage);
-            alert.showAndWait();
+            Popup popup = new Popup();
+            Text errorText = new Text(errorMessage);
+            popup.getContent().add(errorText);
+            popup.show(stage.getScene().getWindow());
+            popup.setAutoHide(true);
         });
     }
 

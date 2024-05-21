@@ -1,14 +1,18 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers;
 
+import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.client.view.gui.util.GUICardAssetRegistry;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
 import it.polimi.ingsw.am16.common.model.cards.Card;
+import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.model.cards.ResourceType;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
+import it.polimi.ingsw.am16.common.util.Position;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -17,6 +21,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
 
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -60,6 +65,7 @@ public class CardController implements Initializable {
 
     public void setCardAndShowSide(Card card, SideType side) {
         this.card = card;
+        this.currSide = side;
         String assetPath = GUICardAssetRegistry.getAssetName(this.card.getName(), side);
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(assetPath)), cardImage.getFitWidth()*1.3, cardImage.getFitHeight()*1.3, true, true);
         switch (side) {
@@ -128,8 +134,6 @@ public class CardController implements Initializable {
             case ANIMAL -> cardImage.pseudoClassStateChanged(ANIMAL, true);
             case INSECT -> cardImage.pseudoClassStateChanged(INSECT, true);
         }
-
-        System.out.println(cardImage.getPseudoClassStates().toString());
     }
 
     public Parent getRoot() {
@@ -157,11 +161,17 @@ public class CardController implements Initializable {
                 e.consume();
             });
 
-            cardPane.setOnDragDone(e -> {
-                Dragboard db = e.getDragboard();
-                System.out.println("Dropped " + card.getName() + " on " + db.getContent(GUIState.droppedOnPos) + " on side " + currSide);
+            cardPane.setOnDragDone(dragEvent -> {
+                Dragboard db = dragEvent.getDragboard();
+                PlayableCard playableCard = (PlayableCard) this.card;
+                Position position = (Position) db.getContent(GUIState.droppedOnPos);
+                try {
+                    CodexGUI.getGUI().getGuiState().getServerInterface().playCard(playableCard, currSide, position);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 db.clear();
-                e.consume();
+                dragEvent.consume();
             });
         } else {
             cardPane.setOnDragDetected(e -> {});

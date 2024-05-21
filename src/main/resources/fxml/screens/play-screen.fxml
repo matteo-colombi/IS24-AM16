@@ -22,35 +22,47 @@
    <children>
       <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="60.0" styleClass="card_group" translateX="-300.0" translateY="30.0" StackPane.alignment="TOP_CENTER">
          <children>
-            <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+            <StackPane fx:id="resourceDeckSlot">
                <children>
-                  <ImageView fitHeight="100.0" fitWidth="150.077" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/gui/cards/fronts/gold_animal_1_front.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </StackPane>
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
-               <children>
-                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+                  <StackPane fx:id="cardPane213" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                      <children>
-                        <ImageView fitHeight="100.0" fitWidth="150.077" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="cardImage" fx:id="cardImage213" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/gui/cards/fronts/gold_animal_1_front.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </StackPane>
-                  <StackPane layoutX="180.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity">
-                     <children>
-                        <ImageView fitHeight="100.0" fitWidth="150.077" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/gui/cards/fronts/gold_insect_4_front.png" />
+                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
                            </image>
                            <styleClass>
                               <String fx:value="card" />
-                              <String fx:value="card_insect" />
+                              <String fx:value="card_placeholder" />
+                           </styleClass>
+                        </ImageView>
+                     </children>
+                  </StackPane>
+               </children>
+            </StackPane>
+            <HBox fx:id="commonResourceCardsSlot" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
+               <children>
+                  <StackPane fx:id="cardPane214" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                     <children>
+                        <ImageView id="cardImage" fx:id="cardImage214" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                           </image>
+                           <styleClass>
+                              <String fx:value="card" />
+                              <String fx:value="card_placeholder" />
+                           </styleClass>
+                        </ImageView>
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="cardPane215" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                     <children>
+                        <ImageView id="cardImage" fx:id="cardImage215" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                           </image>
+                           <styleClass>
+                              <String fx:value="card" />
+                              <String fx:value="card_placeholder" />
                            </styleClass>
                         </ImageView>
                      </children>
@@ -64,49 +76,51 @@
       </HBox>
       <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="60.0" styleClass="card_group" translateX="300.0" translateY="30.0" StackPane.alignment="TOP_CENTER">
          <children>
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
+            <HBox fx:id="commonGoldCardsSlot" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
                <children>
-                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+                  <StackPane fx:id="cardPane211" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                      <children>
-                        <ImageView fitHeight="100.0" fitWidth="150.077" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="cardImage" fx:id="cardImage211" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/gui/cards/fronts/gold_animal_1_front.png" />
+                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
                            </image>
                            <styleClass>
                               <String fx:value="card" />
-                              <String fx:value="card_animal" />
-                              <String fx:value="interactable" />
+                              <String fx:value="card_placeholder" />
                            </styleClass>
                         </ImageView>
                      </children>
                   </StackPane>
-                  <StackPane layoutX="180.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity">
+                  <StackPane fx:id="cardPane212" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                      <children>
-                        <ImageView fitHeight="100.0" fitWidth="150.077" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="cardImage" fx:id="cardImage212" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/gui/cards/fronts/gold_fungi_1_front.png" />
+                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
                            </image>
                            <styleClass>
                               <String fx:value="card" />
-                              <String fx:value="card_fungi" />
-                              <String fx:value="interactable" />
+                              <String fx:value="card_placeholder" />
                            </styleClass>
                         </ImageView>
                      </children>
                   </StackPane>
                </children>
             </HBox>
-            <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+            <StackPane fx:id="goldDeckSlot">
                <children>
-                  <ImageView fitHeight="100.0" fitWidth="150.077" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/gui/cards/fronts/gold_plant_3_front.png" />
-                     </image>
-                     <styleClass>
-                        <String fx:value="card" />
-                        <String fx:value="card_plant" />
-                     </styleClass>
-                  </ImageView>
+                  <StackPane fx:id="cardPane21" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                     <children>
+                        <ImageView id="cardImage" fx:id="cardImage21" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                           </image>
+                           <styleClass>
+                              <String fx:value="card" />
+                              <String fx:value="card_placeholder" />
+                           </styleClass>
+                        </ImageView>
+                     </children>
+                  </StackPane>
                </children>
             </StackPane>
          </children>
@@ -134,19 +148,7 @@
             </StackPane>
          </children>
       </VBox>
-      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #CACCA0; -fx-background-radius: 3; -fx-border-color: #573B21; -fx-border-radius: 3; -fx-border-width: 3;" translateX="-30.0" StackPane.alignment="CENTER_RIGHT">
-         <children>
-            <ImageView fitHeight="360.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../assets/gui/score_board.png" />
-               </image>
-            </ImageView>
-            <Circle fill="#00a2e8" radius="14.0" stroke="#0079ad" strokeType="INSIDE" strokeWidth="3.0" translateX="63.0" />
-            <Circle fill="#fff200" radius="15.0" stroke="#bda003" strokeType="INSIDE" strokeWidth="3.0" translateX="22.0" />
-            <Circle fill="#22b14c" radius="15.0" stroke="#1a873a" strokeType="INSIDE" strokeWidth="3.0" translateX="64.0" translateY="78.0" />
-            <Circle fill="#ed1c24" radius="15.0" stroke="#961117" strokeType="INSIDE" strokeWidth="3.0" translateX="-63.0" translateY="116.0" />
-            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #573B21; -fx-border-radius: 3; -fx-border-width: 3;" translateX="18.0" translateY="-18.0" StackPane.alignment="TOP_RIGHT" />
-         </children>
+      <StackPane fx:id="pointsBoardSlot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="396.0" prefWidth="216.0" styleClass="card_group" translateX="-30.0" StackPane.alignment="CENTER_RIGHT">
          <padding>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </padding>
@@ -188,7 +190,7 @@
                               <Insets />
                            </StackPane.margin>
                         </Text>
-                        <Text id="plantAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="01" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
+                        <Text id="plantAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
                            <font>
                               <Font name="System Italic" size="18.0" />
                            </font>
@@ -211,7 +213,7 @@
                               <Insets />
                            </StackPane.margin>
                         </Text>
-                        <Text id="animalAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="02" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
+                        <Text id="animalAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
                            <font>
                               <Font name="System Italic" size="18.0" />
                            </font>
@@ -234,7 +236,7 @@
                               <Insets />
                            </StackPane.margin>
                         </Text>
-                        <Text id="insectAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="03" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
+                        <Text id="insectAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
                            <font>
                               <Font name="System Italic" size="18.0" />
                            </font>
@@ -264,7 +266,7 @@
                               <Insets />
                            </StackPane.margin>
                         </Text>
-                        <Text id="inkwellAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="04" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
+                        <Text id="inkwellAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
                            <font>
                               <Font name="System Italic" size="18.0" />
                            </font>
@@ -287,7 +289,7 @@
                               <Insets />
                            </StackPane.margin>
                         </Text>
-                        <Text id="manuscriptAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="05" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
+                        <Text id="manuscriptAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
                            <font>
                               <Font name="System Italic" size="18.0" />
                            </font>
@@ -310,7 +312,7 @@
                               <Insets />
                            </StackPane.margin>
                         </Text>
-                        <Text id="quillAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="06" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
+                        <Text id="quillAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
                            <font>
                               <Font name="System Italic" size="18.0" />
                            </font>

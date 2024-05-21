@@ -53,6 +53,13 @@ public class GridFillerController implements Initializable {
 
             dragEvent.setDropCompleted(true);
             dragEvent.consume();
+
+            fillerPane.pseudoClassStateChanged(LEGAL, false);
+
+            fillerPane.setOnDragOver(e -> {});
+            fillerPane.setOnDragEntered(e -> {});
+            fillerPane.setOnDragExited(e -> {});
+            fillerPane.setOnDragDropped(e -> {});
         });
     }
 

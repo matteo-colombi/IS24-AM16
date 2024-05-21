@@ -1,10 +1,11 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers;
 
+import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
+import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
 import it.polimi.ingsw.am16.common.model.cards.Card;
 import it.polimi.ingsw.am16.common.util.Position;
 import javafx.application.Platform;
-import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
@@ -26,11 +27,7 @@ public class PlayAreaGridController implements Initializable {
 
     private int currWidth, currHeight;
 
-    private Map<Position, Card> field;
-
-    private Map<Position, GridFillerController> gridFillers;
-
-    private Set<Position> placeablePositions;
+    private GUIState guiState;
 
     @FXML
     private ScrollPane scrollPane;
@@ -44,12 +41,14 @@ public class PlayAreaGridController implements Initializable {
         currWidth = 1;
         currHeight = 1;
 
-        field = new HashMap<>();
-        gridFillers = new HashMap<>();
-        this.placeablePositions = new HashSet<>();
+        guiState = CodexGUI.getGUI().getGuiState();
+
+        guiState.setField(new HashMap<>());
+        guiState.setGridFillers(new HashMap<>());
+        guiState.setPlaceablePositions(new HashSet<>());
 
         //TODO remove. Just for testing
-        placeablePositions.add(new Position(-2,0));
+        guiState.setPlaceablePositions(Set.of(new Position(-2,0)));
         playAreaGrid.setGridLinesVisible(true);
 
     }
@@ -57,7 +56,7 @@ public class PlayAreaGridController implements Initializable {
     public void setCenterCard(CardController cardController) {
         //WARNING: should only be called when the grid is still empty. Put that in the doc.
 
-        field.put(new Position(0, 0), cardController.getCard());
+        guiState.putCardInField(new Position(0, 0), cardController.getCard());
 
         Platform.runLater(() -> {
             expandUp();
@@ -70,7 +69,9 @@ public class PlayAreaGridController implements Initializable {
     }
 
     public void putCard(CardController cardController, Position position) {
-        field.put(position, cardController.getCard());
+        guiState.putCardInField(position, cardController.getCard());
+
+        removeFiller(position);
 
         Platform.runLater(() -> {
             int realCol = position.x() + centerX;
@@ -110,7 +111,7 @@ public class PlayAreaGridController implements Initializable {
             int x = i-centerX;
             int y = -centerY;
             Position pos = new Position(x, y);
-            if (placeablePositions.contains(pos)) {
+            if (guiState.getPlaceablePositions().contains(pos)) {
                 Pane gridFiller = addNewFiller(x, y);
                 playAreaGrid.add(gridFiller, i, 0);
             }
@@ -125,7 +126,7 @@ public class PlayAreaGridController implements Initializable {
             int x = i-centerX;
             int y = currHeight-1-centerY;
             Position pos = new Position(x, y);
-            if (placeablePositions.contains(pos)) {
+            if (guiState .getPlaceablePositions().contains(pos)) {
                 Pane gridFiller = addNewFiller(x, y);
                 playAreaGrid.add(gridFiller, i, currHeight-1);
             }
@@ -149,7 +150,7 @@ public class PlayAreaGridController implements Initializable {
             int x = -centerX;
             int y = i-centerY;
             Position pos = new Position(x, y);
-            if (placeablePositions.contains(pos)) {
+            if (guiState.getPlaceablePositions().contains(pos)) {
                 Pane gridFiller = addNewFiller(x, y);
                 playAreaGrid.add(gridFiller, 0, i);
             }
@@ -164,7 +165,7 @@ public class PlayAreaGridController implements Initializable {
             int x = currWidth-1-centerX;
             int y = i-centerY;
             Position pos = new Position(x, y);
-            if (placeablePositions.contains(pos)) {
+            if (guiState.getPlaceablePositions().contains(pos)) {
                 Pane gridFiller = addNewFiller(x, y);
                 playAreaGrid.add(gridFiller, currWidth-1, i);
             }
@@ -179,7 +180,16 @@ public class PlayAreaGridController implements Initializable {
         GridFillerController gridFillerController = ElementFactory.getGridFiller();
         Position position = new Position(x, y);
         gridFillerController.setPosition(position);
-        gridFillers.put(position, gridFillerController);
+        guiState.putGridFillerInPos(position, gridFillerController);
         return gridFillerController.getFillerPane();
+    }
+
+    public void removeFiller(Position fillerPosition) {
+        GridFillerController gridFiller = guiState.getGridFillerInPos(fillerPosition);
+
+        if (gridFiller != null)
+            playAreaGrid.getChildren().remove(gridFiller.getFillerPane());
+
+        guiState.removeGridFillerInPos(fillerPosition);
     }
 }
