@@ -13,6 +13,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -33,7 +34,7 @@ public class PlayScreenController implements ChatListener, ScreenController, Ini
     @FXML
     private StackPane centerContentPane;
     @FXML
-    private VBox infoTable;
+    private Group infoTableSlot;
     @FXML
     private VBox pegContainer;
     @FXML
@@ -100,28 +101,6 @@ public class PlayScreenController implements ChatListener, ScreenController, Ini
         setPersonalObjective(CardRegistry.getRegistry().getObjectiveCardFromName("objective_resources_3"));
         setIsStartingPlayer();
 
-        PlayAreaGridController playAreaGridController = ElementFactory.getPlayAreaGrid();
-        CardController testCard = ElementFactory.getCard();
-        testCard.setCardAndShowSide(CardRegistry.getRegistry().getStarterCardFromName("starter_6"), SideType.FRONT);
-        playAreaGridController.setCenterCard(testCard);
-        CardController testCard2 = ElementFactory.getCard();
-        testCard2.setCardAndShowSide(CardRegistry.getRegistry().getResourceCardFromName("resource_plant_2"), SideType.FRONT);
-        playAreaGridController.putCard(testCard2, new Position(1,1));
-        CardController testCard3 = ElementFactory.getCard();
-        testCard3.setCardAndShowSide(CardRegistry.getRegistry().getGoldCardFromName("gold_insect_3"), SideType.FRONT);
-        playAreaGridController.putCard(testCard3, new Position(-1,-1));
-        CardController testCard4 = ElementFactory.getCard();
-        testCard4.setCardAndShowSide(CardRegistry.getRegistry().getGoldCardFromName("gold_insect_3"), SideType.FRONT);
-        playAreaGridController.putCard(testCard4, new Position(0,-2));
-        CardController testCard5 = ElementFactory.getCard();
-        testCard5.setCardAndShowSide(CardRegistry.getRegistry().getGoldCardFromName("gold_insect_3"), SideType.FRONT);
-        playAreaGridController.putCard(testCard5, new Position(-1,-3));
-        CardController testCard6 = ElementFactory.getCard();
-        testCard6.setCardAndShowSide(CardRegistry.getRegistry().getGoldCardFromName("gold_animal_1"), SideType.FRONT);
-        playAreaGridController.putCard(testCard6, new Position(1,-3));
-
-        setCenterContent(playAreaGridController.getRoot());
-
         setDeckTopType(PlayableCardType.RESOURCE, ResourceType.ANIMAL);
         setDeckTopType(PlayableCardType.GOLD,ResourceType.INSECT);
 
@@ -141,6 +120,26 @@ public class PlayScreenController implements ChatListener, ScreenController, Ini
         setPlayerColor("xLorde", PlayerColor.GREEN);
 
         setGamePoints("xLorde", 35);
+
+        setPlayArea("teo",
+                List.of(),
+                Map.of(new Position(0, 0), CardRegistry.getRegistry().getStarterCardFromName("starter_3")),
+                Map.of(CardRegistry.getRegistry().getStarterCardFromName("starter_3"), SideType.BACK),
+                Set.of(new Position(1, 1), new Position(1, -1), new Position(-1, -1), new Position(-1, 1)),
+                Set.of(new Position(1, 1)),
+                Map.of(),
+                Map.of()
+        );
+
+        playCard("teo",
+                CardRegistry.getRegistry().getGoldCardFromName("gold_fungi_3"),
+                SideType.FRONT,
+                new Position(1, 1),
+                Set.of(new Position(0, 2)), Set.of(new Position(-1, -1)),
+                Map.of(), Map.of()
+        );
+
+        updateInfoTable("teo", Map.of(ResourceType.ANIMAL, 5), Map.of());
     }
 
     @Override
@@ -167,16 +166,9 @@ public class PlayScreenController implements ChatListener, ScreenController, Ini
         });
     }
 
-    public void updateInfoTable(Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
-        Platform.runLater(() -> {
-            for(Map.Entry<ResourceType, Integer> entry : resourceCounts.entrySet()) {
-                ((Text) infoTable.lookup("#" + entry.getKey().name().toLowerCase() + "Amount")).setText(String.format("%02d", entry.getValue()));
-            }
-
-            for(Map.Entry<ObjectType, Integer> entry : objectCounts.entrySet()) {
-                ((Text) infoTable.lookup("#" + entry.getKey().name().toLowerCase() + "Amount")).setText(String.format("%02d", entry.getValue()));
-            }
-        });
+    public void updateInfoTable(String username, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
+        InfoTableController infoTableController = guiState.getInfoTable(username);
+        infoTableController.updateInfoTable(resourceCounts, objectCounts);
     }
 
     @FXML
@@ -279,8 +271,36 @@ public class PlayScreenController implements ChatListener, ScreenController, Ini
         });
     }
 
-    public void playCard() {
-        //TODO
+    public void setPlayArea(String username, List<Position> ignored, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
+        PlayAreaGridController playAreaGridController = ElementFactory.getPlayAreaGrid();
+        BoardCard starterCard = field.get(new Position(0, 0));
+        SideType starterSide = activeSides.get(starterCard);
+        CardController cardController = ElementFactory.getCard();
+        cardController.setCardAndShowSide(starterCard, starterSide);
+        playAreaGridController.setCenterCard(cardController, legalPositions, illegalPositions);
+
+        guiState.setPlayArea(username, playAreaGridController);
+
+        InfoTableController infoTableController = ElementFactory.getInfoTable();
+        guiState.setInfoTable(username, infoTableController);
+
+        if (username.equals(guiState.getUsername())) {
+            centerContentPane.getChildren().add(playAreaGridController.getRoot());
+            infoTableSlot.getChildren().add(infoTableController.getRoot());
+        }
+
+        updateInfoTable(username, resourceCounts, objectCounts);
+    }
+
+    public void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
+        PlayAreaGridController playAreaGridController = guiState.getPlayArea(username);
+
+        CardController cardController = ElementFactory.getCard();
+        cardController.setCardAndShowSide(card, side);
+
+        playAreaGridController.putCard(cardController, pos, addedLegalPositions, removedLegalPositions);
+
+        updateInfoTable(username, resourceCounts, objectCounts);
     }
 
     public void setDeckTopType(PlayableCardType whichDeck, ResourceType deckTopType) {

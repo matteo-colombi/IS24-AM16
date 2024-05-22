@@ -364,7 +364,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setHand(List<PlayableCard> hand) {
-
+        PlayScreenController playScreenController = guiState.getPlayScreenController();
+        if (playScreenController != null) {
+            playScreenController.setHand(hand);
+        }
     }
 
     /**
@@ -440,7 +443,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
-
+        PlayScreenController playScreenController = guiState.getPlayScreenController();
+        if (playScreenController != null) {
+            playScreenController.setPlayArea(username, cardPlacementOrder, field, activeSides, legalPositions, illegalPositions, resourceCounts, objectCounts);
+        }
     }
 
     /**
@@ -457,7 +463,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
-
+        PlayScreenController playScreenController = guiState.getPlayScreenController();
+        if (playScreenController != null) {
+            playScreenController.playCard(username, card, side, pos, addedLegalPositions, removedLegalPositions, resourceCounts, objectCounts);
+        }
     }
 
     /**
@@ -495,7 +504,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setCommonObjectives(ObjectiveCard[] commonObjectives) {
-
+        PlayScreenController playScreenController = guiState.getPlayScreenController();
+        if (playScreenController != null) {
+            playScreenController.setCommonObjectives(commonObjectives);
+        }
     }
 
     /**
@@ -515,7 +527,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setPersonalObjective(ObjectiveCard personalObjective) {
-
+        PlayScreenController playScreenController = guiState.getPlayScreenController();
+        if (playScreenController != null) {
+            playScreenController.setPersonalObjective(personalObjective);
+        }
     }
 
     /**

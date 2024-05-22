@@ -5,6 +5,7 @@ import it.polimi.ingsw.am16.client.view.gui.controllers.*;
 import it.polimi.ingsw.am16.common.model.cards.Card;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
+import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
@@ -24,11 +25,10 @@ public class GUIState {
     private String username;
     private String gameId;
 
-    private final Map<Position, Card> field;
+    private final Map<String, PlayAreaGridController> playAreas;
+    private final Map<String, InfoTableController> infoTables;
 
     private final Map<Position, GridFillerController> gridFillers;
-
-    private final Set<Position> placeablePositions;
 
     private final List<PlayableCard> hand;
 
@@ -57,8 +57,8 @@ public class GUIState {
         hand = new ArrayList<>();
         gamePoints = new HashMap<>();
         objectivePoints = new HashMap<>();
-        field = new HashMap<>();
-        placeablePositions = new HashSet<>();
+        playAreas = new HashMap<>();
+        infoTables = new HashMap<>();
         playerColors = new HashMap<>();
     }
 
@@ -78,14 +78,14 @@ public class GUIState {
         synchronized (objectivePoints) {
             objectivePoints.clear();
         }
-        synchronized (field) {
-            field.clear();
+        synchronized (playAreas) {
+            playAreas.clear();
+        }
+        synchronized (infoTables) {
+            infoTables.clear();
         }
         synchronized (gridFillers) {
             gridFillers.clear();
-        }
-        synchronized (placeablePositions) {
-            placeablePositions.clear();
         }
         synchronized (this) {
             username = null;
@@ -184,22 +184,27 @@ public class GUIState {
         }
     }
 
-    public Card getField(Position position) {
-        synchronized (field) {
-            return field.get(position);
+    public void setPlayArea(String username, PlayAreaGridController playAreaGridController) {
+        synchronized (playAreas) {
+            playAreas.put(username, playAreaGridController);
         }
     }
 
-    public void setField(Map<Position, Card> field) {
-        synchronized (this.field) {
-            this.field.clear();
-            this.field.putAll(field);
+    public PlayAreaGridController getPlayArea(String username) {
+        synchronized (playAreas) {
+            return playAreas.get(username);
         }
     }
 
-    public void putCardInField(Position position, Card card) {
-        synchronized (field) {
-            field.put(position, card);
+    public void setInfoTable(String username, InfoTableController infoTableController) {
+        synchronized (infoTables) {
+            infoTables.put(username, infoTableController);
+        }
+    }
+
+    public InfoTableController getInfoTable(String username) {
+        synchronized (infoTables) {
+            return infoTables.get(username);
         }
     }
 
@@ -225,19 +230,6 @@ public class GUIState {
         synchronized (this.gridFillers) {
             this.gridFillers.clear();
             this.gridFillers.putAll(gridFillers);
-        }
-    }
-
-    public Set<Position> getPlaceablePositions() {
-        synchronized (placeablePositions) {
-            return Set.copyOf(placeablePositions);
-        }
-    }
-
-    public void setPlaceablePositions(Set<Position> placeablePositions) {
-        synchronized (this.placeablePositions) {
-            this.placeablePositions.clear();
-            this.placeablePositions.addAll(placeablePositions);
         }
     }
 
