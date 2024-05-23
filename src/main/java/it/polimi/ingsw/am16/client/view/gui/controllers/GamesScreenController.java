@@ -80,8 +80,10 @@ public class GamesScreenController implements Initializable {
     }
 
     private void join(String gameId) {
+        String username = CodexGUI.getGUI().getGuiState().getUsername();
+
         try {
-            serverInterface.joinGame(gameId, CodexGUI.getGUI().getGuiState().getUsername());
+            serverInterface.joinGame(gameId, username);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -90,7 +92,7 @@ public class GamesScreenController implements Initializable {
     public synchronized void setGamesList(List<String> games, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) {
         Platform.runLater(() -> {
             gamesList.getChildren().clear();
-            for(String gameId : games) {
+            for (String gameId : games) {
                 gamesList.getChildren().add(createGameCard(gameId, currentPlayers.get(gameId), maxPlayers.get(gameId)));
             }
         });

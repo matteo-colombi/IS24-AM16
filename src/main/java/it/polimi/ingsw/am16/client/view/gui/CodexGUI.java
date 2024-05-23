@@ -2,6 +2,7 @@ package it.polimi.ingsw.am16.client.view.gui;
 
 import it.polimi.ingsw.am16.client.Client;
 import it.polimi.ingsw.am16.client.view.ViewInterface;
+import it.polimi.ingsw.am16.client.view.gui.events.*;
 import it.polimi.ingsw.am16.client.view.gui.controllers.GamesScreenController;
 import it.polimi.ingsw.am16.client.view.gui.controllers.PlayScreenController;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
@@ -131,6 +132,7 @@ public class CodexGUI extends Application implements ViewInterface {
         Image icon = new Image(Objects.requireNonNull(CodexGUI.class.getResourceAsStream(FilePaths.GUI_LOGO)));
 
         stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
         stage.setResizable(false);
         stage.getIcons().add(icon);
         stage.setTitle("Codex Naturalis");
@@ -140,7 +142,6 @@ public class CodexGUI extends Application implements ViewInterface {
         PauseTransition delay = new PauseTransition(Duration.seconds(2));
         delay.setOnFinished(event -> {
             switchToWelcomeScreen();
-    //        switchToPlayScreen();
         });
         delay.play();
     }
@@ -161,6 +162,19 @@ public class CodexGUI extends Application implements ViewInterface {
     /**
      * Switches to the games screen.
      */
+    public void switchToCreateScreen() {
+        FXMLLoader createScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/create-screen.fxml"));
+        try {
+            Parent createScreen = createScreenLoader.load();
+            stage.getScene().setRoot(createScreen);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Switches to the games screen.
+     */
     public void switchToGamesScreen() {
         FXMLLoader gamesScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/games-screen.fxml"));
         try {
@@ -171,9 +185,17 @@ public class CodexGUI extends Application implements ViewInterface {
         }
     }
 
+    /**
+     * Switches to the lobby screen.
+     */
     public void switchToLobbyScreen() {
-        //TODO
-    }
+        FXMLLoader lobbyScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/lobby-screen.fxml"));
+        try {
+            Parent lobbyScreen = lobbyScreenLoader.load();
+            stage.getScene().setRoot(lobbyScreen);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }    }
 
     /**
      * Switches to the game screen.

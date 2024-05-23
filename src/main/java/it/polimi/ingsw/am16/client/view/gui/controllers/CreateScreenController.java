@@ -1,23 +1,40 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
+import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.StackPane;
 
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 /**
  * Controller for the welcome screen.
  */
-public class CreateScreenController implements ScreenController, Initializable {
-
+public class CreateScreenController implements Initializable {
     @FXML
-    public VBox playersSelector;
+    public RadioButton numPlayers2;
+    @FXML
+    public RadioButton numPlayers3;
+    @FXML
+    public RadioButton numPlayers4;
+    @FXML
+    private StackPane root;
+    @FXML
+    private ToggleGroup numPLayersToggleGroup;
+
+    /**
+     * The server interface.
+     */
+    private ServerInterface serverInterface;
 
     /**
      * Initializes the controller. The username is kept when returning to the welcome screen from the games screen.
@@ -27,10 +44,9 @@ public class CreateScreenController implements ScreenController, Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        CodexGUI.getGUI().getGuiState().setCreateScreenController(this);
-        CodexGUI.getGUI().getGuiState().setCurrentController(this);
+        registerEvents();
 
-
+        this.serverInterface = CodexGUI.getGUI().getServerInterface();
     }
 
     @FXML
@@ -38,8 +54,48 @@ public class CreateScreenController implements ScreenController, Initializable {
         CodexGUI.getGUI().switchToWelcomeScreen();
     }
 
-    @Override
-    public void showError(String errorMessage) {
+    @FXML
+    public void create(ActionEvent ignored) {
+        String username = CodexGUI.getGUI().getGuiState().getUsername();
 
+        RadioButton selectedToggle = (RadioButton) numPLayersToggleGroup.getSelectedToggle();
+        int numPlayers = Integer.parseInt(selectedToggle.getText());
+
+        try {
+            serverInterface.createGame(username, numPlayers);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * DOCME
+     *
+     * @param errorMessage
+     */
+    public void showError(String errorMessage) {
+        //TODO implement an event listener that calls this method
+    }
+
+    private void registerEvents() {
+        root.addEventFilter(GUIEventTypes.ERROR_EVENT, errorEvent -> showError(errorEvent.getErrorMsg()));
+
+        numPlayers2.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                create(null);
+            }
+        });
+
+        numPlayers3.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                create(null);
+            }
+        });
+
+        numPlayers4.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                create(null);
+            }
+        });
     }
 }

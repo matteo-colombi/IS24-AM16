@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -13,129 +14,129 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane id="background" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.CreateScreenController">
+<StackPane id="background" fx:id="root" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.CreateScreenController">
    <children>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" translateY="50.0" StackPane.alignment="TOP_CENTER">
+      <ImageView fitHeight="150.0" fitWidth="320.0" pickOnBounds="true" preserveRatio="true" translateY="50.0" StackPane.alignment="TOP_CENTER">
+         <viewport>
+            <Rectangle2D />
+         </viewport>
+         <image>
+            <Image url="@../../assets/gui/banner.png" />
+         </image>
+      </ImageView>
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" translateY="10.0" StackPane.alignment="CENTER">
          <children>
-            <Text fill="#3c2313" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to" textOrigin="CENTER">
+            <Text fill="#6fbfbf" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the number of players:" textOrigin="CENTER">
                <font>
                   <Font name="System Bold Italic" size="24.0" />
                </font>
             </Text>
-            <ImageView fitHeight="200.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
-               <viewport>
-                  <Rectangle2D />
-               </viewport>
-               <image>
-                  <Image url="@../../assets/gui/banner.png" />
-               </image>
-            </ImageView>
-         </children>
-      </VBox>
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" translateY="50.0" StackPane.alignment="CENTER">
-         <children>
-            <Text fill="#922790" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the number of players:" textOrigin="CENTER">
-               <font>
-                  <Font name="System Bold Italic" size="24.0" />
-               </font>
-            </Text>
-            <VBox fx:id="playersSelector" alignment="CENTER" maxWidth="-Infinity" prefWidth="400.0" spacing="30.0">
+            <VBox id="playersSelector" alignment="CENTER" maxWidth="-Infinity" prefWidth="400.0" spacing="30.0">
                <children>
-                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="130.0">
-                     <children>
-                        <RadioButton mnemonicParsing="false" selected="true">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <toggleGroup>
-                              <ToggleGroup fx:id="numPLayersToggleGroup21" />
-                           </toggleGroup>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </RadioButton>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/gui/icons/user%20-%20gray.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/gui/icons/user%20-%20gray.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="130.0">
-                     <children>
-                        <RadioButton mnemonicParsing="false">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <toggleGroup>
-                              <ToggleGroup fx:id="numPLayersToggleGroup211" />
-                           </toggleGroup>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </RadioButton>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/gui/icons/user%20-%20gray2.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/gui/icons/user%20-%20gray2.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/gui/icons/user%20-%20gray2.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="130.0">
-                     <children>
-                        <RadioButton mnemonicParsing="false">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <toggleGroup>
-                              <ToggleGroup fx:id="numPLayersToggleGroup212" />
-                           </toggleGroup>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </RadioButton>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/gui/icons/user.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/gui/icons/user.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/gui/icons/user.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/gui/icons/user.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </HBox>
+                  <RadioButton fx:id="numPlayers2" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefWidth="120.0" selected="true" text="2">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="numPLayersToggleGroup" />
+                     </toggleGroup>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity">
+                           <children>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/user%20-%20gray.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/user%20-%20gray.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </RadioButton>
+                  <RadioButton fx:id="numPlayers3" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefWidth="120.0" text="3" toggleGroup="$numPLayersToggleGroup">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity">
+                           <children>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/user%20-%20gray2.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/user%20-%20gray2.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/user%20-%20gray2.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </RadioButton>
+                  <RadioButton fx:id="numPlayers4" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefWidth="120.0" text="4" toggleGroup="$numPLayersToggleGroup">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <graphic>
+                        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity">
+                           <children>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/user.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/user.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/user.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/user.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <padding>
+                              <Insets left="5.0" />
+                           </padding>
+                        </HBox>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </RadioButton>
                </children>
             </VBox>
          </children>
       </VBox>
-      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="40.0" translateY="-100.0" StackPane.alignment="BOTTOM_CENTER">
+      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" translateY="-100.0" StackPane.alignment="BOTTOM_CENTER">
          <children>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
@@ -162,7 +163,7 @@
             </StackPane>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="140.0" StackPane.alignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#create" prefHeight="40.0" prefWidth="140.0" StackPane.alignment="CENTER">
                      <font>
                         <Font name="System Italic" size="10.0" />
                      </font>

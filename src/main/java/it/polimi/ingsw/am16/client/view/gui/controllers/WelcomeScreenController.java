@@ -2,7 +2,6 @@ package it.polimi.ingsw.am16.client.view.gui.controllers;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
-import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,7 +10,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 
 import java.net.URL;
-import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 /**
@@ -29,17 +27,6 @@ public class WelcomeScreenController implements Initializable {
     private TextField usernameField;
 
     /**
-     * The field where the user can enter the number of players to create a new game.
-     */
-    @FXML
-    private TextField numPlayersField;
-
-    /**
-     * The server interface.
-     */
-    private ServerInterface serverInterface;
-
-    /**
      * Initializes the controller. The username is kept when returning to the welcome screen from the games screen.
      *
      * @param url            The URL.
@@ -50,25 +37,30 @@ public class WelcomeScreenController implements Initializable {
         registerEvents();
 
         addTextLimiter(usernameField, 10);
-        makeNumOnly(numPlayersField);
-        addTextLimiter(numPlayersField, 1);
 
         String username = CodexGUI.getGUI().getGuiState().getUsername();
         if (username != null) {
             usernameField.setText(username);
             usernameField.positionCaret(username.length());
         }
-        this.serverInterface = CodexGUI.getGUI().getServerInterface();
     }
 
     /**
-     * Quits the application.
+     * Creates a new game.
      *
      * @param ignored The action event (which is ignored).
      */
     @FXML
-    public void quit(ActionEvent ignored) {
-        CodexGUI.getGUI().getStage().close();
+    public void create(ActionEvent ignored) {
+        String username = usernameField.getText();
+        if (username.isEmpty() || username.length() > 10) {
+            usernameField.selectAll();
+            usernameField.requestFocus();
+            return;
+        }
+
+        CodexGUI.getGUI().getGuiState().setUsername(username);
+        CodexGUI.getGUI().switchToCreateScreen();
     }
 
     /**
@@ -86,63 +78,17 @@ public class WelcomeScreenController implements Initializable {
         }
 
         CodexGUI.getGUI().getGuiState().setUsername(username);
-
         CodexGUI.getGUI().switchToGamesScreen();
     }
 
     /**
-     * Creates a new game.
+     * Quits the application.
      *
      * @param ignored The action event (which is ignored).
      */
     @FXML
-    public void create(ActionEvent ignored) {
-        String username = usernameField.getText();
-        if (username.isEmpty() || username.length() > 10) {
-            usernameField.selectAll();
-            usernameField.requestFocus();
-            return;
-        }
-
-//        boolean invalid = numPlayersField.getText().isEmpty();
-//
-//        int numPlayers = 0;
-//        try {
-//            numPlayers = Integer.parseInt(numPlayersField.getText());
-//        } catch (NumberFormatException e) {
-//            invalid = true;
-//        }
-//
-//        if (invalid) {
-//            numPlayersField.selectAll();
-//            numPlayersField.requestFocus();
-//            return;
-//        }
-//
-
-        CodexGUI.getGUI().getGuiState().setUsername(username);
-
-//        try {
-//            serverInterface.createGame(username, numPlayers);
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
-
-        CodexGUI.getGUI().switchToCreateScreen();
-    }
-
-    /**
-     * Makes it so that the given text field can only accept the numbers 2, 3 and 4.
-     *
-     * @param tf The text field to which this constraint should be applied.
-     */
-    private static void makeNumOnly(final TextField tf) {
-        tf.textProperty().addListener((ov, oldValue, newValue) -> {
-                    if (!newValue.matches("[234]")) {
-                        tf.clear();
-                    }
-                }
-        );
+    public void quit(ActionEvent ignored) {
+        CodexGUI.getGUI().getStage().close();
     }
 
     /**
@@ -175,12 +121,6 @@ public class WelcomeScreenController implements Initializable {
         usernameField.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 join(null);
-            }
-        });
-
-        numPlayersField.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER) {
-                create(null);
             }
         });
     }

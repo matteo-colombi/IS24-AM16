@@ -49,17 +49,12 @@
             </VBox>
          </children>
       </VBox>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" translateY="-50.0" StackPane.alignment="BOTTOM_CENTER">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" translateY="-100.0" StackPane.alignment="BOTTOM_CENTER">
          <children>
-            <HBox alignment="CENTER" spacing="50.0">
+            <HBox alignment="CENTER" spacing="20.0">
                <children>
                   <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                      <children>
-                        <TextField fx:id="numPlayersField" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="39.0" prefWidth="200.0" promptText="Number of players" styleClass="text-field" translateY="-60.0">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </TextField>
                         <Button mnemonicParsing="false" onAction="#create" prefHeight="60.0" prefWidth="200.0" StackPane.alignment="CENTER">
                            <font>
                               <Font name="System Italic" size="10.0" />

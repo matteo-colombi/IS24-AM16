@@ -18,54 +18,58 @@
             <Image url="@../../assets/gui/banner.png" />
          </image>
       </ImageView>
-      <Text fill="#1a8441" strokeType="OUTSIDE" strokeWidth="0.0" text="Available Games" textOrigin="CENTER" translateY="-150.0">
-         <font>
-            <Font name="System Bold Italic" size="24.0" />
-         </font>
-      </Text>
-      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="230.0" prefWidth="520.0">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" translateY="10.0" StackPane.alignment="CENTER">
          <children>
-            <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="198.0" prefWidth="489.0" vbarPolicy="ALWAYS">
-              <content>
-                  <VBox fx:id="gamesList" alignment="TOP_CENTER" fillWidth="false" minHeight="225.0" spacing="1.5" />
-              </content>
-            </ScrollPane>
-            <ImageView fx:id="borderImage" fitHeight="230.0" fitWidth="520.0" pickOnBounds="true">
-               <image>
-                  <Image url="@../../assets/gui/border.png" />
-               </image>
-            </ImageView>
-         </children>
-      </StackPane>
-      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" translateY="170.0" StackPane.alignment="CENTER">
-         <children>
-            <TextField fx:id="gameIdField" prefHeight="30.0" prefWidth="350.0" promptText="Already have a code? Enter it here!" />
-            <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+            <Text fill="#1a8441" strokeType="OUTSIDE" strokeWidth="0.0" text="Available Games" textOrigin="CENTER">
+               <font>
+                  <Font name="System Bold Italic" size="24.0" />
+               </font>
+            </Text>
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="230.0" prefWidth="520.0">
                <children>
-                  <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#manualJoin" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
-                     <font>
-                        <Font name="System Italic" size="10.0" />
-                     </font>
-                  </Button>
-                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" spacing="7.5" StackPane.alignment="CENTER">
-                     <children>
-                        <ImageView fitHeight="16.0" fitWidth="16.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/gui/icons/game-controller.png" />
-                           </image>
-                        </ImageView>
-                        <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Join" textOrigin="CENTER">
-                           <font>
-                              <Font name="System Italic" size="14.0" />
-                           </font>
-                        </Text>
-                     </children>
-                  </HBox>
+                  <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="198.0" prefWidth="489.0" vbarPolicy="ALWAYS">
+                    <content>
+                        <VBox fx:id="gamesList" alignment="TOP_CENTER" fillWidth="false" minHeight="225.0" spacing="1.5" />
+                    </content>
+                  </ScrollPane>
+                  <ImageView fx:id="borderImage" fitHeight="230.0" fitWidth="520.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../../assets/gui/border.png" />
+                     </image>
+                  </ImageView>
                </children>
             </StackPane>
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
+               <children>
+                  <TextField fx:id="gameIdField" prefHeight="30.0" prefWidth="350.0" promptText="Already have a code? Enter it here!" />
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+                     <children>
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#manualJoin" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+                           <font>
+                              <Font name="System Italic" size="10.0" />
+                           </font>
+                        </Button>
+                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" spacing="7.5" StackPane.alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/game-controller.png" />
+                                 </image>
+                              </ImageView>
+                              <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Join" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                     </children>
+                  </StackPane>
+               </children>
+            </HBox>
          </children>
-      </HBox>
-      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="40.0" translateY="-100.0" StackPane.alignment="BOTTOM_CENTER">
+      </VBox>
+      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" translateY="-100.0" StackPane.alignment="BOTTOM_CENTER">
          <children>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
