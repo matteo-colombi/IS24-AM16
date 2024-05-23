@@ -18,8 +18,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
@@ -149,7 +149,6 @@ public class CodexGUI extends Application implements ViewInterface {
      * Switches to the welcome screen.
      */
     public void switchToWelcomeScreen() {
-        guiState.setChatListener(null);
         FXMLLoader welcomeScreenLoader = new FXMLLoader(CodexGUI.class.getResource(FilePaths.GUI_SCREENS + "/welcome-screen.fxml"));
         try {
             Parent welcomeScreen = welcomeScreenLoader.load();
@@ -160,24 +159,9 @@ public class CodexGUI extends Application implements ViewInterface {
     }
 
     /**
-     * Switches to the create screen.
-     */
-    public void switchToCreateScreen() {
-        guiState.setChatListener(null);
-        FXMLLoader createScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/create-screen.fxml"));
-        try {
-            Parent createScreen = createScreenLoader.load();
-            stage.getScene().setRoot(createScreen);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Switches to the games screen.
      */
     public void switchToGamesScreen() {
-        guiState.setChatListener(null);
         FXMLLoader gamesScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/games-screen.fxml"));
         try {
             Parent gamesScreen = gamesScreenLoader.load();
@@ -195,7 +179,6 @@ public class CodexGUI extends Application implements ViewInterface {
      * Switches to the game screen.
      */
     public void switchToPlayScreen() {
-        guiState.setChatListener(null);
         FXMLLoader playScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/play-screen.fxml"));
         try {
             Parent playScreen = playScreenLoader.load();
@@ -222,15 +205,15 @@ public class CodexGUI extends Application implements ViewInterface {
         launch(args);
     }
 
-    /**
-     * Set's the view's {@link ServerInterface}. This interface will be used by the view to send communications to the server.
-     *
-     * @param serverInterface The interface which this view should use to communicate with the server.
-     */
-    @Override
-    public synchronized void setServerInterface(ServerInterface serverInterface) {
-        this.serverInterface = serverInterface;
-    }
+//    /**
+//     * Set's the view's {@link ServerInterface}. This interface will be used by the view to send communications to the server.
+//     *
+//     * @param serverInterface The interface which this view should use to communicate with the server.
+//     */
+//    @Override
+//    public synchronized void setServerInterface(ServerInterface serverInterface) {
+//        this.serverInterface = serverInterface;
+//    }
 
     /**
      * Show the existing game IDs to the player.
@@ -241,10 +224,11 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void printGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) {
-        GamesScreenController controller = guiState.getGamesScreenController();
-        if (controller != null) {
-            controller.setGamesList(gameIds.stream().toList(), currentPlayers, maxPlayers);
-        }
+//        GamesScreenController controller = guiState.getGamesScreenController();
+//        if (controller != null) {
+//            controller.setGamesList(gameIds.stream().toList(), currentPlayers, maxPlayers);
+//        }
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetGamesListEvent(gameIds.stream().toList(), currentPlayers, maxPlayers)));
     }
 
     /**
@@ -268,8 +252,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void addPlayer(String username) {
-        guiState.addPlayer(username);
-        //TODO notify the LobbyScreenController
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new AddPlayerEvent(username)));
     }
 
     /**
@@ -279,8 +262,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setPlayers(List<String> usernames) {
-        guiState.setPlayerUsernames(usernames);
-        //TODO notify the LobbyScreenController
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetPlayersEvent(usernames)));
     }
 
     /**
@@ -290,7 +272,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setGameState(GameState state) {
-        //TODO
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetGameStateEvent(state)));
     }
 
     /**
@@ -301,10 +283,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setCommonCards(PlayableCard[] commonResourceCards, PlayableCard[] commonGoldCards) {
-        PlayScreenController playScreenController = guiState.getPlayScreenController();
-        if (playScreenController != null) {
-            playScreenController.setCommonCards(commonResourceCards, commonGoldCards);
-        }
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetCommonCardsEvent(commonResourceCards, commonGoldCards)));
     }
 
     /**
@@ -315,10 +294,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setDeckTopType(PlayableCardType whichDeck, ResourceType resourceType) {
-        PlayScreenController playScreenController = guiState.getPlayScreenController();
-        if (playScreenController != null) {
-            playScreenController.setDeckTopType(whichDeck, resourceType);
-        }
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetDeckTopTypeEvent(whichDeck, resourceType)));
     }
 
     /**
@@ -328,7 +304,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void promptStarterChoice(StarterCard starterCard) {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new PromptStarterChoiceEvent(starterCard)));
     }
 
     /**
@@ -336,7 +312,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void choosingColors() {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new ChoosingColorsEvent()));
     }
 
     /**
@@ -346,7 +322,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void promptColorChoice(List<PlayerColor> colorChoices) {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new PromptColorChoiceEvent(colorChoices)));
     }
 
     /**
@@ -357,10 +333,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setColor(String username, PlayerColor color) {
-        PlayScreenController playScreenController = guiState.getPlayScreenController();
-        if (playScreenController != null) {
-            playScreenController.setPlayerColor(username, color);
-        }
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetColorEvent(username, color)));
     }
 
     /**
@@ -368,7 +341,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void drawingCards() {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new DrawingCardsEvent()));
     }
 
     /**
@@ -378,10 +351,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setHand(List<PlayableCard> hand) {
-        PlayScreenController playScreenController = guiState.getPlayScreenController();
-        if (playScreenController != null) {
-            playScreenController.setHand(hand);
-        }
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetHandEvent(hand)));
     }
 
     /**
@@ -391,10 +361,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void addCardToHand(PlayableCard card) {
-        PlayScreenController playScreenController = guiState.getPlayScreenController();
-        if (playScreenController != null) {
-            playScreenController.addCardToHand(card);
-        }
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new AddCardToHandEvent(card)));
     }
 
     /**
@@ -404,10 +371,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void removeCardFromHand(PlayableCard card) {
-        PlayScreenController playScreenController = guiState.getPlayScreenController();
-        if (playScreenController != null) {
-            playScreenController.removeCardFromHand(card);
-        }
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new RemoveCardFromHandEvent(card)));
     }
 
     /**
@@ -418,7 +382,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setOtherHand(String username, List<RestrictedCard> hand) {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetOtherHandEvent(username, hand)));
     }
 
     /**
@@ -429,7 +393,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void addCardToOtherHand(String username, RestrictedCard newCard) {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new AddCardToOtherHandEvent(username, newCard)));
     }
 
     /**
@@ -440,7 +404,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void removeCardFromOtherHand(String username, RestrictedCard cardToRemove) {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new RemoveCardFromOtherHandEvent(username, cardToRemove)));
     }
 
     /**
@@ -457,10 +421,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setPlayArea(String username, List<Position> cardPlacementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
-        PlayScreenController playScreenController = guiState.getPlayScreenController();
-        if (playScreenController != null) {
-            playScreenController.setPlayArea(username, cardPlacementOrder, field, activeSides, legalPositions, illegalPositions, resourceCounts, objectCounts);
-        }
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetPlayAreaEvent(username, cardPlacementOrder, field, activeSides, legalPositions, illegalPositions, resourceCounts, objectCounts)));
     }
 
     /**
@@ -477,10 +438,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
-        PlayScreenController playScreenController = guiState.getPlayScreenController();
-        if (playScreenController != null) {
-            playScreenController.playCard(username, card, side, pos, addedLegalPositions, removedLegalPositions, resourceCounts, objectCounts);
-        }
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new PlayCardEvent(username, card, side, pos, addedLegalPositions, removedLegalPositions, resourceCounts, objectCounts)));
     }
 
     /**
@@ -491,10 +449,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setGamePoints(String username, int gamePoints) {
-        PlayScreenController playScreenController = guiState.getPlayScreenController();
-        if (playScreenController != null) {
-            playScreenController.setGamePoints(username, gamePoints);
-        }
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetGamePointsEvent(username, gamePoints)));
     }
 
     /**
@@ -505,10 +460,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setObjectivePoints(String username, int objectivePoints) {
-        PlayScreenController playScreenController = guiState.getPlayScreenController();
-        if (playScreenController != null) {
-            playScreenController.setGamePoints(username, objectivePoints);
-        }
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetObjectivePointsEvent(username, objectivePoints)));
     }
 
     /**
@@ -518,10 +470,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setCommonObjectives(ObjectiveCard[] commonObjectives) {
-        PlayScreenController playScreenController = guiState.getPlayScreenController();
-        if (playScreenController != null) {
-            playScreenController.setCommonObjectives(commonObjectives);
-        }
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetCommonObjectivesEvent(commonObjectives)));
     }
 
     /**
@@ -531,7 +480,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void promptObjectiveChoice(List<ObjectiveCard> possiblePersonalObjectives) {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new PromptObjectiveChoiceEvent(possiblePersonalObjectives)));
     }
 
     /**
@@ -541,10 +490,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setPersonalObjective(ObjectiveCard personalObjective) {
-        PlayScreenController playScreenController = guiState.getPlayScreenController();
-        if (playScreenController != null) {
-            playScreenController.setPersonalObjective(personalObjective);
-        }
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetPersonalObjectiveEvent(personalObjective)));
     }
 
     /**
@@ -554,7 +500,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setStartOrder(List<String> usernames) {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetStartOrderEvent(usernames)));
     }
 
     /**
@@ -564,7 +510,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void turn(String username) {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new TurnEvent(username)));
     }
 
     /**
@@ -574,7 +520,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setWinners(List<String> winnerUsernames) {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetWinnersEvent(winnerUsernames)));
     }
 
     /**
@@ -584,7 +530,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void addMessages(List<ChatMessage> messages) {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new AddChatMessagesEvent(messages)));
     }
 
     /**
@@ -594,7 +540,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void addMessage(ChatMessage message) {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new AddChatMessagesEvent(List.of(message))));
     }
 
     /**
@@ -604,14 +550,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void promptError(String errorMessage) {
-        //TODO make a proper error popup Pane
-        Platform.runLater(() -> {
-            Popup popup = new Popup();
-            Text errorText = new Text(errorMessage);
-            popup.getContent().add(errorText);
-            popup.show(stage.getScene().getWindow());
-            popup.setAutoHide(true);
-        });
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new ErrorEvent(errorMessage)));
     }
 
     /**
@@ -619,7 +558,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void redrawView() {
-
+        //TODO maybe remove
     }
 
     /**
@@ -627,7 +566,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void notifyDontDraw() {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new NotifyDontDrawEvent()));
     }
 
     /**
@@ -637,7 +576,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void signalDisconnection(String whoDisconnected) {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SignalDisconnectionEvent(whoDisconnected)));
     }
 
     /**
@@ -647,7 +586,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void signalGameSuspension(String whoDisconnected) {
-
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SignalGameSuspensionEvent(whoDisconnected)));
     }
 
     /**
@@ -657,7 +596,34 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void signalDeadlock(String username) {
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SignalDeadlockEvent(username)));
+    }
 
+    /**
+     * DOCME
+     */
+    @Override
+    public void signalConnectionLost() {
+        //TODO make an actual popup :)
+
+        Platform.runLater(() -> {
+            Popup popup = new Popup();
+            StackPane darkening = new StackPane();
+            darkening.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
+            StackPane testStackPane = new StackPane();
+            testStackPane.setStyle("-fx-background-color: rgba(255, 255, 255, 1);");
+            Text testText = new Text("Connection lost to the server :(");
+            testStackPane.getChildren().add(testText);
+            popup.getContent().add(testStackPane);
+            popup.setWidth(200);
+            popup.setHeight(100);
+            popup.setAutoHide(false);
+            ((StackPane) stage.getScene().getRoot()).getChildren().addLast(darkening);
+            stage.toFront();
+            popup.show(stage.getScene().getRoot(), 0, 0);
+            popup.centerOnScreen();
+
+        });
     }
 
 }

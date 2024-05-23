@@ -33,7 +33,7 @@ public class TCPClient implements Runnable, ServerInterface {
     private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
 
     private final Socket socket;
-    private ViewInterface view;
+    private final ViewInterface view;
     private final PrintWriter out;
     private final Scanner in;
     private final AtomicBoolean running;
@@ -79,6 +79,7 @@ public class TCPClient implements Runnable, ServerInterface {
 
                     System.err.println("\nConnection lost.");
                     checkConnectionTimer.cancel();
+                    view.signalConnectionLost();
 
                     running.set(false);
                     continue;
@@ -431,8 +432,6 @@ public class TCPClient implements Runnable, ServerInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        System.exit(0);
     }
 
     /**
@@ -452,7 +451,7 @@ public class TCPClient implements Runnable, ServerInterface {
                     try {
                         socket.close();
                     } catch (IOException ignored) {}
-                    System.exit(0);
+                    view.signalConnectionLost();
                 }
             }
         };

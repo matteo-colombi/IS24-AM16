@@ -5,7 +5,6 @@ import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
-import it.polimi.ingsw.am16.server.ServerInterface;
 
 import java.util.List;
 import java.util.Map;
@@ -22,12 +21,12 @@ public interface ViewInterface {
      */
     void startView(String[] args);
 
-    /**
-     * Set's the view's {@link ServerInterface}. This interface will be used by the view to send communications to the server.
-     *
-     * @param serverInterface The interface which this view should use to communicate with the server.
-     */
-    void setServerInterface(ServerInterface serverInterface);
+//    /**
+//     * Set's the view's {@link ServerInterface}. This interface will be used by the view to send communications to the server.
+//     *
+//     * @param serverInterface The interface which this view should use to communicate with the server.
+//     */
+//    void setServerInterface(ServerInterface serverInterface);
 
     /**
      * Show the existing game IDs to the player.
@@ -296,5 +295,10 @@ public interface ViewInterface {
      * @param username The username of the player who skipped their turn.
      */
     void signalDeadlock(String username);
+
+    /**
+     * DOCME
+     */
+    void signalConnectionLost();
 
 }

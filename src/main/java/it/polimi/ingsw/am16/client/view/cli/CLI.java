@@ -98,14 +98,15 @@ public class CLI implements ViewInterface {
         this.inputManagerThread = new Thread(cliInputManager);
     }
 
-    /**
-     * Set's the view's {@link ServerInterface}. This interface will be used by the view to send communications to the server.
-     *
-     * @param serverInterface The interface which this view should use to communicate with the server.
-     */
-    public synchronized void setServerInterface(ServerInterface serverInterface) {
-        cliInputManager.setServerInterface(serverInterface);
-    }
+//    /**
+//     * Set's the view's {@link ServerInterface}. This interface will be used by the view to send communications to the server.
+//     *
+//     * @param serverInterface The interface which this view should use to communicate with the server.
+//     */
+//    @Override
+//    public synchronized void setServerInterface(ServerInterface serverInterface) {
+//        cliInputManager.setServerInterface(serverInterface);
+//    }
 
     /**
      * Starts the view. This includes the view's user input manager.
@@ -712,6 +713,14 @@ public class CLI implements ViewInterface {
             System.out.printf("\n%s has deadlocked themselves! Their turn is skipped.\n", username);
         }
 
+    }
+
+    /**
+     * DOCME
+     */
+    @Override
+    public void signalConnectionLost() {
+        System.err.println("Connection lost to the server.");
     }
 
     public synchronized void printHand() {

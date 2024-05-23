@@ -1,12 +1,14 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
+import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -15,7 +17,10 @@ import java.util.ResourceBundle;
 /**
  * Controller for the welcome screen.
  */
-public class WelcomeScreenController implements ScreenController, Initializable {
+public class WelcomeScreenController implements Initializable {
+
+    @FXML
+    private StackPane root;
 
     /**
      * The text field for the username.
@@ -42,22 +47,11 @@ public class WelcomeScreenController implements ScreenController, Initializable 
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        CodexGUI.getGUI().getGuiState().setWelcomeScreenController(this);
-        CodexGUI.getGUI().getGuiState().setCurrentController(this);
-        addTextLimiter(usernameField, 10);
-        usernameField.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER) {
-                join(null);
-            }
-        });
+        registerEvents();
 
+        addTextLimiter(usernameField, 10);
         makeNumOnly(numPlayersField);
         addTextLimiter(numPlayersField, 1);
-        numPlayersField.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER) {
-                create(null);
-            }
-        });
 
         String username = CodexGUI.getGUI().getGuiState().getUsername();
         if (username != null) {
@@ -171,8 +165,23 @@ public class WelcomeScreenController implements ScreenController, Initializable 
      *
      * @param errorMessage
      */
-    @Override
     public void showError(String errorMessage) {
-        //TODO implement
+        //TODO implement an event listener that calls this method
+    }
+
+    private void registerEvents() {
+        root.addEventFilter(GUIEventTypes.ERROR_EVENT, errorEvent -> showError(errorEvent.getErrorMsg()));
+
+        usernameField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                join(null);
+            }
+        });
+
+        numPlayersField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                create(null);
+            }
+        });
     }
 }

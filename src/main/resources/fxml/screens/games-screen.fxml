@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane id="background" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.GamesScreenController">
+<StackPane id="background" fx:id="root" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.GamesScreenController">
    <children>
       <ImageView fitHeight="150.0" fitWidth="320.0" pickOnBounds="true" preserveRatio="true" translateY="50.0" StackPane.alignment="TOP_CENTER">
          <image>

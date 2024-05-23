@@ -52,7 +52,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
      * Stops the RMI client
      */
     public void stop() {
-        System.exit(0);
+        view.signalConnectionLost();
     }
 
     /**

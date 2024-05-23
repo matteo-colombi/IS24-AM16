@@ -8,6 +8,7 @@ module it.polimi.ingsw.am16 {
     requires org.controlsfx.controls;
     requires java.rmi;
     requires java.desktop;
+    requires jdk.dynalink;
 
     opens it.polimi.ingsw.am16 to javafx.fxml;
     opens it.polimi.ingsw.am16.common.model.cards to com.fasterxml.jackson.databind;

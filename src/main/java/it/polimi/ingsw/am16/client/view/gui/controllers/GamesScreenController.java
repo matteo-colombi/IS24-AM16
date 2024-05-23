@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
+import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
 import it.polimi.ingsw.am16.common.util.FilePaths;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.application.Platform;
@@ -22,9 +23,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class GamesScreenController implements ScreenController, Initializable {
+public class GamesScreenController implements Initializable {
 
     private ServerInterface serverInterface;
+
+    @FXML
+    private StackPane root;
 
     @FXML
     private VBox gamesList;
@@ -37,10 +41,11 @@ public class GamesScreenController implements ScreenController, Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        CodexGUI.getGUI().getGuiState().setGamesScreenController(this);
-        CodexGUI.getGUI().getGuiState().setCurrentController(this);
         borderImage.setMouseTransparent(true);
         this.serverInterface = CodexGUI.getGUI().getServerInterface();
+
+        registerEvents();
+
         refresh();
     }
 
@@ -107,8 +112,19 @@ public class GamesScreenController implements ScreenController, Initializable {
         }
     }
 
-    @Override
     public void showError(String errorMessage) {
         //TODO implement
+    }
+
+    private void registerEvents() {
+        root.addEventFilter(GUIEventTypes.ERROR_EVENT, errorEvent -> {
+            showError(errorEvent.getErrorMsg());
+            errorEvent.consume();
+        });
+
+        root.addEventFilter(GUIEventTypes.SET_GAMES_LIST_EVENT, gamesListEvent -> {
+            setGamesList(gamesListEvent.getGameIds(), gamesListEvent.getCurrentPlayers(), gamesListEvent.getMaxPlayers());
+            gamesListEvent.consume();
+        });
     }
 }

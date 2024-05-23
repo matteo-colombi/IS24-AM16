@@ -1,17 +1,12 @@
 package it.polimi.ingsw.am16.client.view.gui.util;
 
-import it.polimi.ingsw.am16.client.view.gui.ChatListener;
 import it.polimi.ingsw.am16.client.view.gui.controllers.*;
-import it.polimi.ingsw.am16.common.model.cards.Card;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
-import it.polimi.ingsw.am16.common.model.players.PlayArea;
-import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.scene.input.DataFormat;
-import org.controlsfx.control.spreadsheet.Grid;
 
 import java.util.*;
 
@@ -39,14 +34,6 @@ public class GUIState {
     private final Map<String, Integer> objectivePoints;
 
     private final Map<String, PlayerColor> playerColors;
-
-    private ScreenController currentController;
-    private WelcomeScreenController welcomeScreenController;
-    private CreateScreenController createScreenController;
-    private GamesScreenController gamesScreenController;
-    private PlayScreenController playScreenController;
-
-    private ChatListener chatListener;
 
     private final List<ChatMessage> chatMessages;
 
@@ -91,20 +78,7 @@ public class GUIState {
         synchronized (this) {
             username = null;
             gameId = null;
-            currentController = null;
-            gamesScreenController = null;
-            welcomeScreenController = null;
-            playScreenController = null;
-            chatListener = null;
         }
-    }
-
-    public synchronized PlayScreenController getPlayScreenController() {
-        return playScreenController;
-    }
-
-    public synchronized void setPlayScreenController(PlayScreenController playScreenController) {
-        this.playScreenController = playScreenController;
     }
 
     public synchronized String getGameId() {
@@ -113,38 +87,6 @@ public class GUIState {
 
     public synchronized void setGameId(String gameId) {
         this.gameId = gameId;
-    }
-
-    public synchronized ScreenController getCurrentController() {
-        return currentController;
-    }
-
-    public synchronized void setCurrentController(ScreenController currentController) {
-        this.currentController = currentController;
-    }
-
-    public synchronized WelcomeScreenController getWelcomeScreenController() {
-        return welcomeScreenController;
-    }
-
-    public synchronized void setWelcomeScreenController(WelcomeScreenController welcomeScreenController) {
-        this.welcomeScreenController = welcomeScreenController;
-    }
-
-    public synchronized CreateScreenController getCreateScreenController() {
-        return createScreenController;
-    }
-
-    public synchronized void setCreateScreenController(CreateScreenController createScreenController) {
-        this.createScreenController = createScreenController;
-    }
-
-    public synchronized GamesScreenController getGamesScreenController() {
-        return gamesScreenController;
-    }
-
-    public synchronized void setGamesScreenController(GamesScreenController gamesScreenController) {
-        this.gamesScreenController = gamesScreenController;
     }
 
     public synchronized void setUsername(String username) {
@@ -169,27 +111,9 @@ public class GUIState {
         }
     }
 
-    public void receiveNewMessage(ChatMessage message) {
-        synchronized (chatMessages) {
-            chatMessages.add(message);
-            if (chatListener != null) {
-                chatListener.receiveMessage(message);
-            }
-        }
-    }
-
-    public void receiveNewMessages(List<ChatMessage> messages) {
+    public void addNewMessages(List<ChatMessage> messages) {
         synchronized (chatMessages) {
             chatMessages.addAll(messages);
-            if (chatListener != null) {
-                chatListener.receiveMessages(messages);
-            }
-        }
-    }
-
-    public void setChatListener(ChatListener l) {
-        synchronized (chatMessages) {
-            chatListener = l;
         }
     }
 

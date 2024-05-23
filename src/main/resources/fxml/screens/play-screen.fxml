@@ -18,15 +18,15 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane id="background_no_image" prefHeight="1080.0" prefWidth="1920.0" styleClass="card" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.PlayScreenController">
+<StackPane id="background_no_image" fx:id="root" prefHeight="1080.0" prefWidth="1920.0" styleClass="card" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.PlayScreenController">
    <children>
       <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="60.0" styleClass="card_group" translateX="-300.0" translateY="30.0" StackPane.alignment="TOP_CENTER">
          <children>
             <StackPane fx:id="resourceDeckSlot">
                <children>
-                  <StackPane fx:id="cardPane213" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                      <children>
-                        <ImageView id="cardImage" fx:id="cardImage213" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
                            </image>
@@ -41,9 +41,9 @@
             </StackPane>
             <HBox fx:id="commonResourceCardsSlot" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
                <children>
-                  <StackPane fx:id="cardPane214" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                      <children>
-                        <ImageView id="cardImage" fx:id="cardImage214" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
                            </image>
@@ -54,9 +54,9 @@
                         </ImageView>
                      </children>
                   </StackPane>
-                  <StackPane fx:id="cardPane215" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                      <children>
-                        <ImageView id="cardImage" fx:id="cardImage215" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
                            </image>
@@ -78,9 +78,9 @@
          <children>
             <HBox fx:id="commonGoldCardsSlot" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
                <children>
-                  <StackPane fx:id="cardPane211" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                      <children>
-                        <ImageView id="cardImage" fx:id="cardImage211" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
                            </image>
@@ -91,9 +91,9 @@
                         </ImageView>
                      </children>
                   </StackPane>
-                  <StackPane fx:id="cardPane212" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                      <children>
-                        <ImageView id="cardImage" fx:id="cardImage212" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
                            </image>
@@ -108,9 +108,9 @@
             </HBox>
             <StackPane fx:id="goldDeckSlot">
                <children>
-                  <StackPane fx:id="cardPane21" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                      <children>
-                        <ImageView id="cardImage" fx:id="cardImage21" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
                            </image>
@@ -136,14 +136,14 @@
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </padding>
          <children>
-            <StackPane fx:id="cardPane" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                <children>
-                  <ImageView id="cardImage" fx:id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </StackPane>
-            <StackPane fx:id="cardPane1" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                <children>
-                  <ImageView id="cardImage" fx:id="cardImage1" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </StackPane>
          </children>
@@ -166,9 +166,9 @@
          <children>
             <StackPane fx:id="personalObjectiveSlot" maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
-                  <StackPane fx:id="cardPane2" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                      <children>
-                        <ImageView id="cardImage" fx:id="cardImage2" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
                            </image>
@@ -183,9 +183,9 @@
             </StackPane>
             <HBox fx:id="handSlot" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
                <children>
-                  <StackPane fx:id="cardPane31" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                      <children>
-                        <ImageView id="cardImage" fx:id="cardImage31" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
                            </image>
@@ -196,9 +196,9 @@
                         </ImageView>
                      </children>
                   </StackPane>
-                  <StackPane fx:id="cardPane3" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                      <children>
-                        <ImageView id="cardImage" fx:id="cardImage3" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
                            </image>
@@ -209,9 +209,9 @@
                         </ImageView>
                      </children>
                   </StackPane>
-                  <StackPane fx:id="cardPane32" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
                      <children>
-                        <ImageView id="cardImage" fx:id="cardImage32" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
                            </image>
