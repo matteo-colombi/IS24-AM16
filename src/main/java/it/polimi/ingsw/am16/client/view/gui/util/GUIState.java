@@ -42,6 +42,7 @@ public class GUIState {
 
     private ScreenController currentController;
     private WelcomeScreenController welcomeScreenController;
+    private CreateScreenController createScreenController;
     private GamesScreenController gamesScreenController;
     private PlayScreenController playScreenController;
 
@@ -128,6 +129,14 @@ public class GUIState {
 
     public synchronized void setWelcomeScreenController(WelcomeScreenController welcomeScreenController) {
         this.welcomeScreenController = welcomeScreenController;
+    }
+
+    public synchronized CreateScreenController getCreateScreenController() {
+        return createScreenController;
+    }
+
+    public synchronized void setCreateScreenController(CreateScreenController createScreenController) {
+        this.createScreenController = createScreenController;
     }
 
     public synchronized GamesScreenController getGamesScreenController() {

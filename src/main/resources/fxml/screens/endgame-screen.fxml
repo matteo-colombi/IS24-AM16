@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -11,129 +12,312 @@
 
 <StackPane id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Eolo" translateY="-300.0">
-         <font>
-            <Font name="Comic Sans MS" size="64.0" />
-         </font>
-      </Text>
-      <Text fill="#3c2313" strokeType="OUTSIDE" strokeWidth="0.0" text="The winner is:" translateY="-400.0">
-         <font>
-            <Font name="System Bold Italic" size="72.0" />
-         </font>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Leaderboard" translateY="-85.0">
-         <font>
-            <Font name="System Bold Italic" size="48.0" />
-         </font>
-      </Text>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="30.0" translateY="100.0" StackPane.alignment="CENTER">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" translateY="50.0" StackPane.alignment="TOP_CENTER">
          <children>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player">
-                     <font>
-                        <Font name="System Bold" size="36.0" />
-                     </font>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Eolo">
-                     <font>
-                        <Font name="System Italic" size="36.0" />
-                     </font>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Eola">
-                     <font>
-                        <Font name="System Italic" size="36.0" />
-                     </font>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="EULA">
-                     <font>
-                        <Font name="System Italic" size="36.0" />
-                     </font>
-                  </Text>
-               </children>
-            </VBox>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Total Points">
-                     <font>
-                        <Font name="System Bold" size="36.0" />
-                     </font>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="34" translateX="60.0">
-                     <font>
-                        <Font name="System Italic" size="36.0" />
-                     </font>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="30" translateX="60.0">
-                     <font>
-                        <Font name="System Italic" size="36.0" />
-                     </font>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="10" translateX="60.0">
-                     <font>
-                        <Font name="System Italic" size="36.0" />
-                     </font>
-                  </Text>
-               </children>
-            </VBox>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Game Points">
-                     <font>
-                        <Font name="System Bold" size="36.0" />
-                     </font>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="26" translateX="70.0">
-                     <font>
-                        <Font name="System Italic" size="36.0" />
-                     </font>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="15" translateX="70.0">
-                     <font>
-                        <Font name="System Italic" size="36.0" />
-                     </font>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="10" translateX="70.0">
-                     <font>
-                        <Font name="System Italic" size="36.0" />
-                     </font>
-                  </Text>
-               </children>
-            </VBox>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Objective Points">
-                     <font>
-                        <Font name="System Bold" size="36.0" />
-                     </font>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="8" translateX="100.0">
-                     <font>
-                        <Font name="System Italic" size="36.0" />
-                     </font>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="15" translateX="100.0">
-                     <font>
-                        <Font name="System Italic" size="36.0" />
-                     </font>
-                  </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="0" translateX="100.0">
-                     <font>
-                        <Font name="System Italic" size="36.0" />
-                     </font>
-                  </Text>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="63.0" prefWidth="186.0" translateY="350.0">
-         <children>
-            <Button fx:id="quitButton" mnemonicParsing="false" prefHeight="77.0" prefWidth="207.0" StackPane.alignment="CENTER">
+            <Text fill="#922790" strokeType="OUTSIDE" strokeWidth="0.0" text="The winner is:">
                <font>
-                  <Font name="System Italic" size="18.0" />
+                  <Font name="System Bold Italic" size="64.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Eolo">
+               <font>
+                  <Font name="System Italic" size="48.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #CACCA0; -fx-background-radius: 3; -fx-border-color: #573B21; -fx-border-radius: 3; -fx-border-width: 3;" translateY="50.0" StackPane.alignment="CENTER">
+         <children>
+            <Text boundsType="LOGICAL_VERTICAL_CENTER" fill="#3c2313" strokeType="OUTSIDE" strokeWidth="0.0" text="Leaderboard" textOrigin="CENTER">
+               <font>
+                  <Font name="System Bold Italic" size="40.0" />
+               </font>
+            </Text>
+            <HBox maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+               <children>
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="270.0" style="-fx-border-color: #573B21; -fx-border-width: 0 3 0 0;">
+                     <children>
+                        <StackPane>
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="Player" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Bold Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="Eolo" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="Eola" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="EULA" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="Leolo" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="270.0" style="-fx-border-color: #573B21; -fx-border-width: 0 3 0 0;">
+                     <children>
+                        <StackPane>
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="Game Points" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Bold Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="26" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="15" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="10" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="10" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="270.0" style="-fx-border-color: #573B21; -fx-border-width: 0 3 0 0;">
+                     <children>
+                        <StackPane>
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="Objective Points" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Bold Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="8" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="15" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                        </StackPane>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="270.0">
+                     <children>
+                        <StackPane>
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Points" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Bold Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" fill="#b38c44" strokeType="OUTSIDE" strokeWidth="0.0" text="34" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Bold Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" fill="#b38c44" strokeType="OUTSIDE" strokeWidth="0.0" text="30" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Bold Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" fill="#b38c44" strokeType="OUTSIDE" strokeWidth="0.0" text="10" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Bold Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </StackPane>
+                        <StackPane style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                           <children>
+                              <Text boundsType="LOGICAL_VERTICAL_CENTER" fill="#b38c44" strokeType="OUTSIDE" strokeWidth="0.0" text="10" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Bold Italic" size="30.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="15.0" right="15.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </StackPane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="63.0" prefWidth="186.0" translateY="-50.0" StackPane.alignment="BOTTOM_CENTER">
+         <children>
+            <Button fx:id="quitButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" StackPane.alignment="CENTER">
+               <font>
+                  <Font name="System Italic" size="10.0" />
                </font>
             </Button>
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" prefHeight="54.0" prefWidth="107.0" spacing="7.5" StackPane.alignment="CENTER">
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" spacing="7.5" StackPane.alignment="CENTER">
                <children>
                   <ImageView fitHeight="18.0" fitWidth="18.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                      <image>

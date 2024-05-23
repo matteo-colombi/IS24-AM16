@@ -7,108 +7,129 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <StackPane id="background" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.WelcomeScreenController">
    <children>
-      <Text fill="#3c2313" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to" textOrigin="CENTER" translateY="50.0" StackPane.alignment="TOP_CENTER">
-         <font>
-            <Font name="System Bold Italic" size="24.0" />
-         </font>
-      </Text>
-      <ImageView fitHeight="200.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true" translateY="100.0" StackPane.alignment="TOP_CENTER">
-         <viewport>
-            <Rectangle2D />
-         </viewport>
-         <image>
-            <Image url="@../../assets/gui/banner.png" />
-         </image>
-      </ImageView>
-      <Text fill="#922790" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your username:" textOrigin="CENTER" translateY="10.0" StackPane.alignment="CENTER">
-         <font>
-            <Font name="System Bold Italic" size="24.0" />
-         </font>
-      </Text>
-      <TextField fx:id="usernameField" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="500.0" promptText="CodexLover" translateY="60.0" StackPane.alignment="CENTER">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </TextField>
-      <Text fill="#ef3f36" strokeType="OUTSIDE" strokeWidth="0.0" text="Max 10 characters" textOrigin="CENTER" translateY="90.0" StackPane.alignment="CENTER" />
-      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateX="150.0" translateY="205.0">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" translateY="50.0" StackPane.alignment="TOP_CENTER">
          <children>
-            <TextField fx:id="numPlayersField" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="39.0" prefWidth="200.0" promptText="Number of players" styleClass="text-field" translateY="-60.0">
+            <Text fill="#3c2313" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to" textOrigin="CENTER">
                <font>
-                  <Font size="14.0" />
+                  <Font name="System Bold Italic" size="24.0" />
                </font>
-            </TextField>
-            <Button mnemonicParsing="false" onAction="#create" prefHeight="50.0" prefWidth="200.0" StackPane.alignment="CENTER">
+            </Text>
+            <ImageView fitHeight="200.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+               <viewport>
+                  <Rectangle2D />
+               </viewport>
+               <image>
+                  <Image url="@../../assets/gui/banner.png" />
+               </image>
+            </ImageView>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" translateY="30.0" StackPane.alignment="CENTER">
+         <children>
+            <Text fill="#922790" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your username:" textOrigin="CENTER">
                <font>
-                  <Font name="System Italic" size="18.0" />
+                  <Font name="System Bold Italic" size="24.0" />
                </font>
-            </Button>
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" spacing="10.0" StackPane.alignment="CENTER">
+            </Text>
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0">
                <children>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/gui/icons/add.png" />
-                     </image>
-                  </ImageView>
-                  <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Create" textOrigin="CENTER">
+                  <TextField fx:id="usernameField" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="500.0" promptText="CodexLover">
                      <font>
-                        <Font name="System Italic" size="24.0" />
+                        <Font size="14.0" />
                      </font>
-                  </Text>
+                  </TextField>
+                  <Text fill="#ef3f36" strokeType="OUTSIDE" strokeWidth="0.0" text="Max 10 characters" textOrigin="CENTER" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" translateY="-50.0" StackPane.alignment="BOTTOM_CENTER">
+         <children>
+            <HBox alignment="CENTER" spacing="50.0">
+               <children>
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+                     <children>
+                        <TextField fx:id="numPlayersField" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="39.0" prefWidth="200.0" promptText="Number of players" styleClass="text-field" translateY="-60.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </TextField>
+                        <Button mnemonicParsing="false" onAction="#create" prefHeight="60.0" prefWidth="200.0" StackPane.alignment="CENTER">
+                           <font>
+                              <Font name="System Italic" size="10.0" />
+                           </font>
+                        </Button>
+                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" spacing="10.0" StackPane.alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="18.0" fitWidth="18.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/add.png" />
+                                 </image>
+                              </ImageView>
+                              <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Create" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="24.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                     </children>
+                  </StackPane>
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+                     <children>
+                        <Button fx:id="joinButton" mnemonicParsing="false" onAction="#join" prefHeight="60.0" prefWidth="200.0" StackPane.alignment="CENTER">
+                           <font>
+                              <Font name="System Italic" size="10.0" />
+                           </font>
+                        </Button>
+                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" spacing="10.0" StackPane.alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/game-controller.png" />
+                                 </image>
+                              </ImageView>
+                              <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Join" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="24.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                     </children>
+                  </StackPane>
                </children>
             </HBox>
-         </children>
-      </StackPane>
-      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateY="270.0">
-         <children>
-            <Button fx:id="quitButton" mnemonicParsing="false" onAction="#quit" prefHeight="40.0" prefWidth="160.0" StackPane.alignment="CENTER">
-               <font>
-                  <Font name="System Italic" size="18.0" />
-               </font>
-            </Button>
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" spacing="7.5" StackPane.alignment="CENTER">
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
-                  <ImageView fitHeight="18.0" fitWidth="18.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/gui/icons/door.png" />
-                     </image>
-                  </ImageView>
-                  <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Quit" textOrigin="CENTER">
+                  <Button fx:id="quitButton" mnemonicParsing="false" onAction="#quit" prefHeight="40.0" prefWidth="160.0" StackPane.alignment="CENTER">
                      <font>
-                        <Font name="System Italic" size="18.0" />
+                        <Font name="System Italic" size="10.0" />
                      </font>
-                  </Text>
+                  </Button>
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" spacing="7.5" StackPane.alignment="CENTER">
+                     <children>
+                        <ImageView fitHeight="18.0" fitWidth="18.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/gui/icons/door.png" />
+                           </image>
+                        </ImageView>
+                        <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Quit" textOrigin="CENTER">
+                           <font>
+                              <Font name="System Italic" size="18.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
                </children>
-            </HBox>
+            </StackPane>
          </children>
-      </StackPane>
-      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateX="-150.0" translateY="205.0">
-         <children>
-            <Button fx:id="joinButton" mnemonicParsing="false" onAction="#join" prefHeight="50.0" prefWidth="200.0" StackPane.alignment="CENTER">
-               <font>
-                  <Font name="System Italic" size="18.0" />
-               </font>
-            </Button>
-            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" spacing="10.0" StackPane.alignment="CENTER">
-               <children>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/gui/icons/game-controller.png" />
-                     </image>
-                  </ImageView>
-                  <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Join" textOrigin="CENTER">
-                     <font>
-                        <Font name="System Italic" size="24.0" />
-                     </font>
-                  </Text>
-               </children>
-            </HBox>
-         </children>
-      </StackPane>
+      </VBox>
    </children>
 </StackPane>

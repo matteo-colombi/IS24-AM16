@@ -42,12 +42,12 @@
             <TextField fx:id="gameIdField" prefHeight="30.0" prefWidth="350.0" promptText="Already have a code? Enter it here!" />
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
-                  <Button mnemonicParsing="false" onAction="#manualJoin" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+                  <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#manualJoin" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
                      <font>
-                        <Font name="System Italic" size="14.0" />
+                        <Font name="System Italic" size="10.0" />
                      </font>
                   </Button>
-                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" spacing="7.5" StackPane.alignment="CENTER">
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" mouseTransparent="true" spacing="7.5" StackPane.alignment="CENTER">
                      <children>
                         <ImageView fitHeight="16.0" fitWidth="16.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -65,7 +65,7 @@
             </StackPane>
          </children>
       </HBox>
-      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="30.0" translateY="-100.0" StackPane.alignment="BOTTOM_CENTER">
+      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="40.0" translateY="-100.0" StackPane.alignment="BOTTOM_CENTER">
          <children>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
@@ -101,7 +101,7 @@
                      <children>
                         <ImageView fitHeight="16.0" fitWidth="16.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/gui/icons/sync.png" />
+                              <Image url="@../../assets/gui/icons/sync%20-%20black.png" />
                            </image>
                         </ImageView>
                         <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Refresh" textOrigin="CENTER">

@@ -137,10 +137,10 @@ public class CodexGUI extends Application implements ViewInterface {
         stage.setScene(scene);
         stage.show();
 
-        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
         delay.setOnFinished(event -> {
-//            switchToWelcomeScreen();
-            switchToPlayScreen();
+            switchToWelcomeScreen();
+    //        switchToPlayScreen();
         });
         delay.play();
     }
@@ -154,6 +154,20 @@ public class CodexGUI extends Application implements ViewInterface {
         try {
             Parent welcomeScreen = welcomeScreenLoader.load();
             stage.getScene().setRoot(welcomeScreen);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Switches to the create screen.
+     */
+    public void switchToCreateScreen() {
+        guiState.setChatListener(null);
+        FXMLLoader createScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/create-screen.fxml"));
+        try {
+            Parent createScreen = createScreenLoader.load();
+            stage.getScene().setRoot(createScreen);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -182,10 +196,10 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     public void switchToPlayScreen() {
         guiState.setChatListener(null);
-        FXMLLoader gamesScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/play-screen.fxml"));
+        FXMLLoader playScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/play-screen.fxml"));
         try {
-            Parent gamesScreen = gamesScreenLoader.load();
-            stage.getScene().setRoot(gamesScreen);
+            Parent playScreen = playScreenLoader.load();
+            stage.getScene().setRoot(playScreen);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

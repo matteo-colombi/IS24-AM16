@@ -1,11 +1,11 @@
 .button {
     -fx-background-color: linear-gradient(#e8dfcc, #c4b8a0);
-    -fx-text-fill: #663300;
+    -fx-background-radius: 5;
     -fx-border-color: #663300;
     -fx-border-width: 2px;
     -fx-border-radius: 5;
-    -fx-background-radius: 5;
     -fx-padding: 10 20;
+    -fx-text-fill: #663300;
     -fx-font-size: 16px;
     -fx-font-family: 'Cinzel', serif;
     -fx-cursor: hand;
@@ -24,11 +24,11 @@
 /* CSS per il TextField */
 .text-field {
     -fx-background-color: #f9f5e3;
-    -fx-text-fill: #663300;
+    -fx-background-radius: 5;
     -fx-border-color: #663300;
     -fx-border-radius: 5;
-    -fx-background-radius: 5;
     -fx-padding: 5;
+    -fx-text-fill: #663300;
     -fx-font-size: 14px;
     -fx-font-family: 'Cinzel', serif;
 }
@@ -76,10 +76,10 @@
 }
 
 .scroll-pane {
-    -fx-border-color: #57402B;
-    -fx-border-radius: 5px;
     -fx-background-color: rgba(255, 255, 255, 0.6);
     -fx-background-radius: 5px;
+    -fx-border-color: #57402B;
+    -fx-border-radius: 5px;
 }
 
 .scroll-pane .viewport {
@@ -117,4 +117,12 @@
 
 #background_no_image {
     -fx-background-color: #E8E1B7
+}
+
+#playersSelector{
+    -fx-background-color: #f9f5e3;
+    -fx-background-radius: 5;
+    -fx-border-color: #663300;
+    -fx-border-radius: 5;
+    -fx-padding: 30;
 }

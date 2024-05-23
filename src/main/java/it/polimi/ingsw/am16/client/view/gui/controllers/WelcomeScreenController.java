@@ -36,7 +36,8 @@ public class WelcomeScreenController implements ScreenController, Initializable 
 
     /**
      * Initializes the controller. The username is kept when returning to the welcome screen from the games screen.
-     * @param url The URL.
+     *
+     * @param url            The URL.
      * @param resourceBundle The resource bundle.
      */
     @Override
@@ -68,6 +69,7 @@ public class WelcomeScreenController implements ScreenController, Initializable 
 
     /**
      * Quits the application.
+     *
      * @param ignored The action event (which is ignored).
      */
     @FXML
@@ -77,6 +79,7 @@ public class WelcomeScreenController implements ScreenController, Initializable 
 
     /**
      * Joins a game.
+     *
      * @param ignored The action event (which is ignored).
      */
     @FXML
@@ -95,6 +98,7 @@ public class WelcomeScreenController implements ScreenController, Initializable 
 
     /**
      * Creates a new game.
+     *
      * @param ignored The action event (which is ignored).
      */
     @FXML
@@ -106,45 +110,51 @@ public class WelcomeScreenController implements ScreenController, Initializable 
             return;
         }
 
-        boolean invalid = numPlayersField.getText().isEmpty();
-
-        int numPlayers = 0;
-        try {
-            numPlayers = Integer.parseInt(numPlayersField.getText());
-        } catch (NumberFormatException e) {
-            invalid = true;
-        }
-
-        if (invalid) {
-            numPlayersField.selectAll();
-            numPlayersField.requestFocus();
-            return;
-        }
+//        boolean invalid = numPlayersField.getText().isEmpty();
+//
+//        int numPlayers = 0;
+//        try {
+//            numPlayers = Integer.parseInt(numPlayersField.getText());
+//        } catch (NumberFormatException e) {
+//            invalid = true;
+//        }
+//
+//        if (invalid) {
+//            numPlayersField.selectAll();
+//            numPlayersField.requestFocus();
+//            return;
+//        }
+//
 
         CodexGUI.getGUI().getGuiState().setUsername(username);
-        try {
-            serverInterface.createGame(username, numPlayers);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+
+//        try {
+//            serverInterface.createGame(username, numPlayers);
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
+
+        CodexGUI.getGUI().switchToCreateScreen();
     }
 
     /**
      * Makes it so that the given text field can only accept the numbers 2, 3 and 4.
+     *
      * @param tf The text field to which this constraint should be applied.
      */
     private static void makeNumOnly(final TextField tf) {
         tf.textProperty().addListener((ov, oldValue, newValue) -> {
-                if (!newValue.matches("[234]")) {
-                    tf.clear();
+                    if (!newValue.matches("[234]")) {
+                        tf.clear();
+                    }
                 }
-            }
         );
     }
 
     /**
      * Adds a text limiter to a text field.
-     * @param tf The text field to which this constraint should be applied.
+     *
+     * @param tf        The text field to which this constraint should be applied.
      * @param maxLength The maximum length.
      */
     private static void addTextLimiter(final TextField tf, final int maxLength) {
@@ -158,6 +168,7 @@ public class WelcomeScreenController implements ScreenController, Initializable 
 
     /**
      * DOCME
+     *
      * @param errorMessage
      */
     @Override
