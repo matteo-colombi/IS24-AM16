@@ -98,23 +98,6 @@
     -fx-border-width: 3;
 }
 
-.info_table {
-    -fx-background-color: #CACCA0;
-    -fx-background-radius: 3;
-}
-
-.info_table .resources_info_table_section {
-    -fx-border-color: #573B21;
-    -fx-border-radius: 3 3 0 0;
-    -fx-border-width: 3;
-}
-
-.info_table .objects_info_table_section {
-    -fx-border-color: #573B21;
-    -fx-border-radius: 0 0 3 3;
-    -fx-border-width: 0 3 3 3;
-}
-
 #background_no_image {
     -fx-background-color: #E8E1B7
 }

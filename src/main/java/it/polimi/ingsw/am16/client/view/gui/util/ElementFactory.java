@@ -92,4 +92,14 @@ public class ElementFactory {
             throw new RuntimeException(e);
         }
     }
+
+    public static InfoTableController getInfoTable() {
+        FXMLLoader infoTableLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/info-table.fxml"));
+        try {
+            infoTableLoader.load();
+            return infoTableLoader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

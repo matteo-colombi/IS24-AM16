@@ -3,7 +3,6 @@ package it.polimi.ingsw.am16.client.view.gui.controllers;
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
-import it.polimi.ingsw.am16.common.model.cards.Card;
 import it.polimi.ingsw.am16.common.util.Position;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -29,6 +28,8 @@ public class PlayAreaGridController implements Initializable {
 
     private GUIState guiState;
 
+    private Set<Position> placeablePositions;
+
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -43,20 +44,20 @@ public class PlayAreaGridController implements Initializable {
 
         guiState = CodexGUI.getGUI().getGuiState();
 
-        guiState.setField(new HashMap<>());
         guiState.setGridFillers(new HashMap<>());
-        guiState.setPlaceablePositions(new HashSet<>());
+
+        this.placeablePositions = new HashSet<>();
 
         //TODO remove. Just for testing
-        guiState.setPlaceablePositions(Set.of(new Position(-2,0)));
         playAreaGrid.setGridLinesVisible(true);
 
     }
 
-    public void setCenterCard(CardController cardController) {
+    public void setCenterCard(CardController cardController, Set<Position> legalPositions, Set<Position> illegalPositions) {
         //WARNING: should only be called when the grid is still empty. Put that in the doc.
 
-        guiState.putCardInField(new Position(0, 0), cardController.getCard());
+        placeablePositions.addAll(legalPositions);
+        placeablePositions.removeAll(illegalPositions);
 
         Platform.runLater(() -> {
             expandUp();
@@ -68,14 +69,12 @@ public class PlayAreaGridController implements Initializable {
         });
     }
 
-    public void putCard(CardController cardController, Position position) {
-        guiState.putCardInField(position, cardController.getCard());
+    public void putCard(CardController cardController, Position position, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions) {
 
-        removeFiller(position);
-
+        final Position finalPosition = new Position(position.x(), -position.y());
         Platform.runLater(() -> {
-            int realCol = position.x() + centerX;
-            int realRow = position.y() + centerY;
+            int realCol = finalPosition.x() + centerX;
+            int realRow = finalPosition.y() + centerY;
             while (realCol <= 0) {
                 expandLeft();
                 realCol++;
@@ -90,11 +89,27 @@ public class PlayAreaGridController implements Initializable {
             while(realRow >= currHeight-1) {
                 expandDown();
             }
+
+            for (Position removedLegal : removedLegalPositions) {
+                removeFiller(removedLegal);
+            }
+
+            placeablePositions.removeAll(removedLegalPositions);
+
+            for(Position addedLegal : addedLegalPositions) {
+                Pane fillerPane = addNewFiller(addedLegal);
+                if (fillerPane == null)
+                    continue;
+
+                playAreaGrid.add(fillerPane, addedLegal.x()+centerX, -addedLegal.y()+centerY);
+            }
+            placeablePositions.addAll(addedLegalPositions);
+
             playAreaGrid.add(cardController.getRoot(), realCol, realRow);
         });
     }
 
-    public void expandUp() {
+    private void expandUp() {
         playAreaGrid.getRowConstraints().addFirst(rowConstraints);
         currHeight++;
         centerY++;
@@ -110,30 +125,30 @@ public class PlayAreaGridController implements Initializable {
         for(int i = 0; i < currWidth; i++) {
             int x = i-centerX;
             int y = -centerY;
-            Position pos = new Position(x, y);
-            if (guiState.getPlaceablePositions().contains(pos)) {
-                Pane gridFiller = addNewFiller(x, y);
+            Position pos = new Position(x, -y);
+            if (placeablePositions.contains(pos)) {
+                Pane gridFiller = addNewFiller(pos);
                 playAreaGrid.add(gridFiller, i, 0);
             }
         }
     }
 
-    public void expandDown() {
+    private void expandDown() {
         playAreaGrid.getRowConstraints().addLast(rowConstraints);
         currHeight++;
 
         for(int i = 0; i < currWidth; i++) {
             int x = i-centerX;
             int y = currHeight-1-centerY;
-            Position pos = new Position(x, y);
-            if (guiState .getPlaceablePositions().contains(pos)) {
-                Pane gridFiller = addNewFiller(x, y);
+            Position pos = new Position(x, -y);
+            if (placeablePositions.contains(pos)) {
+                Pane gridFiller = addNewFiller(pos);
                 playAreaGrid.add(gridFiller, i, currHeight-1);
             }
         }
     }
 
-    public void expandLeft() {
+    private void expandLeft() {
         playAreaGrid.getColumnConstraints().addFirst(columnConstraints);
         currWidth++;
         centerX++;
@@ -149,24 +164,24 @@ public class PlayAreaGridController implements Initializable {
         for(int i = 0; i < currHeight; i++) {
             int x = -centerX;
             int y = i-centerY;
-            Position pos = new Position(x, y);
-            if (guiState.getPlaceablePositions().contains(pos)) {
-                Pane gridFiller = addNewFiller(x, y);
+            Position pos = new Position(x, -y);
+            if (placeablePositions.contains(pos)) {
+                Pane gridFiller = addNewFiller(pos);
                 playAreaGrid.add(gridFiller, 0, i);
             }
         }
     }
 
-    public void expandRight() {
+    private void expandRight() {
         playAreaGrid.getColumnConstraints().addLast(columnConstraints);
         currWidth++;
 
         for(int i = 0; i < currHeight; i++) {
             int x = currWidth-1-centerX;
             int y = i-centerY;
-            Position pos = new Position(x, y);
-            if (guiState.getPlaceablePositions().contains(pos)) {
-                Pane gridFiller = addNewFiller(x, y);
+            Position pos = new Position(x, -y);
+            if (placeablePositions.contains(pos)) {
+                Pane gridFiller = addNewFiller(pos);
                 playAreaGrid.add(gridFiller, currWidth-1, i);
             }
         }
@@ -176,15 +191,17 @@ public class PlayAreaGridController implements Initializable {
         return scrollPane;
     }
 
-    public Pane addNewFiller(int x, int y) {
-        GridFillerController gridFillerController = ElementFactory.getGridFiller();
-        Position position = new Position(x, y);
-        gridFillerController.setPosition(position);
-        guiState.putGridFillerInPos(position, gridFillerController);
-        return gridFillerController.getFillerPane();
+    private Pane addNewFiller(Position position) {
+        if (guiState.getGridFillerInPos(position) == null) {
+            GridFillerController gridFillerController = ElementFactory.getGridFiller();
+            gridFillerController.setPosition(position);
+            guiState.putGridFillerInPos(position, gridFillerController);
+            return gridFillerController.getFillerPane();
+        }
+        return null;
     }
 
-    public void removeFiller(Position fillerPosition) {
+    private void removeFiller(Position fillerPosition) {
         GridFillerController gridFiller = guiState.getGridFillerInPos(fillerPosition);
 
         if (gridFiller != null)
