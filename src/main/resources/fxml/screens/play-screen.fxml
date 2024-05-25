@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.Double?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
@@ -15,10 +16,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<StackPane id="background_no_image" fx:id="root" prefHeight="1080.0" prefWidth="1920.0" styleClass="card" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.PlayScreenController">
+<StackPane fx:id="root" prefHeight="1080.0" prefWidth="1920.0" styleClass="background-no-image" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.PlayScreenController">
    <children>
       <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="60.0" styleClass="card_group" translateX="-300.0" translateY="30.0" StackPane.alignment="TOP_CENTER">
          <children>
@@ -181,49 +183,7 @@
                   </StackPane>
                </children>
             </StackPane>
-            <HBox fx:id="handSlot" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
-               <children>
-                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
-                     <children>
-                        <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
-                           </image>
-                           <styleClass>
-                              <String fx:value="card" />
-                              <String fx:value="card_placeholder" />
-                           </styleClass>
-                        </ImageView>
-                     </children>
-                  </StackPane>
-                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
-                     <children>
-                        <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
-                           </image>
-                           <styleClass>
-                              <String fx:value="card" />
-                              <String fx:value="card_placeholder" />
-                           </styleClass>
-                        </ImageView>
-                     </children>
-                  </StackPane>
-                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
-                     <children>
-                        <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
-                           </image>
-                           <styleClass>
-                              <String fx:value="card" />
-                              <String fx:value="card_placeholder" />
-                           </styleClass>
-                        </ImageView>
-                     </children>
-                  </StackPane>
-               </children>
-            </HBox>
+            <Group fx:id="handSlot" />
          </children>
          <StackPane.margin>
             <Insets />
@@ -299,7 +259,7 @@
             </StackPane>
          </children>
       </StackPane>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" style="-fx-background-color: #CACCA0; -fx-background-radius: 3; -fx-border-color: #573B21; -fx-border-radius: 3; -fx-border-width: 3;" translateX="-260.0" StackPane.alignment="CENTER_RIGHT">
+      <VBox fx:id="playersBox" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" style="-fx-background-color: #CACCA0; -fx-background-radius: 3; -fx-border-color: #573B21; -fx-border-radius: 3; -fx-border-width: 3;" translateX="-260.0" StackPane.alignment="CENTER_RIGHT">
          <children>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" snapToPixel="false">
                <children>
@@ -363,5 +323,71 @@
          </padding>
       </VBox>
       <StackPane fx:id="centerContentPane" maxHeight="400.0" maxWidth="900.0" minHeight="400.0" minWidth="900.0" prefHeight="400.0" prefWidth="900.0" translateX="-45.0" />
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="110.0" prefWidth="80.0" translateX="55.0" translateY="42.5" StackPane.alignment="TOP_LEFT">
+         <children>
+            <StackPane fx:id="leaveButton" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="hex-button" StackPane.alignment="TOP_LEFT">
+               <children>
+                  <Polygon fill="#cacca0" layoutX="108.0" layoutY="121.0" stroke="#573b21" strokeLineCap="ROUND" strokeType="OUTSIDE" strokeWidth="3.0">
+                     <points>
+                        <Double fx:value="0.0" />
+                        <Double fx:value="-25.0" />
+                        <Double fx:value="-22.0" />
+                        <Double fx:value="-13.0" />
+                        <Double fx:value="-22.0" />
+                        <Double fx:value="12.0" />
+                        <Double fx:value="0.0" />
+                        <Double fx:value="25.0" />
+                        <Double fx:value="22.0" />
+                        <Double fx:value="13.0" />
+                        <Double fx:value="22.0" />
+                        <Double fx:value="-12.0" />
+                     </points>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Polygon>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/gui/icons/door.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </StackPane>
+            <StackPane disable="true" maxHeight="-Infinity" maxWidth="-Infinity" visible="false" StackPane.alignment="BOTTOM_RIGHT">
+               <children>
+                  <Polygon fill="#cacca0" layoutX="108.0" layoutY="121.0" stroke="#573b21" strokeLineCap="ROUND" strokeType="OUTSIDE" strokeWidth="3.0">
+                     <points>
+                        <Double fx:value="0.0" />
+                        <Double fx:value="-25.0" />
+                        <Double fx:value="-22.0" />
+                        <Double fx:value="-13.0" />
+                        <Double fx:value="-22.0" />
+                        <Double fx:value="12.0" />
+                        <Double fx:value="0.0" />
+                        <Double fx:value="25.0" />
+                        <Double fx:value="22.0" />
+                        <Double fx:value="13.0" />
+                        <Double fx:value="22.0" />
+                        <Double fx:value="-12.0" />
+                     </points>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Polygon>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/gui/icons/game-controller.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </StackPane>
+         </children>
+      </StackPane>
    </children>
 </StackPane>

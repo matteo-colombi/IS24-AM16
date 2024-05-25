@@ -3,8 +3,6 @@ package it.polimi.ingsw.am16.client.view.gui;
 import it.polimi.ingsw.am16.client.Client;
 import it.polimi.ingsw.am16.client.view.ViewInterface;
 import it.polimi.ingsw.am16.client.view.gui.events.*;
-import it.polimi.ingsw.am16.client.view.gui.controllers.GamesScreenController;
-import it.polimi.ingsw.am16.client.view.gui.controllers.PlayScreenController;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
@@ -157,6 +155,7 @@ public class CodexGUI extends Application implements ViewInterface {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        guiState.clear();
     }
 
     /**
@@ -195,7 +194,8 @@ public class CodexGUI extends Application implements ViewInterface {
             stage.getScene().setRoot(lobbyScreen);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }    }
+        }
+    }
 
     /**
      * Switches to the game screen.
@@ -227,16 +227,6 @@ public class CodexGUI extends Application implements ViewInterface {
         launch(args);
     }
 
-//    /**
-//     * Set's the view's {@link ServerInterface}. This interface will be used by the view to send communications to the server.
-//     *
-//     * @param serverInterface The interface which this view should use to communicate with the server.
-//     */
-//    @Override
-//    public synchronized void setServerInterface(ServerInterface serverInterface) {
-//        this.serverInterface = serverInterface;
-//    }
-
     /**
      * Show the existing game IDs to the player.
      *
@@ -246,10 +236,6 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void printGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) {
-//        GamesScreenController controller = guiState.getGamesScreenController();
-//        if (controller != null) {
-//            controller.setGamesList(gameIds.stream().toList(), currentPlayers, maxPlayers);
-//        }
         Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetGamesListEvent(gameIds.stream().toList(), currentPlayers, maxPlayers)));
     }
 
@@ -294,6 +280,7 @@ public class CodexGUI extends Application implements ViewInterface {
      */
     @Override
     public synchronized void setGameState(GameState state) {
+        guiState.setGameState(state);
         Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetGameStateEvent(state)));
     }
 

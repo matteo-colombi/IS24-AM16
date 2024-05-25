@@ -21,6 +21,21 @@
     -fx-effect: none;
 }
 
+.hex-button .polygon {
+    -fx-fill: linear-gradient(#e8dfcc, #c4b8a0);
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 0, 0);
+}
+
+.hex-button .polygon:hover {
+    -fx-fill: linear-gradient(#d8cdbf, #b8a992);
+}
+
+.hex-button .polygon:pressed {
+    -fx-fill: linear-gradient(#c4b8a0, #a89a80);
+    -fx-effect: none;
+}
+
 /* CSS per il TextField */
 .text-field {
     -fx-background-color: #f9f5e3;
@@ -67,8 +82,12 @@
     -fx-background-radius: 5;
 }
 
-#background {
+.background {
     -fx-background-image: url("../../assets/gui/background.png");
+}
+
+.background-no-image {
+    -fx-background-color: #E8E1B7;
 }
 
 #gamesList {
@@ -98,14 +117,33 @@
     -fx-border-width: 3;
 }
 
-#background_no_image {
-    -fx-background-color: #E8E1B7
-}
-
 #playersSelector{
     -fx-background-color: #f9f5e3;
     -fx-background-radius: 5;
     -fx-border-color: #663300;
     -fx-border-radius: 5;
     -fx-padding: 30;
+}
+
+.chat VBox .scroll-pane {
+    -fx-border-color: #573B21;
+    -fx-border-radius: 3 3 0 0;
+    -fx-border-width: 3;
+}
+
+.chat VBox .scroll-pane VBox {
+    -fx-background-color: #CACCA0;
+}
+
+.chat VBox .text-section {
+    -fx-background-color: #CACCA0;
+    -fx-border-color:  #573B21;
+    -fx-border-radius:  0 0 3 3;
+    -fx-border-width: 0 3 3 3;
+}
+
+.chat .chat-text-field {
+    -fx-background-color: transparent;
+    -fx-border-style: hidden;
+    -fx-prompt-text-fill:  #B38C44;
 }

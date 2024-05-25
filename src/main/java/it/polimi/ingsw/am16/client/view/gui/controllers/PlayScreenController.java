@@ -8,6 +8,7 @@ import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.model.players.hand.Hand;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.application.Platform;
@@ -53,7 +54,7 @@ public class PlayScreenController implements Initializable {
     @FXML
     private VBox objectivesCardGroup;
     @FXML
-    private HBox handSlot;
+    private Group handSlot;
     @FXML
     private StackPane personalObjectiveSlot;
     @FXML
@@ -66,6 +67,10 @@ public class PlayScreenController implements Initializable {
     private HBox commonGoldCardsSlot;
     @FXML
     private StackPane pointsBoardSlot;
+    @FXML
+    private StackPane leaveButton;
+    @FXML
+    private VBox playersBox;
 
     private ServerInterface serverInterface;
 
@@ -73,71 +78,38 @@ public class PlayScreenController implements Initializable {
 
     private GUIState guiState;
 
+    private Map<String, PlayerButtonController> playerButtons;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         registerEvents();
 
         guiState = CodexGUI.getGUI().getGuiState();
 
-        //TODO remove this. Make a popup for the chat filter
-        CodexGUI.getGUI().getStage().getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {
-            if (evt.getPickResult().getIntersectedNode() != chatFilterButton && !inHierarchy(evt.getPickResult().getIntersectedNode(), chatFilters)) {
-                chatFilters.setVisible(false);
-            }
-        });
-
         this.serverInterface = CodexGUI.getGUI().getServerInterface();
 
         pointsBoardController = ElementFactory.getPointsBoard();
         pointsBoardSlot.getChildren().add(pointsBoardController.getRoot());
 
+        HandController hand = ElementFactory.getHandSlot();
+        guiState.setHand(hand);
+        handSlot.getChildren().add(hand.getRoot());
+
         receiveMessages(guiState.getChatMessages());
 
-        //TODO remove this. Just for testing
-        setCommonObjectives(new ObjectiveCard[]{CardRegistry.getRegistry().getObjectiveCardFromName("objective_pattern_5"), CardRegistry.getRegistry().getObjectiveCardFromName("objective_object_1")});
-        setHand(List.of(CardRegistry.getRegistry().getResourceCardFromName("resource_animal_9"), CardRegistry.getRegistry().getGoldCardFromName("gold_insect_10")));
-        setPersonalObjective(CardRegistry.getRegistry().getObjectiveCardFromName("objective_resources_3"));
-        setIsStartingPlayer();
+        setPlayers(guiState.getPlayerUsernames());
+    }
 
-        setDeckTopType(PlayableCardType.RESOURCE, ResourceType.ANIMAL);
-        setDeckTopType(PlayableCardType.GOLD,ResourceType.INSECT);
+    private void setPlayers(List<String> usernames) {
+        playerButtons = new HashMap<>();
+        playersBox.getChildren().clear();
+        for(String username : usernames) {
+            PlayerButtonController playerButtonController = ElementFactory.getPlayerButton();
+            playerButtons.put(username, playerButtonController);
+            playersBox.getChildren().add(playerButtonController.getRoot());
 
-        setCommonCards(new PlayableCard[]{CardRegistry.getRegistry().getResourceCardFromName("resource_fungi_4"), CardRegistry.getRegistry().getResourceCardFromName("resource_insect_1")}, new PlayableCard[]{CardRegistry.getRegistry().getGoldCardFromName("gold_plant_3"), CardRegistry.getRegistry().getGoldCardFromName("gold_animal_10")});
-
-        addCardToHand(CardRegistry.getRegistry().getGoldCardFromName("gold_animal_6"));
-        addCardToHand(CardRegistry.getRegistry().getGoldCardFromName("gold_animal_6"));
-        addCardToHand(CardRegistry.getRegistry().getGoldCardFromName("gold_animal_6"));
-        addCardToHand(CardRegistry.getRegistry().getGoldCardFromName("gold_animal_6"));
-
-        guiState.setUsername("teo");
-        guiState.addPlayer("andre");
-        guiState.addPlayer("xLorde");
-
-        setPlayerColor("teo", PlayerColor.BLUE);
-        setPlayerColor("andre", PlayerColor.YELLOW);
-        setPlayerColor("xLorde", PlayerColor.GREEN);
-
-        setGamePoints("xLorde", 35);
-
-        setPlayArea("teo",
-                List.of(),
-                Map.of(new Position(0, 0), CardRegistry.getRegistry().getStarterCardFromName("starter_3")),
-                Map.of(CardRegistry.getRegistry().getStarterCardFromName("starter_3"), SideType.BACK),
-                Set.of(new Position(1, 1), new Position(1, -1), new Position(-1, -1), new Position(-1, 1)),
-                Set.of(new Position(1, 1)),
-                Map.of(),
-                Map.of()
-        );
-
-        playCard("teo",
-                CardRegistry.getRegistry().getGoldCardFromName("gold_fungi_3"),
-                SideType.FRONT,
-                new Position(1, 1),
-                Set.of(new Position(0, 2)), Set.of(new Position(-1, -1)),
-                Map.of(), Map.of()
-        );
-
-        updateInfoTable("teo", Map.of(ResourceType.ANIMAL, 5), Map.of());
+            //TODO assign onclick action on the player button
+        }
     }
 
     private void setGameState(GameState state) {
@@ -155,6 +127,8 @@ public class PlayScreenController implements Initializable {
         }
         guiState.setGamePoints(username, 0);
         pointsBoardController.addPegInSlot(0, color);
+        PlayerButtonController playerButtonController = playerButtons.get(username);
+        playerButtonController.setColor(color);
     }
 
     private void setPegColor(PlayerColor color) {
@@ -192,7 +166,7 @@ public class PlayScreenController implements Initializable {
         chatFilters.setVisible(!chatFilters.isVisible());
     }
 
-    public void sendChatMessage() {
+    private void sendChatMessage() {
         String text = chatBox.getText();
         if (text.isEmpty())
             return;
@@ -231,46 +205,53 @@ public class PlayScreenController implements Initializable {
     }
 
     private void setHand(List<PlayableCard> hand) {
-        guiState.setHand(hand);
+        HandController handController = guiState.getHand();
         for(int i = 0; i<hand.size(); i++) {
             CardController cardController = ElementFactory.getCard();
+            cardController.getRoot().setId(hand.get(i).getName());
             cardController.setCard(hand.get(i));
             cardController.showSide(SideType.FRONT);
-            final int finalI = i;
-            Platform.runLater(() -> handSlot.getChildren().set(finalI, cardController.getRoot()));
+            handController.addCard(i, cardController);
         }
     }
 
     private void addCardToHand(PlayableCard card) {
-        if (guiState.getHandSize() >= 3) return;
-        guiState.addCardToHand(card);
+        HandController handController = guiState.getHand();
         CardController cardController = ElementFactory.getCard();
+        cardController.getRoot().setId(card.getName());
         cardController.setCardAndShowSide(card, SideType.FRONT);
         cardController.setShadowColor(card.getType());
-        cardController.setDraggable(true);
-        cardController.setInteractable(true);
-        Platform.runLater(() -> handSlot.getChildren().set(guiState.getHandSize()-1, cardController.getRoot()));
-
+        handController.addCard(cardController);
     }
 
     private void removeCardFromHand(PlayableCard card) {
-        int index = guiState.removeCardFromHand(card);
-        if (index != -1) {
-            CardController placeholder = ElementFactory.getCard();
-            Platform.runLater(() -> handSlot.getChildren().set(index, placeholder.getRoot()));
-        }
+        HandController handController = guiState.getHand();
+        handController.removeCard(card);
     }
 
     private void setOtherHand(String username, List<RestrictedCard> hand) {
-        //TODO
+        HandController handController = ElementFactory.getHandSlot();
+        for(int i = 0; i<hand.size(); i++) {
+            RestrictedCard card = hand.get(i);
+            CardController cardController = ElementFactory.getCardBackOnly(card.cardType(), card.resourceType());
+            if (cardController == null) continue;
+            cardController.getRoot().setId(card.cardType() + ":" + card.resourceType());
+            handController.addCard(i, cardController);
+        }
+        guiState.setOtherHand(username, handController);
     }
 
     private void addCardToOtherHand(String username, RestrictedCard card) {
-        //TODO
+        HandController handController = guiState.getOtherHand(username);
+        CardController cardController = ElementFactory.getCardBackOnly(card.cardType(), card.resourceType());
+        if (cardController == null) return;
+        cardController.getRoot().setId(card.cardType() + ":" + card.resourceType());
+        handController.addCard(cardController);
     }
 
     private void removeCardFromOtherHand(String username, RestrictedCard card) {
-        //TODO
+        HandController handController = guiState.getOtherHand(username);
+        handController.removeCard(card);
     }
 
     private void promptStarterChoice(StarterCard starterCard) {
@@ -473,6 +454,12 @@ public class PlayScreenController implements Initializable {
         root.addEventFilter(GUIEventTypes.ADD_CARD_TO_OTHER_HAND_EVENT, e -> addCardToOtherHand(e.getUsername(), e.getNewCard()));
 
         root.addEventFilter(GUIEventTypes.REMOVE_CARD_FROM_OTHER_HAND_EVENT, e -> removeCardFromOtherHand(e.getUsername(), e.getCardToRemove()));
+
+        CodexGUI.getGUI().getStage().getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {
+            if (evt.getPickResult().getIntersectedNode() != chatFilterButton && !inHierarchy(evt.getPickResult().getIntersectedNode(), chatFilters)) {
+                chatFilters.setVisible(false);
+            }
+        });
 
         chatBox.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {

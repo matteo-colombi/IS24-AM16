@@ -1,12 +1,10 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
+import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
 import it.polimi.ingsw.am16.client.view.gui.util.GUICardAssetRegistry;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
-import it.polimi.ingsw.am16.common.model.cards.Card;
-import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
-import it.polimi.ingsw.am16.common.model.cards.ResourceType;
-import it.polimi.ingsw.am16.common.model.cards.SideType;
+import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.util.Position;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;

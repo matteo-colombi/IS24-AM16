@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" snapToPixel="false" stylesheets="@../stylesheets/player-button.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.PlayerButtonController">
+   <children>
+      <Button fx:id="button" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" snapToPixel="false" StackPane.alignment="CENTER">
+         <font>
+            <Font size="1.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="30.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateY="2.0" StackPane.alignment="CENTER">
+         <image>
+            <Image url="@../../assets/gui/icons/user.png" />
+         </image>
+      </ImageView>
+   </children>
+</StackPane>

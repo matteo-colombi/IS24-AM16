@@ -102,4 +102,24 @@ public class ElementFactory {
             throw new RuntimeException(e);
         }
     }
+
+    public static HandController getHandSlot() {
+        FXMLLoader handLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/hand.fxml"));
+        try {
+            handLoader.load();
+            return handLoader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static PlayerButtonController getPlayerButton() {
+        FXMLLoader playerButtonLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/player-button.fxml"));
+        try {
+            playerButtonLoader.load();
+            return playerButtonLoader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

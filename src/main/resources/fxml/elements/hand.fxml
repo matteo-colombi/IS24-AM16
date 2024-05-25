@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<HBox fx:id="root" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.HandController">
+   <children>
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+         <children>
+            <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+               </image>
+               <styleClass>
+                  <String fx:value="card" />
+                  <String fx:value="card_placeholder" />
+               </styleClass>
+            </ImageView>
+         </children>
+      </StackPane>
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+         <children>
+            <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+               </image>
+               <styleClass>
+                  <String fx:value="card" />
+                  <String fx:value="card_placeholder" />
+               </styleClass>
+            </ImageView>
+         </children>
+      </StackPane>
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+         <children>
+            <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+               </image>
+               <styleClass>
+                  <String fx:value="card" />
+                  <String fx:value="card_placeholder" />
+               </styleClass>
+            </ImageView>
+         </children>
+      </StackPane>
+   </children>
+</HBox>

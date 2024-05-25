@@ -2,7 +2,9 @@ package it.polimi.ingsw.am16.client.view.gui.util;
 
 import it.polimi.ingsw.am16.client.view.gui.controllers.*;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
+import it.polimi.ingsw.am16.common.model.cards.RestrictedCard;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
+import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
@@ -20,12 +22,16 @@ public class GUIState {
     private String username;
     private String gameId;
 
+    private GameState gameState;
+
     private final Map<String, PlayAreaGridController> playAreas;
     private final Map<String, InfoTableController> infoTables;
 
+    private final Map<String, HandController> otherHands;
+
     private final Map<Position, GridFillerController> gridFillers;
 
-    private final List<PlayableCard> hand;
+    private HandController hand;
 
     private final List<String> playerUsernames;
     private final List<String> turnOrder;
@@ -42,11 +48,11 @@ public class GUIState {
         playerUsernames = new ArrayList<>();
         turnOrder = new ArrayList<>();
         gridFillers = new HashMap<>();
-        hand = new ArrayList<>();
         gamePoints = new HashMap<>();
         objectivePoints = new HashMap<>();
         playAreas = new HashMap<>();
         infoTables = new HashMap<>();
+        otherHands = new HashMap<>();
         playerColors = new HashMap<>();
     }
 
@@ -72,12 +78,17 @@ public class GUIState {
         synchronized (infoTables) {
             infoTables.clear();
         }
+        synchronized (otherHands) {
+            otherHands.clear();
+        }
         synchronized (gridFillers) {
             gridFillers.clear();
         }
         synchronized (this) {
             username = null;
             gameId = null;
+            gameState = null;
+            hand = null;
         }
     }
 
@@ -95,6 +106,14 @@ public class GUIState {
 
     public synchronized String getUsername() {
         return username;
+    }
+
+    public synchronized GameState getGameState() {
+        return gameState;
+    }
+
+    public synchronized void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
     public synchronized ServerInterface getServerInterface() {
@@ -141,6 +160,18 @@ public class GUIState {
         }
     }
 
+    public void setOtherHand(String username, HandController hand) {
+        synchronized (otherHands) {
+            otherHands.put(username, hand);
+        }
+    }
+
+    public HandController getOtherHand(String username) {
+        synchronized (otherHands) {
+            return otherHands.get(username);
+        }
+    }
+
     public GridFillerController getGridFillerInPos(Position position) {
         synchronized (gridFillers) {
             return gridFillers.get(position);
@@ -179,6 +210,12 @@ public class GUIState {
         }
     }
 
+    public void removePlayer(String whoDisconnected) {
+        synchronized (playerUsernames) {
+            playerUsernames.remove(whoDisconnected);
+        }
+    }
+
     public void setTurnOrder(List<String> turnOrder) {
         synchronized (this.turnOrder) {
             this.turnOrder.clear();
@@ -198,37 +235,15 @@ public class GUIState {
         }
     }
 
-    public void setHand(List<PlayableCard> hand) {
-        synchronized (this.hand) {
-            this.hand.clear();
-            this.hand.addAll(hand);
+    public void setHand(HandController hand) {
+        synchronized (this) {
+            this.hand = hand;
         }
     }
 
-    public PlayableCard getCardInHand(int index) {
-        synchronized (hand) {
-            return hand.get(index);
-        }
-    }
-
-    public void addCardToHand(PlayableCard playableCard) {
-        synchronized (hand) {
-            hand.add(playableCard);
-        }
-    }
-
-    public int removeCardFromHand(PlayableCard playableCard) {
-        int index;
-        synchronized (hand) {
-            index = hand.indexOf(playableCard);
-            hand.remove(playableCard);
-        }
-        return index;
-    }
-
-    public int getHandSize() {
-        synchronized (hand) {
-            return hand.size();
+    public HandController getHand() {
+        synchronized (this) {
+            return hand;
         }
     }
 
