@@ -212,7 +212,7 @@ public class CodexGUI extends Application implements ViewInterface {
 
     @Override
     public void stop() {
-        try{
+        try {
             serverInterface.disconnect();
         } catch (RemoteException e) {
             e.printStackTrace();

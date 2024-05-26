@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class LobbyScreenController implements Initializable {
-
     @FXML
     private StackPane root;
     @FXML
@@ -72,7 +71,6 @@ public class LobbyScreenController implements Initializable {
     }
 
     private void setPlayers(List<String> usernames) {
-        guiState.setPlayerUsernames(usernames);
         playersBox.getChildren().clear();
         for(String username : usernames) {
             addPlayer(username);
@@ -140,6 +138,7 @@ public class LobbyScreenController implements Initializable {
             e.printStackTrace();
         }
 
+//        chatFilterToggleGroup.selectToggle(chatFilterToggleGroup.getToggles().getFirst());
         chatBox.clear();
     }
 

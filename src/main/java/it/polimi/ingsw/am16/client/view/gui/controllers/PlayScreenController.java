@@ -103,7 +103,7 @@ public class PlayScreenController implements Initializable {
     private void setPlayers(List<String> usernames) {
         playerButtons = new HashMap<>();
         playersBox.getChildren().clear();
-        for(String username : usernames) {
+        for (String username : usernames) {
             PlayerButtonController playerButtonController = ElementFactory.getPlayerButton();
             playerButtons.put(username, playerButtonController);
             playersBox.getChildren().add(playerButtonController.getRoot());
@@ -132,7 +132,7 @@ public class PlayScreenController implements Initializable {
     }
 
     private void setPegColor(PlayerColor color) {
-        PegController pegController  = ElementFactory.getPeg();
+        PegController pegController = ElementFactory.getPeg();
         pegController.setPegColor(color);
         pegController.setPegRadius(20);
         Platform.runLater(() -> {
@@ -189,7 +189,7 @@ public class PlayScreenController implements Initializable {
 
     private void setCommonObjectives(ObjectiveCard[] commonObjectives) {
         List<Parent> cardPanes = new ArrayList<>();
-        for(ObjectiveCard objectiveCard : commonObjectives) {
+        for (ObjectiveCard objectiveCard : commonObjectives) {
             CardController cardController = ElementFactory.getCard();
             cardController.setCardAndShowSide(objectiveCard, SideType.FRONT);
             cardPanes.add(cardController.getRoot());
@@ -206,7 +206,7 @@ public class PlayScreenController implements Initializable {
 
     private void setHand(List<PlayableCard> hand) {
         HandController handController = guiState.getHand();
-        for(int i = 0; i<hand.size(); i++) {
+        for (int i = 0; i < hand.size(); i++) {
             CardController cardController = ElementFactory.getCard();
             cardController.getRoot().setId(hand.get(i).getName());
             cardController.setCard(hand.get(i));
@@ -231,7 +231,7 @@ public class PlayScreenController implements Initializable {
 
     private void setOtherHand(String username, List<RestrictedCard> hand) {
         HandController handController = ElementFactory.getHandSlot();
-        for(int i = 0; i<hand.size(); i++) {
+        for (int i = 0; i < hand.size(); i++) {
             RestrictedCard card = hand.get(i);
             CardController cardController = ElementFactory.getCardBackOnly(card.cardType(), card.resourceType());
             if (cardController == null) continue;
@@ -333,7 +333,7 @@ public class PlayScreenController implements Initializable {
     }
 
     private void setCommonCards(PlayableCard[] resourceCards, PlayableCard[] goldCards) {
-        for (int i = 0; i<resourceCards.length; i++) {
+        for (int i = 0; i < resourceCards.length; i++) {
             CardController cardController = ElementFactory.getCard();
             if (resourceCards[i] != null) {
                 PlayableCard card = resourceCards[i];
@@ -343,7 +343,7 @@ public class PlayScreenController implements Initializable {
             int finalI = i;
             Platform.runLater(() -> commonResourceCardsSlot.getChildren().set(finalI, cardController.getRoot()));
         }
-        for (int i = 0; i<goldCards.length; i++) {
+        for (int i = 0; i < goldCards.length; i++) {
             CardController cardController = ElementFactory.getCard();
             if (goldCards[i] != null) {
                 PlayableCard card = goldCards[i];
@@ -389,7 +389,7 @@ public class PlayScreenController implements Initializable {
 
     private void receiveMessages(List<ChatMessage> messages) {
         guiState.addNewMessages(messages);
-        for(ChatMessage message : messages) {
+        for (ChatMessage message : messages) {
             Text newText = new Text();
             newText.setText(message.toString());
             Platform.runLater(() -> chatMessages.getChildren().addLast(newText));

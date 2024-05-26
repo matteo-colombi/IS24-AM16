@@ -44,7 +44,7 @@
                   <TextField fx:id="gameIdField" prefHeight="30.0" prefWidth="350.0" promptText="Already have a code? Enter it here!" />
                   <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                      <children>
-                        <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#manualJoin" prefHeight="30.0" prefWidth="100.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#manualJoin" style="-fx-background-radius: 5px;" styleClass="small" StackPane.alignment="CENTER">
                            <font>
                               <Font name="System Italic" size="10.0" />
                            </font>
@@ -73,7 +73,7 @@
          <children>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
-                  <Button mnemonicParsing="false" onAction="#back" prefHeight="40.0" prefWidth="140.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#back" style="-fx-background-radius: 5px;" styleClass="medium" StackPane.alignment="CENTER">
                      <font>
                         <Font name="System Italic" size="14.0" />
                      </font>
@@ -96,7 +96,7 @@
             </StackPane>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
-                  <Button mnemonicParsing="false" onAction="#refreshGamesList" prefHeight="40.0" prefWidth="140.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#refreshGamesList" style="-fx-background-radius: 5px;" styleClass="medium" StackPane.alignment="CENTER">
                      <font>
                         <Font name="System Italic" size="14.0" />
                      </font>

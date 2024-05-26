@@ -55,7 +55,7 @@
                <children>
                   <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#create" prefHeight="60.0" prefWidth="200.0" StackPane.alignment="CENTER">
+                        <Button mnemonicParsing="false" onAction="#create" styleClass="big" StackPane.alignment="CENTER">
                            <font>
                               <Font name="System Italic" size="10.0" />
                            </font>
@@ -78,7 +78,7 @@
                   </StackPane>
                   <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                      <children>
-                        <Button fx:id="joinButton" mnemonicParsing="false" onAction="#join" prefHeight="60.0" prefWidth="200.0" StackPane.alignment="CENTER">
+                        <Button fx:id="joinButton" mnemonicParsing="false" onAction="#join" styleClass="big" StackPane.alignment="CENTER">
                            <font>
                               <Font name="System Italic" size="10.0" />
                            </font>
@@ -103,7 +103,7 @@
             </HBox>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
-                  <Button fx:id="quitButton" mnemonicParsing="false" onAction="#quit" prefHeight="40.0" prefWidth="160.0" StackPane.alignment="CENTER">
+                  <Button fx:id="quitButton" mnemonicParsing="false" onAction="#quit" styleClass="medium" StackPane.alignment="CENTER">
                      <font>
                         <Font name="System Italic" size="10.0" />
                      </font>

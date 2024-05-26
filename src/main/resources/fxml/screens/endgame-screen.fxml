@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.EndgameScreenController">
    <children>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" translateY="50.0" StackPane.alignment="TOP_CENTER">
          <children>
@@ -310,9 +310,9 @@
             </HBox>
          </children>
       </VBox>
-      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="63.0" prefWidth="186.0" translateY="-50.0" StackPane.alignment="BOTTOM_CENTER">
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateY="-100.0" StackPane.alignment="BOTTOM_CENTER">
          <children>
-            <Button fx:id="quitButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" StackPane.alignment="CENTER">
+            <Button fx:id="homeButton" mnemonicParsing="false" onAction="#home" styleClass="medium" StackPane.alignment="CENTER">
                <font>
                   <Font name="System Italic" size="10.0" />
                </font>
@@ -321,10 +321,10 @@
                <children>
                   <ImageView fitHeight="18.0" fitWidth="18.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../assets/gui/icons/door.png" />
+                        <Image url="@../../assets/gui/icons/home.png" />
                      </image>
                   </ImageView>
-                  <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Quit" textOrigin="CENTER">
+                  <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Home" textOrigin="CENTER">
                      <font>
                         <Font name="System Italic" size="18.0" />
                      </font>

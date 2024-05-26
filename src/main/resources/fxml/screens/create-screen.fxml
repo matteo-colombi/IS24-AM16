@@ -140,7 +140,7 @@
          <children>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
-                  <Button mnemonicParsing="false" onAction="#back" prefHeight="40.0" prefWidth="140.0" StackPane.alignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#back" styleClass="medium" StackPane.alignment="CENTER">
                      <font>
                         <Font name="System Italic" size="10.0" />
                      </font>
@@ -163,7 +163,7 @@
             </StackPane>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
-                  <Button mnemonicParsing="false" onAction="#create" prefHeight="40.0" prefWidth="140.0" StackPane.alignment="CENTER">
+                  <Button mnemonicParsing="false" onAction="#create" styleClass="medium" StackPane.alignment="CENTER">
                      <font>
                         <Font name="System Italic" size="10.0" />
                      </font>

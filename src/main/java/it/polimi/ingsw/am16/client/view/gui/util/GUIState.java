@@ -197,13 +197,6 @@ public class GUIState {
         }
     }
 
-    public void setPlayerUsernames(List<String> playerUsernames) {
-        synchronized (this.playerUsernames) {
-            this.playerUsernames.clear();
-            this.playerUsernames.addAll(playerUsernames);
-        }
-    }
-
     public void addPlayer(String username) {
         synchronized (playerUsernames) {
             playerUsernames.add(username);

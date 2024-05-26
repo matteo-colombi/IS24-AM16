@@ -4,15 +4,31 @@
     -fx-border-color: #663300;
     -fx-border-width: 2px;
     -fx-border-radius: 5;
-    -fx-padding: 10 20;
-    -fx-text-fill: #663300;
-    -fx-font-size: 16px;
-    -fx-font-family: 'Cinzel', serif;
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 5, 0.5, 0, 0);
 }
 
-.button:hover {
+.button.small {
+    -fx-pref-width: 100;
+    -fx-pref-height: 35;
+}
+
+.button.medium {
+    -fx-pref-width: 140;
+    -fx-pref-height: 45;
+}
+
+.button.big {
+    -fx-pref-width: 200;
+    -fx-pref-height: 60;
+}
+
+.button.transparent {
+    -fx-background-color: transparent;
+    -fx-border-style: hidden;
+}
+
+.button:hover, .button:focused {
     -fx-background-color: linear-gradient(#d8cdbf, #b8a992);
 }
 
@@ -44,8 +60,6 @@
     -fx-border-radius: 5;
     -fx-padding: 5;
     -fx-text-fill: #663300;
-    -fx-font-size: 14px;
-    -fx-font-family: 'Cinzel', serif;
 }
 
 .text-field:focused {
@@ -117,7 +131,7 @@
     -fx-border-width: 3;
 }
 
-#playersSelector{
+#playersSelector {
     -fx-background-color: #f9f5e3;
     -fx-background-radius: 5;
     -fx-border-color: #663300;
@@ -137,13 +151,20 @@
 
 .chat VBox .text-section {
     -fx-background-color: #CACCA0;
-    -fx-border-color:  #573B21;
-    -fx-border-radius:  0 0 3 3;
+    -fx-border-color: #573B21;
+    -fx-border-radius: 0 0 3 3;
     -fx-border-width: 0 3 3 3;
 }
 
 .chat .chat-text-field {
     -fx-background-color: transparent;
     -fx-border-style: hidden;
-    -fx-prompt-text-fill:  #B38C44;
+    -fx-font-size: 14px;
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+    -fx-prompt-text-fill: #B38C44;
+}
+
+.chat .chat-text-field:focused {
+    -fx-prompt-text-fill: transparent;
 }
