@@ -59,14 +59,20 @@ public class PlayAreaGridController {
         placeablePositions.addAll(legalPositions);
         placeablePositions.removeAll(illegalPositions);
 
-        Platform.runLater(() -> {
-            expandUp();
-            expandDown();
-            expandLeft();
-            expandRight();
+        expandUp();
+        expandDown();
+        expandLeft();
+        expandRight();
 
-            playAreaGrid.add(cardController.getRoot(), centerX, centerY);
-        });
+        for(Position position : placeablePositions) {
+            Pane fillerPane = addNewFiller(position);
+            if (fillerPane == null)
+                continue;
+
+            playAreaGrid.add(fillerPane, position.x()+centerX, -position.y()+centerY);
+        }
+
+        playAreaGrid.add(cardController.getRoot(), centerX, centerY);
     }
 
     public void putCard(CardController cardController, Position position, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions) {
