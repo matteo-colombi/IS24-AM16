@@ -239,6 +239,9 @@ public class CodexGUI extends Application implements ViewInterface {
         }
     }
 
+    /**
+     * Stops the view. This includes disconnecting from the server.
+     */
     @Override
     public void stop() {
         try {

@@ -66,9 +66,14 @@ public class LobbyScreenController {
         setGameId(guiState.getGameId());
     }
 
+    /**
+     * Sets the game ID.
+     * @param gameId The game ID.
+     */
     private void setGameId(String gameId) {
         gameIdField.setText(gameId);
     }
+
 
     private void setPlayers(List<String> usernames) {
         playersBox.getChildren().clear();

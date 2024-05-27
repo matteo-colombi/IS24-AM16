@@ -153,11 +153,19 @@ public class WelcomeScreenController {
         more.setVisible(false);
     }
 
+    /**
+     * Shows or hides the "more" section.
+     * @param ignored The action event (which is ignored).
+     */
     @FXML
     public void showMore(ActionEvent ignored) {
         more.setVisible(!more.isVisible());
     }
 
+    /**
+     * Shows the credits screen.
+     * @param ignored The action event (which is ignored).
+     */
     @FXML
     public void showCredits(ActionEvent ignored) {
         CodexGUI.getGUI().switchToCreditsScreen();
