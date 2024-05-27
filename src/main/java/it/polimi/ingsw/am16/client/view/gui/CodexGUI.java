@@ -213,11 +213,27 @@ public class CodexGUI extends Application implements ViewInterface {
         }
     }
 
+    /**
+     * Switches to the credits screen.
+     */
     public void switchToCreditsScreen() {
         FXMLLoader creditsScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/credits-screen.fxml"));
         try {
             Parent creditsScreen = creditsScreenLoader.load();
             stage.getScene().setRoot(creditsScreen);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Switches to the endgame screen.
+     */
+    public void switchToEndgameScreen() {
+        FXMLLoader endgameScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/endgame-screen.fxml"));
+        try {
+            Parent endgameScreen = endgameScreenLoader.load();
+            stage.getScene().setRoot(endgameScreen);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
