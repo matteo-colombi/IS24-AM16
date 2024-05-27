@@ -26,7 +26,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class LobbyScreenController implements Initializable {
+public class LobbyScreenController {
     @FXML
     private StackPane root;
     @FXML
@@ -54,8 +54,8 @@ public class LobbyScreenController implements Initializable {
 
     private ServerInterface serverInterface;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         registerEvents();
 
         serverInterface = CodexGUI.getGUI().getServerInterface();

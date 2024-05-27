@@ -17,7 +17,7 @@ import javafx.scene.layout.*;
 import java.net.URL;
 import java.util.*;
 
-public class PlayAreaGridController implements Initializable {
+public class PlayAreaGridController {
 
     private static final RowConstraints rowConstraints = new RowConstraints(60, 60, 60, Priority.NEVER, VPos.CENTER, false);
     private static final ColumnConstraints columnConstraints = new ColumnConstraints(116, 116, 116, Priority.NEVER, HPos.CENTER, false);
@@ -35,8 +35,8 @@ public class PlayAreaGridController implements Initializable {
     @FXML
     private GridPane playAreaGrid;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         centerX = 0;
         centerY = 0;
         currWidth = 1;

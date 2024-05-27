@@ -12,7 +12,7 @@ import javafx.scene.layout.StackPane;
 import java.net.URL;
 import java.util.*;
 
-public class PointsBoardController implements Initializable {
+public class PointsBoardController {
 
     @FXML
     private AnchorPane root;
@@ -81,8 +81,8 @@ public class PointsBoardController implements Initializable {
 
     private Map<Integer, List<PlayerColor>> pegsInSlots;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         pointSlots = new HashMap<>();
         pointSlots.put(0, points0);
         pointSlots.put(1, points1);

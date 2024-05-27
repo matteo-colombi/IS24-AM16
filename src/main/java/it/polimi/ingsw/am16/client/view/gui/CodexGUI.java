@@ -4,6 +4,7 @@ import it.polimi.ingsw.am16.client.Client;
 import it.polimi.ingsw.am16.client.view.ViewInterface;
 import it.polimi.ingsw.am16.client.view.gui.events.*;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
+import it.polimi.ingsw.am16.client.view.gui.util.Popup;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
@@ -18,9 +19,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -260,7 +263,7 @@ public class CodexGUI extends Application implements ViewInterface {
         guiState.setGameId(gameId);
         guiState.setUsername(username);
 
-        switchToLobbyScreen();
+        Platform.runLater(this::switchToLobbyScreen);
     }
 
     /**
@@ -630,19 +633,11 @@ public class CodexGUI extends Application implements ViewInterface {
             try {
                 Parent error = errorLoader.load();
 
-                StackPane darkening = new StackPane();
-                darkening.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
-
                 Popup popup = new Popup();
-                popup.getContent().add(error);
-                popup.setWidth(200);
-                popup.setHeight(100);
+                popup.setContent(error);
                 popup.setAutoHide(false);
 
-                ((StackPane) stage.getScene().getRoot()).getChildren().addLast(darkening);
-                stage.toFront();
-                popup.show(stage.getScene().getRoot(), 0, 0);
-                popup.centerOnScreen();
+                popup.show();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

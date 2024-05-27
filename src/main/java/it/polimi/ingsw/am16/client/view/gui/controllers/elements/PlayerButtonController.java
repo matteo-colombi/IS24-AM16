@@ -10,21 +10,27 @@ import javafx.scene.layout.StackPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PlayerButtonController implements Initializable {
+public class PlayerButtonController {
 
     @FXML
     private StackPane root;
     @FXML
     private Button button;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
-
     public void setColor(PlayerColor color) {
         button.getStyleClass().clear();
+        button.getStyleClass().add("button");
         button.getStyleClass().add(color.name().toLowerCase());
+    }
+
+    public void setActive(boolean active) {
+        if (active) {
+            if (!button.getStyleClass().contains("active")) {
+                button.getStyleClass().add("active");
+            }
+        } else {
+            button.getStyleClass().remove("active");
+        }
     }
 
     public Parent getRoot() {

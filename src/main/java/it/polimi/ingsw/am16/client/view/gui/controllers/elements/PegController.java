@@ -76,6 +76,26 @@ public class PegController {
         peg.setRadius(radius);
     }
 
+    public void setInteractable(boolean interactable) {
+        if (interactable) {
+            if (!peg.getStyleClass().contains("interactable")) {
+                peg.getStyleClass().add("interactable");
+            }
+        } else {
+            peg.getStyleClass().remove("interactable");
+        }
+    }
+
+    public void setSelected(boolean selected) {
+        if (selected) {
+            if (!peg.getStyleClass().contains("selected")) {
+                peg.getStyleClass().add("selected");
+            }
+        } else {
+            peg.getStyleClass().remove("selected");
+        }
+    }
+
     public Parent getRoot() {
         return pegPane;
     }

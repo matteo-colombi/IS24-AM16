@@ -33,7 +33,7 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.List;
 
-public class PlayScreenController implements Initializable {
+public class PlayScreenController {
     @FXML
     private StackPane root;
     @FXML
@@ -81,8 +81,12 @@ public class PlayScreenController implements Initializable {
 
     private Map<String, PlayerButtonController> playerButtons;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    private StarterPopupController starterPopupController;
+    private ColorPopupController colorPopupController;
+    private ObjectivePopupController objectivePopupController;
+
+    @FXML
+    public void initialize() {
         registerEvents();
 
         guiState = CodexGUI.getGUI().getGuiState();
@@ -125,6 +129,7 @@ public class PlayScreenController implements Initializable {
         guiState.setPlayerColor(username, color);
         if (username.equals(guiState.getUsername())) {
             setPegColor(color);
+            centerContentPane.getChildren().remove(colorPopupController.getRoot());
         }
         guiState.setGamePoints(username, 0);
         pointsBoardController.addPegInSlot(0, color);
@@ -143,7 +148,15 @@ public class PlayScreenController implements Initializable {
     }
 
     private void setStartOrder(List<String> startOrder) {
-        //TODO
+        for(String username : startOrder) {
+            PlayerButtonController playerButtonController = playerButtons.get(username);
+            playersBox.getChildren().remove(playerButtonController.getRoot());
+            playersBox.getChildren().addLast(playerButtonController.getRoot());
+        }
+
+        if (startOrder.getFirst().equals(guiState.getUsername())) {
+            setIsStartingPlayer();
+        }
     }
 
     private void setIsStartingPlayer() {
@@ -154,6 +167,11 @@ public class PlayScreenController implements Initializable {
     }
 
     private void turn(String username) {
+        if (guiState.getActivePlayer() != null) {
+            playerButtons.get(guiState.getActivePlayer()).setActive(false);
+        }
+        guiState.setActivePlayer(username);
+        playerButtons.get(username).setActive(true);
         //TODO
     }
 
@@ -256,28 +274,32 @@ public class PlayScreenController implements Initializable {
     }
 
     private void promptStarterChoice(StarterCard starterCard) {
-        //TODO
+        starterPopupController = ElementFactory.getStarterPopup();
+        starterPopupController.setStarterCard(starterCard);
+        centerContentPane.getChildren().addLast(starterPopupController.getRoot());
     }
 
     private void choosingColors() {
-        //TODO
+        colorPopupController = ElementFactory.getColorPopup();
+        centerContentPane.getChildren().addLast(colorPopupController.getRoot());
     }
 
     private void promptColorChoice(List<PlayerColor> colorChoices) {
-        //TODO
+        colorPopupController.setColors(colorChoices);
     }
 
     private void promptObjectiveChoice(List<ObjectiveCard> possiblePersonalObjectives) {
-        //TODO
+        objectivePopupController = ElementFactory.getObjectivePopup();
+        objectivePopupController.setObjectives(possiblePersonalObjectives);
+        centerContentPane.getChildren().addLast(objectivePopupController.getRoot());
     }
 
     private void setPersonalObjective(ObjectiveCard personalObjective) {
+        centerContentPane.getChildren().remove(objectivePopupController.getRoot());
         CardController cardController = ElementFactory.getCard();
         cardController.setCardAndShowSide(personalObjective, SideType.FRONT);
-        Platform.runLater(() -> {
-            personalObjectiveSlot.getChildren().clear();
-            personalObjectiveSlot.getChildren().add(cardController.getRoot());
-        });
+        personalObjectiveSlot.getChildren().clear();
+        personalObjectiveSlot.getChildren().add(cardController.getRoot());
     }
 
     private void setCenterContent(Node node) {
@@ -288,6 +310,8 @@ public class PlayScreenController implements Initializable {
     }
 
     private void setPlayArea(String username, List<Position> ignored, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
+        centerContentPane.getChildren().remove(starterPopupController.getRoot());
+
         PlayAreaGridController playAreaGridController = ElementFactory.getPlayAreaGrid();
         BoardCard starterCard = field.get(new Position(0, 0));
         SideType starterSide = activeSides.get(starterCard);

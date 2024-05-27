@@ -24,6 +24,7 @@ public class GUIState {
 
     private String username;
     private String gameId;
+    private String activePlayer;
 
     private GameState gameState;
 
@@ -90,6 +91,7 @@ public class GUIState {
         synchronized (this) {
             username = null;
             gameId = null;
+            activePlayer = null;
             gameState = null;
             hand = null;
         }
@@ -109,6 +111,14 @@ public class GUIState {
 
     public synchronized String getUsername() {
         return username;
+    }
+
+    public synchronized void setActivePlayer(String activePlayer) {
+        this.activePlayer = activePlayer;
+    }
+
+    public synchronized String getActivePlayer() {
+        return activePlayer;
     }
 
     public synchronized GameState getGameState() {

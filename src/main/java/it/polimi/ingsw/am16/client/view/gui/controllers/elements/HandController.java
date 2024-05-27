@@ -12,15 +12,15 @@ import javafx.scene.layout.HBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class HandController implements Initializable {
+public class HandController {
 
     @FXML
     private HBox root;
 
     private int cardAmount;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         cardAmount = 0;
     }
 

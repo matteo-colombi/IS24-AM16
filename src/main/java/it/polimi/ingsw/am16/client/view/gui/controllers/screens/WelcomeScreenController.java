@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 /**
  * Controller for the welcome screen.
  */
-public class WelcomeScreenController implements Initializable {
+public class WelcomeScreenController {
 
     @FXML
     private StackPane root;
@@ -42,11 +42,9 @@ public class WelcomeScreenController implements Initializable {
     /**
      * Initializes the controller. The username is kept when returning to the welcome screen from the games screen.
      *
-     * @param url            The URL.
-     * @param resourceBundle The resource bundle.
      */
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    @FXML
+    public void initialize() {
         registerEvents();
 
         addTextLimiter(usernameField, 10);

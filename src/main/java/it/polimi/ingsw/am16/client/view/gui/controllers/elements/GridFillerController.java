@@ -14,7 +14,7 @@ import javafx.scene.layout.Pane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GridFillerController implements Initializable {
+public class GridFillerController {
     private static final PseudoClass LEGAL = PseudoClass.getPseudoClass("legal");
     private static final PseudoClass ILLEGAL = PseudoClass.getPseudoClass("illegal");
 
@@ -23,8 +23,8 @@ public class GridFillerController implements Initializable {
 
     private Position position;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         fillerPane.setOnDragOver(dragEvent -> {
             dragEvent.acceptTransferModes(TransferMode.MOVE);
             dragEvent.consume();

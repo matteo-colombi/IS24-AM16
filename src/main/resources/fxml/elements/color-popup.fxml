@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="popup-background" stylesheets="@../stylesheets/popup.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.elements.ColorPopupController">
+   <padding>
+      <Insets bottom="35.0" left="35.0" right="35.0" top="35.0" />
+   </padding>
+   <children>
+      <VBox fx:id="pleaseWaitBox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0" visible="false">
+         <children>
+            <Text boundsType="VISUAL" fill="#922790" strokeType="OUTSIDE" strokeWidth="0.0" text="Colors are boing chosen!" textOrigin="CENTER">
+               <font>
+                  <Font name="System Bold Italic" size="24.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Please wait for your turn...">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+      <VBox fx:id="chooseColorBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0" StackPane.alignment="CENTER">
+         <children>
+            <Text boundsType="VISUAL" fill="#922790" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose a color between:" textOrigin="CENTER">
+               <font>
+                  <Font name="System Bold Italic" size="24.0" />
+               </font>
+            </Text>
+            <HBox fx:id="colorsBox" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
+               <children>
+                  <StackPane fx:id="pegPane" stylesheets="@../stylesheets/pegs.css">
+                     <children>
+                        <Circle fx:id="peg" fill="WHITE" radius="20.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="3.0">
+                           <styleClass>
+                              <String fx:value="red" />
+                              <String fx:value="interactable" />
+                           </styleClass>
+                        </Circle>
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="pegPane1" stylesheets="@../stylesheets/pegs.css">
+                     <children>
+                        <Circle fx:id="peg1" fill="WHITE" radius="20.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="3.0">
+                           <styleClass>
+                              <String fx:value="green" />
+                              <String fx:value="interactable" />
+                           </styleClass>
+                        </Circle>
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="pegPane2" stylesheets="@../stylesheets/pegs.css">
+                     <children>
+                        <Circle fx:id="peg2" fill="WHITE" radius="20.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="3.0">
+                           <styleClass>
+                              <String fx:value="blue" />
+                              <String fx:value="interactable" />
+                           </styleClass>
+                        </Circle>
+                     </children>
+                  </StackPane>
+                  <StackPane fx:id="pegPane3" stylesheets="@../stylesheets/pegs.css">
+                     <children>
+                        <Circle fx:id="peg3" fill="WHITE" radius="20.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="3.0">
+                           <styleClass>
+                              <String fx:value="yellow" />
+                              <String fx:value="interactable" />
+                           </styleClass>
+                        </Circle>
+                     </children>
+                  </StackPane>
+               </children>
+            </HBox>
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/stylesheet.css">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#submitColor" prefHeight="35.0" prefWidth="80.0" style="-fx-background-radius: 5px;" StackPane.alignment="CENTER">
+                     <font>
+                        <Font name="System Italic" size="10.0" />
+                     </font>
+                  </Button>
+                  <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Confirm" textOrigin="CENTER">
+                     <font>
+                        <Font name="System Italic" size="14.0" />
+                     </font>
+                  </Text>
+               </children>
+            </StackPane>
+         </children>
+      </VBox>
+   </children>
+</StackPane>

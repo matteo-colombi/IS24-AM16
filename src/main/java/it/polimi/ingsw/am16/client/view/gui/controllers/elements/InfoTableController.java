@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class InfoTableController implements Initializable {
+public class InfoTableController {
 
     @FXML
     private VBox root;
@@ -36,8 +36,8 @@ public class InfoTableController implements Initializable {
 
     private Map<Cornerable, Text> infoTableTexts;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    public void initialize() {
         infoTableTexts = new HashMap<>();
         infoTableTexts.put(ResourceType.FUNGI, fungiAmount);
         infoTableTexts.put(ResourceType.PLANT, plantAmount);

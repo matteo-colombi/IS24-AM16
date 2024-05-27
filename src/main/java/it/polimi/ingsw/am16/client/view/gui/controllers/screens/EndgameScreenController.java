@@ -9,14 +9,9 @@ import javafx.scene.layout.StackPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EndgameScreenController implements Initializable {
+public class EndgameScreenController {
     @FXML
     public StackPane root;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
 
     public void home(ActionEvent ignored) {
         //TODO implement

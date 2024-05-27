@@ -120,6 +120,16 @@ public class CardController implements Initializable {
         cardImage.pseudoClassStateChanged(INTERACTABLE, interactable);
     }
 
+    public void setSelected(boolean selected) {
+        if (selected) {
+            if (!cardImage.getStyleClass().contains("selected")) {
+                cardImage.getStyleClass().add("selected");
+            }
+        } else {
+            cardImage.getStyleClass().remove("selected");
+        }
+    }
+
     public void setShadowColor(ResourceType resourceType) {
         cardImage.pseudoClassStateChanged(FUNGI, false);
         cardImage.pseudoClassStateChanged(PLANT, false);

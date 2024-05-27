@@ -1,0 +1,7 @@
+.popup-background {
+    -fx-background-color: #CACCA0;
+    -fx-background-radius: 5;
+    -fx-border-color:  #573B21;
+    -fx-border-radius: 3;
+    -fx-border-width: 3;
+}

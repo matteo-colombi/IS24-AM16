@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class GamesScreenController implements Initializable {
+public class GamesScreenController {
 
     private ServerInterface serverInterface;
 
@@ -39,8 +39,8 @@ public class GamesScreenController implements Initializable {
     @FXML
     private TextField gameIdField;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    @FXML
+    public void initialize() {
         borderImage.setMouseTransparent(true);
         this.serverInterface = CodexGUI.getGUI().getServerInterface();
 

@@ -122,4 +122,34 @@ public class ElementFactory {
             throw new RuntimeException(e);
         }
     }
+
+    public static StarterPopupController getStarterPopup() {
+        FXMLLoader starterPopupLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/starter-popup.fxml"));
+        try {
+            starterPopupLoader.load();
+            return starterPopupLoader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static ColorPopupController getColorPopup() {
+        FXMLLoader colorPopupLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/color-popup.fxml"));
+        try {
+            colorPopupLoader.load();
+            return colorPopupLoader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static ObjectivePopupController getObjectivePopup() {
+        FXMLLoader objectivePopupController = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/objective-popup.fxml"));
+        try {
+            objectivePopupController.load();
+            return objectivePopupController.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
