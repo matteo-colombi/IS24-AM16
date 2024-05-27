@@ -24,7 +24,7 @@
    <children>
       <StackPane fx:id="leaveButton" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="hex-button" translateX="68.5" translateY="70.0" StackPane.alignment="TOP_LEFT">
          <children>
-            <Polygon fill="#cacca0" layoutX="108.0" layoutY="121.0" stroke="#573b21" strokeLineCap="ROUND" strokeType="OUTSIDE" strokeWidth="3.0">
+            <Polygon fill="#cacca0" layoutX="108.0" layoutY="121.0" stroke="#573b21" strokeLineCap="ROUND" strokeType="OUTSIDE" strokeWidth="3.0" styleClass="polygon">
                <points>
                   <Double fx:value="0.0" />
                   <Double fx:value="-25.0" />

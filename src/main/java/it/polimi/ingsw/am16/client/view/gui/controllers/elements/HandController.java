@@ -57,7 +57,6 @@ public class HandController {
 
     public void removeCard(RestrictedCard card) {
         Node node = root.lookup("#" + card.cardType() + "-" + card.resourceType());
-        System.out.println(node);
         if (node == null) return;
         CardController placeholder = ElementFactory.getCard();
         int index = root.getChildren().indexOf(node);

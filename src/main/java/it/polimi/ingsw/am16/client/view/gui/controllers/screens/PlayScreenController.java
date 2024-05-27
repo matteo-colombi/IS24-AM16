@@ -323,7 +323,9 @@ public class PlayScreenController {
     }
 
     private void setPlayArea(String username, List<Position> ignored, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
-        centerContentPane.getChildren().remove(starterPopupController.getRoot());
+        if (username.equals(guiState.getUsername())) {
+            centerContentPane.getChildren().remove(starterPopupController.getRoot());
+        }
 
         PlayAreaGridController playAreaGridController = ElementFactory.getPlayAreaGrid();
         BoardCard starterCard = field.get(new Position(0, 0));
@@ -468,6 +470,16 @@ public class PlayScreenController {
         goldDeck.setDrawable(enabled);
     }
 
+    private void leave() {
+        try {
+            serverInterface.leaveGame();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        CodexGUI.getGUI().switchToWelcomeScreen();
+    }
+
     private void registerEvents() {
         root.addEventFilter(GUIEventTypes.ERROR_EVENT, e -> showError(e.getErrorMsg()));
 
@@ -526,6 +538,11 @@ public class PlayScreenController {
         root.addEventFilter(GUIEventTypes.ADD_CARD_TO_OTHER_HAND_EVENT, e -> addCardToOtherHand(e.getUsername(), e.getNewCard()));
 
         root.addEventFilter(GUIEventTypes.REMOVE_CARD_FROM_OTHER_HAND_EVENT, e -> removeCardFromOtherHand(e.getUsername(), e.getCardToRemove()));
+
+        leaveButton.setOnMouseClicked(e -> {
+            leave();
+            e.consume();
+        });
 
         CodexGUI.getGUI().getStage().getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {
             if (evt.getPickResult().getIntersectedNode() != chatFilterButton && !inHierarchy(evt.getPickResult().getIntersectedNode(), chatFilters)) {
