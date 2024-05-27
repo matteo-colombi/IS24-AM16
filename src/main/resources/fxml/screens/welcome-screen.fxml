@@ -141,7 +141,7 @@
       </StackPane>
       <StackPane fx:id="more" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #573B21; -fx-border-radius: 13; -fx-border-width: 3;" translateX="531.0" translateY="-160.0" visible="false">
          <children>
-            <Rectangle fill="#b38c44" height="18.0" rotate="135.0" stroke="#573b21" strokeType="INSIDE" strokeWidth="2.0" translateX="70.0" translateY="-165.0" width="19.0" />
+            <Rectangle fill="#b38c44" height="18.0" rotate="135.0" stroke="#573b21" strokeType="INSIDE" strokeWidth="3.0" translateX="70.0" translateY="-165.0" width="19.0" />
             <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="330.0" prefWidth="205.0" style="-fx-background-color: #B38C44; -fx-background-radius: 10;">
                <children>
                   <Button mnemonicParsing="false" prefHeight="110.0" prefWidth="205.0" styleClass="transparent" text="Rules" />
