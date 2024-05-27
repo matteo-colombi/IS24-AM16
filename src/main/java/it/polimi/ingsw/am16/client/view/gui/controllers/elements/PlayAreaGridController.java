@@ -26,9 +26,9 @@ public class PlayAreaGridController {
 
     private int currWidth, currHeight;
 
-    private GUIState guiState;
-
     private Set<Position> placeablePositions;
+
+    private Map<Position, GridFillerController> gridFillers;
 
     @FXML
     private ScrollPane scrollPane;
@@ -42,9 +42,7 @@ public class PlayAreaGridController {
         currWidth = 1;
         currHeight = 1;
 
-        guiState = CodexGUI.getGUI().getGuiState();
-
-        guiState.setGridFillers(new HashMap<>());
+        gridFillers = new HashMap<>();
 
         this.placeablePositions = new HashSet<>();
 
@@ -76,11 +74,6 @@ public class PlayAreaGridController {
     }
 
     public void putCard(CardController cardController, Position position, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions) {
-        System.out.println(cardController.getCard().getName());
-        System.out.println(position);
-        System.out.println(addedLegalPositions);
-        System.out.println(removedLegalPositions);
-
         placeablePositions.addAll(addedLegalPositions);
         placeablePositions.removeAll(removedLegalPositions);
 
@@ -129,31 +122,11 @@ public class PlayAreaGridController {
             playAreaGrid.getChildren().remove(node);
             playAreaGrid.add(node, col, row+1);
         }
-
-//        for(int i = 0; i < currWidth; i++) {
-//            int x = i-centerX;
-//            int y = -centerY;
-//            Position pos = new Position(x, -y);
-//            if (placeablePositions.contains(pos)) {
-//                Pane gridFiller = addNewFiller(pos);
-//                playAreaGrid.add(gridFiller, i, 0);
-//            }
-//        }
     }
 
     private void expandDown() {
         playAreaGrid.getRowConstraints().addLast(rowConstraints);
         currHeight++;
-
-//        for(int i = 0; i < currWidth; i++) {
-//            int x = i-centerX;
-//            int y = currHeight-1-centerY;
-//            Position pos = new Position(x, -y);
-//            if (placeablePositions.contains(pos)) {
-//                Pane gridFiller = addNewFiller(pos);
-//                playAreaGrid.add(gridFiller, i, currHeight-1);
-//            }
-//        }
     }
 
     private void expandLeft() {
@@ -168,31 +141,11 @@ public class PlayAreaGridController {
             playAreaGrid.getChildren().remove(node);
             playAreaGrid.add(node, col+1, row);
         }
-
-//        for(int i = 0; i < currHeight; i++) {
-//            int x = -centerX;
-//            int y = i-centerY;
-//            Position pos = new Position(x, -y);
-//            if (placeablePositions.contains(pos)) {
-//                Pane gridFiller = addNewFiller(pos);
-//                playAreaGrid.add(gridFiller, 0, i);
-//            }
-//        }
     }
 
     private void expandRight() {
         playAreaGrid.getColumnConstraints().addLast(columnConstraints);
         currWidth++;
-
-//        for(int i = 0; i < currHeight; i++) {
-//            int x = currWidth-1-centerX;
-//            int y = i-centerY;
-//            Position pos = new Position(x, -y);
-//            if (placeablePositions.contains(pos)) {
-//                Pane gridFiller = addNewFiller(pos);
-//                playAreaGrid.add(gridFiller, currWidth-1, i);
-//            }
-//        }
     }
 
     public Parent getRoot() {
@@ -200,21 +153,21 @@ public class PlayAreaGridController {
     }
 
     private Pane addNewFiller(Position position) {
-        if (guiState.getGridFillerInPos(position) == null) {
+        if (gridFillers.get(position) == null) {
             GridFillerController gridFillerController = ElementFactory.getGridFiller();
             gridFillerController.setPosition(position);
-            guiState.putGridFillerInPos(position, gridFillerController);
+            gridFillers.put(position, gridFillerController);
             return gridFillerController.getFillerPane();
         }
         return null;
     }
 
     private void removeFiller(Position fillerPosition) {
-        GridFillerController gridFiller = guiState.getGridFillerInPos(fillerPosition);
+        GridFillerController gridFiller = gridFillers.get(fillerPosition);
 
         if (gridFiller != null)
             playAreaGrid.getChildren().remove(gridFiller.getFillerPane());
 
-        guiState.removeGridFillerInPos(fillerPosition);
+        gridFillers.remove(fillerPosition);
     }
 }

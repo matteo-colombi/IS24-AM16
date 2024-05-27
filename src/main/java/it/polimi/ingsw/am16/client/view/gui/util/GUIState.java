@@ -34,8 +34,6 @@ public class GUIState {
 
     private final Map<String, HandController> otherHands;
 
-    private final Map<Position, GridFillerController> gridFillers;
-
     private HandController hand;
 
     private final List<String> playerUsernames;
@@ -54,7 +52,6 @@ public class GUIState {
         chatMessages = new ArrayList<>();
         playerUsernames = new ArrayList<>();
         turnOrder = new ArrayList<>();
-        gridFillers = new HashMap<>();
         gamePoints = new HashMap<>();
         objectivePoints = new HashMap<>();
         playAreas = new HashMap<>();
@@ -88,9 +85,6 @@ public class GUIState {
         }
         synchronized (otherHands) {
             otherHands.clear();
-        }
-        synchronized (gridFillers) {
-            gridFillers.clear();
         }
         synchronized (this) {
             username = null;
@@ -187,31 +181,6 @@ public class GUIState {
     public HandController getOtherHand(String username) {
         synchronized (otherHands) {
             return otherHands.get(username);
-        }
-    }
-
-    public GridFillerController getGridFillerInPos(Position position) {
-        synchronized (gridFillers) {
-            return gridFillers.get(position);
-        }
-    }
-
-    public void putGridFillerInPos(Position position, GridFillerController gridFiller) {
-        synchronized (gridFillers) {
-            gridFillers.put(position, gridFiller);
-        }
-    }
-
-    public void removeGridFillerInPos(Position position) {
-        synchronized (gridFillers) {
-            gridFillers.remove(position);
-        }
-    }
-
-    public void setGridFillers(Map<Position, GridFillerController> gridFillers) {
-        synchronized (this.gridFillers) {
-            this.gridFillers.clear();
-            this.gridFillers.putAll(gridFillers);
         }
     }
 
