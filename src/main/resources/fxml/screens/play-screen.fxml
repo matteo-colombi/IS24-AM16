@@ -278,7 +278,7 @@
                   </StackPane>
                </children>
             </StackPane>
-            <Group fx:id="handSlot" />
+            <HBox fx:id="handSlot" />
          </children>
          <StackPane.margin>
             <Insets />
@@ -328,7 +328,7 @@
                   </HBox>
                </children>
             </VBox>
-            <StackPane fx:id="chatFilters" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #573B21; -fx-border-radius: 3; -fx-border-width: 2;" translateX="10.0" translateY="-40.0" StackPane.alignment="BOTTOM_RIGHT">
+            <StackPane fx:id="chatFilters" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #573B21; -fx-border-radius: 3; -fx-border-width: 2;" translateX="10.0" translateY="-40.0" visible="false" StackPane.alignment="BOTTOM_RIGHT">
                <children>
                   <Rectangle fill="#b38c44" height="20.0" rotate="135.0" stroke="#573b21" strokeType="INSIDE" strokeWidth="2.0" translateX="-16.0" translateY="10.0" width="20.0" StackPane.alignment="BOTTOM_RIGHT" />
                   <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" style="-fx-background-color: #B38C44; -fx-background-radius: 3;">
@@ -338,7 +338,7 @@
                               <ToggleGroup fx:id="chatFilterToggleGroup" />
                            </toggleGroup>
                         </RadioButton>
-                        <VBox spacing="5.0">
+                        <VBox fx:id="chatFilterNames" spacing="5.0">
                            <children>
                               <RadioButton mnemonicParsing="false" text="teo" toggleGroup="$chatFilterToggleGroup" />
                               <RadioButton mnemonicParsing="false" text="obi" toggleGroup="$chatFilterToggleGroup" />

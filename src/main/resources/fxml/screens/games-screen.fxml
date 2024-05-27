@@ -105,7 +105,7 @@
                      <children>
                         <ImageView fitHeight="16.0" fitWidth="16.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/gui/icons/sync%20-%20black.png" />
+                              <Image url="@../../assets/gui/icons/sync-black.png" />
                            </image>
                         </ImageView>
                         <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Refresh" textOrigin="CENTER">

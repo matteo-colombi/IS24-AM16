@@ -531,6 +531,8 @@ public class GameController {
             virtualView.signalGameSuspension(username);
             chatController.clear();
             game.pause();
+        } else if (game.getState() == GameState.INIT) {
+            //TODO we have to figure out what to do in this case
         } else {
             virtualView.signalDisconnection(username);
             try {

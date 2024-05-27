@@ -1,28 +1,26 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers.elements;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
-import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
 import it.polimi.ingsw.am16.client.view.gui.util.GUICardAssetRegistry;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
 import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.util.Position;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
 
-import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
-public class CardController implements Initializable {
+public class CardController {
 
     private static final PseudoClass FUNGI = PseudoClass.getPseudoClass("card_fungi");
     private static final PseudoClass PLANT = PseudoClass.getPseudoClass("card_plant");
@@ -35,6 +33,8 @@ public class CardController implements Initializable {
     private StackPane cardPane;
     @FXML
     private ImageView cardImage;
+    @FXML
+    private ImageView turnImage;
 
     private Image front;
     private Image back;
@@ -43,8 +43,10 @@ public class CardController implements Initializable {
 
     private Card card;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    private DrawType drawType;
+
+    @FXML
+    public void initialize() {
 
     }
 
@@ -130,6 +132,21 @@ public class CardController implements Initializable {
         }
     }
 
+    public void setTurnable() {
+        cardPane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            toggleSide();
+            mouseEvent.consume();
+        });
+
+        cardPane.addEventFilter(MouseEvent.MOUSE_ENTERED, mouseEvent -> {
+            turnImage.setVisible(true);
+        });
+
+        cardPane.addEventFilter(MouseEvent.MOUSE_EXITED, mouseEvent -> {
+            turnImage.setVisible(false);
+        });
+    }
+
     public void setShadowColor(ResourceType resourceType) {
         cardImage.pseudoClassStateChanged(FUNGI, false);
         cardImage.pseudoClassStateChanged(PLANT, false);
@@ -182,6 +199,24 @@ public class CardController implements Initializable {
             });
         } else {
             cardPane.setOnDragDetected(e -> {});
+        }
+    }
+
+    public void setDrawType(DrawType drawType) {
+        this.drawType = drawType;
+    }
+
+    public void setDrawable(boolean drawable) {
+        if (drawable) {
+            cardPane.setOnMouseClicked(mouseEvent -> {
+                try {
+                    CodexGUI.getGUI().getServerInterface().drawCard(drawType);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            cardPane.setOnMouseClicked(mouseEvent -> {});
         }
     }
 }

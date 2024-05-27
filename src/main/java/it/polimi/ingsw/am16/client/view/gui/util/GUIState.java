@@ -14,6 +14,7 @@ import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.scene.input.DataFormat;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GUIState {
 
@@ -47,6 +48,8 @@ public class GUIState {
 
     private final List<ChatMessage> chatMessages;
 
+    private final AtomicBoolean dontDraw;
+
     public GUIState() {
         chatMessages = new ArrayList<>();
         playerUsernames = new ArrayList<>();
@@ -58,6 +61,7 @@ public class GUIState {
         infoTables = new HashMap<>();
         otherHands = new HashMap<>();
         playerColors = new HashMap<>();
+        dontDraw = new AtomicBoolean(false);
     }
 
     public void clear() {
@@ -94,6 +98,7 @@ public class GUIState {
             activePlayer = null;
             gameState = null;
             hand = null;
+            dontDraw.set(false);
         }
     }
 
@@ -287,5 +292,13 @@ public class GUIState {
         synchronized (playerColors) {
             return playerColors.get(username);
         }
+    }
+
+    public void setDontDraw(boolean dontDraw) {
+        this.dontDraw.set(dontDraw);
+    }
+
+    public boolean getDontDraw() {
+        return this.dontDraw.get();
     }
 }

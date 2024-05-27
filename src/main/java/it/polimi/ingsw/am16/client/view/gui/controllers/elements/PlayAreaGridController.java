@@ -70,43 +70,44 @@ public class PlayAreaGridController {
     }
 
     public void putCard(CardController cardController, Position position, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions) {
-
+        System.out.println(cardController.getCard().getName());
+        System.out.println(position);
+        System.out.println(addedLegalPositions);
+        System.out.println(removedLegalPositions);
         final Position finalPosition = new Position(position.x(), -position.y());
-        Platform.runLater(() -> {
-            int realCol = finalPosition.x() + centerX;
-            int realRow = finalPosition.y() + centerY;
-            while (realCol <= 0) {
-                expandLeft();
-                realCol++;
-            }
-            while (realRow <= 0) {
-                expandUp();
-                realRow++;
-            }
-            while(realCol >= currWidth-1) {
-                expandRight();
-            }
-            while(realRow >= currHeight-1) {
-                expandDown();
-            }
+        int realCol = finalPosition.x() + centerX;
+        int realRow = finalPosition.y() + centerY;
+        while (realCol <= 0) {
+            expandLeft();
+            realCol++;
+        }
+        while (realRow <= 0) {
+            expandUp();
+            realRow++;
+        }
+        while(realCol >= currWidth-1) {
+            expandRight();
+        }
+        while(realRow >= currHeight-1) {
+            expandDown();
+        }
 
-            for (Position removedLegal : removedLegalPositions) {
-                removeFiller(removedLegal);
-            }
+        for (Position removedLegal : removedLegalPositions) {
+            removeFiller(removedLegal);
+        }
 
-            placeablePositions.removeAll(removedLegalPositions);
+        placeablePositions.removeAll(removedLegalPositions);
 
-            for(Position addedLegal : addedLegalPositions) {
-                Pane fillerPane = addNewFiller(addedLegal);
-                if (fillerPane == null)
-                    continue;
+        for(Position addedLegal : addedLegalPositions) {
+            Pane fillerPane = addNewFiller(addedLegal);
+            if (fillerPane == null)
+                continue;
 
-                playAreaGrid.add(fillerPane, addedLegal.x()+centerX, -addedLegal.y()+centerY);
-            }
-            placeablePositions.addAll(addedLegalPositions);
+            playAreaGrid.add(fillerPane, addedLegal.x()+centerX, -addedLegal.y()+centerY);
+        }
+        placeablePositions.addAll(addedLegalPositions);
 
-            playAreaGrid.add(cardController.getRoot(), realCol, realRow);
-        });
+        playAreaGrid.add(cardController.getRoot(), realCol, realRow);
     }
 
     private void expandUp() {

@@ -197,7 +197,7 @@
                      <children>
                         <ImageView fitHeight="18.0" fitWidth="18.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/gui/icons/sync - black.png" />
+                              <Image url="@../../assets/gui/icons/sync-black.png" />
                            </image>
                         </ImageView>
                         <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Wait faster!" textOrigin="CENTER">

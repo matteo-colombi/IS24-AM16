@@ -45,12 +45,12 @@
                            <children>
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/gui/icons/user%20-%20gray.png" />
+                                    <Image url="@../../assets/gui/icons/user-gray.png" />
                                  </image>
                               </ImageView>
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/gui/icons/user%20-%20gray.png" />
+                                    <Image url="@../../assets/gui/icons/user-gray.png" />
                                  </image>
                               </ImageView>
                            </children>
@@ -72,17 +72,17 @@
                            <children>
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/gui/icons/user%20-%20gray2.png" />
+                                    <Image url="@../../assets/gui/icons/user-gray-2.png" />
                                  </image>
                               </ImageView>
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/gui/icons/user%20-%20gray2.png" />
+                                    <Image url="@../../assets/gui/icons/user-gray-2.png" />
                                  </image>
                               </ImageView>
                               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/gui/icons/user%20-%20gray2.png" />
+                                    <Image url="@../../assets/gui/icons/user-gray-2.png" />
                                  </image>
                               </ImageView>
                            </children>

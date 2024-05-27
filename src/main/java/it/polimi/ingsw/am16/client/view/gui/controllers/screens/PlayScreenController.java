@@ -7,15 +7,14 @@ import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
+import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
-import it.polimi.ingsw.am16.common.model.players.hand.Hand;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -28,7 +27,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.List;
@@ -47,6 +45,8 @@ public class PlayScreenController {
     @FXML
     private StackPane chatFilters;
     @FXML
+    private VBox chatFilterNames;
+    @FXML
     private TextField chatBox;
     @FXML
     private ToggleGroup chatFilterToggleGroup;
@@ -55,7 +55,7 @@ public class PlayScreenController {
     @FXML
     private VBox objectivesCardGroup;
     @FXML
-    private Group handSlot;
+    private HBox handSlot;
     @FXML
     private StackPane personalObjectiveSlot;
     @FXML
@@ -85,16 +85,27 @@ public class PlayScreenController {
     private ColorPopupController colorPopupController;
     private ObjectivePopupController objectivePopupController;
 
+    private List<CardController> commonResourceCards;
+    private List<CardController> commonGoldCards;
+
+    private CardController resourceDeck;
+    private CardController goldDeck;
+
     @FXML
     public void initialize() {
         registerEvents();
 
         guiState = CodexGUI.getGUI().getGuiState();
 
-        this.serverInterface = CodexGUI.getGUI().getServerInterface();
+        serverInterface = CodexGUI.getGUI().getServerInterface();
 
         pointsBoardController = ElementFactory.getPointsBoard();
         pointsBoardSlot.getChildren().add(pointsBoardController.getRoot());
+
+        commonResourceCards = new ArrayList<>(2);
+        Collections.addAll(commonResourceCards, null, null);
+        commonGoldCards = new ArrayList<>(2);
+        Collections.addAll(commonGoldCards, null, null);
 
         HandController hand = ElementFactory.getHandSlot();
         guiState.setHand(hand);
@@ -108,12 +119,20 @@ public class PlayScreenController {
     private void setPlayers(List<String> usernames) {
         playerButtons = new HashMap<>();
         playersBox.getChildren().clear();
+        chatFilterNames.getChildren().clear();
         for (String username : usernames) {
             PlayerButtonController playerButtonController = ElementFactory.getPlayerButton();
             playerButtons.put(username, playerButtonController);
             playersBox.getChildren().add(playerButtonController.getRoot());
 
             //TODO assign onclick action on the player button
+
+            if (!username.equals(guiState.getUsername())) {
+                RadioButton playerChatFilter = new RadioButton(username);
+                playerChatFilter.setId(username);
+                playerChatFilter.setToggleGroup(chatFilterToggleGroup);
+                chatFilterNames.getChildren().addLast(playerChatFilter);
+            }
         }
     }
 
@@ -172,7 +191,11 @@ public class PlayScreenController {
         }
         guiState.setActivePlayer(username);
         playerButtons.get(username).setActive(true);
-        //TODO
+
+        if (username.equals(guiState.getUsername())) {
+            HandController handController = guiState.getHand();
+            handController.setActive(true);
+        }
     }
 
     private void updateInfoTable(String username, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
@@ -226,21 +249,16 @@ public class PlayScreenController {
     private void setHand(List<PlayableCard> hand) {
         HandController handController = guiState.getHand();
         for (int i = 0; i < hand.size(); i++) {
-            CardController cardController = ElementFactory.getCard();
-            cardController.getRoot().setId(hand.get(i).getName());
-            cardController.setCard(hand.get(i));
-            cardController.showSide(SideType.FRONT);
-            handController.addCard(i, cardController);
+            handController.addCard(hand.get(i));
         }
     }
 
     private void addCardToHand(PlayableCard card) {
+        enableDraw(false);
+
         HandController handController = guiState.getHand();
-        CardController cardController = ElementFactory.getCard();
-        cardController.getRoot().setId(card.getName());
-        cardController.setCardAndShowSide(card, SideType.FRONT);
-        cardController.setShadowColor(card.getType());
-        handController.addCard(cardController);
+        handController.addCard(card);
+
     }
 
     private void removeCardFromHand(PlayableCard card) {
@@ -251,21 +269,14 @@ public class PlayScreenController {
     private void setOtherHand(String username, List<RestrictedCard> hand) {
         HandController handController = ElementFactory.getHandSlot();
         for (int i = 0; i < hand.size(); i++) {
-            RestrictedCard card = hand.get(i);
-            CardController cardController = ElementFactory.getCardBackOnly(card.cardType(), card.resourceType());
-            if (cardController == null) continue;
-            cardController.getRoot().setId(card.cardType() + ":" + card.resourceType());
-            handController.addCard(i, cardController);
+            handController.addCard(hand.get(i));
         }
         guiState.setOtherHand(username, handController);
     }
 
     private void addCardToOtherHand(String username, RestrictedCard card) {
         HandController handController = guiState.getOtherHand(username);
-        CardController cardController = ElementFactory.getCardBackOnly(card.cardType(), card.resourceType());
-        if (cardController == null) return;
-        cardController.getRoot().setId(card.cardType() + ":" + card.resourceType());
-        handController.addCard(cardController);
+        handController.addCard(card);
     }
 
     private void removeCardFromOtherHand(String username, RestrictedCard card) {
@@ -297,7 +308,9 @@ public class PlayScreenController {
     private void setPersonalObjective(ObjectiveCard personalObjective) {
         centerContentPane.getChildren().remove(objectivePopupController.getRoot());
         CardController cardController = ElementFactory.getCard();
-        cardController.setCardAndShowSide(personalObjective, SideType.FRONT);
+        cardController.setCard(personalObjective);
+        cardController.showSide(SideType.FRONT);
+        cardController.setTurnable();
         personalObjectiveSlot.getChildren().clear();
         personalObjectiveSlot.getChildren().add(cardController.getRoot());
     }
@@ -341,6 +354,11 @@ public class PlayScreenController {
         playAreaGridController.putCard(cardController, pos, addedLegalPositions, removedLegalPositions);
 
         updateInfoTable(username, resourceCounts, objectCounts);
+
+        if (!guiState.getDontDraw() && username.equals(guiState.getUsername())) {
+            guiState.getHand().setActive(false);
+            enableDraw(true);
+        }
     }
 
     private void setDeckTopType(PlayableCardType whichDeck, ResourceType deckTopType) {
@@ -349,34 +367,47 @@ public class PlayScreenController {
         if (cardBack == null) throw new RuntimeException("Unknown Card Type: " + whichDeck);
 
         cardBack.setShadowColor(deckTopType);
+
         Parent cardPane = cardBack.getRoot();
 
         switch (whichDeck) {
-            case RESOURCE -> resourceDeckSlot.getChildren().set(0, cardPane);
-            case GOLD -> goldDeckSlot.getChildren().set(0, cardPane);
+            case RESOURCE -> {
+                cardBack.setDrawType(DrawType.RESOURCE_DECK);
+                resourceDeck = cardBack;
+                resourceDeckSlot.getChildren().set(0, cardPane);
+            }
+            case GOLD -> {
+                cardBack.setDrawType(DrawType.GOLD_DECK);
+                goldDeck = cardBack;
+                goldDeckSlot.getChildren().set(0, cardPane);
+            }
         }
     }
 
     private void setCommonCards(PlayableCard[] resourceCards, PlayableCard[] goldCards) {
         for (int i = 0; i < resourceCards.length; i++) {
             CardController cardController = ElementFactory.getCard();
-            if (resourceCards[i] != null) {
-                PlayableCard card = resourceCards[i];
-                cardController.setCardAndShowSide(card, SideType.FRONT);
-                cardController.setShadowColor(card.getType());
+            PlayableCard card = resourceCards[i];
+            cardController.setCardAndShowSide(card, SideType.FRONT);
+            cardController.setShadowColor(card.getType());
+            switch (i) {
+                case 0 -> cardController.setDrawType(DrawType.RESOURCE_1);
+                case 1 -> cardController.setDrawType(DrawType.RESOURCE_2);
             }
-            int finalI = i;
-            Platform.runLater(() -> commonResourceCardsSlot.getChildren().set(finalI, cardController.getRoot()));
+            commonResourceCards.set(i, cardController);
+            commonResourceCardsSlot.getChildren().set(i, cardController.getRoot());
         }
         for (int i = 0; i < goldCards.length; i++) {
             CardController cardController = ElementFactory.getCard();
-            if (goldCards[i] != null) {
-                PlayableCard card = goldCards[i];
-                cardController.setCardAndShowSide(card, SideType.FRONT);
-                cardController.setShadowColor(card.getType());
+            PlayableCard card = goldCards[i];
+            cardController.setCardAndShowSide(card, SideType.FRONT);
+            cardController.setShadowColor(card.getType());
+            switch (i) {
+                case 0 -> cardController.setDrawType(DrawType.GOLD_1);
+                case 1 -> cardController.setDrawType(DrawType.GOLD_2);
             }
-            int finalI = i;
-            Platform.runLater(() -> commonGoldCardsSlot.getChildren().set(finalI, cardController.getRoot()));
+            commonGoldCards.set(i, cardController);
+            commonGoldCardsSlot.getChildren().set(i, cardController.getRoot());
         }
     }
 
@@ -397,6 +428,7 @@ public class PlayScreenController {
     }
 
     private void notifyDontDraw() {
+        guiState.setDontDraw(true);
         //TODO
     }
 
@@ -419,6 +451,21 @@ public class PlayScreenController {
             newText.setText(message.toString());
             Platform.runLater(() -> chatMessages.getChildren().addLast(newText));
         }
+    }
+
+    private void enableDraw(boolean enabled) {
+        for(CardController drawOption : commonResourceCards) {
+            drawOption.setInteractable(enabled);
+            drawOption.setDrawable(enabled);
+        }
+        for(CardController drawOption : commonGoldCards) {
+            drawOption.setInteractable(enabled);
+            drawOption.setDrawable(enabled);
+        }
+        resourceDeck.setInteractable(enabled);
+        resourceDeck.setDrawable(enabled);
+        goldDeck.setInteractable(enabled);
+        goldDeck.setDrawable(enabled);
     }
 
     private void registerEvents() {

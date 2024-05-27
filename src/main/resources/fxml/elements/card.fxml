@@ -16,5 +16,10 @@
             <String fx:value="card_placeholder" />
          </styleClass>
       </ImageView>
+      <ImageView fx:id="turnImage" fitHeight="50.0" fitWidth="50.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../assets/gui/icons/sync-transparent-1.png" />
+         </image>
+      </ImageView>
    </children>
 </StackPane>
