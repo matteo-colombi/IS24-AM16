@@ -616,22 +616,26 @@ public class CodexGUI extends Application implements ViewInterface {
         //TODO make an actual popup :)
 
         Platform.runLater(() -> {
-            Popup popup = new Popup();
-            StackPane darkening = new StackPane();
-            darkening.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
-            StackPane testStackPane = new StackPane();
-            testStackPane.setStyle("-fx-background-color: rgba(255, 255, 255, 1);");
-            Text testText = new Text("Connection lost to the server :(");
-            testStackPane.getChildren().add(testText);
-            popup.getContent().add(testStackPane);
-            popup.setWidth(200);
-            popup.setHeight(100);
-            popup.setAutoHide(false);
-            ((StackPane) stage.getScene().getRoot()).getChildren().addLast(darkening);
-            stage.toFront();
-            popup.show(stage.getScene().getRoot(), 0, 0);
-            popup.centerOnScreen();
+            FXMLLoader errorLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_ELEMENTS + "/error.fxml"));
+            try {
+                Parent error = errorLoader.load();
 
+                StackPane darkening = new StackPane();
+                darkening.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
+
+                Popup popup = new Popup();
+                popup.getContent().add(error);
+                popup.setWidth(200);
+                popup.setHeight(100);
+                popup.setAutoHide(false);
+
+                ((StackPane) stage.getScene().getRoot()).getChildren().addLast(darkening);
+                stage.toFront();
+                popup.show(stage.getScene().getRoot(), 0, 0);
+                popup.centerOnScreen();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 

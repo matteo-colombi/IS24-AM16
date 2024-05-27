@@ -1,10 +1,9 @@
-package it.polimi.ingsw.am16.client.view.gui.controllers;
+package it.polimi.ingsw.am16.client.view.gui.controllers.elements;
 
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.RadioButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Arc;

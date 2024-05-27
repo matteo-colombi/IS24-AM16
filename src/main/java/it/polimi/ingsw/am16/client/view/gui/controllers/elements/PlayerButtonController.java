@@ -1,4 +1,4 @@
-package it.polimi.ingsw.am16.client.view.gui.controllers;
+package it.polimi.ingsw.am16.client.view.gui.controllers.elements;
 
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import javafx.fxml.FXML;

@@ -41,6 +41,7 @@ module it.polimi.ingsw.am16 {
     exports it.polimi.ingsw.am16.common.model.chat to java.rmi;
 
     opens it.polimi.ingsw.am16.client.view.gui;
-    opens it.polimi.ingsw.am16.client.view.gui.controllers;
     opens it.polimi.ingsw.am16.client.view.gui.util;
+    opens it.polimi.ingsw.am16.client.view.gui.controllers.elements;
+    opens it.polimi.ingsw.am16.client.view.gui.controllers.screens;
 }

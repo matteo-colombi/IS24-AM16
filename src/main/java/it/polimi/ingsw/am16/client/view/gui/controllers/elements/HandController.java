@@ -1,7 +1,6 @@
-package it.polimi.ingsw.am16.client.view.gui.controllers;
+package it.polimi.ingsw.am16.client.view.gui.controllers.elements;
 
 import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
-import it.polimi.ingsw.am16.common.model.cards.Card;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.model.cards.RestrictedCard;
 import javafx.fxml.FXML;

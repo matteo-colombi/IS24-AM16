@@ -1,6 +1,6 @@
 package it.polimi.ingsw.am16.client.view.gui.util;
 
-import it.polimi.ingsw.am16.client.view.gui.controllers.*;
+import it.polimi.ingsw.am16.client.view.gui.controllers.elements.*;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.util.FilePaths;
 import javafx.fxml.FXMLLoader;
