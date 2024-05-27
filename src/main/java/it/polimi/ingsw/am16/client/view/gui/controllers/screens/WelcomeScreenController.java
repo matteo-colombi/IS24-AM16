@@ -170,4 +170,9 @@ public class WelcomeScreenController {
     public void showCredits(ActionEvent ignored) {
         CodexGUI.getGUI().switchToCreditsScreen();
     }
+
+    @FXML
+    public void burnPavia(ActionEvent ignored) {
+        CodexGUI.getGUI().switchToPaviaScreen();
+    }
 }

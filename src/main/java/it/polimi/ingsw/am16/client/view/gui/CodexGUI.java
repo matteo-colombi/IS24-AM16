@@ -240,6 +240,19 @@ public class CodexGUI extends Application implements ViewInterface {
     }
 
     /**
+     * Switches to the Pavia screen.
+     */
+    public void switchToPaviaScreen() {
+        FXMLLoader paviaScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/pavia-screen.fxml"));
+        try {
+            Parent paviaScreen = paviaScreenLoader.load();
+            stage.getScene().setRoot(paviaScreen);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Stops the view. This includes disconnecting from the server.
      */
     @Override
