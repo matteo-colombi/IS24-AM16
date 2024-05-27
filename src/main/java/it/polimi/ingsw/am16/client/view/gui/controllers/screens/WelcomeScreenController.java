@@ -5,10 +5,16 @@ import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -25,6 +31,13 @@ public class WelcomeScreenController implements Initializable {
      */
     @FXML
     private TextField usernameField;
+
+    @FXML
+    private StackPane more;
+
+    @FXML
+    private MediaView createSound;
+
 
     /**
      * Initializes the controller. The username is kept when returning to the welcome screen from the games screen.
@@ -51,7 +64,7 @@ public class WelcomeScreenController implements Initializable {
      * @param ignored The action event (which is ignored).
      */
     @FXML
-    public void create(ActionEvent ignored) {
+    public void create(ActionEvent ignored) throws URISyntaxException {
         String username = usernameField.getText();
         if (username.isEmpty() || username.length() > 10) {
             usernameField.selectAll();
@@ -59,8 +72,23 @@ public class WelcomeScreenController implements Initializable {
             return;
         }
 
+        if(createSound.getMediaPlayer() == null) {
+            try {
+                String filename = getClass().getResource("/assets/gui/QUANDO.mp4").toURI().toString();
+                Media media = new Media(filename);
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+                createSound.setMediaPlayer(mediaPlayer);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        createSound.getMediaPlayer().seek(createSound.getMediaPlayer().getStartTime());
+        createSound.getMediaPlayer().play();
+
         CodexGUI.getGUI().getGuiState().setUsername(username);
         CodexGUI.getGUI().switchToCreateScreen();
+
+
     }
 
     /**
@@ -123,5 +151,17 @@ public class WelcomeScreenController implements Initializable {
                 join(null);
             }
         });
+
+        more.setVisible(false);
+    }
+
+    @FXML
+    public void showMore(ActionEvent ignored) {
+        more.setVisible(!more.isVisible());
+    }
+
+    @FXML
+    public void showCredits(ActionEvent ignored) {
+        CodexGUI.getGUI().switchToCreditsScreen();
     }
 }

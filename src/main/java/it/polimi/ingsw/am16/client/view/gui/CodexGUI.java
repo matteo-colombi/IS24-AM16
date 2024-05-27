@@ -210,6 +210,16 @@ public class CodexGUI extends Application implements ViewInterface {
         }
     }
 
+    public void switchToCreditsScreen() {
+        FXMLLoader creditsScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/credits-screen.fxml"));
+        try {
+            Parent creditsScreen = creditsScreenLoader.load();
+            stage.getScene().setRoot(creditsScreen);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void stop() {
         try {

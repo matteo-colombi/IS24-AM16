@@ -8,6 +8,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -74,6 +76,7 @@
                               </Text>
                            </children>
                         </HBox>
+                        <MediaView fx:id="createSound" />
                      </children>
                   </StackPane>
                   <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
@@ -126,5 +129,27 @@
             </StackPane>
          </children>
       </VBox>
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="73.0" prefWidth="66.0" translateX="600.0" translateY="-350.0">
+         <children>
+            <Button fx:id="showMoreButton" mnemonicParsing="false" onAction="#showMore" prefHeight="37.0" prefWidth="62.0" styleClass="transparent" />
+            <ImageView fitHeight="69.0" fitWidth="59.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateX="4.0">
+               <image>
+                  <Image url="@../../assets/gui/icons/ellipsis.png" />
+               </image>
+            </ImageView>
+         </children>
+      </StackPane>
+      <StackPane fx:id="more" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #573B21; -fx-border-radius: 13; -fx-border-width: 3;" translateX="531.0" translateY="-160.0" visible="false">
+         <children>
+            <Rectangle fill="#b38c44" height="18.0" rotate="135.0" stroke="#573b21" strokeType="INSIDE" strokeWidth="2.0" translateX="70.0" translateY="-165.0" width="19.0" />
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="330.0" prefWidth="205.0" style="-fx-background-color: #B38C44; -fx-background-radius: 10;">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="110.0" prefWidth="205.0" styleClass="transparent" text="Rules" />
+                  <Button fx:id="creditsButton" mnemonicParsing="false" onAction="#showCredits" prefHeight="110.0" prefWidth="205.0" styleClass="transparent" text="Credits" />
+                  <Button mnemonicParsing="false" prefHeight="110.0" prefWidth="206.0" styleClass="transparent" text="Pavia" />
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
    </children>
 </StackPane>
