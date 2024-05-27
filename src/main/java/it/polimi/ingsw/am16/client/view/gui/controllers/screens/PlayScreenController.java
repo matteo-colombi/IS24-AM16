@@ -315,18 +315,7 @@ public class PlayScreenController {
         personalObjectiveSlot.getChildren().add(cardController.getRoot());
     }
 
-    private void setCenterContent(Node node) {
-        Platform.runLater(() -> {
-            centerContentPane.getChildren().clear();
-            centerContentPane.getChildren().add(node);
-        });
-    }
-
     private void setPlayArea(String username, List<Position> ignored, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
-        if (username.equals(guiState.getUsername())) {
-            centerContentPane.getChildren().remove(starterPopupController.getRoot());
-        }
-
         PlayAreaGridController playAreaGridController = ElementFactory.getPlayAreaGrid();
         BoardCard starterCard = field.get(new Position(0, 0));
         SideType starterSide = activeSides.get(starterCard);
@@ -340,7 +329,8 @@ public class PlayScreenController {
         guiState.setInfoTable(username, infoTableController);
 
         if (username.equals(guiState.getUsername())) {
-            setCenterContent(playAreaGridController.getRoot());
+            int index = centerContentPane.getChildren().indexOf(starterPopupController.getRoot());
+            centerContentPane.getChildren().set(index, playAreaGridController.getRoot());
             infoTableSlot.getChildren().add(infoTableController.getRoot());
         }
 
@@ -357,8 +347,8 @@ public class PlayScreenController {
 
         updateInfoTable(username, resourceCounts, objectCounts);
 
+        guiState.getHand().setActive(false);
         if (!guiState.getDontDraw() && username.equals(guiState.getUsername())) {
-            guiState.getHand().setActive(false);
             enableDraw(true);
         }
     }

@@ -662,5 +662,4 @@ public class CodexGUI extends Application implements ViewInterface {
             }
         });
     }
-
 }

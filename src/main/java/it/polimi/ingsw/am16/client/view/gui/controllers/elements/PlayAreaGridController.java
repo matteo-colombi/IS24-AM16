@@ -92,11 +92,12 @@ public class PlayAreaGridController {
             expandDown();
         }
 
+        placeablePositions.addAll(addedLegalPositions);
+        placeablePositions.removeAll(removedLegalPositions);
+
         for (Position removedLegal : removedLegalPositions) {
             removeFiller(removedLegal);
         }
-
-        placeablePositions.removeAll(removedLegalPositions);
 
         for(Position addedLegal : addedLegalPositions) {
             Pane fillerPane = addNewFiller(addedLegal);
@@ -105,7 +106,6 @@ public class PlayAreaGridController {
 
             playAreaGrid.add(fillerPane, addedLegal.x()+centerX, -addedLegal.y()+centerY);
         }
-        placeablePositions.addAll(addedLegalPositions);
 
         playAreaGrid.add(cardController.getRoot(), realCol, realRow);
     }
