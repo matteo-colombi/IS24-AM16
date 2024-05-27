@@ -56,7 +56,7 @@ public class CreditsScreenController implements Initializable {
 
     @FXML
     public void back(ActionEvent ignored) {
-        if(rick.getMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING) {
+        if(rick.getMediaPlayer() != null && rick.getMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING) {
             rick.getMediaPlayer().stop();
             rick.setVisible(false);
             links.setVisible(false);
