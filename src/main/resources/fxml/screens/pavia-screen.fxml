@@ -69,5 +69,15 @@
             </StackPane>
          </children>
       </HBox>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🔥" translateX="-200.0" StackPane.alignment="CENTER_RIGHT">
+         <font>
+            <Font size="128.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🔥" translateX="200.0" StackPane.alignment="CENTER_LEFT">
+         <font>
+            <Font size="128.0" />
+         </font>
+      </Text>
    </children>
 </StackPane>
