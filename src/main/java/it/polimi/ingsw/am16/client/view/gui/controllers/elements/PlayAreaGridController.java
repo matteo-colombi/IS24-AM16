@@ -74,6 +74,10 @@ public class PlayAreaGridController {
         System.out.println(position);
         System.out.println(addedLegalPositions);
         System.out.println(removedLegalPositions);
+
+        placeablePositions.addAll(addedLegalPositions);
+        placeablePositions.removeAll(removedLegalPositions);
+
         final Position finalPosition = new Position(position.x(), -position.y());
         int realCol = finalPosition.x() + centerX;
         int realRow = finalPosition.y() + centerY;
@@ -91,9 +95,6 @@ public class PlayAreaGridController {
         while(realRow >= currHeight-1) {
             expandDown();
         }
-
-        placeablePositions.addAll(addedLegalPositions);
-        placeablePositions.removeAll(removedLegalPositions);
 
         for (Position removedLegal : removedLegalPositions) {
             removeFiller(removedLegal);
@@ -123,30 +124,30 @@ public class PlayAreaGridController {
             playAreaGrid.add(node, col, row+1);
         }
 
-        for(int i = 0; i < currWidth; i++) {
-            int x = i-centerX;
-            int y = -centerY;
-            Position pos = new Position(x, -y);
-            if (placeablePositions.contains(pos)) {
-                Pane gridFiller = addNewFiller(pos);
-                playAreaGrid.add(gridFiller, i, 0);
-            }
-        }
+//        for(int i = 0; i < currWidth; i++) {
+//            int x = i-centerX;
+//            int y = -centerY;
+//            Position pos = new Position(x, -y);
+//            if (placeablePositions.contains(pos)) {
+//                Pane gridFiller = addNewFiller(pos);
+//                playAreaGrid.add(gridFiller, i, 0);
+//            }
+//        }
     }
 
     private void expandDown() {
         playAreaGrid.getRowConstraints().addLast(rowConstraints);
         currHeight++;
 
-        for(int i = 0; i < currWidth; i++) {
-            int x = i-centerX;
-            int y = currHeight-1-centerY;
-            Position pos = new Position(x, -y);
-            if (placeablePositions.contains(pos)) {
-                Pane gridFiller = addNewFiller(pos);
-                playAreaGrid.add(gridFiller, i, currHeight-1);
-            }
-        }
+//        for(int i = 0; i < currWidth; i++) {
+//            int x = i-centerX;
+//            int y = currHeight-1-centerY;
+//            Position pos = new Position(x, -y);
+//            if (placeablePositions.contains(pos)) {
+//                Pane gridFiller = addNewFiller(pos);
+//                playAreaGrid.add(gridFiller, i, currHeight-1);
+//            }
+//        }
     }
 
     private void expandLeft() {
@@ -162,30 +163,30 @@ public class PlayAreaGridController {
             playAreaGrid.add(node, col+1, row);
         }
 
-        for(int i = 0; i < currHeight; i++) {
-            int x = -centerX;
-            int y = i-centerY;
-            Position pos = new Position(x, -y);
-            if (placeablePositions.contains(pos)) {
-                Pane gridFiller = addNewFiller(pos);
-                playAreaGrid.add(gridFiller, 0, i);
-            }
-        }
+//        for(int i = 0; i < currHeight; i++) {
+//            int x = -centerX;
+//            int y = i-centerY;
+//            Position pos = new Position(x, -y);
+//            if (placeablePositions.contains(pos)) {
+//                Pane gridFiller = addNewFiller(pos);
+//                playAreaGrid.add(gridFiller, 0, i);
+//            }
+//        }
     }
 
     private void expandRight() {
         playAreaGrid.getColumnConstraints().addLast(columnConstraints);
         currWidth++;
 
-        for(int i = 0; i < currHeight; i++) {
-            int x = currWidth-1-centerX;
-            int y = i-centerY;
-            Position pos = new Position(x, -y);
-            if (placeablePositions.contains(pos)) {
-                Pane gridFiller = addNewFiller(pos);
-                playAreaGrid.add(gridFiller, currWidth-1, i);
-            }
-        }
+//        for(int i = 0; i < currHeight; i++) {
+//            int x = currWidth-1-centerX;
+//            int y = i-centerY;
+//            Position pos = new Position(x, -y);
+//            if (placeablePositions.contains(pos)) {
+//                Pane gridFiller = addNewFiller(pos);
+//                playAreaGrid.add(gridFiller, currWidth-1, i);
+//            }
+//        }
     }
 
     public Parent getRoot() {
