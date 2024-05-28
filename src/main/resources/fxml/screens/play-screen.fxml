@@ -289,7 +289,7 @@
                         </HBox>
                         <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                            <children>
-                              <Button fx:id="createButton111" mnemonicParsing="false" onAction="#create" prefHeight="25.0" prefWidth="70.0" styleClass="sma" StackPane.alignment="CENTER">
+                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" styleClass="sma" StackPane.alignment="CENTER">
                                  <font>
                                     <Font name="System Italic" size="10.0" />
                                  </font>
