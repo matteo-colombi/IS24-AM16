@@ -248,7 +248,7 @@
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
             </VBox>
-            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #573B21; -fx-border-radius: 3; -fx-border-width: 2;" translateX="-75.0" translateY="22.5">
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #573B21; -fx-border-radius: 3; -fx-border-width: 2;" translateX="-75.0" translateY="22.5" visible="false">
                <children>
                   <Rectangle fill="#b38c44" height="25.0" rotate="135.0" stroke="#573b21" strokeType="INSIDE" strokeWidth="2.0" translateX="12.5" width="25.0" StackPane.alignment="CENTER_RIGHT" />
                   <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" style="-fx-background-color: #B38C44; -fx-background-radius: 3;" StackPane.alignment="CENTER">
