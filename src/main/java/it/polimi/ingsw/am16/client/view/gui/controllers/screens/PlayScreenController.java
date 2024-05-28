@@ -72,6 +72,8 @@ public class PlayScreenController {
     private StackPane leaveButton;
     @FXML
     private VBox playersBox;
+    @FXML
+    private StackPane otherHand;
 
     private ServerInterface serverInterface;
 
@@ -142,6 +144,12 @@ public class PlayScreenController {
 
     public void showError(String errorMessage) {
         //TODO
+    }
+
+    @FXML
+    public void show(ActionEvent ignored) {
+        System.out.println("lore è un sardo stupido!");
+        otherHand.setVisible(!otherHand.isVisible());
     }
 
     private void setPlayerColor(String username, PlayerColor color) {
