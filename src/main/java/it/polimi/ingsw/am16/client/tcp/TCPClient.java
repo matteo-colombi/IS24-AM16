@@ -111,6 +111,8 @@ public class TCPClient implements Runnable, ServerInterface {
 
                         view.joinGame(payload.getGameId(), payload.getUsername(), payload.getNumPlayers());
                     }
+                    case REJOIN_INFORMATION_START -> view.rejoinInformationStart();
+                    case REJOIN_INFORMATION_END -> view.rejoinInformationEnd();
                     case SET_GAME_STATE -> {
                         SetGameState payload;
                         try {
