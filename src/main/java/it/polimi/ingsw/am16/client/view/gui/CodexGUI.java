@@ -253,6 +253,19 @@ public class CodexGUI extends Application implements ViewInterface {
     }
 
     /**
+     * Switches to the rules screen.
+     */
+    public void switchToRulesScreen() {
+        FXMLLoader rulesScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/rules-screen.fxml"));
+        try {
+            Parent rulesScreen = rulesScreenLoader.load();
+            stage.getScene().setRoot(rulesScreen);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Stops the view. This includes disconnecting from the server.
      */
     @Override

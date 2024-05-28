@@ -144,7 +144,7 @@
             <Rectangle fill="#b38c44" height="18.0" rotate="135.0" stroke="#573b21" strokeType="INSIDE" strokeWidth="3.0" translateX="70.0" translateY="-165.0" width="19.0" />
             <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="330.0" prefWidth="205.0" style="-fx-background-color: #B38C44; -fx-background-radius: 10;">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="110.0" prefWidth="205.0" styleClass="transparent" text="Rules">
+                  <Button fx:id="rulesButton" mnemonicParsing="false" onAction="#showRules" prefHeight="110.0" prefWidth="205.0" styleClass="transparent" text="Rules">
                      <font>
                         <Font size="24.0" />
                      </font></Button>

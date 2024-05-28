@@ -175,4 +175,9 @@ public class WelcomeScreenController {
     public void burnPavia(ActionEvent ignored) {
         CodexGUI.getGUI().switchToPaviaScreen();
     }
+
+    @FXML
+    public void showRules(ActionEvent ignored) {
+        CodexGUI.getGUI().switchToRulesScreen();
+    }
 }
