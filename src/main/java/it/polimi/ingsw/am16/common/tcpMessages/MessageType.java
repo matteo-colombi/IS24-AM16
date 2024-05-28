@@ -1,5 +1,8 @@
 package it.polimi.ingsw.am16.common.tcpMessages;
 
+/**
+ * Enum that contains the types of TCP messages that can be sent, both from the server to the client, and from the client to the server.
+ */
 public enum MessageType {
     //Responses (from server to client)
     ADD_PLAYER,
@@ -31,13 +34,14 @@ public enum MessageType {
     ADD_MESSAGES,
     ADD_MESSAGE,
     PROMPT_ERROR,
-    REDRAW_VIEW,
     NOTIFY_DONT_DRAW,
     SIGNAL_DISCONNECTION,
     SIGNAL_GAME_SUSPENSION,
     SIGNAL_DEADLOCK,
     GET_GAMES_RESPONSE,
     JOIN_GAME_RESPONSE,
+    REJOIN_INFORMATION_START,
+    REJOIN_INFORMATION_END,
     PING,
 
     //Requests (from client to server)

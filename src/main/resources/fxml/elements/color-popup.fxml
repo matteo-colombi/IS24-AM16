@@ -17,7 +17,7 @@
    <children>
       <VBox fx:id="pleaseWaitBox" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="25.0" visible="false">
          <children>
-            <Text boundsType="VISUAL" fill="#922790" strokeType="OUTSIDE" strokeWidth="0.0" text="Colors are boing chosen!" textOrigin="CENTER">
+            <Text boundsType="VISUAL" fill="#922790" strokeType="OUTSIDE" strokeWidth="0.0" text="Colors are being chosen!" textOrigin="CENTER">
                <font>
                   <Font name="System Bold Italic" size="24.0" />
                </font>

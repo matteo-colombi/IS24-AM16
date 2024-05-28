@@ -2,11 +2,18 @@ package it.polimi.ingsw.am16.client.view.gui.events;
 
 import javafx.event.EventType;
 
+/**
+ * Class that contains all the types of custom events which will be fired in the GUI.
+ */
 public class GUIEventTypes {
 
     public static final EventType<ErrorEvent> ERROR_EVENT = new EventType<>("ERROR_EVENT");
 
     public static final EventType<SetGamesListEvent> SET_GAMES_LIST_EVENT = new EventType<>("GAMES_LIST_EVENT");
+
+    public static final EventType<RejoinInformationStartEvent> REJOIN_INFORMATION_START_EVENT = new EventType<>("REJOIN_INFORMATION_START");
+
+    public static final EventType<RejoinInformationEndEvent> REJOIN_INFORMATION_END_EVENT = new EventType<>("REJOIN_INFORMATION_END");
 
     public static final EventType<AddPlayerEvent> ADD_PLAYER_EVENT = new EventType<>("ADD_PLAYER_EVENT");
 
@@ -67,6 +74,8 @@ public class GUIEventTypes {
     public static final EventType<SignalDisconnectionEvent> SIGNAL_DISCONNECTION_EVENT = new EventType<>("SIGNAL_DISCONNECTION_EVENT");
 
     public static final EventType<SignalGameSuspensionEvent> SIGNAL_GAME_SUSPENSION_EVENT = new EventType<>("SIGNAL_GAME_SUSPENSION_EVENT");
+
+    public static final EventType<SignalGameDeletionEvent> SIGNAL_GAME_DELETION_EVENT = new EventType<>("SIGNAL_GAME_DELETION_EVENT");
 
     public static final EventType<SignalDeadlockEvent> SIGNAL_DEADLOCK_EVENT = new EventType<>("SIGNAL_DEADLOCK_EVENT");
 }

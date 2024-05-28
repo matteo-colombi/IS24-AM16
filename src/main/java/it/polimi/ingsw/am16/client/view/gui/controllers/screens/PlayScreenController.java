@@ -322,7 +322,9 @@ public class PlayScreenController {
         personalObjectiveSlot.getChildren().add(cardController.getRoot());
     }
 
-    private void setPlayArea(String username, List<Position> ignored, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
+    private void setPlayArea(String username, List<Position> placementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
+        //FIXME Right now it only works for the starter card and doesn't when a game is reloaded
+
         PlayAreaGridController playAreaGridController = ElementFactory.getPlayAreaGrid();
         BoardCard starterCard = field.get(new Position(0, 0));
         SideType starterSide = activeSides.get(starterCard);
@@ -443,6 +445,10 @@ public class PlayScreenController {
         //TODO
     }
 
+    private void signalGameDeletion(String whoDisconnected) {
+        //TODO
+    }
+
     private void receiveMessages(List<ChatMessage> messages) {
         guiState.addNewMessages(messages);
         for (ChatMessage message : messages) {
@@ -509,6 +515,8 @@ public class PlayScreenController {
         root.addEventFilter(GUIEventTypes.SIGNAL_DEADLOCK_EVENT, e -> signalDeadLock(e.getUsername()));
 
         root.addEventFilter(GUIEventTypes.SIGNAL_GAME_SUSPENSION_EVENT, e -> signalGameSuspension(e.getWhoDisconnected()));
+
+        root.addEventFilter(GUIEventTypes.SIGNAL_GAME_DELETION_EVENT, e -> signalGameDeletion(e.getWhoDisconnected()));
 
         root.addEventFilter(GUIEventTypes.NOTIFY_DONT_DRAW_EVENT, e -> notifyDontDraw());
 

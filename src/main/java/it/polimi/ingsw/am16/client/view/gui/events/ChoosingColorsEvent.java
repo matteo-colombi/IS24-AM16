@@ -4,6 +4,9 @@ import javafx.event.Event;
 
 import java.io.Serial;
 
+/**
+ * Event that is fired in the GUI when the color-choosing phase of the game has begun.
+ */
 public class ChoosingColorsEvent extends Event {
 
     @Serial

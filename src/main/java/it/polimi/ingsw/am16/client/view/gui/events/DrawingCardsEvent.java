@@ -4,6 +4,9 @@ import javafx.event.Event;
 
 import java.io.Serial;
 
+/**
+ * Event that is fired in the GUI when cards are being drawn for the game.
+ */
 public class DrawingCardsEvent extends Event {
 
     @Serial

@@ -74,17 +74,11 @@ public class Chat implements ChatModel {
             chatController.unsubscribe(username);
     }
 
-    /**
-     * Adds the given message to the chat's list of received messages.
-     * @param message The message to add.
-     */
+    @Override
     public void receiveMessage(ChatMessage message) {
         messages.add(message);
     }
 
-    /**
-     * @return The chat's list of received and sent messages.
-     */
     @Override
     public List<ChatMessage> getMessages() {
         return List.copyOf(messages);

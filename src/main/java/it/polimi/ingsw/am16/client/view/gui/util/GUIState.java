@@ -15,6 +15,7 @@ import javafx.scene.input.DataFormat;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class GUIState {
 
@@ -26,6 +27,7 @@ public class GUIState {
     private String username;
     private String gameId;
     private String activePlayer;
+    private AtomicInteger numPlayers;
 
     private GameState gameState;
 
@@ -59,6 +61,7 @@ public class GUIState {
         otherHands = new HashMap<>();
         playerColors = new HashMap<>();
         dontDraw = new AtomicBoolean(false);
+        numPlayers = new AtomicInteger(0);
     }
 
     public void clear() {
@@ -89,6 +92,7 @@ public class GUIState {
         synchronized (this) {
             username = null;
             gameId = null;
+            numPlayers.set(0);
             activePlayer = null;
             gameState = null;
             hand = null;
@@ -110,6 +114,14 @@ public class GUIState {
 
     public synchronized String getUsername() {
         return username;
+    }
+
+    public void setNumPlayers(int numPlayers) {
+        this.numPlayers.set(numPlayers);
+    }
+
+    public int getNumPlayers() {
+        return this.numPlayers.get();
     }
 
     public synchronized void setActivePlayer(String activePlayer) {

@@ -4,6 +4,9 @@ import javafx.event.Event;
 
 import java.io.Serial;
 
+/**
+ * Event that is fired in the GUI when a player has deadlocked themselves, and thus their turn is being skipped.
+ */
 public class SignalDeadlockEvent extends Event {
 
     @Serial
@@ -11,11 +14,17 @@ public class SignalDeadlockEvent extends Event {
 
     private final String username;
 
+    /**
+     * @param username The username of the player who has deadlocked themselves.
+     */
     public SignalDeadlockEvent(String username) {
         super(GUIEventTypes.SIGNAL_DEADLOCK_EVENT);
         this.username = username;
     }
 
+    /**
+     * @return The username of the player who has deadlocked themselves.
+     */
     public String getUsername() {
         return username;
     }

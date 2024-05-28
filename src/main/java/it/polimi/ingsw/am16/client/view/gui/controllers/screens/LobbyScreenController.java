@@ -9,7 +9,6 @@ import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
@@ -21,10 +20,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class LobbyScreenController {
     @FXML
@@ -156,6 +153,10 @@ public class LobbyScreenController {
         root.addEventFilter(GUIEventTypes.SET_PLAYERS_EVENT, e -> setPlayers(e.getUsernames()));
 
         root.addEventFilter(GUIEventTypes.ADD_PLAYER_EVENT, e -> addPlayer(e.getUsername()));
+
+        root.addEventFilter(GUIEventTypes.REJOIN_INFORMATION_START_EVENT, e -> {
+            CodexGUI.getGUI().switchToPlayScreen();
+        });
 
         root.addEventFilter(GUIEventTypes.SIGNAL_DISCONNECTION_EVENT, e -> removePlayer(e.getWhoDisconnected()));
 

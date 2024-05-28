@@ -5,6 +5,9 @@ import javafx.event.Event;
 import java.io.Serial;
 import java.util.List;
 
+/**
+ * Event that is fired in the GUI when the list of players currently in a lobby is being given.
+ */
 public class SetPlayersEvent extends Event {
 
     @Serial
@@ -12,11 +15,17 @@ public class SetPlayersEvent extends Event {
 
     private final List<String> usernames;
 
+    /**
+     * @param usernames The list of usernames of the current players.
+     */
     public SetPlayersEvent(List<String> usernames) {
         super(GUIEventTypes.SET_PLAYERS_EVENT);
         this.usernames = usernames;
     }
 
+    /**
+     * @return The list of usernames of the current players.
+     */
     public List<String> getUsernames() {
         return usernames;
     }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.server;
 
 import it.polimi.ingsw.am16.common.util.FilePaths;
+import it.polimi.ingsw.am16.common.util.RNG;
 import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 import it.polimi.ingsw.am16.server.rmi.WelcomeRMIServer;
 import it.polimi.ingsw.am16.server.rmi.WelcomeRMIServerImplementation;
@@ -10,6 +11,8 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Arrays;
+import java.util.List;
 
 public class Server {
     /**
@@ -18,13 +21,24 @@ public class Server {
      * @param args The command line arguments.
      */
     public static void main(String[] args) {
-        String host = args[1];
+        List<String> argsList = Arrays.asList(args);
+        int serverIndex = argsList.indexOf("--server");
+        if (serverIndex == -1) {
+            serverIndex = argsList.indexOf("-s");
+        }
+
+        if (serverIndex+3 >= argsList.size()) {
+            System.out.println("Invalid arguments. Use -h for more information.");
+            return;
+        }
+
+        String host = argsList.get(serverIndex+1);
         int tcpPort;
         int rmiPort;
 
         try {
-            tcpPort = Integer.parseInt(args[2]);
-            rmiPort = Integer.parseInt(args[3]);
+            tcpPort = Integer.parseInt(argsList.get(serverIndex+2));
+            rmiPort = Integer.parseInt(argsList.get(serverIndex+3));
             if (tcpPort < 1024 || rmiPort < 1024 || tcpPort > 65535 || rmiPort > 65535) {
                 System.err.println("Ports under 1024 or over 65535 cannot be used.");
                 return;
@@ -37,6 +51,21 @@ public class Server {
         if (tcpPort == rmiPort) {
             System.err.println("Please choose two different ports for Socket and RMI.");
             return;
+        }
+
+        if (argsList.contains("--seed")) {
+            int seedIndex = argsList.indexOf("--seed");
+            if (seedIndex+1 >= argsList.size()) {
+                System.out.println("Invalid arguments. Use -h for more information.");
+                return;
+            }
+            try {
+                long seed = Long.parseLong(argsList.get(seedIndex+1));
+                RNG.setRNGSeed(seed);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid arguments. Seed should be a number.");
+                return;
+            }
         }
 
         LobbyManager lobbyManager = new LobbyManager();

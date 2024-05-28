@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am16.client.view.gui.events;
 
+import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import javafx.event.Event;
 
 import java.io.Serial;
@@ -14,12 +15,14 @@ public class SetGamesListEvent extends Event {
     private final List<String> gameIds;
     private final Map<String, Integer> currentPlayers;
     private final Map<String, Integer> maxPlayers;
+    private final Map<String, LobbyState> lobbyStates;
 
-    public SetGamesListEvent(List<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) {
+    public SetGamesListEvent(List<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers, Map<String, LobbyState> lobbyStates) {
         super(GUIEventTypes.SET_GAMES_LIST_EVENT);
         this.gameIds = gameIds;
         this.currentPlayers = currentPlayers;
         this.maxPlayers = maxPlayers;
+        this.lobbyStates = lobbyStates;
     }
 
     public List<String> getGameIds() {
@@ -32,5 +35,9 @@ public class SetGamesListEvent extends Event {
 
     public Map<String, Integer> getMaxPlayers() {
         return maxPlayers;
+    }
+
+    public Map<String, LobbyState> getLobbyStates() {
+        return lobbyStates;
     }
 }

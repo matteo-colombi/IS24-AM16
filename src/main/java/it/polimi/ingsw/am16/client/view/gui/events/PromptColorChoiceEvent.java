@@ -6,6 +6,9 @@ import javafx.event.Event;
 import java.io.Serial;
 import java.util.List;
 
+/**
+ * Event that is fired in the GUI when it is the player's turn to choose their color.
+ */
 public class PromptColorChoiceEvent extends Event {
 
     @Serial
@@ -13,11 +16,17 @@ public class PromptColorChoiceEvent extends Event {
 
     private final List<PlayerColor> colorChoices;
 
+    /**
+     * @param colorChoices The list of colors from which the player can choose from.
+     */
     public PromptColorChoiceEvent(List<PlayerColor> colorChoices) {
         super(GUIEventTypes.PROMPT_COLOR_CHOICE_EVENT);
         this.colorChoices = colorChoices;
     }
 
+    /**
+     * @return The list of colors from which the player can choose from.
+     */
     public List<PlayerColor> getColorChoices() {
         return colorChoices;
     }

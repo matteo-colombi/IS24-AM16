@@ -18,16 +18,15 @@ public class WelcomeRMIServerImplementation extends UnicastRemoteObject implemen
 
     private final LobbyManager lobbyManager;
 
+    /**
+     * Constructs a new WelcomeRMIServerImplementation object.
+     * @param lobbyManager The lobby manager that keeps information about all currently active games on this server.
+     * @throws RemoteException Thrown if an exception occurs while creating the remote object stubs.
+     */
     public WelcomeRMIServerImplementation(LobbyManager lobbyManager) throws RemoteException {
         this.lobbyManager = lobbyManager;
     }
 
-    /**
-     * Creates a new instance of {@link RMIServerImplementation} for the given client.
-     * @param clientInterface The client that connected to the server.
-     * @return A new instance of {@link RMIServerImplementation}.
-     * @throws RemoteException If an error occurs while creating the new instance.
-     */
     @Override
     public ServerInterface getClientHandler(RemoteClientInterface clientInterface) throws RemoteException {
         System.out.println("New RMI client connected.");

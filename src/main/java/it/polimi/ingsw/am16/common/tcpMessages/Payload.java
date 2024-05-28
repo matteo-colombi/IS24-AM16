@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.am16.common.tcpMessages.request.*;
 import it.polimi.ingsw.am16.common.tcpMessages.response.*;
 
+/**
+ * Generic abstract class for a message payload. All subclasses of this class are possible payloads for TCP messages.
+ */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "payloadType"

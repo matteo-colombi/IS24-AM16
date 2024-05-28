@@ -5,6 +5,9 @@ import javafx.event.Event;
 
 import java.io.Serial;
 
+/**
+ * Event that is fired in the GUI to tell the view what the common objectives for the game are.
+ */
 public class SetCommonObjectivesEvent extends Event {
 
     @Serial
@@ -12,11 +15,19 @@ public class SetCommonObjectivesEvent extends Event {
 
     private final ObjectiveCard[] commonObjectives;
 
+    /**
+     *
+     * @param commonObjectives The common objectives in this game.
+     */
     public SetCommonObjectivesEvent(ObjectiveCard[] commonObjectives) {
         super(GUIEventTypes.SET_COMMON_OBJECTIVES_EVENT);
         this.commonObjectives = commonObjectives;
     }
 
+    /**
+     *
+     * @return The common objectives in this game.
+     */
     public ObjectiveCard[] getCommonObjectives() {
         return commonObjectives;
     }

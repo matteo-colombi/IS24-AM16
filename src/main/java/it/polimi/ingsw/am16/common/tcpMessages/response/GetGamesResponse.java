@@ -11,10 +11,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
+import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.tcpMessages.Payload;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,12 +27,14 @@ public class GetGamesResponse extends Payload {
     private final Set<String> gameIds;
     private final Map<String, Integer> currentPlayers;
     private final Map<String, Integer> maxPlayers;
+    private final Map<String, LobbyState> lobbyStates;
 
     @JsonCreator
-    public GetGamesResponse(@JsonProperty("gameIds") Set<String> gameIds, @JsonProperty("currentPlayers") Map<String, Integer> currentPlayers, @JsonProperty("maxPlayers") Map<String, Integer> maxPlayers) {
+    public GetGamesResponse(@JsonProperty("gameIds") Set<String> gameIds, @JsonProperty("currentPlayers") Map<String, Integer> currentPlayers, @JsonProperty("maxPlayers") Map<String, Integer> maxPlayers, @JsonProperty("lobbyStates") Map<String, LobbyState> lobbyStates) {
         this.gameIds = gameIds;
         this.currentPlayers = currentPlayers;
         this.maxPlayers = maxPlayers;
+        this.lobbyStates = lobbyStates;
     }
 
     public Set<String> getGameIds() {
@@ -45,12 +49,19 @@ public class GetGamesResponse extends Payload {
         return maxPlayers;
     }
 
+    public Map<String, LobbyState> getLobbyStates() {
+        return lobbyStates;
+    }
+
     /**
      * Deserializer used to reload a GetGamesResponse message from a JSON file.
      */
     public static class Deserializer extends StdDeserializer<GetGamesResponse> {
 
         private static final ObjectMapper mapper = JsonMapper.getObjectMapper();
+
+        @Serial
+        private static final long serialVersionUID = -3603618098733715971L;
 
         protected Deserializer() {
             super(GetGamesResponse.class);
@@ -70,18 +81,16 @@ public class GetGamesResponse extends Payload {
         public GetGamesResponse deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JacksonException {
             JsonNode node = p.getCodec().readTree(p);
 
-            TypeReference<Set<String>> gameIdsTypeRef = new TypeReference<>() {
-            };
-            TypeReference<Map<String, Integer>> currentPlayersTypeRef = new TypeReference<>() {
-            };
-            TypeReference<Map<String, Integer>> maxPlayersTypeRef = new TypeReference<>() {
-            };
+            TypeReference<Set<String>> gameIdsTypeRef = new TypeReference<>() {};
+            TypeReference<Map<String, Integer>> currentPlayersTypeRef = new TypeReference<>() {};
+            TypeReference<Map<String, Integer>> maxPlayersTypeRef = new TypeReference<>() {};
+            TypeReference<Map<String, LobbyState>> lobbyStatesTypeRef = new TypeReference<>() {};
             Set<String> gameIds = mapper.readValue(node.get("gameIds").toString(), gameIdsTypeRef);
             Map<String, Integer> currentPlayers = mapper.readValue(node.get("currentPlayers").toString(), currentPlayersTypeRef);
             Map<String, Integer> maxPlayers = mapper.readValue(node.get("maxPlayers").toString(), maxPlayersTypeRef);
-
+            Map<String, LobbyState> lobbyStates = mapper.readValue(node.get("lobbyStates").toString(), lobbyStatesTypeRef);
             return new GetGamesResponse(
-                    gameIds, currentPlayers, maxPlayers
+                    gameIds, currentPlayers, maxPlayers, lobbyStates
             );
         }
     }

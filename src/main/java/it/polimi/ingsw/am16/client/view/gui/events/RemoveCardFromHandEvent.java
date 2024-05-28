@@ -5,6 +5,9 @@ import javafx.event.Event;
 
 import java.io.Serial;
 
+/**
+ * Event that is fired in the GUI when a card has to be removed from the player's hand.
+ */
 public class RemoveCardFromHandEvent extends Event {
 
     @Serial
@@ -12,11 +15,19 @@ public class RemoveCardFromHandEvent extends Event {
 
     private final PlayableCard card;
 
+    /**
+     *
+     * @param card The card to be removed.
+     */
     public RemoveCardFromHandEvent(PlayableCard card) {
         super(GUIEventTypes.REMOVE_CARD_FROM_HAND_EVENT);
         this.card = card;
     }
 
+    /**
+     *
+     * @return The card to be removed.
+     */
     public PlayableCard getCard() {
         return card;
     }

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.am16.common.util;
 
-import java.net.URL;
-
 /**
  * Class that contains all the static paths for resources.
  */

@@ -6,6 +6,9 @@ import javafx.event.Event;
 import java.io.Serial;
 import java.util.List;
 
+/**
+ * Event fired in the GUI when (a) new chat message(s) is (are) received.
+ */
 public class AddChatMessagesEvent extends Event {
 
     @Serial
@@ -13,11 +16,17 @@ public class AddChatMessagesEvent extends Event {
 
     private final List<ChatMessage> messages;
 
+    /**
+     * @param messages The new chat message(s).
+     */
     public AddChatMessagesEvent(List<ChatMessage> messages) {
         super(GUIEventTypes.ADD_CHAT_MESSAGES_EVENT);
         this.messages = messages;
     }
 
+    /**
+     * @return The new chat message(s).
+     */
     public List<ChatMessage> getMessages() {
         return messages;
     }

@@ -5,9 +5,9 @@ import javafx.event.Event;
 import java.io.Serial;
 
 /**
- * Event that is fired in the GUI when a player disconnects from a game, and the game is being suspended as a result.
+ * Event that is fired in the GUI when a player disconnects from a game, and the game is being deleted as a result.
  */
-public class SignalGameSuspensionEvent extends Event {
+public class SignalGameDeletionEvent extends Event {
 
     @Serial
     private static final long serialVersionUID = -8978718796191812284L;
@@ -17,8 +17,8 @@ public class SignalGameSuspensionEvent extends Event {
     /**
      * @param whoDisconnected The username of the player who disconnected.
      */
-    public SignalGameSuspensionEvent(String whoDisconnected) {
-        super(GUIEventTypes.SIGNAL_GAME_SUSPENSION_EVENT);
+    public SignalGameDeletionEvent(String whoDisconnected) {
+        super(GUIEventTypes.SIGNAL_GAME_DELETION_EVENT);
         this.whoDisconnected = whoDisconnected;
     }
 

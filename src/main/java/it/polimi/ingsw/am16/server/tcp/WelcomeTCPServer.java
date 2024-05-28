@@ -23,13 +23,6 @@ public class WelcomeTCPServer implements Runnable {
      */
     @Override
     public void run() {
-        startServer();
-    }
-
-    /**
-     * Starts the TCP server and listens for incoming connections.
-     */
-    public void startServer() {
         try(ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("TCP server ready: listening on port " + port);
             while (true) {

@@ -6,6 +6,9 @@ import javafx.event.Event;
 import java.io.Serial;
 import java.util.List;
 
+/**
+ * Event that is fired in the GUI when the player has to choose their personal objective.
+ */
 public class PromptObjectiveChoiceEvent extends Event {
 
     @Serial
@@ -13,11 +16,17 @@ public class PromptObjectiveChoiceEvent extends Event {
 
     private final List<ObjectiveCard> possiblePersonalObjectives;
 
+    /**
+     * @param possiblePersonalObjectives The list of objectives from which the player can choose from.
+     */
     public PromptObjectiveChoiceEvent(List<ObjectiveCard> possiblePersonalObjectives) {
         super(GUIEventTypes.PROMPT_OBJECTIVE_CHOICE_EVENT);
         this.possiblePersonalObjectives = possiblePersonalObjectives;
     }
 
+    /**
+     * @return The list of objectives from which the player can choose from.
+     */
     public List<ObjectiveCard> getPossiblePersonalObjectives() {
         return possiblePersonalObjectives;
     }

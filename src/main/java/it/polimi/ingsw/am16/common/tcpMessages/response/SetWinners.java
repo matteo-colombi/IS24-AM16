@@ -26,19 +26,27 @@ import it.polimi.ingsw.am16.common.util.JsonMapper;
 import java.io.IOException;
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @JsonDeserialize(using = SetWinners.Deserializer.class)
 public class SetWinners extends Payload {
     private final List<String> winnerUsernames;
+    private final Map<String, ObjectiveCard> personalObjectives;
 
     @JsonCreator
-    public SetWinners(@JsonProperty("winnerUsernames") List<String> winnerUsernames) {
+    public SetWinners(@JsonProperty("winnerUsernames") List<String> winnerUsernames, @JsonProperty("personalObjectives") Map<String, ObjectiveCard> personalObjectives) {
         this.winnerUsernames = winnerUsernames;
+        this.personalObjectives = personalObjectives;
     }
 
     public List<String> getWinnerUsernames() {
         return winnerUsernames;
+    }
+
+    public Map<String, ObjectiveCard> getPersonalObjectives() {
+        return personalObjectives;
     }
 
     /**
@@ -72,8 +80,12 @@ public class SetWinners extends Payload {
             TypeReference<ArrayList<String>> winnersTypeRef = new TypeReference<>() {};
             List<String> winnerUsernames = mapper.readValue(node.get("winnerUsernames").toString(), winnersTypeRef);
 
+            TypeReference<HashMap<String, ObjectiveCard>> objectivesTypeRef = new TypeReference<>() {};
+            Map<String, ObjectiveCard> personalObjectives = mapper.readValue(node.get("personalObjectives").toString(), objectivesTypeRef);
+
             return new SetWinners(
-                    winnerUsernames
+                    winnerUsernames,
+                    personalObjectives
             );
         }
     }

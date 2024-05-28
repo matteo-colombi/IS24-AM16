@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
+import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
@@ -15,6 +16,7 @@ import java.io.InputStreamReader;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
@@ -63,6 +65,17 @@ public class CLIInputManager implements Runnable {
         String[] args = input.split(" ");
 
         String inputCommand = args[0].toLowerCase();
+
+        //FIXME remove, just for testing
+        if (inputCommand.equals("test")) {
+            Map<String, ObjectiveCard> personalObjectives = Map.of(
+                    "teo", CardRegistry.getRegistry().getObjectiveCardFromName("objective_resources_3"),
+                    "xLorde", CardRegistry.getRegistry().getObjectiveCardFromName("objective_object_1"),
+                    "andre", CardRegistry.getRegistry().getObjectiveCardFromName("objective_pattern_3"),
+                    "l2c", CardRegistry.getRegistry().getObjectiveCardFromName("objective_pattern_8")
+            );
+            cliView.printPersonalObjectives(personalObjectives);
+        }
 
         Set<CLICommand> matchingCommands = commandMatch(inputCommand);
 
@@ -182,10 +195,9 @@ public class CLIInputManager implements Runnable {
                 }
             }
             case COLOR -> {
-                if (args.length < 2 || args[1] == null) {
-                    System.out.println("Invalid arguments. Usage: " + CLICommand.COLOR.getUsage());
-                    cliView.printCommandPrompt();
-                    break;
+                if (args.length == 1) {
+                    cliView.printColorOptions();
+                    return;
                 }
 
                 String colorString = args[1];

@@ -5,6 +5,9 @@ import javafx.event.Event;
 
 import java.io.Serial;
 
+/**
+ * Event that is fired in the GUI when the player has to choose on which side to place their starter card.
+ */
 public class PromptStarterChoiceEvent extends Event {
 
     @Serial
@@ -12,11 +15,19 @@ public class PromptStarterChoiceEvent extends Event {
 
     private final StarterCard starterCard;
 
+    /**
+     *
+     * @param starterCard The starter card that was given to the player.
+     */
     public PromptStarterChoiceEvent(StarterCard starterCard) {
         super(GUIEventTypes.PROMPT_STARTER_CHOICE_EVENT);
         this.starterCard = starterCard;
     }
 
+    /**
+     *
+     * @return The starter card that was given to the player.
+     */
     public StarterCard getStarterCard() {
         return starterCard;
     }

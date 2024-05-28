@@ -21,7 +21,7 @@
             <Font name="System Bold Italic" size="14.0" />
          </font>
       </Text>
-      <Text mouseTransparent="true" text="Joining" textOrigin="CENTER" translateX="240.0" StackPane.alignment="CENTER_LEFT">
+      <Text fx:id="lobbyStateField" mouseTransparent="true" text="Joining" textOrigin="CENTER" translateX="240.0" StackPane.alignment="CENTER_LEFT">
          <font>
             <Font name="System Bold Italic" size="14.0" />
          </font>

@@ -3,6 +3,7 @@ package it.polimi.ingsw.am16.client;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
+import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
 
@@ -21,20 +22,36 @@ public interface RemoteClientInterface extends Remote {
      * Show the existing game IDs to the player.
      *
      * @param gameIds        The existing games' IDs.
-     * @param currentPlayers The number of current players
-     * @param maxPlayers     The maximum number of players
+     * @param currentPlayers The number of current players for each game
+     * @param maxPlayers     The maximum number of players for each game
+     * @param lobbyStates    The state of the lobby for each game
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void notifyGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) throws RemoteException;
+    void notifyGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers, Map<String, LobbyState> lobbyStates) throws RemoteException;
 
     /**
      * Tells the client that they have joined a game with the given username.
      *
      * @param gameId   The id of the game which the player just joined.
      * @param username The username the player has joined the game with.
+     * @param numPlayers The number of players expected to join this game.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void joinGame(String gameId, String username) throws RemoteException;
+    void joinGame(String gameId, String username, int numPlayers) throws RemoteException;
+
+    /**
+     * Tells the client that they are about to receive all the information about the game which is being resumed after a crash.
+     *
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    void rejoinInformationStart() throws RemoteException;
+
+    /**
+     * Tells the client that the rejoin information has ended.
+     *
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    void rejoinInformationEnd() throws RemoteException;
 
     /**
      * Adds a player to the game. Used to communicate the connection of a new player.
@@ -262,7 +279,7 @@ public interface RemoteClientInterface extends Remote {
      * @param winnerUsernames The winners of the game.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
-    void setWinners(List<String> winnerUsernames) throws RemoteException;
+    void setWinners(List<String> winnerUsernames, Map<String, ObjectiveCard> personalObjectives) throws RemoteException;
 
     /**
      * Adds all the messages given to the player's chat.
@@ -289,13 +306,6 @@ public interface RemoteClientInterface extends Remote {
     void promptError(String errorMessage) throws RemoteException;
 
     /**
-     * Forces the client to redraw the view.
-     *
-     * @throws RemoteException thrown if an error occurs during Java RMI communication.
-     */
-    void redrawView() throws RemoteException;
-
-    /**
      * Notifies the client that from now on they shouldn't draw cards anymore.
      *
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
@@ -311,11 +321,18 @@ public interface RemoteClientInterface extends Remote {
     void signalDisconnection(String whoDisconnected) throws RemoteException;
 
     /**
-     * DOCME
-     * @param whoDisconnected
-     * @throws RemoteException
+     * Tells the client that a player has disconnected, and the game is being paused as a result.
+     * @param whoDisconnected The username of the player who disconnected.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void signalGameSuspension(String whoDisconnected) throws RemoteException;
+
+    /**
+     * Tells the client that a player has disconnected, and the game is being deleted as a result.
+     * @param whoDisconnected The username of the player who disconnected.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    void signalGameDeletion(String whoDisconnected) throws RemoteException;
 
     /**
      * Tells the client that a player has skipped their turn because of a deadlock.

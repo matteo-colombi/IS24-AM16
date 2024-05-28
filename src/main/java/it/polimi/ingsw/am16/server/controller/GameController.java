@@ -9,6 +9,7 @@ import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.model.game.GameModel;
 import it.polimi.ingsw.am16.common.model.game.GameState;
+import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.model.players.PlayAreaModel;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.server.lobby.LobbyManager;
@@ -19,11 +20,14 @@ import it.polimi.ingsw.am16.common.util.RNG;
 import it.polimi.ingsw.am16.server.VirtualView;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Controller for the Game.
  * Is responsible for receiving the requests from views, updating the Game's model,
  * and notifying the views of the changes that have occurred.
+ * This class can be used by multiple threads without risk of conflicts, as all public methods are
+ * synchronized GameController instance.
  */
 public class GameController {
     private String choosingColor;
@@ -81,7 +85,7 @@ public class GameController {
             throw new UnexpectedActionException("User " + username + " already reconnected.");
         }
         virtualView.addPlayer(userView, username);
-        virtualView.joinGame(game.getId(), username);
+        virtualView.joinGame(game.getId(), username, game.getNumPlayers());
         game.setConnected(username,true);
 
         if (game.isRejoiningAfterCrash()) {
@@ -106,7 +110,6 @@ public class GameController {
         try {
             game.initializeGame();
         } catch (UnexpectedActionException e) {
-            //TODO handle it
             e.printStackTrace();
             return;
         }
@@ -131,23 +134,15 @@ public class GameController {
         Map<String, Player> players = game.getPlayers();
         if (!players.containsKey(username)) return;
 
-        StarterCard card = players.get(username).getStarterCard();
-
         try {
             game.setPlayerStarterSide(username, starterSide);
-        } catch (UnexpectedActionException e) {
-            //TODO handle it
-            e.printStackTrace();
-            return;
-        } catch (NoStarterCardException e) {
-            //TODO handle it
+        } catch (UnexpectedActionException | NoStarterCardException e) {
             e.printStackTrace();
             return;
         }
         PlayAreaModel playArea = players.get(username).getPlayArea();
 
         virtualView.communicatePlayArea(username, playArea.getPlacementOrder(), playArea.getField(), playArea.getActiveSides(), playArea.getLegalPositions(), playArea.getIllegalPositions(), playArea.getResourceCounts(), playArea.getObjectCounts());
-        virtualView.redrawView(username);
 
         if (game.allPlayersChoseStarterSide()) {
             initializingColors();
@@ -189,7 +184,6 @@ public class GameController {
     public synchronized void setPlayerColor(String username, PlayerColor color) {
         if (choosingColor == null || !choosingColor.equals(username)) {
             System.err.println("Wrong player!");
-            //TODO handle it better?
             return;
         }
 
@@ -199,12 +193,10 @@ public class GameController {
         try {
             game.setPlayerColor(username, color);
         } catch (UnexpectedActionException e) {
-            //TODO handle it
             e.printStackTrace();
             return;
         }
         virtualView.communicateColor(username, color);
-        virtualView.redrawView();
         promptColor();
     }
 
@@ -212,6 +204,8 @@ public class GameController {
      * Handles the updating of all the views after a game has restarted after a server crash.
      */
     private void restartingProcedures() {
+        virtualView.communicateRejoinInformationStart();
+
         virtualView.communicateGameState(game.getState());
         if (game.getState() == GameState.FINAL_ROUND) {
             virtualView.communicateDontDraw();
@@ -237,15 +231,14 @@ public class GameController {
             }
         }
 
-        virtualView.notifyTurnStart(game.getActivePlayer());
+        virtualView.communicateRejoinInformationEnd();
 
-        virtualView.redrawView();
+        virtualView.notifyTurnStart(game.getActivePlayer());
 
         try {
             game.initializeGame();
         } catch (UnexpectedActionException e) {
             e.printStackTrace();
-            //TODO handle it
         }
     }
 
@@ -281,7 +274,6 @@ public class GameController {
         virtualView.communicateCommonObjectives(game.getCommonObjectiveCards());
         for(Player p : game.getPlayers().values()) {
             virtualView.promptObjectiveChoice(p.getUsername(), p.getPersonalObjectiveOptions());
-            virtualView.redrawView(p.getUsername());
         }
     }
 
@@ -298,18 +290,12 @@ public class GameController {
 
         try {
             game.setPlayerObjective(username, objectiveCard);
-        } catch (UnknownObjectiveCardException e) {
-            e.printStackTrace();
-            //TODO handle it better?
-            return;
-        } catch (UnexpectedActionException e) {
+        } catch (UnknownObjectiveCardException | UnexpectedActionException e) {
             e.printStackTrace();
             return;
-            //TODO handle it
         }
 
         virtualView.communicatePersonalObjective(username, objectiveCard);
-        virtualView.redrawView(username);
 
         if (game.allPlayersChoseObjective()) {
             startGame();
@@ -326,13 +312,11 @@ public class GameController {
         } catch (UnexpectedActionException e) {
             e.printStackTrace();
             return;
-            //TODO handle it
         }
 
         virtualView.communicateGameState(game.getState());
         virtualView.communicateTurnOrder(game.getTurnOrder());
         virtualView.notifyTurnStart(game.getActivePlayer());
-        virtualView.redrawView();
     }
 
     /**
@@ -347,7 +331,6 @@ public class GameController {
         } catch (UnexpectedActionException e) {
             e.printStackTrace();
             return;
-            //TODO handle it
         }
 
         if (Objects.equals(game.getActivePlayer(), game.getStartingPlayer())) {
@@ -363,7 +346,6 @@ public class GameController {
                 } catch (UnexpectedActionException e) {
                     e.printStackTrace();
                     return;
-                    //TODO handle it
                 }
                 virtualView.communicateGameState(game.getState());
                 virtualView.communicateDontDraw();
@@ -399,7 +381,6 @@ public class GameController {
         } catch (UnexpectedActionException e) {
             e.printStackTrace();
             return;
-            //TODO handle it
         }
 
         hasPlacedCard = true;
@@ -416,7 +397,6 @@ public class GameController {
                 virtualView.communicateRemoveOtherCard(p.getUsername(), username, card.getRestrictedVersion());
             }
         }
-        virtualView.redrawView();
 
         if (game.getState() == GameState.FINAL_ROUND) {
             turnManager();
@@ -443,7 +423,6 @@ public class GameController {
             return;
         } catch (UnexpectedActionException e) {
             //TODO handle it
-            e.printStackTrace();
             return;
         }
 
@@ -464,10 +443,8 @@ public class GameController {
         for(Player p : game.getPlayers().values()) {
             if (!p.getUsername().equals(username)) {
                 virtualView.communicateNewOtherCard(p.getUsername(), username, drawnCard.getRestrictedVersion());
-                virtualView.redrawView(p.getUsername());
             }
         }
-        virtualView.redrawView(username);
 
         turnManager();
     }
@@ -481,7 +458,6 @@ public class GameController {
             game.endGame();
         } catch (UnexpectedActionException e) {
             e.printStackTrace();
-            //TODO handle it
             return;
         }
 
@@ -490,8 +466,16 @@ public class GameController {
             virtualView.communicateObjectivePoints(p.getUsername(), p.getObjectivePoints());
         }
         List<String> winnerUsernames = game.getWinnerUsernames();
-        virtualView.communicateWinners(winnerUsernames);
-        virtualView.redrawView();
+
+        Map<String, ObjectiveCard> personalObjectives =
+                game.getPlayers()
+                        .values()
+                        .stream()
+                        .collect(
+                                Collectors.toMap(Player::getUsername, Player::getPersonalObjective)
+                        );
+
+        virtualView.communicateWinners(winnerUsernames, personalObjectives);
 
         lobbyManager.deleteGame(game.getId());
     }
@@ -532,13 +516,14 @@ public class GameController {
             chatController.clear();
             game.pause();
         } else if (game.getState() == GameState.INIT) {
-            //TODO we have to figure out what to do in this case
+            virtualView.signalGameDeletion(username);
+            lobbyManager.deleteGame(game.getId());
         } else {
             virtualView.signalDisconnection(username);
             try {
                 game.removePlayer(username);
-            } catch (UnexpectedActionException ignored) {
-                System.err.println("Unexpected error.");
+            } catch (UnexpectedActionException e) {
+                System.err.println("Unexpected error: " + e.getMessage());
             }
             chatController.unsubscribe(username);
             if (game.getState() == GameState.INIT || (game.getCurrentPlayerCount() == 0 && !game.isRejoiningAfterCrash())) {
@@ -548,10 +533,27 @@ public class GameController {
     }
 
     /**
-     * @return The non-variable number of players expected to play the game.
+     * @return The non-variable number of players expected to play the game controlled by this controller.
      */
     public synchronized int getNumPlayers() {
         return game.getNumPlayers();
+    }
+
+    /**
+     * @return The {@link LobbyState} of the game controlled by this controller.
+     */
+    public synchronized LobbyState getLobbyState() {
+        if (isRejoiningAfterCrash()) {
+            return LobbyState.REJOINING;
+        }
+
+        GameState gameState = game.getState();
+
+        return switch (gameState) {
+            case JOINING -> LobbyState.JOINING;
+            case INIT, STARTED -> LobbyState.IN_GAME;
+            case FINAL_ROUND, ENDED -> LobbyState.ENDING;
+        };
     }
 
     /**

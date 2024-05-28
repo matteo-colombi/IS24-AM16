@@ -31,14 +31,40 @@ public class VirtualView {
      * @param gameId   The id of the game that the player just joined.
      * @param username The username of the player who joined.
      */
-    public void joinGame(String gameId, String username) {
+    public void joinGame(String gameId, String username, int numPlayers) {
         RemoteClientInterface userView = userViews.get(username);
         try {
-            userView.joinGame(gameId, username);
+            userView.joinGame(gameId, username, numPlayers);
             userView.setPlayers(new ArrayList<>(userViews.keySet()));
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Communicates to all the clients in this VirtualView that rejoin information about this game is about to be sent.
+     */
+    public void communicateRejoinInformationStart() {
+        userViews.values().forEach(userView -> {
+            try {
+                userView.rejoinInformationStart();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * Communicates to all the clients in this VirtualView that rejoin information about the game has all been sent and the game is about to resume.
+     */
+    public void communicateRejoinInformationEnd() {
+        userViews.values().forEach(userView -> {
+            try {
+                userView.rejoinInformationEnd();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -427,10 +453,10 @@ public class VirtualView {
      *
      * @param winnerUsernames The list of winners for this game.
      */
-    public void communicateWinners(List<String> winnerUsernames) {
+    public void communicateWinners(List<String> winnerUsernames, Map<String, ObjectiveCard> personalObjectives) {
         userViews.values().forEach(userView -> {
             try {
-                userView.setWinners(winnerUsernames);
+                userView.setWinners(winnerUsernames, personalObjectives);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -512,34 +538,6 @@ public class VirtualView {
     }
 
     /**
-     * Tells the player with the given player username to redraw their view.
-     *
-     * @param receiverUsername The player which this communication should be sent to.
-     */
-    public void redrawView(String receiverUsername) {
-        RemoteClientInterface userView = userViews.get(receiverUsername);
-        if (userView == null) return;
-        try {
-            userView.redrawView();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Tells all the players in this VirtualView that they should redraw their view.
-     */
-    public void redrawView() {
-        userViews.values().forEach(userView -> {
-            try {
-                userView.redrawView();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    /**
      * Communicates to all players that a player has disconnected from the game.
      *
      * @param disconnectedUsername The username of the player who disconnected.
@@ -568,6 +566,24 @@ public class VirtualView {
             if (!username.equals(disconnectedUsername)) {
                 try {
                     userView.signalGameSuspension(disconnectedUsername);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        userViews.clear();
+    }
+
+    /**
+     * Communicates to all players that a player has disconnected from the game, and the game is being deleted as a result.
+     *
+     * @param disconnectedUsername The username of the player who disconnected.
+     */
+    public void signalGameDeletion(String disconnectedUsername) {
+        userViews.forEach((username, userView) -> {
+            if (!username.equals(disconnectedUsername)) {
+                try {
+                    userView.signalGameDeletion(disconnectedUsername);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }

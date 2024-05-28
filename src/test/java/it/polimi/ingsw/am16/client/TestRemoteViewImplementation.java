@@ -3,6 +3,7 @@ package it.polimi.ingsw.am16.client;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
+import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
 
@@ -20,28 +21,24 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
         this.username = username;
     }
 
-    /**
-     * Show the existing game IDs to the player.
-     *
-     * @param gameIds        The existing games' IDs.
-     * @param currentPlayers The number of current players
-     * @param maxPlayers     The maximum number of players
-     * @throws RemoteException thrown if an error occurs during Java RMI communication.
-     */
     @Override
-    public void notifyGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers) throws RemoteException {
+    public void notifyGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers, Map<String, LobbyState> lobbyStates) throws RemoteException {
         //TODO
     }
 
-    /**
-     * Tells the view that they have joined a game with the given username.
-     *
-     * @param username The username the player has joined the game with.
-     * @throws RemoteException thrown if an error occurs during Java RMI communication.
-     */
     @Override
-    public void joinGame(String gameId, String username) throws RemoteException {
+    public void joinGame(String gameId, String username, int numPlayers) throws RemoteException {
         System.out.println("You joined a game with username: " + username);
+    }
+
+    @Override
+    public void rejoinInformationStart() throws RemoteException {
+
+    }
+
+    @Override
+    public void rejoinInformationEnd() throws RemoteException {
+
     }
 
     @Override
@@ -197,7 +194,7 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
     }
 
     @Override
-    public void setWinners(List<String> winnerUsernames) throws RemoteException {
+    public void setWinners(List<String> winnerUsernames, Map<String, ObjectiveCard> personalObjectives) throws RemoteException {
         System.out.print("[" + username + "]: ");
         System.out.println("Winners: " + winnerUsernames);
     }
@@ -221,11 +218,6 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
     }
 
     @Override
-    public void redrawView() throws RemoteException {
-        //Doesn't apply to this test
-    }
-
-    @Override
     public void notifyDontDraw() throws RemoteException {
         System.out.print("[" + username + "]: ");
         System.out.println("You should no longer draw after you placed a card.");
@@ -237,16 +229,15 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
         System.err.println("Player " + whoDisconnected + " has disconnected!");
     }
 
-    /**
-     * DOCME
-     *
-     * @param whoDisconnected
-     * @throws RemoteException
-     */
     @Override
     public void signalGameSuspension(String whoDisconnected) throws RemoteException {
         System.out.print("[" + username + "]: ");
         System.err.println("Player " + whoDisconnected + " has disconnected! The game is suspended.");
+    }
+
+    @Override
+    public void signalGameDeletion(String whoDisconnected) throws RemoteException {
+
     }
 
     @Override
@@ -255,11 +246,6 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
         System.err.println("Player " + username + " is deadlocked!");
     }
 
-    /**
-     * Ping request used by the server to check that the client is still connected.
-     *
-     * @throws RemoteException thrown if an error occurs during Java RMI communication.
-     */
     @Override
     public void ping() throws RemoteException {
 
