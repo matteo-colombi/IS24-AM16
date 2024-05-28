@@ -148,7 +148,6 @@ public class PlayScreenController {
 
     @FXML
     public void show(ActionEvent ignored) {
-        System.out.println("lore è un sardo stupido!");
         otherHand.setVisible(!otherHand.isVisible());
     }
 
