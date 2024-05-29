@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.Serial;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Class to handle game(s). A game has a unique alphanumeric id and a non-variable number of players.
@@ -497,16 +498,21 @@ public class Game implements GameModel {
                 players.values().stream()
                         .sorted(
                                 Comparator.comparingInt(Player::getTotalPoints)
-                                        .thenComparingInt(Player::getObjectivePoints))
-                        .takeWhile(new Predicate<>() {
+                                        .thenComparingInt(Player::getObjectivePoints).reversed())
+                        .filter(new Predicate<>() {
                             private int maxTotal = 0;
                             private int maxObjective = 0;
 
                             @Override
                             public boolean test(Player player) {
+                                System.out.println(player.getUsername());
+                                System.out.println(player.getTotalPoints());
+                                System.out.println(player.getObjectivePoints());
+                                System.out.println(maxTotal);
+                                System.out.println(maxObjective);
                                 maxTotal = Math.max(player.getTotalPoints(), maxTotal);
                                 maxObjective = Math.max(player.getObjectivePoints(), maxObjective);
-                                return player.getTotalPoints() >= maxTotal && player.getObjectivePoints() >= maxObjective;
+                                return player.getTotalPoints() == maxTotal && player.getObjectivePoints() == maxObjective;
                             }
                         })
                         .map(Player::getUsername)
