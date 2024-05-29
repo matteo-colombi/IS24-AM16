@@ -41,17 +41,19 @@ public class PlayScreenController {
     @FXML
     private VBox pegContainer;
     @FXML
-    private Button chatFilterButton;
+    public ScrollPane chatScrollPane;
     @FXML
-    private StackPane chatFilters;
-    @FXML
-    private VBox chatFilterNames;
+    private VBox chatMessages;
     @FXML
     private TextField chatBox;
     @FXML
     private ToggleGroup chatFilterToggleGroup;
     @FXML
-    private VBox chatMessages;
+    private StackPane chatFilters;
+    @FXML
+    private Button chatFilterButton;
+    @FXML
+    private VBox chatFilterNames;
     @FXML
     private VBox objectivesCardGroup;
     @FXML
@@ -141,6 +143,9 @@ public class PlayScreenController {
 
     private void setGameState(GameState state) {
         //TODO
+        if (state == GameState.ENDED) {
+            CodexGUI.getGUI().switchToEndgameScreen();
+        }
     }
 
     public void showError(String errorMessage) {
@@ -175,7 +180,7 @@ public class PlayScreenController {
     }
 
     private void setStartOrder(List<String> startOrder) {
-        for(String username : startOrder) {
+        for (String username : startOrder) {
             PlayerButtonController playerButtonController = playerButtons.get(username);
             playersBox.getChildren().remove(playerButtonController.getRoot());
             playersBox.getChildren().addLast(playerButtonController.getRoot());
@@ -459,18 +464,22 @@ public class PlayScreenController {
     private void receiveMessages(List<ChatMessage> messages) {
         guiState.addNewMessages(messages);
         for (ChatMessage message : messages) {
-            Text newText = new Text();
-            newText.setText(message.toString());
-            Platform.runLater(() -> chatMessages.getChildren().addLast(newText));
+            Text messageText = new Text();
+
+            messageText.setText(message.toString());
+            messageText.setWrappingWidth(chatMessages.getWidth() - chatMessages.getPadding().getRight());
+
+            chatMessages.getChildren().addLast(messageText);
+            chatScrollPane.setVvalue(1);
         }
     }
 
     private void enableDraw(boolean enabled) {
-        for(CardController drawOption : commonResourceCards) {
+        for (CardController drawOption : commonResourceCards) {
             drawOption.setInteractable(enabled);
             drawOption.setDrawable(enabled);
         }
-        for(CardController drawOption : commonGoldCards) {
+        for (CardController drawOption : commonGoldCards) {
             drawOption.setInteractable(enabled);
             drawOption.setDrawable(enabled);
         }
@@ -554,6 +563,13 @@ public class PlayScreenController {
         leaveButton.setOnMouseClicked(e -> {
             leave();
             e.consume();
+        });
+
+        leaveButton.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                leave();
+                keyEvent.consume();
+            }
         });
 
         CodexGUI.getGUI().getStage().getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {

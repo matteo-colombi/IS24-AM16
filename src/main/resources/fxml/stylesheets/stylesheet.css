@@ -43,7 +43,7 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 0, 0);
 }
 
-.hex-button .polygon:hover {
+.hex-button .polygon:hover, .hex-button .polygon:focused {
     -fx-fill: linear-gradient(#d8cdbf, #b8a992);
 }
 
@@ -166,5 +166,21 @@
 }
 
 .chat .chat-text-field:focused {
-    -fx-p0rompt-text-fill: transparent;
+    -fx-prompt-text-fill: transparent;
+}
+
+.endgame-cell {
+    -fx-border-color: #573B21;
+    -fx-border-width: 3 0 0 0;
+}
+
+.endgame-text {
+    -fx-font-size: 30;
+    -fx-font-style: italic;
+    -fx-text-origin: center;
+}
+
+.endgame-text.total {
+    -fx-font-weight: bold;
+    -fx-fill: #b38c44;
 }

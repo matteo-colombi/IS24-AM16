@@ -5,21 +5,21 @@ import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 public class EndgameScreenController {
     @FXML
     public StackPane root;
+    @FXML
+    public Text winnerText;
     @FXML
     public VBox playerCol;
     @FXML
@@ -31,21 +31,22 @@ public class EndgameScreenController {
 
     private GUIState guiState;
 
+    private Map<String, Integer> gamePoints;
+    private Map<String, Integer> objectivePoints;
+    private Map<String, Integer> totalPoints;
+
     @FXML
     public void initialize() {
         registerEvents();
+
         guiState = CodexGUI.getGUI().getGuiState();
 
-        final Map<String, Integer> gamePoints = new HashMap<>();
-        final Map<String, Integer> objectivePoints =new HashMap<>();
-        final Map<String, Integer> totalPoints = new HashMap<>();
+        gamePoints = new HashMap<>();
+        objectivePoints = new HashMap<>();
+        totalPoints = new HashMap<>();
+    }
 
-        for(String username : guiState.getPlayerUsernames()) {
-            gamePoints.put(username, guiState.getGamePoints(username));
-            objectivePoints.put(username, guiState.getObjectivePoints(username));
-            totalPoints.put(username, gamePoints.get(username) + objectivePoints.get(username));
-        }
-
+    private void evaluate() {
         List<String> sortedUsernames = this.guiState.getPlayerUsernames()
                 .stream()
                 .sorted((s1, s2) -> {
@@ -57,33 +58,50 @@ public class EndgameScreenController {
                         }
                 ).toList().reversed();
 
-//        playerCol.getChildren().clear();
-//        gamePointsCol.getChildren().clear();
-//        objectivePointsCol.getChildren().clear();
-//        totalPointsCol.getChildren().clear();
+        winnerText.setText(sortedUsernames.getFirst());
 
-        for(String username : sortedUsernames) {
-            StackPane playerPane = new StackPane();
+        for (String username : sortedUsernames) {
             Text playerText = new Text(username);
-
-            StackPane gamePointsPane = new StackPane();
             Text gamePointsText = new Text(gamePoints.get(username).toString());
-
-            StackPane objectivePointsPane = new StackPane();
             Text objectivePointsText = new Text(objectivePoints.get(username).toString());
-
-            StackPane totalPointsPane = new StackPane();
             Text totalPointsText = new Text(totalPoints.get(username).toString());
+
+            playerText.setBoundsType(TextBoundsType.LOGICAL_VERTICAL_CENTER);
+            gamePointsText.setBoundsType(TextBoundsType.LOGICAL_VERTICAL_CENTER);
+            objectivePointsText.setBoundsType(TextBoundsType.LOGICAL_VERTICAL_CENTER);
+            totalPointsText.setBoundsType(TextBoundsType.LOGICAL_VERTICAL_CENTER);
+
+            playerText.getStyleClass().add("endgame-text");
+            gamePointsText.getStyleClass().add("endgame-text");
+            objectivePointsText.getStyleClass().add("endgame-text");
+            totalPointsText.getStyleClass().add("endgame-text");
+            totalPointsText.getStyleClass().add("total");
+
+            StackPane playerPane = new StackPane();
+            StackPane gamePointsPane = new StackPane();
+            StackPane objectivePointsPane = new StackPane();
+            StackPane totalPointsPane = new StackPane();
 
             playerPane.getChildren().add(playerText);
             gamePointsPane.getChildren().add(gamePointsText);
             objectivePointsPane.getChildren().add(objectivePointsText);
             totalPointsPane.getChildren().add(totalPointsText);
+
+            playerPane.getStyleClass().add("endgame-cell");
+            gamePointsPane.getStyleClass().add("endgame-cell");
+            objectivePointsPane.getStyleClass().add("endgame-cell");
+            totalPointsPane.getStyleClass().add("endgame-cell");
+
+            playerCol.getChildren().add(playerPane);
+            gamePointsCol.getChildren().add(gamePointsPane);
+            objectivePointsCol.getChildren().add(objectivePointsPane);
+            totalPointsCol.getChildren().add(totalPointsPane);
         }
     }
 
     public void home(ActionEvent ignored) {
-        //TODO implement
+        //TODO should we call something on the server?
+        CodexGUI.getGUI().switchToWelcomeScreen();
     }
 
     public void showError(String errorMessage) {
@@ -96,8 +114,17 @@ public class EndgameScreenController {
             errorEvent.consume();
         });
 
-        root.addEventFilter(GUIEventTypes.SET_GAMES_LIST_EVENT, gamesListEvent -> {
-            gamesListEvent.consume();
+        root.addEventFilter(GUIEventTypes.SET_OBJECTIVE_POINTS_EVENT, e -> {
+            String username = e.getUsername();
+            int objPoints = e.getObjectivePoints();
+
+            gamePoints.put(username, guiState.getGamePoints(username));
+            objectivePoints.put(username, objPoints);
+            totalPoints.put(username, gamePoints.get(username) + objectivePoints.get(username));
+
+            if (objectivePoints.keySet().size() == guiState.getNumPlayers()) {
+                evaluate();
+            }
         });
     }
 }

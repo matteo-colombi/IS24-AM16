@@ -6,14 +6,10 @@ import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.server.ServerInterface;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
@@ -32,6 +28,8 @@ public class LobbyScreenController {
     private VBox playersBox;
     @FXML
     private StackPane leaveButton;
+    @FXML
+    public ScrollPane chatScrollPane;
     @FXML
     private VBox chatMessages;
     @FXML
@@ -65,6 +63,7 @@ public class LobbyScreenController {
 
     /**
      * Sets the game ID.
+     *
      * @param gameId The game ID.
      */
     private void setGameId(String gameId) {
@@ -74,7 +73,7 @@ public class LobbyScreenController {
 
     private void setPlayers(List<String> usernames) {
         playersBox.getChildren().clear();
-        for(String username : usernames) {
+        for (String username : usernames) {
             addPlayer(username);
         }
     }
@@ -115,10 +114,14 @@ public class LobbyScreenController {
 
     private void receiveMessages(List<ChatMessage> messages) {
         guiState.addNewMessages(messages);
-        for(ChatMessage message : messages) {
-            Text newText = new Text();
-            newText.setText(message.toString());
-            Platform.runLater(() -> chatMessages.getChildren().addLast(newText));
+        for (ChatMessage message : messages) {
+            Text messageText = new Text();
+
+            messageText.setText(message.toString());
+            messageText.setWrappingWidth(chatMessages.getWidth() - chatMessages.getPadding().getRight());
+
+            chatMessages.getChildren().addLast(messageText);
+            chatScrollPane.setVvalue(1);
         }
     }
 
@@ -171,6 +174,13 @@ public class LobbyScreenController {
         leaveButton.setOnMouseClicked(e -> {
             leave();
             e.consume();
+        });
+
+        leaveButton.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                leave();
+                keyEvent.consume();
+            }
         });
 
         CodexGUI.getGUI().getStage().getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {

@@ -23,7 +23,7 @@
    <children>
       <StackPane fx:id="leaveButton" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="hex-button" translateX="68.5" translateY="70.0" StackPane.alignment="TOP_LEFT">
          <children>
-            <Polygon fill="#cacca0" layoutX="108.0" layoutY="121.0" stroke="#573b21" strokeLineCap="ROUND" strokeType="OUTSIDE" strokeWidth="3.0" styleClass="polygon">
+            <Polygon fill="#cacca0" focusTraversable="true" layoutX="108.0" layoutY="121.0" stroke="#573b21" strokeLineCap="ROUND" strokeType="OUTSIDE" strokeWidth="3.0" styleClass="polygon">
                <points>
                   <Double fx:value="0.0" />
                   <Double fx:value="-25.0" />
@@ -59,7 +59,7 @@
                   <Font name="System Bold Italic" size="18.0" />
                </font>
             </Text>
-            <Text fx:id="gameIdField" boundsType="VISUAL" focusTraversable="true" strokeType="OUTSIDE" strokeWidth="0.0" text="WIM9CL" textOrigin="CENTER">
+            <Text fx:id="gameIdField" boundsType="VISUAL" strokeType="OUTSIDE" strokeWidth="0.0" text="WIM9CL" textOrigin="CENTER">
                <font>
                   <Font size="48.0" />
                </font>
@@ -112,7 +112,7 @@
                      <children>
                         <VBox alignment="CENTER">
                            <children>
-                              <ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" pannable="true" prefHeight="225.0" prefWidth="450.0" style="-fx-border-color: #573B21; -fx-border-radius: 3 3 0 0; -fx-border-width: 3;" vbarPolicy="ALWAYS">
+                              <ScrollPane fx:id="chatScrollPane" fitToWidth="true" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" pannable="true" prefHeight="225.0" prefWidth="450.0" style="-fx-border-color: #573B21; -fx-border-radius: 3 3 0 0; -fx-border-width: 3;" vbarPolicy="ALWAYS">
                                  <content>
                                     <VBox fx:id="chatMessages" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="217.0" minWidth="427.0" style="-fx-background-color: #CACCA0;">
                                        <padding>
