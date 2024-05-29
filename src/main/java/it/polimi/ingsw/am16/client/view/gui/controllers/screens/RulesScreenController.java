@@ -22,7 +22,7 @@ public class RulesScreenController {
 
     private int i;
 
-    String paths[] = new String[]{"/assets/gui/icons/check.png", "/assets/gui/icons/close.png", "/assets/gui/icons/add.png"};
+    String paths[] = new String[]{"/assets/gui/rulebook/rulebook-1.png", "/assets/gui/rulebook/rulebook-2.png", "/assets/gui/rulebook/rulebook-3.png", "/assets/gui/rulebook/rulebook-4.png", "/assets/gui/rulebook/rulebook-5.png", "/assets/gui/rulebook/rulebook-6.png", "/assets/gui/rulebook/rulebook-7.png", "/assets/gui/rulebook/rulebook-8.png", "/assets/gui/rulebook/rulebook-9.png", "/assets/gui/rulebook/rulebook-10.png", "/assets/gui/rulebook/rulebook-11.png", "/assets/gui/rulebook/rulebook-12.png"};
 
     @FXML
     public void initialize() {

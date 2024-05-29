@@ -8,7 +8,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.screens.RulesScreenController">
    <children>
       <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" translateY="55.0" StackPane.alignment="TOP_CENTER">
@@ -16,7 +15,7 @@
             <Button fx:id="prevButton" mnemonicParsing="false" onAction="#prev" prefHeight="70.0" prefWidth="20.0" text="&lt;" />
             <ImageView fx:id="rulesBook" fitHeight="600.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../assets/gui/logo.png" />
+                  <Image url="@../../assets/gui/rulebook/rulebook-1.png" />
                </image>
             </ImageView>
             <Button fx:id="nextButton" mnemonicParsing="false" onAction="#next" prefHeight="70.0" prefWidth="20.0" text="&gt;" />
