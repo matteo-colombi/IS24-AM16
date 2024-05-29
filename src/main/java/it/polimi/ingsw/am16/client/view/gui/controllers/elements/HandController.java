@@ -42,6 +42,7 @@ public class HandController {
         CardController cardController = ElementFactory.getCard();
         cardController.getRoot().setId(card.getName());
         cardController.setCard(card);
+        cardController.setShadowColor(card.getType());
         cardController.showSide(SideType.FRONT);
         cardController.setTurnable();
         addCard(cardController);

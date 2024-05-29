@@ -53,14 +53,17 @@ public class PlayAreaGridController {
         expandLeft();
         expandRight();
 
-        for(Position position : placeablePositions) {
-            Pane fillerPane = addNewFiller(position);
-            if (fillerPane == null)
-                continue;
+        //TODO remove the comment if the new solution works
+//        for(Position position : placeablePositions) {
+//            Pane fillerPane = addNewFiller(position);
+//            if (fillerPane == null)
+//                continue;
+//
+//            GridPane.setConstraints(fillerPane, position.x()+centerX, -position.y()+centerY);
+//            playAreaGrid.getChildren().addFirst(fillerPane);
+//        }
 
-            GridPane.setConstraints(fillerPane, position.x()+centerX, -position.y()+centerY);
-            playAreaGrid.getChildren().addFirst(fillerPane);
-        }
+        putFillersInGrid(placeablePositions);
 
         GridPane.setConstraints(cardController.getRoot(), centerX, centerY);
         playAreaGrid.getChildren().addLast(cardController.getRoot());
@@ -92,14 +95,17 @@ public class PlayAreaGridController {
             removeFiller(removedLegal);
         }
 
-        for(Position addedLegal : addedLegalPositions) {
-            Pane fillerPane = addNewFiller(addedLegal);
-            if (fillerPane == null)
-                continue;
+        //TODO remove the comment if the new solution works
+//        for(Position addedLegal : addedLegalPositions) {
+//            Pane fillerPane = addNewFiller(addedLegal);
+//            if (fillerPane == null)
+//                continue;
+//
+//            GridPane.setConstraints(fillerPane, addedLegal.x()+centerX, -addedLegal.y()+centerY);
+//            playAreaGrid.getChildren().addFirst(fillerPane);
+//        }
 
-            GridPane.setConstraints(fillerPane, addedLegal.x()+centerX, -addedLegal.y()+centerY);
-            playAreaGrid.getChildren().addFirst(fillerPane);
-        }
+        putFillersInGrid(addedLegalPositions);
 
         GridPane.setConstraints(cardController.getRoot(), realCol, realRow);
         playAreaGrid.getChildren().addLast(cardController.getRoot());
@@ -164,5 +170,20 @@ public class PlayAreaGridController {
             playAreaGrid.getChildren().remove(gridFiller.getFillerPane());
 
         gridFillers.remove(fillerPosition);
+    }
+
+    public void putFillersInGrid(Set<Position> positions) {
+        for(Position position : positions) {
+            putFillerInGrid(position);
+        }
+    }
+
+    private void putFillerInGrid(Position position) {
+        Pane fillerPane = addNewFiller(position);
+        if (fillerPane == null)
+            return;
+
+        GridPane.setConstraints(fillerPane, position.x()+centerX, -position.y()+centerY);
+        playAreaGrid.getChildren().addFirst(fillerPane);
     }
 }

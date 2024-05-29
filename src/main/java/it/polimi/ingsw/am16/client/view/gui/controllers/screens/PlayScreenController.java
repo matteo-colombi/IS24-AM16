@@ -9,6 +9,7 @@ import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.model.game.GameState;
+import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
@@ -161,7 +162,8 @@ public class PlayScreenController {
         guiState.setPlayerColor(username, color);
         if (username.equals(guiState.getUsername())) {
             setPegColor(color);
-            centerContentPane.getChildren().remove(colorPopupController.getRoot());
+            if (colorPopupController != null)
+                centerContentPane.getChildren().remove(colorPopupController.getRoot());
         }
         guiState.setGamePoints(username, 0);
         pointsBoardController.addPegInSlot(0, color);
@@ -325,7 +327,8 @@ public class PlayScreenController {
     }
 
     private void setPersonalObjective(ObjectiveCard personalObjective) {
-        centerContentPane.getChildren().remove(objectivePopupController.getRoot());
+        if (objectivePopupController != null)
+            centerContentPane.getChildren().remove(objectivePopupController.getRoot());
         CardController cardController = ElementFactory.getCard();
         cardController.setCard(personalObjective);
         cardController.showSide(SideType.FRONT);
@@ -338,11 +341,29 @@ public class PlayScreenController {
         //FIXME Right now it only works for the starter card and doesn't when a game is reloaded
 
         PlayAreaGridController playAreaGridController = ElementFactory.getPlayAreaGrid();
-        BoardCard starterCard = field.get(new Position(0, 0));
-        SideType starterSide = activeSides.get(starterCard);
-        CardController cardController = ElementFactory.getCard();
-        cardController.setCardAndShowSide(starterCard, starterSide);
-        playAreaGridController.setCenterCard(cardController, legalPositions, illegalPositions);
+        Set<Position> emptySet = Set.of();
+        for(Position pos : placementOrder) {
+            BoardCard card = field.get(pos);
+            SideType side = activeSides.get(card);
+            CardController cardController = ElementFactory.getCard();
+            cardController.setCardAndShowSide(card, side);
+            if (pos.equals(new Position(0, 0))) {
+                playAreaGridController.setCenterCard(cardController, emptySet, emptySet);
+            } else {
+                playAreaGridController.putCard(cardController, pos, emptySet, emptySet);
+            }
+        }
+        Set<Position> onlyLegal = new HashSet<>(legalPositions);
+        onlyLegal.removeAll(illegalPositions);
+        playAreaGridController.putFillersInGrid(onlyLegal);
+
+        //TODO remove comment if the new solution works
+//        PlayAreaGridController playAreaGridController = ElementFactory.getPlayAreaGrid();
+//        BoardCard starterCard = field.get(new Position(0, 0));
+//        SideType starterSide = activeSides.get(starterCard);
+//        CardController cardController = ElementFactory.getCard();
+//        cardController.setCardAndShowSide(starterCard, starterSide);
+//        playAreaGridController.setCenterCard(cardController, legalPositions, illegalPositions);
 
         guiState.setPlayArea(username, playAreaGridController);
 
@@ -350,8 +371,13 @@ public class PlayScreenController {
         guiState.setInfoTable(username, infoTableController);
 
         if (username.equals(guiState.getUsername())) {
-            int index = centerContentPane.getChildren().indexOf(starterPopupController.getRoot());
-            centerContentPane.getChildren().set(index, playAreaGridController.getRoot());
+            //TODO remove comment if the new solution works
+//            if (starterPopupController != null) {
+//                int index = centerContentPane.getChildren().indexOf(starterPopupController.getRoot());
+//                centerContentPane.getChildren().set(index, playAreaGridController.getRoot());
+//            } else {
+            centerContentPane.getChildren().addFirst(playAreaGridController.getRoot());
+//            }
             infoTableSlot.getChildren().add(infoTableController.getRoot());
         }
 

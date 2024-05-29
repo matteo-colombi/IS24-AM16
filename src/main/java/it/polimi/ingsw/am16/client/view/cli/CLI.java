@@ -10,10 +10,6 @@ import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
 
-import java.io.FileDescriptor;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static it.polimi.ingsw.am16.client.view.cli.CLIConstants.CARD_HEIGHT;
@@ -154,11 +150,6 @@ public class CLI implements ViewInterface {
         }
 
         this.cliInputManager.setServerInterface(serverInterface);
-
-        String charsetOut = System.out.charset().displayName();
-        if (!"UTF-8".equals(charsetOut)) {
-            System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true, StandardCharsets.UTF_8));
-        }
 
         printBanner();
         printWelcome();

@@ -217,12 +217,12 @@ public class GameController {
         virtualView.communicateTurnOrder(game.getTurnOrder());
 
         for(Player p : game.getPlayers().values()) {
-            virtualView.communicateHand(p.getUsername(), p.getHand().getCards());
             virtualView.communicatePlayArea(p.getUsername(), p.getPlayArea().getPlacementOrder(), p.getPlayArea().getField(), p.getPlayArea().getActiveSides(), p.getPlayArea().getLegalPositions(), p.getPlayArea().getIllegalPositions(), p.getPlayArea().getResourceCounts(), p.getPlayArea().getObjectCounts());
-            virtualView.communicatePersonalObjective(p.getUsername(), p.getPersonalObjective());
             virtualView.communicateColor(p.getUsername(), p.getPlayerColor());
+            virtualView.communicatePersonalObjective(p.getUsername(), p.getPersonalObjective());
             virtualView.communicateGamePoints(p.getUsername(), p.getGamePoints());
             virtualView.communicateObjectivePoints(p.getUsername(), p.getObjectivePoints());
+            virtualView.communicateHand(p.getUsername(), p.getHand().getCards());
 
             for (Player p2 : game.getPlayers().values()) {
                 if (!p2.equals(p)) {
