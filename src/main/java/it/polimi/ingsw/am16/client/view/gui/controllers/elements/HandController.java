@@ -1,7 +1,9 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers.elements;
 
+import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
+import it.polimi.ingsw.am16.common.model.cards.ResourceType;
 import it.polimi.ingsw.am16.common.model.cards.RestrictedCard;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
 import javafx.fxml.FXML;
@@ -11,6 +13,7 @@ import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class HandController {
 
@@ -19,9 +22,15 @@ public class HandController {
 
     private List<CardController> cards;
 
+    private String username;
+
     @FXML
     public void initialize() {
         cards = new ArrayList<>(3);
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     private void addCard(CardController cardController) {
@@ -65,10 +74,16 @@ public class HandController {
         cards.remove(index);
     }
 
+    public void updateCostSatisfied() {
+        Map<ResourceType, Integer> resourceCounts = CodexGUI.getGUI().getGuiState().getInfoTable(username).getResourceCounts();
+        for(CardController card : cards) {
+            card.updateCostSatisfied(resourceCounts);
+        }
+    }
+
     public void setActive(boolean active) {
         for(CardController card : cards) {
-            card.setInteractable(active);
-            card.setDraggable(active);
+            card.setActive(active);
         }
     }
 

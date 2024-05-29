@@ -110,6 +110,7 @@ public class PlayScreenController {
         Collections.addAll(commonGoldCards, null, null);
 
         HandController hand = ElementFactory.getHandSlot();
+        hand.setUsername(guiState.getUsername());
         guiState.setHand(hand);
         handSlot.getChildren().add(hand.getRoot());
 
@@ -208,6 +209,10 @@ public class PlayScreenController {
     private void updateInfoTable(String username, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         InfoTableController infoTableController = guiState.getInfoTable(username);
         infoTableController.updateInfoTable(resourceCounts, objectCounts);
+        if (username.equals(guiState.getUsername())) {
+            HandController handController = guiState.getHand();
+            handController.updateCostSatisfied();
+        }
     }
 
     @FXML
@@ -258,6 +263,7 @@ public class PlayScreenController {
         for (int i = 0; i < hand.size(); i++) {
             handController.addCard(hand.get(i));
         }
+        handController.updateCostSatisfied();
     }
 
     private void addCardToHand(PlayableCard card) {
@@ -265,7 +271,7 @@ public class PlayScreenController {
 
         HandController handController = guiState.getHand();
         handController.addCard(card);
-
+        handController.updateCostSatisfied();
     }
 
     private void removeCardFromHand(PlayableCard card) {
@@ -278,6 +284,7 @@ public class PlayScreenController {
         for (int i = 0; i < hand.size(); i++) {
             handController.addCard(hand.get(i));
         }
+        handController.setUsername(username);
         guiState.setOtherHand(username, handController);
     }
 

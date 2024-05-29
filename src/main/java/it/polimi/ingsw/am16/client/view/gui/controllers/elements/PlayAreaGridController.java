@@ -1,12 +1,8 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers.elements;
 
-import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
-import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
 import it.polimi.ingsw.am16.common.util.Position;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
@@ -14,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 
-import java.net.URL;
 import java.util.*;
 
 public class PlayAreaGridController {
@@ -45,10 +40,6 @@ public class PlayAreaGridController {
         gridFillers = new HashMap<>();
 
         this.placeablePositions = new HashSet<>();
-
-        //TODO remove. Just for testing
-        playAreaGrid.setGridLinesVisible(true);
-
     }
 
     public void setCenterCard(CardController cardController, Set<Position> legalPositions, Set<Position> illegalPositions) {

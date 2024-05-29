@@ -166,5 +166,5 @@
 }
 
 .chat .chat-text-field:focused {
-    -fx-prompt-text-fill: transparent;
+    -fx-p0rompt-text-fill: transparent;
 }

@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.net.URL;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -36,6 +37,8 @@ public class InfoTableController {
 
     private Map<Cornerable, Text> infoTableTexts;
 
+    private Map<ResourceType, Integer> resourceCounts;
+
     @FXML
     public void initialize() {
         infoTableTexts = new HashMap<>();
@@ -46,9 +49,11 @@ public class InfoTableController {
         infoTableTexts.put(ObjectType.INKWELL, inkwellAmount);
         infoTableTexts.put(ObjectType.MANUSCRIPT, manuscriptAmount);
         infoTableTexts.put(ObjectType.QUILL, quillAmount);
+        resourceCounts = new EnumMap<>(ResourceType.class);
     }
 
     public void updateInfoTable(Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
+        this.resourceCounts = resourceCounts;
         for(Map.Entry<ResourceType, Integer> entry : resourceCounts.entrySet()) {
             ResourceType type = entry.getKey();
             Integer count = entry.getValue();
@@ -61,6 +66,10 @@ public class InfoTableController {
             Text text = infoTableTexts.get(type);
             text.setText(String.format("%02d", count));
         }
+    }
+
+    public Map<ResourceType, Integer> getResourceCounts() {
+        return resourceCounts;
     }
 
     public Parent getRoot() {

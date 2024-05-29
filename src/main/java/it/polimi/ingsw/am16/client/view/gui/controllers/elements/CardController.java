@@ -18,6 +18,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
 
 import java.rmi.RemoteException;
+import java.util.Map;
 import java.util.Objects;
 
 public class CardController {
@@ -44,6 +45,10 @@ public class CardController {
     private Card card;
 
     private DrawType drawType;
+
+    private Map<ResourceType, Integer> cost;
+    private boolean costSatisfied;
+    private boolean active;
 
     @FXML
     public void initialize() {
@@ -83,6 +88,11 @@ public class CardController {
         back = new Image(Objects.requireNonNull(getClass().getResourceAsStream(assetPathBack)), cardImage.getFitWidth()*1.3, cardImage.getFitHeight()*1.3, true, true);
     }
 
+    public void setCard(PlayableCard card) {
+        this.cost = card.getFrontSide().getCost();
+        setCard((Card) card);
+    }
+
     public void showSide(SideType side) {
         switch (side) {
             case FRONT -> {
@@ -102,9 +112,13 @@ public class CardController {
     }
 
     public void toggleSide() {
-        if (currSide == SideType.FRONT) currSide = SideType.BACK;
-        else currSide = SideType.FRONT;
-
+        if (currSide == SideType.FRONT) {
+            currSide = SideType.BACK;
+        } else {
+            currSide = SideType.FRONT;
+        }
+        updateDisabled();
+        updateActive();
         showSide(currSide);
     }
 
@@ -118,6 +132,17 @@ public class CardController {
         cardImage.pseudoClassStateChanged(INTERACTABLE, !isInteractable);
     }
 
+    public void setActive(boolean active) {
+        this.active = active;
+        updateActive();
+    }
+
+    public void updateActive() {
+        boolean ok = active && (currSide == SideType.BACK || costSatisfied);
+        setInteractable(ok);
+        setDraggable(ok);
+    }
+
     public void setInteractable(boolean interactable) {
         cardImage.pseudoClassStateChanged(INTERACTABLE, interactable);
     }
@@ -129,6 +154,32 @@ public class CardController {
             }
         } else {
             cardImage.getStyleClass().remove("selected");
+        }
+    }
+
+    public void updateCostSatisfied(Map<ResourceType, Integer> resourceCounts) {
+        costSatisfied = true;
+        for(ResourceType resourceType : cost.keySet()) {
+            if (cost.get(resourceType) > resourceCounts.getOrDefault(resourceType, 0)) {
+                costSatisfied = false;
+                break;
+            }
+        }
+        System.out.println("Updating cost: ");
+        System.out.println("Cost: " + cost);
+        System.out.println("Resources: " + resourceCounts);
+        System.out.println("Result: " + costSatisfied);
+        updateDisabled();
+        updateActive();
+    }
+
+    public void updateDisabled() {
+        if (currSide == SideType.FRONT && !costSatisfied) {
+            if (!cardPane.getStyleClass().contains("disabled")) {
+                cardPane.getStyleClass().add("disabled");
+            }
+        } else {
+            cardPane.getStyleClass().remove("disabled");
         }
     }
 

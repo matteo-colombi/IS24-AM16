@@ -10,7 +10,7 @@
 }
 
 .grid-filler {
-    -fx-background-color: black;
+    -fx-background-color: transparent;
 }
 
 .grid-filler:legal {
