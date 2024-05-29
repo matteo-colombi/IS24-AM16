@@ -4,16 +4,13 @@ import it.polimi.ingsw.am16.common.model.cards.Cornerable;
 import it.polimi.ingsw.am16.common.model.cards.ObjectType;
 import it.polimi.ingsw.am16.common.model.cards.ResourceType;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.net.URL;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 public class InfoTableController {
 

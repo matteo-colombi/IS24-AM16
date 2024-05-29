@@ -1,19 +1,18 @@
 package it.polimi.ingsw.am16.client.view.gui.util;
 
-import it.polimi.ingsw.am16.client.view.gui.controllers.elements.GridFillerController;
 import it.polimi.ingsw.am16.client.view.gui.controllers.elements.HandController;
 import it.polimi.ingsw.am16.client.view.gui.controllers.elements.InfoTableController;
 import it.polimi.ingsw.am16.client.view.gui.controllers.elements.PlayAreaGridController;
-import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
-import it.polimi.ingsw.am16.common.model.cards.RestrictedCard;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
-import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.scene.input.DataFormat;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 

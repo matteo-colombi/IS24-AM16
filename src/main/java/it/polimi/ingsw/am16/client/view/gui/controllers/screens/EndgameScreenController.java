@@ -10,7 +10,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

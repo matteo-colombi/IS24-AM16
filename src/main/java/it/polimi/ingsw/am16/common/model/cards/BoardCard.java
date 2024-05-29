@@ -7,8 +7,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
+import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
 import java.io.Serial;

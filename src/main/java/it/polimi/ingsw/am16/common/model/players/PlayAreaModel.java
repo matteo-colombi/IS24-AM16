@@ -29,7 +29,13 @@ public interface PlayAreaModel {
     Map<BoardCard, SideType> getActiveSides();
 
     /**
-     * Checks whether a move is legal or not.
+     * Checks whether a move is legal or not by following these three steps: <br>
+     * <ol>
+     *     <li>checks if the position is already occupied;</li>
+     *     <li>checks if the playedCard has been placed isolated from the rest of the field;</li>
+     *     <li>checks if the playedCard has been placed over a blocked corner;</li>
+     *     <li>checks if the playedCard cost is satisfied.</li>
+     * </ol>
      *
      * @param playedCard         The card chosen by the player.
      * @param side               The visible side of the card.

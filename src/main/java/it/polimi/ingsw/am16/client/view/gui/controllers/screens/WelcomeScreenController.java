@@ -4,19 +4,14 @@ import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
-
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 /**
  * Controller for the welcome screen.

@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.Serial;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * Class to handle game(s). A game has a unique alphanumeric id and a non-variable number of players.

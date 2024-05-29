@@ -126,9 +126,6 @@ public class PlayArea implements PlayAreaModel, Serializable {
         return cardCount;
     }
 
-    /**
-     * @return A map containing the amounts of each resource in the play area.
-     */
     @Override
     @JsonIgnore
     public Map<ResourceType, Integer> getResourceCounts() {
@@ -142,9 +139,6 @@ public class PlayArea implements PlayAreaModel, Serializable {
         return resourceCounts;
     }
 
-    /**
-     * @return A map containing the amounts of each object in the play area.
-     */
     @Override
     @JsonIgnore
     public Map<ObjectType, Integer> getObjectCounts() {
@@ -165,74 +159,46 @@ public class PlayArea implements PlayAreaModel, Serializable {
         return resourceAndObjectCounts;
     }
 
-    /**
-     * @return The x-coordinate of the left-most played card.
-     */
     @Override
     public int getMinX() {
         return minX;
     }
 
-    /**
-     * @return The x-coordinate of the right-most played card.
-     */
     @Override
     public int getMaxX() {
         return maxX;
     }
 
-    /**
-     * @return The y-coordinate of the down-most played card.
-     */
     @Override
     public int getMinY() {
         return minY;
     }
 
-    /**
-     * @return The Y coordinate of the up-most played card.
-     */
     @Override
     public int getMaxY() {
         return maxY;
     }
 
-    /**
-     * @return The set of positions in which a card can be placed.
-     */
     @Override
     public Set<Position> getLegalPositions() {
         return new HashSet<>(legalPositions);
     }
 
-    /**
-     * @return The set of positions in which a card cannot be placed.
-     */
     @Override
-    @SuppressWarnings("unused") //Suppressing because this method is used by Jackson, but it doesn't get detected
     public Set<Position> getIllegalPositions() {
         return new HashSet<>(illegalPositions);
     }
 
-    /**
-     * @return The set of placeable positions that were added with the last card placement.
-     */
     @JsonIgnore
     public Set<Position> getAddedLegalPositions() {
         return Set.copyOf(addedLegalPositions);
     }
 
-    /**
-     * @return The set of positions that were removed from placeablePositions with the last card placement.
-     */
     @JsonIgnore
     public Set<Position> getRemovedLegalPositions() {
         return Set.copyOf(removedLegalPositions);
     }
 
-    /**
-     * @return Whether the player has no valid moves to make.
-     */
     @Override
     public boolean isDeadlocked() {
         return legalPositions.isEmpty();
@@ -404,25 +370,16 @@ public class PlayArea implements PlayAreaModel, Serializable {
 
     //region PlayAreaModel
 
-    /**
-     * @return A {@link List} containing the {@link Position}s of the cards in the order they were placed in.
-     */
     @Override
     public List<Position> getPlacementOrder() {
         return List.copyOf(cardPlacementOrder);
     }
 
-    /**
-     * @return The player's field.
-     */
     @Override
     public Map<Position, BoardCard> getField() {
         return Map.copyOf(field);
     }
 
-    /**
-     * @return The visible side of the cards.
-     */
     @Override
     @JsonIgnore
     public Map<BoardCard, SideType> getActiveSides() {
@@ -431,18 +388,6 @@ public class PlayArea implements PlayAreaModel, Serializable {
                 .collect(Collectors.toMap(Map.Entry::getKey, e->e.getValue().getSideType()));
     }
 
-    /**
-     * Checks whether a move is legal or not by following these three steps: <br>
-     * - checks if the position is already occupied
-     * - checks if the playedCard has been placed isolated from the rest of the field; <br>
-     * - checks if the playedCard has been placed over a blocked corner; <br>
-     * - checks if the playedCard cost is satisfied.
-     *
-     * @param playedCard         The card chosen by the player.
-     * @param side               The visible side of the card.
-     * @param playedCardPosition The position chosen by the player to place the card.
-     * @return <code>true</code> if the move is legal otherwise returns <code>false</code>.
-     */
     @Override
     public boolean checkLegalMove(PlayableCard playedCard, SideType side, Position playedCardPosition) {
         // checks if the position is already occupied

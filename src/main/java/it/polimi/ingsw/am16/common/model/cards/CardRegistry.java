@@ -41,6 +41,10 @@ public class CardRegistry {
         return instance;
     }
 
+    /**
+     * Private constructor used to create the only instance of the card registry.
+     * @throws IOException Thrown if an error occurs while reading JSON files for the cards.
+     */
     private CardRegistry() throws IOException {
         initializeRegistry();
     }
@@ -55,6 +59,7 @@ public class CardRegistry {
     /**
      * Initializes the card registry with all the existing cards. The cards are taken from
      * the paths specified in {@link FilePaths}.
+     * @throws IOException Thrown if an error occurs while reading JSON files for the cards.
      */
     private void initializeRegistry() throws IOException {
         initializePlayableCardsBackSides();
@@ -197,7 +202,7 @@ public class CardRegistry {
     /**
      *
      * @param name The name of the requested objective card.
-     * @return The objective card with said name.
+     * @return The objective card with said name, or <code>null</code> if that objective card does not exist.
      */
     public ObjectiveCard getObjectiveCardFromName(String name) {
         return objectiveCardsMap.get(name);
@@ -206,7 +211,7 @@ public class CardRegistry {
     /**
      *
      * @param name The name of the requested starter card.
-     * @return The starter card with said name.
+     * @return The starter card with said name, or <code>null</code> if that starter card does not exist.
      */
     public StarterCard getStarterCardFromName(String name) {
         return starterCardsMap.get(name);
@@ -215,7 +220,7 @@ public class CardRegistry {
     /**
      *
      * @param name The name of the requested gold card.
-     * @return The gold card with said name.
+     * @return The gold card with said name, or <code>null</code> if that gold card does not exist.
      */
     public GoldCard getGoldCardFromName(String name) {
         return goldCardsMap.get(name);
@@ -224,7 +229,7 @@ public class CardRegistry {
     /**
      *
      * @param name The name of the requested resource card.
-     * @return The resource card with said name.
+     * @return The resource card with said name, or <code>null</code> if that resource card does not exist.
      */
     public ResourceCard getResourceCardFromName(String name) {
         return resourceCardsMap.get(name);

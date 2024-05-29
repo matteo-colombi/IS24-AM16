@@ -9,7 +9,6 @@ import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.model.game.GameState;
-import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
@@ -20,9 +19,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.input.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -30,7 +28,6 @@ import javafx.scene.text.Text;
 
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.List;
 
 public class PlayScreenController {
     @FXML

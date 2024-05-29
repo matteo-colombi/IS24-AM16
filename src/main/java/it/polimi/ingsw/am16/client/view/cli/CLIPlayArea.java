@@ -1,6 +1,9 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
-import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.cards.BoardCard;
+import it.polimi.ingsw.am16.common.model.cards.ObjectType;
+import it.polimi.ingsw.am16.common.model.cards.ResourceType;
+import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
 

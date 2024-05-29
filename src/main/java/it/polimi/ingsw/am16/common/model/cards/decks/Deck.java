@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.polimi.ingsw.am16.common.model.cards.Card;
 import it.polimi.ingsw.am16.common.util.RNG;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Class used to model Decks of the given card type.

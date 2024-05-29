@@ -10,18 +10,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.tcpMessages.Payload;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
 import java.io.Serial;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Message sent by the server to inform the client on what games are currently active on the server.
+ */
 @JsonDeserialize(using = GetGamesResponse.Deserializer.class)
 public class GetGamesResponse extends Payload {
     private final Set<String> gameIds;
@@ -29,6 +29,13 @@ public class GetGamesResponse extends Payload {
     private final Map<String, Integer> maxPlayers;
     private final Map<String, LobbyState> lobbyStates;
 
+    /**
+     *
+     * @param gameIds The set of game ids currently active on the server.
+     * @param currentPlayers The number of players currently in each lobby/game.
+     * @param maxPlayers The expected number of players in each lobby/game.
+     * @param lobbyStates The state of each lobby.
+     */
     @JsonCreator
     public GetGamesResponse(@JsonProperty("gameIds") Set<String> gameIds, @JsonProperty("currentPlayers") Map<String, Integer> currentPlayers, @JsonProperty("maxPlayers") Map<String, Integer> maxPlayers, @JsonProperty("lobbyStates") Map<String, LobbyState> lobbyStates) {
         this.gameIds = gameIds;
@@ -37,18 +44,34 @@ public class GetGamesResponse extends Payload {
         this.lobbyStates = lobbyStates;
     }
 
+    /**
+     *
+     * @return The set of game ids currently active on the server.
+     */
     public Set<String> getGameIds() {
         return gameIds;
     }
 
+    /**
+     *
+     * @return The number of players currently in each lobby/game.
+     */
     public Map<String, Integer> getCurrentPlayers() {
         return currentPlayers;
     }
 
+    /**
+     *
+     * @return The expected number of players in each lobby/game.
+     */
     public Map<String, Integer> getMaxPlayers() {
         return maxPlayers;
     }
 
+    /**
+     *
+     * @return The state of each lobby.
+     */
     public Map<String, LobbyState> getLobbyStates() {
         return lobbyStates;
     }

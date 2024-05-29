@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
-import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.tcpMessages.Payload;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
@@ -20,15 +19,24 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Message sent by the server to inform the client that the player has to choose their personal objective.
+ */
 @JsonDeserialize(using = PromptObjectiveChoice.Deserializer.class)
 public class PromptObjectiveChoice extends Payload {
     private final List<ObjectiveCard> possiblePersonalObjectives;
 
+    /**
+     * @param possiblePersonalObjectives The possible objectives that the player can choose from.
+     */
     @JsonCreator
     public PromptObjectiveChoice(@JsonProperty("possiblePersonalObjectives") List<ObjectiveCard> possiblePersonalObjectives) {
         this.possiblePersonalObjectives = possiblePersonalObjectives;
     }
 
+    /**
+     * @return The possible objectives that the player can choose from.
+     */
     public List<ObjectiveCard> getPossiblePersonalObjectives() {
         return possiblePersonalObjectives;
     }

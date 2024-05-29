@@ -3,25 +3,23 @@ package it.polimi.ingsw.am16.server.tcp;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.am16.client.RemoteClientInterface;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
-import it.polimi.ingsw.am16.common.model.game.DrawType;
-import it.polimi.ingsw.am16.common.model.game.LobbyState;
-import it.polimi.ingsw.am16.common.tcpMessages.*;
-import it.polimi.ingsw.am16.common.tcpMessages.request.*;
-import it.polimi.ingsw.am16.common.tcpMessages.response.*;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
+import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.model.game.GameState;
+import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
-import it.polimi.ingsw.am16.common.tcpMessages.response.AddPlayer;
-import it.polimi.ingsw.am16.common.tcpMessages.response.JoinGameResponse;
-import it.polimi.ingsw.am16.common.tcpMessages.response.SignalDisconnection;
+import it.polimi.ingsw.am16.common.tcpMessages.MessageType;
+import it.polimi.ingsw.am16.common.tcpMessages.TCPMessage;
+import it.polimi.ingsw.am16.common.tcpMessages.request.*;
+import it.polimi.ingsw.am16.common.tcpMessages.response.*;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
-import it.polimi.ingsw.am16.common.tcpMessages.TCPMessage;
 import it.polimi.ingsw.am16.server.controller.GameController;
 import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -610,7 +608,8 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     @Override
     public void signalGameDeletion(String whoDisconnected) throws RemoteException {
-        //TODO implement
+        TCPMessage tcpMessage = new TCPMessage(MessageType.SIGNAL_GAME_DELETION, new SignalGameDeletion(username));
+        sendTCPMessage(tcpMessage);
     }
 
     @Override

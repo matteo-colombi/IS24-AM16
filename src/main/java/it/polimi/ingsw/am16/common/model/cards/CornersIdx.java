@@ -17,6 +17,10 @@ public enum CornersIdx{
         this.offset = offset;
     }
 
+    /**
+     *
+     * @return The offset of this corner.
+     */
     public Position getOffset() {
         return offset;
     }

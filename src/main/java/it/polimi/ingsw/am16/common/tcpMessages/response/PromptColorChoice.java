@@ -19,15 +19,24 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Message sent by the server to inform the client that it is the turn of their player to choose a color.
+ */
 @JsonDeserialize(using = PromptColorChoice.Deserializer.class)
 public class PromptColorChoice extends Payload {
     private final List<PlayerColor> colorChoices;
 
+    /**
+     * @param colorChoices The possible colors from which the player can pick from.
+     */
     @JsonCreator
     public PromptColorChoice(@JsonProperty("colorChoices") List<PlayerColor> colorChoices) {
         this.colorChoices = colorChoices;
     }
 
+    /**
+     * @return The possible colors from which the player can pick from.
+     */
     public List<PlayerColor> getColorChoices() {
         return colorChoices;
     }

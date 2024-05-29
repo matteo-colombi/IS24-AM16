@@ -413,6 +413,16 @@ public class TCPClient implements Runnable, ServerInterface {
 
                         view.signalGameSuspension(payload.getWhoDisconnected());
                     }
+                    case SIGNAL_GAME_DELETION -> {
+                        SignalGameDeletion payload;
+                        try {
+                            payload = (SignalGameDeletion) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.signalGameDeletion(payload.getWhoDisconnected());
+                    }
                     case PROMPT_ERROR -> {
                         PromptError payload;
                         try {

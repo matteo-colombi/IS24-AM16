@@ -7,7 +7,6 @@ import it.polimi.ingsw.am16.common.model.cards.RestrictedCard;
 import it.polimi.ingsw.am16.common.util.FilePaths;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;

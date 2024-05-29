@@ -5,14 +5,10 @@ import it.polimi.ingsw.am16.common.model.cards.Card;
 import it.polimi.ingsw.am16.common.util.Position;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class GridFillerController {
     private static final PseudoClass LEGAL = PseudoClass.getPseudoClass("legal");

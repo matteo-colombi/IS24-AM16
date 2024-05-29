@@ -4,18 +4,15 @@ import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 public class ColorPopupController {
 

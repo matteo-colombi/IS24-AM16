@@ -1,10 +1,10 @@
 package it.polimi.ingsw.am16.server;
 
 import it.polimi.ingsw.am16.client.RemoteClientInterface;
-import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
-import it.polimi.ingsw.am16.common.model.players.*;
 import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
+import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.rmi.RemoteException;

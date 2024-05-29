@@ -20,6 +20,7 @@ public abstract class Card implements Serializable {
     public Card(String name) {
         this.name = name;
     }
+
     /**
      * @return The card's name.
      */

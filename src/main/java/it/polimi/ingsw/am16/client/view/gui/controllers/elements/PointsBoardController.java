@@ -4,13 +4,14 @@ import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 
-import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PointsBoardController {
 
