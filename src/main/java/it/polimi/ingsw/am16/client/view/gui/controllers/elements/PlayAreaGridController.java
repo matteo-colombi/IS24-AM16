@@ -58,10 +58,12 @@ public class PlayAreaGridController {
             if (fillerPane == null)
                 continue;
 
-            playAreaGrid.add(fillerPane, position.x()+centerX, -position.y()+centerY);
+            GridPane.setConstraints(fillerPane, position.x()+centerX, -position.y()+centerY);
+            playAreaGrid.getChildren().addFirst(fillerPane);
         }
 
-        playAreaGrid.add(cardController.getRoot(), centerX, centerY);
+        GridPane.setConstraints(cardController.getRoot(), centerX, centerY);
+        playAreaGrid.getChildren().addLast(cardController.getRoot());
     }
 
     public void putCard(CardController cardController, Position position, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions) {
@@ -95,10 +97,12 @@ public class PlayAreaGridController {
             if (fillerPane == null)
                 continue;
 
-            playAreaGrid.add(fillerPane, addedLegal.x()+centerX, -addedLegal.y()+centerY);
+            GridPane.setConstraints(fillerPane, addedLegal.x()+centerX, -addedLegal.y()+centerY);
+            playAreaGrid.getChildren().addFirst(fillerPane);
         }
 
-        playAreaGrid.add(cardController.getRoot(), realCol, realRow);
+        GridPane.setConstraints(cardController.getRoot(), realCol, realRow);
+        playAreaGrid.getChildren().addLast(cardController.getRoot());
     }
 
     private void expandUp() {

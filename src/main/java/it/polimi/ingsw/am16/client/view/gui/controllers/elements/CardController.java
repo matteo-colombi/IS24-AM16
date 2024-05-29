@@ -165,10 +165,6 @@ public class CardController {
                 break;
             }
         }
-        System.out.println("Updating cost: ");
-        System.out.println("Cost: " + cost);
-        System.out.println("Resources: " + resourceCounts);
-        System.out.println("Result: " + costSatisfied);
         updateDisabled();
         updateActive();
     }
