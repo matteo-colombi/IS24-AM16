@@ -74,6 +74,8 @@ public class PlayScreenController {
     private VBox playersBox;
     @FXML
     private StackPane otherHand;
+    @FXML
+    private StackPane more;
 
     private ServerInterface serverInterface;
 
@@ -374,6 +376,9 @@ public class PlayScreenController {
 //                centerContentPane.getChildren().set(index, playAreaGridController.getRoot());
 //            } else {
             centerContentPane.getChildren().addFirst(playAreaGridController.getRoot());
+            if (starterPopupController != null) {
+                centerContentPane.getChildren().remove(starterPopupController.getRoot());
+            }
 //            }
             infoTableSlot.getChildren().add(infoTableController.getRoot());
         }
@@ -619,5 +624,23 @@ public class PlayScreenController {
             node = node.getParent();
         }
         return false;
+    }
+
+    /**
+     * Shows or hides the "more" section.
+     * @param ignored The action event (which is ignored).
+     */
+    @FXML
+    public void showMore(ActionEvent ignored) {
+        more.setVisible(!more.isVisible());
+    }
+
+    /**
+     * Shows the rules screen.
+     * @param ignored The action event (which is ignored).
+     */
+    @FXML
+    public void showRules(ActionEvent ignored) {
+        CodexGUI.getGUI().switchToRulesScreen();
     }
 }
