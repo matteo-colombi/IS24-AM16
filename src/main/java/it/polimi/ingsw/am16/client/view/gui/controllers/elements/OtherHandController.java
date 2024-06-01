@@ -1,8 +1,11 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers.elements;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
@@ -33,6 +36,10 @@ public class OtherHandController {
     public void setHandController(HandController handController) {
         handSlot.getChildren().clear();
         handSlot.getChildren().add(handController.getRoot());
+    }
+
+    public void setPlayAreaButtonAction(EventHandler<ActionEvent> eventHandler) {
+        playAreaButton.setOnAction(eventHandler);
     }
 
     public String getUsername() {

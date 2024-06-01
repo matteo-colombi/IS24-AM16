@@ -195,7 +195,7 @@
                         </Button>
                         <ImageView fitHeight="30.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateY="2.0" StackPane.alignment="CENTER">
                            <image>
-                              <Image url="@../../assets/gui/icons/user.png" />
+                              <Image url="@../../assets/gui/icons/users/1.png" />
                            </image>
                         </ImageView>
                      </children>
@@ -209,7 +209,7 @@
                         </Button>
                         <ImageView fitHeight="30.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateY="2.0" StackPane.alignment="CENTER">
                            <image>
-                              <Image url="@../../assets/gui/icons/user.png" />
+                              <Image url="@../../assets/gui/icons/users/2.png" />
                            </image>
                         </ImageView>
                      </children>
@@ -223,7 +223,7 @@
                         </Button>
                         <ImageView fitHeight="30.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateY="2.0" StackPane.alignment="CENTER">
                            <image>
-                              <Image url="@../../assets/gui/icons/user.png" />
+                              <Image url="@../../assets/gui/icons/users/3.png" />
                            </image>
                         </ImageView>
                      </children>
@@ -237,7 +237,7 @@
                         </Button>
                         <ImageView fitHeight="30.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateY="2.0" StackPane.alignment="CENTER">
                            <image>
-                              <Image url="@../../assets/gui/icons/user.png" />
+                              <Image url="@../../assets/gui/icons/users/4.png" />
                            </image>
                         </ImageView>
                      </children>

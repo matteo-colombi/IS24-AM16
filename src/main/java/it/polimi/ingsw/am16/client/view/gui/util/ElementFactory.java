@@ -3,7 +3,9 @@ package it.polimi.ingsw.am16.client.view.gui.util;
 import it.polimi.ingsw.am16.client.view.gui.controllers.elements.*;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.util.FilePaths;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 
 import java.io.IOException;
 import java.util.Map;
@@ -22,6 +24,7 @@ public class ElementFactory {
             ResourceType.ANIMAL, CardRegistry.getRegistry().getGoldCardFromName("gold_animal_1"),
             ResourceType.INSECT, CardRegistry.getRegistry().getGoldCardFromName("gold_insect_1")
     );
+    private static final ObjectiveCard objectiveBack = CardRegistry.getRegistry().getObjectiveCardFromName("objective_pattern_1");
 
     public static CardController getCard() {
         FXMLLoader cardLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/card.fxml"));
@@ -47,6 +50,18 @@ public class ElementFactory {
                 }
                 default -> {return null;}
             }
+            return cardController;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static CardController getObjectiveBack() {
+        FXMLLoader cardLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/card.fxml"));
+        try {
+            cardLoader.load();
+            CardController cardController = cardLoader.getController();
+            cardController.setCardAndShowSide(objectiveBack, SideType.BACK);
             return cardController;
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -158,6 +173,15 @@ public class ElementFactory {
         try {
             otherHandLoader.load();
             return otherHandLoader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Parent getPlaceholderHand() {
+        FXMLLoader otherHandLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/placeholder-hand.fxml"));
+        try {
+            return otherHandLoader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

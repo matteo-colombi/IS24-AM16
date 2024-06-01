@@ -13,7 +13,7 @@
             <Font size="1.0" />
          </font>
       </Button>
-      <ImageView fitHeight="30.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateY="2.0" StackPane.alignment="CENTER">
+      <ImageView fx:id="userIcon" fitHeight="30.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateY="2.0" StackPane.alignment="CENTER">
          <image>
             <Image url="@../../assets/gui/icons/user.png" />
          </image>

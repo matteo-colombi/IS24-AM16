@@ -186,3 +186,19 @@
     -fx-font-weight: bold;
     -fx-fill: #b38c44;
 }
+
+.halo-green {
+    -fx-effect: innershadow(gaussian, rgba(30, 177, 76, 1), 50, 0.5, 0, 0);
+}
+
+.halo-yellow {
+    -fx-effect: innershadow(gaussian, rgba(255, 242, 0, 1), 50, 0.5, 0, 0);
+}
+
+.halo-red {
+    -fx-effect: innershadow(gaussian, rgba(237, 28, 36, 1), 50, 0.5, 0, 0);
+}
+
+.halo-blue {
+    -fx-effect: innershadow(gaussian, rgba(0, 162, 232, 1), 50, 0.5, 0, 0);
+}

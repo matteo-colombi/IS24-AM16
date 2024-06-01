@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am16.client.view.gui.util;
 
+import it.polimi.ingsw.am16.client.view.gui.controllers.elements.CardController;
 import it.polimi.ingsw.am16.client.view.gui.controllers.elements.HandController;
 import it.polimi.ingsw.am16.client.view.gui.controllers.elements.InfoTableController;
 import it.polimi.ingsw.am16.client.view.gui.controllers.elements.PlayAreaGridController;
@@ -26,12 +27,14 @@ public class GUIState {
     private String username;
     private String gameId;
     private String activePlayer;
-    private AtomicInteger numPlayers;
+    private final AtomicInteger numPlayers;
 
     private GameState gameState;
 
     private final Map<String, PlayAreaGridController> playAreas;
     private final Map<String, InfoTableController> infoTables;
+
+    private CardController personalObjective;
 
     private final Map<String, HandController> otherHands;
 
@@ -96,6 +99,7 @@ public class GUIState {
             gameState = null;
             hand = null;
             dontDraw.set(false);
+            personalObjective = null;
         }
     }
 
@@ -181,6 +185,14 @@ public class GUIState {
         synchronized (infoTables) {
             return infoTables.get(username);
         }
+    }
+
+    public synchronized void setPersonalObjective(CardController personalObjective) {
+        this.personalObjective = personalObjective;
+    }
+
+    public synchronized CardController getPersonalObjective() {
+        return personalObjective;
     }
 
     public void setOtherHand(String username, HandController hand) {
