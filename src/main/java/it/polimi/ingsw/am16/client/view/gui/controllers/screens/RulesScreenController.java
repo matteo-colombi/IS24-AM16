@@ -13,42 +13,33 @@ public class RulesScreenController {
     @FXML
     StackPane root;
     @FXML
-    Button prevButton;
-    @FXML
-    Button nextButton;
-    @FXML
     ImageView rulesBook;
 
-    private int i;
+    private int idx;
 
-    String paths[] = new String[]{"/assets/gui/rulebook/rulebook-1.png", "/assets/gui/rulebook/rulebook-2.png", "/assets/gui/rulebook/rulebook-3.png", "/assets/gui/rulebook/rulebook-4.png", "/assets/gui/rulebook/rulebook-5.png", "/assets/gui/rulebook/rulebook-6.png", "/assets/gui/rulebook/rulebook-7.png", "/assets/gui/rulebook/rulebook-8.png", "/assets/gui/rulebook/rulebook-9.png", "/assets/gui/rulebook/rulebook-10.png", "/assets/gui/rulebook/rulebook-11.png", "/assets/gui/rulebook/rulebook-12.png"};
+    String[] paths = new String[]{"/assets/gui/rulebook/rulebook-1.png", "/assets/gui/rulebook/rulebook-2.png", "/assets/gui/rulebook/rulebook-3.png", "/assets/gui/rulebook/rulebook-4.png", "/assets/gui/rulebook/rulebook-5.png", "/assets/gui/rulebook/rulebook-6.png", "/assets/gui/rulebook/rulebook-7.png", "/assets/gui/rulebook/rulebook-8.png", "/assets/gui/rulebook/rulebook-9.png", "/assets/gui/rulebook/rulebook-10.png", "/assets/gui/rulebook/rulebook-11.png", "/assets/gui/rulebook/rulebook-12.png"};
 
     @FXML
     public void initialize() {
-        i = 0;
+        idx = 0;
     }
 
     @FXML
     public void prev(ActionEvent ignored) {
-        i--;
-        i = (paths.length + i) % paths.length;
-        System.out.println((paths.length + i) % paths.length);
-        rulesBook.setImage(new Image(getClass().getResource(paths[(paths.length + i) % paths.length]).toExternalForm()));
+        idx = (paths.length + idx - 1) % paths.length;
+
+        rulesBook.setImage(new Image(getClass().getResource(paths[idx]).toExternalForm()));
     }
 
     @FXML
     public void next(ActionEvent ignored) {
-        i++;
-        i = (paths.length + i) % paths.length;
+        idx = (paths.length + idx + 1) % paths.length;
 
-        System.out.println((paths.length + i) % paths.length);
-        rulesBook.setImage(new Image(getClass().getResource(paths[(paths.length + i) % paths.length]).toExternalForm()));
+        rulesBook.setImage(new Image(getClass().getResource(paths[idx]).toExternalForm()));
     }
 
     @FXML
     public void back(ActionEvent ignored) {
         CodexGUI.getGUI().switchToWelcomeScreen();
     }
-
-
 }

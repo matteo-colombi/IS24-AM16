@@ -11,7 +11,59 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.screens.PaviaScreenController">
    <children>
-      <MediaView fx:id="paviaBurns" fitHeight="768.0" fitWidth="512.0" />
+      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="200.0" translateY="60.0" StackPane.alignment="TOP_CENTER">
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/gui/icons/flame.png" />
+               </image>
+            </ImageView>
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+               <children>
+                  <MediaView fx:id="paviaBurns" fitHeight="600.0" fitWidth="500.0" StackPane.alignment="CENTER" />
+                  <HBox fx:id="controlButtons" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" translateY="-50.0" visible="false" StackPane.alignment="BOTTOM_CENTER">
+                     <children>
+                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#play" prefHeight="50.0" prefWidth="50.0" />
+                              <ImageView fitHeight="45.0" fitWidth="45.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/play.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </StackPane>
+                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+                           <children>
+                              <Button maxHeight="50.0" maxWidth="50.0" mnemonicParsing="false" onAction="#pause" prefHeight="50.0" prefWidth="50.0" />
+                              <ImageView fitHeight="45.0" fitWidth="45.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/pause.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </StackPane>
+                        <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#reset" prefHeight="50.0" prefWidth="50.0" />
+                              <ImageView fitHeight="45.0" fitWidth="45.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/reset.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </HBox>
+               </children>
+            </StackPane>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/gui/icons/flame.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
       <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateY="-100.0" StackPane.alignment="BOTTOM_CENTER">
          <children>
             <Button mnemonicParsing="false" onAction="#back" style="-fx-background-radius: 5px;" styleClass="medium" StackPane.alignment="CENTER">
@@ -35,49 +87,5 @@
             </HBox>
          </children>
       </StackPane>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" translateY="-200.0" StackPane.alignment="BOTTOM_CENTER">
-         <children>
-            <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
-               <children>
-                  <Button fx:id="playButton" mnemonicParsing="false" onAction="#play" prefHeight="50.0" prefWidth="50.0" />
-                  <ImageView fitHeight="45.0" fitWidth="45.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/gui/icons/play.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </StackPane>
-            <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
-               <children>
-                  <Button fx:id="pauseButton" maxHeight="50.0" maxWidth="50.0" mnemonicParsing="false" onAction="#pause" prefHeight="50.0" prefWidth="50.0" />
-                  <ImageView fitHeight="45.0" fitWidth="45.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/gui/icons/pause.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </StackPane>
-            <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
-               <children>
-                  <Button fx:id="resetButton" mnemonicParsing="false" onAction="#reset" prefHeight="50.0" prefWidth="50.0" />
-                  <ImageView fitHeight="45.0" fitWidth="45.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/gui/icons/reset.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </StackPane>
-         </children>
-      </HBox>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🔥" translateX="-200.0" StackPane.alignment="CENTER_RIGHT">
-         <font>
-            <Font size="128.0" />
-         </font>
-      </Text>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🔥" translateX="200.0" StackPane.alignment="CENTER_LEFT">
-         <font>
-            <Font size="128.0" />
-         </font>
-      </Text>
    </children>
 </StackPane>

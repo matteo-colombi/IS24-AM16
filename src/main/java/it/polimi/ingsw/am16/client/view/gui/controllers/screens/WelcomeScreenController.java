@@ -17,9 +17,14 @@ import java.net.URISyntaxException;
  * Controller for the welcome screen.
  */
 public class WelcomeScreenController {
-
     @FXML
     private StackPane root;
+
+    @FXML
+    private StackPane showMoreButton;
+
+    @FXML
+    private StackPane more;
 
     /**
      * The text field for the username.
@@ -28,15 +33,11 @@ public class WelcomeScreenController {
     private TextField usernameField;
 
     @FXML
-    private StackPane more;
-
-    @FXML
     private MediaView createSound;
 
 
     /**
      * Initializes the controller. The username is kept when returning to the welcome screen from the games screen.
-     *
      */
     @FXML
     public void initialize() {
@@ -49,6 +50,8 @@ public class WelcomeScreenController {
             usernameField.setText(username);
             usernameField.positionCaret(username.length());
         }
+
+        more.setVisible(false);
     }
 
     /**
@@ -65,7 +68,7 @@ public class WelcomeScreenController {
             return;
         }
 
-        if(createSound.getMediaPlayer() == null) {
+        if (createSound.getMediaPlayer() == null) {
             try {
                 String filename = getClass().getResource("/assets/gui/QUANDO.mp4").toURI().toString();
                 Media media = new Media(filename);
@@ -80,8 +83,6 @@ public class WelcomeScreenController {
 
         CodexGUI.getGUI().getGuiState().setUsername(username);
         CodexGUI.getGUI().switchToCreateScreen();
-
-
     }
 
     /**
@@ -128,6 +129,36 @@ public class WelcomeScreenController {
     }
 
     /**
+     * Shows or hides the "more" section.
+     */
+    public void showMore() {
+        more.setVisible(!more.isVisible());
+    }
+
+    @FXML
+    public void showRules(ActionEvent ignored) {
+        CodexGUI.getGUI().getGuiState().setUsername(usernameField.getText());
+        CodexGUI.getGUI().switchToRulesScreen();
+    }
+
+    /**
+     * Shows the credits screen.
+     *
+     * @param ignored The action event (which is ignored).
+     */
+    @FXML
+    public void showCredits(ActionEvent ignored) {
+        CodexGUI.getGUI().getGuiState().setUsername(usernameField.getText());
+        CodexGUI.getGUI().switchToCreditsScreen();
+    }
+
+    @FXML
+    public void burnPavia(ActionEvent ignored) {
+        CodexGUI.getGUI().getGuiState().setUsername(usernameField.getText());
+        CodexGUI.getGUI().switchToPaviaScreen();
+    }
+
+    /**
      * DOCME
      *
      * @param errorMessage
@@ -139,40 +170,22 @@ public class WelcomeScreenController {
     private void registerEvents() {
         root.addEventFilter(GUIEventTypes.ERROR_EVENT, errorEvent -> showError(errorEvent.getErrorMsg()));
 
+        showMoreButton.setOnMouseClicked(e -> {
+            showMore();
+            e.consume();
+        });
+
+        showMoreButton.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                showMore();
+                keyEvent.consume();
+            }
+        });
+
         usernameField.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 join(null);
             }
         });
-
-        more.setVisible(false);
-    }
-
-    /**
-     * Shows or hides the "more" section.
-     * @param ignored The action event (which is ignored).
-     */
-    @FXML
-    public void showMore(ActionEvent ignored) {
-        more.setVisible(!more.isVisible());
-    }
-
-    /**
-     * Shows the credits screen.
-     * @param ignored The action event (which is ignored).
-     */
-    @FXML
-    public void showCredits(ActionEvent ignored) {
-        CodexGUI.getGUI().switchToCreditsScreen();
-    }
-
-    @FXML
-    public void burnPavia(ActionEvent ignored) {
-        CodexGUI.getGUI().switchToPaviaScreen();
-    }
-
-    @FXML
-    public void showRules(ActionEvent ignored) {
-        CodexGUI.getGUI().switchToRulesScreen();
     }
 }

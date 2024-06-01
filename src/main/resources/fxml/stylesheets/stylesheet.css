@@ -32,6 +32,10 @@
     -fx-background-color: linear-gradient(#d8cdbf, #b8a992);
 }
 
+.button.transparent:hover, .button.transparent:focused {
+    -fx-background-color: #11111122;
+}
+
 .button:pressed {
     -fx-background-color: linear-gradient(#c4b8a0, #a89778);
     -fx-effect: none;
