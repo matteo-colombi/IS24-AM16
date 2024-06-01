@@ -1,5 +1,7 @@
 package it.polimi.ingsw.am16.common.tcpMessages.response;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.polimi.ingsw.am16.common.tcpMessages.Payload;
 
 /**
@@ -12,7 +14,8 @@ public class SignalGameDeletion extends Payload {
     /**
      * @param whoDisconnected The username of the player who disconnected, causing the game to be deleted.
      */
-    public SignalGameDeletion(String whoDisconnected) {
+    @JsonCreator
+    public SignalGameDeletion(@JsonProperty("whoDisconnected") String whoDisconnected) {
         this.whoDisconnected = whoDisconnected;
     }
 

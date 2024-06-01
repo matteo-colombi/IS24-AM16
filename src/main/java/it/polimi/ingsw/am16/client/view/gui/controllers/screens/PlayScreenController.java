@@ -13,6 +13,8 @@ import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -28,6 +30,7 @@ import javafx.scene.text.Text;
 
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class PlayScreenController {
     @FXML
@@ -71,9 +74,9 @@ public class PlayScreenController {
     @FXML
     private StackPane leaveButton;
     @FXML
-    private VBox playersBox;
+    private StackPane otherPlayersArea;
     @FXML
-    private StackPane otherHand;
+    private VBox playersBox;
     @FXML
     private StackPane more;
 
@@ -84,6 +87,9 @@ public class PlayScreenController {
     private GUIState guiState;
 
     private Map<String, PlayerButtonController> playerButtons;
+
+    private Map<String, OtherHandController> otherHandControllers;
+    private AtomicReference<OtherHandController> currentlyShowingOtherHand;
 
     private StarterPopupController starterPopupController;
     private ColorPopupController colorPopupController;
@@ -116,6 +122,9 @@ public class PlayScreenController {
         guiState.setHand(hand);
         handSlot.getChildren().add(hand.getRoot());
 
+        currentlyShowingOtherHand = new AtomicReference<>();
+        currentlyShowingOtherHand.set(null);
+
         receiveMessages(guiState.getChatMessages());
 
         setPlayers(guiState.getPlayerUsernames());
@@ -123,14 +132,14 @@ public class PlayScreenController {
 
     private void setPlayers(List<String> usernames) {
         playerButtons = new HashMap<>();
+        otherHandControllers = new HashMap<>();
         playersBox.getChildren().clear();
         chatFilterNames.getChildren().clear();
+
         for (String username : usernames) {
             PlayerButtonController playerButtonController = ElementFactory.getPlayerButton();
             playerButtons.put(username, playerButtonController);
             playersBox.getChildren().add(playerButtonController.getRoot());
-
-            //TODO assign onclick action on the player button
 
             if (!username.equals(guiState.getUsername())) {
                 RadioButton playerChatFilter = new RadioButton(username);
@@ -139,6 +148,8 @@ public class PlayScreenController {
                 chatFilterNames.getChildren().addLast(playerChatFilter);
             }
         }
+
+        playersBox.requestLayout();
     }
 
     private void setGameState(GameState state) {
@@ -150,11 +161,6 @@ public class PlayScreenController {
 
     public void showError(String errorMessage) {
         //TODO
-    }
-
-    @FXML
-    public void show(ActionEvent ignored) {
-        otherHand.setVisible(!otherHand.isVisible());
     }
 
     private void setPlayerColor(String username, PlayerColor color) {
@@ -190,6 +196,20 @@ public class PlayScreenController {
         if (startOrder.getFirst().equals(guiState.getUsername())) {
             setIsStartingPlayer();
         }
+
+        playersBox.requestLayout();
+//
+//        double playersBoxHeight = playersBox.getHeight();
+//
+//        for(String username : guiState.getPlayerUsernames()) {
+//            if (!username.equals(guiState.getUsername())) {
+//                OtherHandController otherHandController = otherHandControllers.get(username);
+//
+//                Node playerButton = playerButtons.get(username).getRoot();
+//                double center = playerButton.getBoundsInParent().getCenterY();
+//                otherHandController.getRoot().setTranslateY(-(playersBoxHeight / 2 - center));
+//            }
+//        }
     }
 
     private void setIsStartingPlayer() {
@@ -266,8 +286,8 @@ public class PlayScreenController {
 
     private void setHand(List<PlayableCard> hand) {
         HandController handController = guiState.getHand();
-        for (int i = 0; i < hand.size(); i++) {
-            handController.addCard(hand.get(i));
+        for (PlayableCard playableCard : hand) {
+            handController.addCard(playableCard);
         }
         handController.updateCostSatisfied();
     }
@@ -287,11 +307,15 @@ public class PlayScreenController {
 
     private void setOtherHand(String username, List<RestrictedCard> hand) {
         HandController handController = ElementFactory.getHandSlot();
-        for (int i = 0; i < hand.size(); i++) {
-            handController.addCard(hand.get(i));
+        for (RestrictedCard card : hand) {
+            handController.addCard(card);
         }
         handController.setUsername(username);
         guiState.setOtherHand(username, handController);
+        OtherHandController otherHandController = otherHandControllers.get(username);
+        if (otherHandController != null) {
+            otherHandController.setHandController(handController);
+        }
     }
 
     private void addCardToOtherHand(String username, RestrictedCard card) {
@@ -337,8 +361,6 @@ public class PlayScreenController {
     }
 
     private void setPlayArea(String username, List<Position> placementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
-        //FIXME Right now it only works for the starter card and doesn't when a game is reloaded
-
         PlayAreaGridController playAreaGridController = ElementFactory.getPlayAreaGrid();
         Set<Position> emptySet = Set.of();
         for(Position pos : placementOrder) {
@@ -356,31 +378,19 @@ public class PlayScreenController {
         onlyLegal.removeAll(illegalPositions);
         playAreaGridController.putFillersInGrid(onlyLegal);
 
-        //TODO remove comment if the new solution works
-//        PlayAreaGridController playAreaGridController = ElementFactory.getPlayAreaGrid();
-//        BoardCard starterCard = field.get(new Position(0, 0));
-//        SideType starterSide = activeSides.get(starterCard);
-//        CardController cardController = ElementFactory.getCard();
-//        cardController.setCardAndShowSide(starterCard, starterSide);
-//        playAreaGridController.setCenterCard(cardController, legalPositions, illegalPositions);
-
         guiState.setPlayArea(username, playAreaGridController);
 
         InfoTableController infoTableController = ElementFactory.getInfoTable();
         guiState.setInfoTable(username, infoTableController);
 
         if (username.equals(guiState.getUsername())) {
-            //TODO remove comment if the new solution works
-//            if (starterPopupController != null) {
-//                int index = centerContentPane.getChildren().indexOf(starterPopupController.getRoot());
-//                centerContentPane.getChildren().set(index, playAreaGridController.getRoot());
-//            } else {
             centerContentPane.getChildren().addFirst(playAreaGridController.getRoot());
             if (starterPopupController != null) {
                 centerContentPane.getChildren().remove(starterPopupController.getRoot());
             }
-//            }
             infoTableSlot.getChildren().add(infoTableController.getRoot());
+        } else {
+            createOtherHandHover(username);
         }
 
         updateInfoTable(username, resourceCounts, objectCounts);
@@ -502,6 +512,51 @@ public class PlayScreenController {
         }
     }
 
+    private void createOtherHandHover(String username) {
+        double playersBoxHeight = playersBox.getHeight();
+
+        PlayerButtonController playerButton = playerButtons.get(username);
+        OtherHandController otherHandController = ElementFactory.getOtherHand();
+        otherHandController.setUsername(username);
+        otherHandControllers.put(username, otherHandController);
+
+        otherHandController.getRoot().setVisible(false);
+
+        otherPlayersArea.getChildren().addLast(otherHandController.getRoot());
+        otherHandController.getRoot().setTranslateX(-75);
+
+        playerButton.getRoot().boundsInParentProperty().addListener((observable, oldValue, newValue) -> {
+            otherHandController.getRoot().setTranslateY(-(playersBox.getHeight()/2 - newValue.getCenterY()));
+        });
+
+        playerButton.setHovers(otherHandController, currentlyShowingOtherHand);
+    }
+
+    private void rejoinInformationEnd() {
+//        playersBox.heightProperty().addListener(new ChangeListener<>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                if (newValue.doubleValue() > 0) {
+//                    double playersBoxHeight = playersBox.getHeight();
+//                    System.out.println(playersBoxHeight);
+//
+//                    for(String username : guiState.getPlayerUsernames()) {
+//                        if (!username.equals(guiState.getUsername())) {
+//                            OtherHandController otherHandController = otherHandControllers.get(username);
+//
+//                            Node playerButton = playerButtons.get(username).getRoot();
+//                            double center = playerButton.getBoundsInParent().getCenterY();
+//                            otherHandController.getRoot().setTranslateY(-(playersBoxHeight / 2 - center));
+//
+//                            System.out.println(username + " center end: " + center);
+//                        }
+//                    }
+//                    playersBox.heightProperty().removeListener(this);
+//                }
+//            }
+//        });
+    }
+
     private void enableDraw(boolean enabled) {
         for (CardController drawOption : commonResourceCards) {
             drawOption.setInteractable(enabled);
@@ -588,21 +643,40 @@ public class PlayScreenController {
 
         root.addEventFilter(GUIEventTypes.REMOVE_CARD_FROM_OTHER_HAND_EVENT, e -> removeCardFromOtherHand(e.getUsername(), e.getCardToRemove()));
 
+        root.addEventFilter(GUIEventTypes.REJOIN_INFORMATION_END_EVENT, e -> rejoinInformationEnd());
+
         leaveButton.setOnMouseClicked(e -> {
             leave();
             e.consume();
         });
 
+        //FIXME remove the comment. This is nonsense
+        /*
         leaveButton.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 leave();
                 keyEvent.consume();
             }
         });
+         */
 
         CodexGUI.getGUI().getStage().getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {
             if (evt.getPickResult().getIntersectedNode() != chatFilterButton && !inHierarchy(evt.getPickResult().getIntersectedNode(), chatFilters)) {
                 chatFilters.setVisible(false);
+            }
+
+            if (currentlyShowingOtherHand.get() != null) {
+                OtherHandController current = currentlyShowingOtherHand.get();
+                PlayerButtonController playerButton = playerButtons.get(current.getUsername());
+
+                if (evt.getPickResult().getIntersectedNode() != current.getRoot() && !inHierarchy(evt.getPickResult().getIntersectedNode(), current.getRoot())) {
+                    current.getRoot().setVisible(false);
+                    currentlyShowingOtherHand.set(null);
+                }
+
+                if (inHierarchy(evt.getPickResult().getIntersectedNode(), playerButton.getRoot())) {
+                    evt.consume();
+                }
             }
         });
 

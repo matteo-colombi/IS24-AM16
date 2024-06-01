@@ -217,7 +217,6 @@ public class GameController {
         virtualView.communicateDeckTopType(PlayableCardType.RESOURCE, game.getResourceDeckTopType());
         virtualView.communicateDeckTopType(PlayableCardType.GOLD, game.getGoldDeckTopType());
         virtualView.communicateCommonObjectives(game.getCommonObjectiveCards());
-        virtualView.communicateTurnOrder(game.getTurnOrder());
 
         for(Player p : game.getPlayers().values()) {
             virtualView.communicatePlayArea(p.getUsername(), p.getPlayArea().getPlacementOrder(), p.getPlayArea().getField(), p.getPlayArea().getActiveSides(), p.getPlayArea().getLegalPositions(), p.getPlayArea().getIllegalPositions(), p.getPlayArea().getResourceCounts(), p.getPlayArea().getObjectCounts());
@@ -233,6 +232,7 @@ public class GameController {
                 }
             }
         }
+        virtualView.communicateTurnOrder(game.getTurnOrder());
 
         virtualView.communicateRejoinInformationEnd();
 

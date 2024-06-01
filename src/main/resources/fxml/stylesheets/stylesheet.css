@@ -1,6 +1,6 @@
 .button {
     -fx-background-color: linear-gradient(#e8dfcc, #c4b8a0);
-    -fx-background-radius: 5;
+    -fx-background-radius: 7;
     -fx-border-color: #663300;
     -fx-border-width: 2px;
     -fx-border-radius: 5;
@@ -56,7 +56,6 @@
     -fx-effect: none;
 }
 
-/* CSS per il TextField */
 .text-field {
     -fx-background-color: #f9f5e3;
     -fx-background-radius: 5;
@@ -70,7 +69,6 @@
     -fx-border-color: #855a33;
 }
 
-/* CSS per lo ScrollPane */
 .scroll-pane {
     -fx-background: #f9f5e3;
     -fx-border-color: #663300;

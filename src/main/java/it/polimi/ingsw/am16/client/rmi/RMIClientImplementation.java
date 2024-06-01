@@ -262,11 +262,13 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
 
     @Override
     public void signalGameSuspension(String whoDisconnected) throws RemoteException {
+        serverInterface.leaveGame(true);
         view.signalGameSuspension(whoDisconnected);
     }
 
     @Override
     public void signalGameDeletion(String whoDisconnected) throws RemoteException {
+        serverInterface.leaveGame(true);
         view.signalGameDeletion(whoDisconnected);
     }
 

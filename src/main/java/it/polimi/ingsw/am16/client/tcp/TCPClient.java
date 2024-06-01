@@ -558,6 +558,11 @@ public class TCPClient implements Runnable, ServerInterface {
 
     @Override
     public void leaveGame() {
+        leaveGame(false);
+    }
+
+    @Override
+    public void leaveGame(boolean ignored) {
         TCPMessage message = new TCPMessage(MessageType.LEAVE_GAME, null);
         sendTCPMessage(message);
     }

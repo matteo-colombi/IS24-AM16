@@ -152,4 +152,14 @@ public class ElementFactory {
             throw new RuntimeException(e);
         }
     }
+
+    public static OtherHandController getOtherHand() {
+        FXMLLoader otherHandLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/other-hand.fxml"));
+        try {
+            otherHandLoader.load();
+            return otherHandLoader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -23,5 +23,13 @@
 }
 
 .button.active {
+}
+
+#root {
+    -fx-background-radius: 50%;
+}
+
+.active {
     -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 1), 25, 0.5, 0, 0);
+
 }

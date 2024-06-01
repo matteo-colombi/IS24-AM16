@@ -232,8 +232,15 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
 
     @Override
     public void leaveGame() throws RemoteException {
-        if (gameController != null && username != null) {
-            gameController.disconnect(username);
+        leaveGame(false);
+    }
+
+    @Override
+    public void leaveGame(boolean forced) throws RemoteException {
+        if (!forced) {
+            if (gameController != null && username != null) {
+                gameController.disconnect(username);
+            }
         }
         username = null;
         gameController = null;

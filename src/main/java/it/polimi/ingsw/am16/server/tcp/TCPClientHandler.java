@@ -593,6 +593,9 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     @Override
     public void signalDisconnection(String whoDisconnected) {
+        gameController = null;
+        username = null;
+
         TCPMessage tcpMessage = new TCPMessage(MessageType.SIGNAL_DISCONNECTION, new SignalDisconnection(whoDisconnected));
         sendTCPMessage(tcpMessage);
     }
@@ -608,7 +611,10 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     @Override
     public void signalGameDeletion(String whoDisconnected) throws RemoteException {
-        TCPMessage tcpMessage = new TCPMessage(MessageType.SIGNAL_GAME_DELETION, new SignalGameDeletion(username));
+        gameController = null;
+        username = null;
+
+        TCPMessage tcpMessage = new TCPMessage(MessageType.SIGNAL_GAME_DELETION, new SignalGameDeletion(whoDisconnected));
         sendTCPMessage(tcpMessage);
     }
 

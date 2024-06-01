@@ -62,7 +62,12 @@ public class CLIInputManager implements Runnable {
     }
 
     private void parseCommand(String input) {
-        String[] args = input.split(" ");
+        String[] args;
+        if (input == null) {
+            args = new String[]{""};
+        } else {
+            args = input.split(" ");
+        }
 
         String inputCommand = args[0].toLowerCase();
 
