@@ -53,11 +53,6 @@ public class CardController {
     private boolean costSatisfied;
     private boolean active;
 
-    @FXML
-    public void initialize() {
-
-    }
-
     public ImageView getCardImage() {
         return cardImage;
     }
@@ -66,7 +61,6 @@ public class CardController {
         return switch (currSide) {
             case FRONT -> front;
             case BACK -> back;
-            default -> null;
         };
     }
 

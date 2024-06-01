@@ -44,6 +44,8 @@ public class LobbyScreenController {
     private VBox chatFilterNames;
     @FXML
     private RadioButton everyoneFilter;
+    @FXML
+    private Text motdText;
 
     private GUIState guiState;
 
@@ -76,6 +78,8 @@ public class LobbyScreenController {
         for (String username : usernames) {
             addPlayer(username);
         }
+
+        updateMotd();
     }
 
     private void addPlayer(String username) {
@@ -89,6 +93,8 @@ public class LobbyScreenController {
             playerChatFilter.setToggleGroup(chatFilterToggleGroup);
             chatFilterNames.getChildren().addLast(playerChatFilter);
         }
+
+        updateMotd();
     }
 
     private void removePlayer(String whoDisconnected) {
@@ -100,6 +106,19 @@ public class LobbyScreenController {
             everyoneFilter.setSelected(true);
         }
         chatFilterNames.getChildren().remove(playerChatFilter);
+
+        updateMotd();
+    }
+
+    private void updateMotd() {
+        String motd;
+        if (guiState.getNumPlayers() == guiState.getPlayerUsernames().size()) {
+            motd = "Everyone is here! The game will start shortly...";
+        } else {
+            int missing = guiState.getNumPlayers()-guiState.getPlayerUsernames().size();
+            motd = String.format("Almost ready! Just %d more player%s...", missing, missing != 1 ? "s" : "");
+        }
+        motdText.setText(motd);
     }
 
     private void leave() {
@@ -143,7 +162,6 @@ public class LobbyScreenController {
             e.printStackTrace();
         }
 
-//        chatFilterToggleGroup.selectToggle(chatFilterToggleGroup.getToggles().getFirst());
         chatBox.clear();
     }
 

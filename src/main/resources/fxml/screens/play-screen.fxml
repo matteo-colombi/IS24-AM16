@@ -185,67 +185,75 @@
       <StackPane fx:id="centerContentPane" maxHeight="400.0" maxWidth="900.0" minHeight="400.0" minWidth="900.0" prefHeight="400.0" prefWidth="900.0" translateX="-45.0" />
       <StackPane fx:id="otherPlayersArea" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" translateX="-260.0" StackPane.alignment="CENTER_RIGHT">
          <children>
-            <VBox fx:id="playersBox" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" styleClass="card_group">
+            <VBox fx:id="playersBox" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" styleClass="card_group">
                <children>
                   <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" snapToPixel="false">
                      <children>
-                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" snapToPixel="false" style="-fx-background-radius: 50%; -fx-border-color: #22b14c; -fx-border-radius: 50%; -fx-border-width: 3; -fx-border-insets: -1;" StackPane.alignment="CENTER">
+                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" snapToPixel="false" style="-fx-background-radius: 50%; -fx-border-color: #22b14c; -fx-border-radius: 50%; -fx-border-width: 3; -fx-border-insets: -1;" StackPane.alignment="CENTER">
                            <font>
                               <Font size="1.0" />
                            </font>
+                           <graphic>
+                              <ImageView fitHeight="45.0" fitWidth="45.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/users/1.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Button>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateY="2.0" StackPane.alignment="CENTER">
-                           <image>
-                              <Image url="@../../assets/gui/icons/users/1.png" />
-                           </image>
-                        </ImageView>
                      </children>
                   </StackPane>
                   <StackPane maxHeight="-Infinity" maxWidth="-Infinity" snapToPixel="false">
                      <children>
-                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" snapToPixel="false" style="-fx-background-radius: 50%; -fx-border-color: #00a2e8; -fx-border-radius: 50%; -fx-border-width: 3; -fx-border-insets: -1;" StackPane.alignment="CENTER">
+                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" snapToPixel="false" style="-fx-background-radius: 50%; -fx-border-color: #00a2e8; -fx-border-radius: 50%; -fx-border-width: 3; -fx-border-insets: -1;" StackPane.alignment="CENTER">
                            <font>
                               <Font size="1.0" />
                            </font>
+                           <graphic>
+                              <ImageView fitHeight="45.0" fitWidth="45.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/users/2.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Button>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateY="2.0" StackPane.alignment="CENTER">
-                           <image>
-                              <Image url="@../../assets/gui/icons/users/2.png" />
-                           </image>
-                        </ImageView>
                      </children>
                   </StackPane>
                   <StackPane maxHeight="-Infinity" maxWidth="-Infinity" snapToPixel="false">
                      <children>
-                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" snapToPixel="false" style="-fx-background-radius: 50%; -fx-border-color: #ed1c24; -fx-border-radius: 50%; -fx-border-width: 3; -fx-border-insets: -1;" StackPane.alignment="CENTER">
+                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" snapToPixel="false" style="-fx-background-radius: 50%; -fx-border-color: #ed1c24; -fx-border-radius: 50%; -fx-border-width: 3; -fx-border-insets: -1;" StackPane.alignment="CENTER">
                            <font>
                               <Font size="1.0" />
                            </font>
+                           <graphic>
+                              <ImageView fitHeight="45.0" fitWidth="45.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/users/3.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Button>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateY="2.0" StackPane.alignment="CENTER">
-                           <image>
-                              <Image url="@../../assets/gui/icons/users/3.png" />
-                           </image>
-                        </ImageView>
                      </children>
                   </StackPane>
                   <StackPane maxHeight="-Infinity" maxWidth="-Infinity" snapToPixel="false">
                      <children>
-                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" snapToPixel="false" style="-fx-background-radius: 50%; -fx-border-color: #fff200; -fx-border-radius: 50%; -fx-border-width: 3; -fx-border-insets: -1;" StackPane.alignment="CENTER">
+                        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" snapToPixel="false" style="-fx-background-radius: 50%; -fx-border-color: #fff200; -fx-border-radius: 50%; -fx-border-width: 3; -fx-border-insets: -1;" StackPane.alignment="CENTER">
                            <font>
                               <Font size="1.0" />
                            </font>
+                           <graphic>
+                              <ImageView fitHeight="45.0" fitWidth="45.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/users/4.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                         </Button>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateY="2.0" StackPane.alignment="CENTER">
-                           <image>
-                              <Image url="@../../assets/gui/icons/users/4.png" />
-                           </image>
-                        </ImageView>
                      </children>
                   </StackPane>
                </children>
                <padding>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </VBox>
          </children>

@@ -10,7 +10,7 @@
 
 <StackPane fx:id="handSlot" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text fx:id="placeholderText" boundsType="VISUAL" fill="#fffcfc90" strokeType="OUTSIDE" strokeWidth="0.0" text="No cards yet...">
+      <Text fx:id="placeholderText" boundsType="VISUAL" fill="#4b4b4b" strokeType="OUTSIDE" strokeWidth="0.0" text="No cards yet...">
          <font>
             <Font name="System Italic" size="20.0" />
          </font>

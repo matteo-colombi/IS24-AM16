@@ -151,7 +151,6 @@ public class PlayScreenController {
             PlayerButtonController playerButtonController = ElementFactory.getPlayerButton();
             playerButtonController.setDisabled(true);
             playerButtons.put(username, playerButtonController);
-            playersBox.getChildren().add(playerButtonController.getRoot());
 
             PegController pegController = ElementFactory.getPeg();
             pegController.setPegRadius(20);
@@ -159,12 +158,17 @@ public class PlayScreenController {
             guiState.setPlayerPeg(username, pegController);
 
             if (!username.equals(guiState.getUsername())) {
+                playersBox.getChildren().addLast(playerButtonController.getRoot());
+
                 RadioButton playerChatFilter = new RadioButton(username);
                 playerChatFilter.setId(username);
                 playerChatFilter.setToggleGroup(chatFilterToggleGroup);
                 chatFilterNames.getChildren().addLast(playerChatFilter);
             } else {
+                playersBox.getChildren().addFirst(playerButtonController.getRoot());
+
                 playerButtonController.setOnMouseClicked(e -> resetPlayer());
+                playerButtonController.setCrown();
                 pegContainer.getChildren().clear();
                 pegContainer.getChildren().add(pegController.getRoot());
             }
@@ -188,7 +192,7 @@ public class PlayScreenController {
         guiState.setPlayerColor(username, color);
         guiState.getPlayerPeg(username).setPegColor(color);
 
-        if (username.equals(currentlyShowingPlayArea.getOwnerUsername())) {
+        if (currentlyShowingPlayArea != null && currentlyShowingPlayArea.getOwnerUsername().equals(username)) {
             applyHalo(color);
         }
 
@@ -320,8 +324,12 @@ public class PlayScreenController {
         handController.setUsername(username);
         guiState.setOtherHand(username, handController);
         OtherHandController otherHandController = otherHandControllers.get(username);
-        if (otherHandController != null) {
-            otherHandController.setHandController(handController);
+        if (currentlyShowingPlayArea != null && currentlyShowingPlayArea.getOwnerUsername().equals(username)) {
+            handSlot.getChildren().set(0, handController.getRoot());
+        } else {
+            if (otherHandController != null) {
+                otherHandController.setHandController(handController);
+            }
         }
     }
 
@@ -363,8 +371,10 @@ public class PlayScreenController {
         cardController.setCard(personalObjective);
         cardController.showSide(SideType.FRONT);
         cardController.setTurnable();
-        personalObjectiveSlot.getChildren().clear();
-        personalObjectiveSlot.getChildren().add(cardController.getRoot());
+        if (currentlyShowingPlayArea.getOwnerUsername().equals(guiState.getUsername())) {
+            personalObjectiveSlot.getChildren().clear();
+            personalObjectiveSlot.getChildren().add(cardController.getRoot());
+        }
 
         guiState.setPersonalObjective(cardController);
     }
@@ -553,17 +563,17 @@ public class PlayScreenController {
 
     private void switchToOtherPlayer(String username) {
         for(String u : guiState.getPlayerUsernames()) {
-            playerButtons.get(u).setDisabled(u.equals(username) || (!u.equals(guiState.getUsername()) && guiState.getPlayArea(u) == null));
-
             if (!u.equals(username) && !u.equals(guiState.getUsername())) {
+                playerButtons.get(u).setDisabled(guiState.getPlayArea(u) == null);
                 OtherHandController otherHandController = otherHandControllers.get(u);
                 HandController otherHand = guiState.getOtherHand(u);
                 if (otherHandController != null && otherHand != null) {
-                    otherHandControllers.get(u).setHandController(guiState.getOtherHand(u));
+                    otherHandController.setHandController(otherHand);
                 }
             }
         }
 
+        playerButtons.get(username).setDisabled(true);
         playerButtons.get(guiState.getUsername()).setDisabled(false);
 
         applyHalo(guiState.getPlayerColor(username));
@@ -571,8 +581,10 @@ public class PlayScreenController {
         switchToPlayArea(username);
         switchToHand(username);
 
-        CardController cardController = ElementFactory.getObjectiveBack();
-        personalObjectiveSlot.getChildren().set(0, cardController.getRoot());
+        if (objectivePopupController != null) {
+            CardController cardController = ElementFactory.getObjectiveBack();
+            personalObjectiveSlot.getChildren().set(0, cardController.getRoot());
+        }
 
         pegContainer.getChildren().clear();
         PegController peg = guiState.getPlayerPeg(username);
@@ -585,9 +597,9 @@ public class PlayScreenController {
 
     private void resetPlayer() {
         for (String u : guiState.getPlayerUsernames()) {
-            playerButtons.get(u).setDisabled(u.equals(guiState.getUsername()));
-
             if (!u.equals(guiState.getUsername())) {
+                playerButtons.get(u).setDisabled(guiState.getPlayArea(u) == null);
+
                 OtherHandController otherHandController = otherHandControllers.get(u);
                 HandController otherHand = guiState.getOtherHand(u);
                 if (otherHandController != null && otherHand != null) {
@@ -595,6 +607,8 @@ public class PlayScreenController {
                 }
             }
         }
+
+        playerButtons.get(guiState.getUsername()).setDisabled(true);
 
         removeHalo();
 

@@ -8,15 +8,17 @@
 
 <StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pickOnBounds="false" snapToPixel="false" stylesheets="@../stylesheets/player-button.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.elements.PlayerButtonController">
    <children>
-      <Button fx:id="button" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="36.0" snapToPixel="false" StackPane.alignment="CENTER">
+      <Button fx:id="button" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" snapToPixel="false" StackPane.alignment="CENTER">
          <font>
             <Font size="1.0" />
          </font>
+         <graphic>
+            <ImageView fx:id="userIcon" fitHeight="45.0" fitWidth="45.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/gui/icons/users/generic-crown.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
-      <ImageView fx:id="userIcon" fitHeight="30.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateY="2.0" StackPane.alignment="CENTER">
-         <image>
-            <Image url="@../../assets/gui/icons/user.png" />
-         </image>
-      </ImageView>
    </children>
 </StackPane>

@@ -68,7 +68,7 @@
       </VBox>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="40.0" StackPane.alignment="CENTER">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Almost ready! Just a few more players..." textOrigin="CENTER">
+            <Text fx:id="motdText" strokeType="OUTSIDE" strokeWidth="0.0" text="Almost ready! Just a few more players..." textOrigin="CENTER">
                <font>
                   <Font name="System Italic" size="30.0" />
                </font>

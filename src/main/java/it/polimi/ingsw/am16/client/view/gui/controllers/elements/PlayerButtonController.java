@@ -29,20 +29,25 @@ public class PlayerButtonController {
         userIcon.setImage(genericUser);
     }
 
+    public void setCrown() {
+        Image withCrown = new Image(Objects.requireNonNull(PlayerButtonController.class.getResourceAsStream(FilePaths.GUI_ICONS + "/users/generic-crown.png")), userIcon.getFitWidth(), userIcon.getFitHeight(), true, true);
+        userIcon.setImage(withCrown);
+    }
+
     public void setImage(int turnIndex) {
         Image userImage = new Image(Objects.requireNonNull(PlayerButtonController.class.getResourceAsStream(FilePaths.GUI_ICONS + "/users/" + turnIndex + ".png")), userIcon.getFitWidth(), userIcon.getFitHeight(), true, true);
         userIcon.setImage(userImage);
     }
 
     public void setColor(PlayerColor color) {
-        button.getStyleClass().clear();
-        button.getStyleClass().add("button");
         button.getStyleClass().add(color.name().toLowerCase());
     }
 
     public void setActive(boolean active) {
         if (active) {
-            root.getStyleClass().add("active");
+            if (!root.getStyleClass().contains("active")) {
+                root.getStyleClass().add("active");
+            }
         } else {
             root.getStyleClass().remove("active");
         }
@@ -77,12 +82,12 @@ public class PlayerButtonController {
     public void setDisabled(boolean disabled) {
         if (disabled) {
             button.setMouseTransparent(true);
-            button.getStyleClass().add("disabled");
-            userIcon.getStyleClass().add("disabled");
+            if (!button.getStyleClass().contains("disabled")) {
+                button.getStyleClass().add("disabled");
+            }
         } else {
             button.setMouseTransparent(false);
             button.getStyleClass().remove("disabled");
-            userIcon.getStyleClass().remove("disabled");
         }
     }
 
