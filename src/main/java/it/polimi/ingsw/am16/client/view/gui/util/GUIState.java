@@ -1,9 +1,6 @@
 package it.polimi.ingsw.am16.client.view.gui.util;
 
-import it.polimi.ingsw.am16.client.view.gui.controllers.elements.CardController;
-import it.polimi.ingsw.am16.client.view.gui.controllers.elements.HandController;
-import it.polimi.ingsw.am16.client.view.gui.controllers.elements.InfoTableController;
-import it.polimi.ingsw.am16.client.view.gui.controllers.elements.PlayAreaGridController;
+import it.polimi.ingsw.am16.client.view.gui.controllers.elements.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
@@ -47,6 +44,7 @@ public class GUIState {
     private final Map<String, Integer> objectivePoints;
 
     private final Map<String, PlayerColor> playerColors;
+    private final Map<String, PegController> playerPegs;
 
     private final List<ChatMessage> chatMessages;
 
@@ -62,6 +60,7 @@ public class GUIState {
         infoTables = new HashMap<>();
         otherHands = new HashMap<>();
         playerColors = new HashMap<>();
+        playerPegs = new HashMap<>();
         dontDraw = new AtomicBoolean(false);
         numPlayers = new AtomicInteger(0);
     }
@@ -90,6 +89,12 @@ public class GUIState {
         }
         synchronized (otherHands) {
             otherHands.clear();
+        }
+        synchronized (playerColors) {
+            playerColors.clear();
+        }
+        synchronized (playerPegs) {
+            playerPegs.clear();
         }
         synchronized (this) {
             username = null;
@@ -283,6 +288,18 @@ public class GUIState {
     public PlayerColor getPlayerColor(String username) {
         synchronized (playerColors) {
             return playerColors.get(username);
+        }
+    }
+
+    public void setPlayerPeg(String username, PegController pegController) {
+        synchronized (playerPegs) {
+            playerPegs.put(username, pegController);
+        }
+    }
+
+    public PegController getPlayerPeg(String username) {
+        synchronized (playerPegs) {
+            return playerPegs.get(username);
         }
     }
 

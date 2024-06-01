@@ -25,6 +25,8 @@ public class PlayAreaGridController {
 
     private Map<Position, GridFillerController> gridFillers;
 
+    private String ownerUsername;
+
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -52,16 +54,6 @@ public class PlayAreaGridController {
         expandDown();
         expandLeft();
         expandRight();
-
-        //TODO remove the comment if the new solution works
-//        for(Position position : placeablePositions) {
-//            Pane fillerPane = addNewFiller(position);
-//            if (fillerPane == null)
-//                continue;
-//
-//            GridPane.setConstraints(fillerPane, position.x()+centerX, -position.y()+centerY);
-//            playAreaGrid.getChildren().addFirst(fillerPane);
-//        }
 
         putFillersInGrid(placeablePositions);
 
@@ -94,16 +86,6 @@ public class PlayAreaGridController {
         for (Position removedLegal : removedLegalPositions) {
             removeFiller(removedLegal);
         }
-
-        //TODO remove the comment if the new solution works
-//        for(Position addedLegal : addedLegalPositions) {
-//            Pane fillerPane = addNewFiller(addedLegal);
-//            if (fillerPane == null)
-//                continue;
-//
-//            GridPane.setConstraints(fillerPane, addedLegal.x()+centerX, -addedLegal.y()+centerY);
-//            playAreaGrid.getChildren().addFirst(fillerPane);
-//        }
 
         putFillersInGrid(addedLegalPositions);
 
@@ -185,5 +167,13 @@ public class PlayAreaGridController {
 
         GridPane.setConstraints(fillerPane, position.x()+centerX, -position.y()+centerY);
         playAreaGrid.getChildren().addFirst(fillerPane);
+    }
+
+    public void setOwnerUsername(String username) {
+        this.ownerUsername = username;
+    }
+
+    public String getOwnerUsername() {
+        return ownerUsername;
     }
 }

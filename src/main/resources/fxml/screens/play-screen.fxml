@@ -19,6 +19,7 @@
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <StackPane fx:id="root" prefHeight="1080.0" prefWidth="1920.0" styleClass="background-no-image" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.screens.PlayScreenController">
    <children>
@@ -282,7 +283,73 @@
                   </StackPane>
                </children>
             </StackPane>
-            <HBox fx:id="handSlot" />
+            <StackPane fx:id="handSlot">
+               <children>
+                  <Text fx:id="placeholderText" boundsType="VISUAL" fill="#4b4b4b" strokeType="OUTSIDE" strokeWidth="0.0" text="No cards yet...">
+                     <font>
+                        <Font name="System Italic" size="20.0" />
+                     </font>
+                  </Text>
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
+                     <children>
+                        <StackPane fx:id="cardPane" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                           <children>
+                              <ImageView id="cardImage" fx:id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                                 </image>
+                                 <styleClass>
+                                    <String fx:value="card" />
+                                    <String fx:value="card_placeholder" />
+                                 </styleClass>
+                              </ImageView>
+                              <ImageView fx:id="turnImage" fitHeight="50.0" fitWidth="50.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/sync-transparent-1.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </StackPane>
+                        <StackPane fx:id="cardPane1" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                           <children>
+                              <ImageView id="cardImage" fx:id="cardImage1" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                                 </image>
+                                 <styleClass>
+                                    <String fx:value="card" />
+                                    <String fx:value="card_placeholder" />
+                                 </styleClass>
+                              </ImageView>
+                              <ImageView fx:id="turnImage1" fitHeight="50.0" fitWidth="50.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/sync-transparent-1.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </StackPane>
+                        <StackPane fx:id="cardPane2" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                           <children>
+                              <ImageView id="cardImage" fx:id="cardImage2" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                                 </image>
+                                 <styleClass>
+                                    <String fx:value="card" />
+                                    <String fx:value="card_placeholder" />
+                                 </styleClass>
+                              </ImageView>
+                              <ImageView fx:id="turnImage2" fitHeight="50.0" fitWidth="50.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/sync-transparent-1.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </HBox>
+               </children>
+            </StackPane>
          </children>
          <StackPane.margin>
             <Insets />

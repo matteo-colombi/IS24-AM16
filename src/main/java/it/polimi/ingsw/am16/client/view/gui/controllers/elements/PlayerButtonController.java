@@ -68,29 +68,19 @@ public class PlayerButtonController {
                 currentlyShowingOtherHand.set(null);
             }
         });
-
-        enableHover();
     }
 
     public void setOnMouseClicked(EventHandler<MouseEvent> handler) {
         button.setOnMouseClicked(handler);
     }
 
-    public void enableHover() {
-        button.setMouseTransparent(false);
-    }
-
-    public void disableHover() {
-        button.setMouseTransparent(true);
-    }
-
     public void setDisabled(boolean disabled) {
         if (disabled) {
-            disableHover();
+            button.setMouseTransparent(true);
             button.getStyleClass().add("disabled");
             userIcon.getStyleClass().add("disabled");
         } else {
-            enableHover();
+            button.setMouseTransparent(false);
             button.getStyleClass().remove("disabled");
             userIcon.getStyleClass().remove("disabled");
         }

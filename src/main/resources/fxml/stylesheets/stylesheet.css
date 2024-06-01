@@ -202,3 +202,7 @@
 .halo-blue {
     -fx-effect: innershadow(gaussian, rgba(0, 162, 232, 1), 50, 0.5, 0, 0);
 }
+
+.halo-unknown {
+    -fx-effect: innershadow(gaussian, rgba(100, 100, 100, 1), 50, 0.5, 0, 0);
+}

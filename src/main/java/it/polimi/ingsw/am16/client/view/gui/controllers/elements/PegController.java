@@ -88,11 +88,17 @@ public class PegController {
 
     public void setSelected(boolean selected) {
         if (selected) {
-            if (!peg.getStyleClass().contains("selected")) {
-                peg.getStyleClass().add("selected");
-            }
+            peg.getStyleClass().add("selected");
         } else {
             peg.getStyleClass().remove("selected");
+        }
+    }
+
+    public void setPlaceholder(boolean placeholder) {
+        if (placeholder) {
+            peg.getStyleClass().add("placeholder");
+        } else {
+            peg.getStyleClass().remove("placeholder");
         }
     }
 

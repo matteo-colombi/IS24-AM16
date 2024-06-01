@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,11 @@ import java.util.Map;
 public class HandController {
 
     @FXML
-    private HBox root;
+    private StackPane root;
+    @FXML
+    private Text placeholderText;
+    @FXML
+    private HBox cardsSlot;
 
     private List<CardController> cards;
 
@@ -35,10 +41,11 @@ public class HandController {
 
     private void addCard(CardController cardController) {
         cards.add(cardController);
-        root.getChildren().set(cards.size()-1, cardController.getRoot());
+        cardsSlot.getChildren().set(cards.size()-1, cardController.getRoot());
     }
 
     public void addCard(PlayableCard card) {
+        placeholderText.setVisible(false);
         CardController cardController = ElementFactory.getCard();
         cardController.getRoot().setId(card.getName());
         cardController.setCard(card);
@@ -49,6 +56,7 @@ public class HandController {
     }
 
     public void addCard(RestrictedCard card) {
+        placeholderText.setVisible(false);
         CardController cardController = ElementFactory.getCardBackOnly(card.cardType(), card.resourceType());
         if (cardController == null) return;
         cardController.getRoot().setId(card.cardType() + "-" + card.resourceType());
@@ -56,12 +64,12 @@ public class HandController {
     }
 
     public void removeCard(PlayableCard card) {
-        Node node = root.lookup("#" + card.getName());
+        Node node = cardsSlot.lookup("#" + card.getName());
         if (node == null) return;
         CardController placeholder = ElementFactory.getCard();
-        int index = root.getChildren().indexOf(node);
-        root.getChildren().remove(node);
-        root.getChildren().addLast(placeholder.getRoot());
+        int index = cardsSlot.getChildren().indexOf(node);
+        cardsSlot.getChildren().remove(node);
+        cardsSlot.getChildren().addLast(placeholder.getRoot());
         cards.remove(index);
     }
 
@@ -69,9 +77,9 @@ public class HandController {
         Node node = root.lookup("#" + card.cardType() + "-" + card.resourceType());
         if (node == null) return;
         CardController placeholder = ElementFactory.getCard();
-        int index = root.getChildren().indexOf(node);
-        root.getChildren().remove(node);
-        root.getChildren().addLast(placeholder.getRoot());
+        int index = cardsSlot.getChildren().indexOf(node);
+        cardsSlot.getChildren().remove(node);
+        cardsSlot.getChildren().addLast(placeholder.getRoot());
         cards.remove(index);
     }
 
