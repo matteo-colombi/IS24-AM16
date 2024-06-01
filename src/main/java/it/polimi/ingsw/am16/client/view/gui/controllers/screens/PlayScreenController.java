@@ -86,6 +86,7 @@ public class PlayScreenController {
     @FXML
     private StackPane more;
 
+
     private ServerInterface serverInterface;
 
     private PointsBoardController pointsBoardController;
@@ -107,6 +108,8 @@ public class PlayScreenController {
 
     private CardController resourceDeck;
     private CardController goldDeck;
+
+    private RulesPopupController rulesPopupController;
 
     @FXML
     public void initialize() {
@@ -822,6 +825,7 @@ public class PlayScreenController {
      */
     @FXML
     public void showRules(ActionEvent ignored) {
-        CodexGUI.getGUI().switchToRulesScreen();
+        rulesPopupController = ElementFactory.getRulesPopup();
+        root.getChildren().addLast(rulesPopupController.getRoot());
     }
 }

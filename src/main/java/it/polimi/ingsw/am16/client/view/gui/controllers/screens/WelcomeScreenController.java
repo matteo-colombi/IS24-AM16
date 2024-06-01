@@ -34,6 +34,8 @@ public class WelcomeScreenController {
 
     @FXML
     private MediaView createSound;
+    @FXML
+    private MediaView joinSound;
 
 
     /**
@@ -99,6 +101,19 @@ public class WelcomeScreenController {
             return;
         }
 
+        if(joinSound.getMediaPlayer() == null) {
+            try {
+                String filename = getClass().getResource("/assets/gui/SINCERELY.mp4").toURI().toString();
+                Media media = new Media(filename);
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+                joinSound.setMediaPlayer(mediaPlayer);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        joinSound.getMediaPlayer().seek(joinSound.getMediaPlayer().getStartTime());
+        joinSound.getMediaPlayer().play();
+
         CodexGUI.getGUI().getGuiState().setUsername(username);
         CodexGUI.getGUI().switchToGamesScreen();
     }
@@ -135,6 +150,10 @@ public class WelcomeScreenController {
         more.setVisible(!more.isVisible());
     }
 
+    /**
+     * Shows the rules screen.
+     * @param ignored The action event (which is ignored).
+     */
     @FXML
     public void showRules(ActionEvent ignored) {
         CodexGUI.getGUI().getGuiState().setUsername(usernameField.getText());
@@ -152,6 +171,10 @@ public class WelcomeScreenController {
         CodexGUI.getGUI().switchToCreditsScreen();
     }
 
+    /**
+     * Shows the Pavia screen.
+     * @param ignored The action event (which is ignored).
+     */
     @FXML
     public void burnPavia(ActionEvent ignored) {
         CodexGUI.getGUI().getGuiState().setUsername(usernameField.getText());

@@ -162,6 +162,7 @@
                               </Text>
                            </children>
                         </HBox>
+                        <MediaView fx:id="joinSound" />
                      </children>
                   </StackPane>
                </children>

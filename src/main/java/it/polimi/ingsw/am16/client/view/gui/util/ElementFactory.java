@@ -186,4 +186,14 @@ public class ElementFactory {
             throw new RuntimeException(e);
         }
     }
+
+    public static RulesPopupController getRulesPopup() {
+        FXMLLoader rulesPopupController = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/rules-popup.fxml"));
+        try {
+            rulesPopupController.load();
+            return rulesPopupController.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

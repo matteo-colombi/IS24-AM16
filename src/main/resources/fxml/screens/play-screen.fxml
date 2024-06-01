@@ -425,5 +425,29 @@
             </StackPane>
          </children>
       </StackPane>
+      <StackPane alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="73.0" prefWidth="66.0" translateX="680.0" translateY="70.0" StackPane.alignment="TOP_CENTER">
+         <children>
+            <Button fx:id="showMoreButton" mnemonicParsing="false" onAction="#showMore" prefHeight="37.0" prefWidth="62.0" styleClass="transparent" />
+            <ImageView fitHeight="69.0" fitWidth="59.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateX="4.0">
+               <image>
+                  <Image url="@../../assets/gui/icons/ellipsis.png" />
+               </image>
+            </ImageView>
+         </children>
+      </StackPane>
+      <StackPane fx:id="more" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #573B21; -fx-border-radius: 13; -fx-border-width: 3;" translateX="613.0" translateY="125.0" visible="false" StackPane.alignment="TOP_CENTER">
+         <children>
+            <Rectangle fill="#b38c44" height="18.0" rotate="135.0" stroke="#573b21" strokeType="INSIDE" strokeWidth="3.0" translateX="70.0" translateY="-45.0" width="19.0" />
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="94.0" prefWidth="205.0" style="-fx-background-color: #B38C44; -fx-background-radius: 10;">
+               <children>
+                  <Button fx:id="rulesButton" mnemonicParsing="false" onAction="#showRules" prefHeight="110.0" prefWidth="205.0" styleClass="transparent" text="Rules">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </StackPane>
    </children>
 </StackPane>
