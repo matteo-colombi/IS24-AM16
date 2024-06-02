@@ -582,6 +582,11 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
         sendTCPMessage(tcpMessage);
     }
 
+    /**
+     * Notifies the client that an error has occured.
+     * @param errorMessage The message that should be displayed to the user.
+     * @param errorType The type of error that occured.
+     */
     @Override
     public void promptError(String errorMessage, ErrorType errorType) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.PROMPT_ERROR, new PromptError(errorMessage, errorType));

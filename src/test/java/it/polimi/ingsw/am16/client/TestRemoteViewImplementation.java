@@ -5,6 +5,7 @@ import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.util.ErrorType;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.rmi.RemoteException;
@@ -212,7 +213,7 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
     }
 
     @Override
-    public void promptError(String errorMessage) throws RemoteException {
+    public void promptError(String errorMessage, ErrorType errorType) throws RemoteException {
         System.err.print("[" + username + "]: ");
         System.err.println(errorMessage);
     }

@@ -13,10 +13,11 @@ public class ErrorEvent extends Event {
     private static final long serialVersionUID = -7822510836152498850L;
 
     private final String errorMsg;
-    public final ErrorType errorType;
+    private final ErrorType errorType;
 
     /**
      * @param errorMsg The error message.
+     * @param errorType The type of error.
      */
     public ErrorEvent(String errorMsg, ErrorType errorType) {
         super(GUIEventTypes.ERROR_EVENT);
@@ -29,5 +30,9 @@ public class ErrorEvent extends Event {
      */
     public String getErrorMsg() {
         return errorMsg;
+    }
+
+    public ErrorType getErrorType() {
+        return errorType;
     }
 }

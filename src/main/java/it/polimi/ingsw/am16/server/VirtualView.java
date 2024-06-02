@@ -5,6 +5,7 @@ import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.players.*;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.game.GameState;
+import it.polimi.ingsw.am16.common.util.ErrorType;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.rmi.RemoteException;
@@ -514,11 +515,12 @@ public class VirtualView {
      *
      * @param receiverUsername The player which this communication should be sent to.
      * @param errorMessage     The error message.
+     * @param errorType        The type of error that occurred.
      */
-    public void promptError(String receiverUsername, String errorMessage) {
+    public void promptError(String receiverUsername, String errorMessage, ErrorType errorType) {
         RemoteClientInterface userView = userViews.get(receiverUsername);
         try {
-            userView.promptError(errorMessage);
+            userView.promptError(errorMessage, errorType);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
