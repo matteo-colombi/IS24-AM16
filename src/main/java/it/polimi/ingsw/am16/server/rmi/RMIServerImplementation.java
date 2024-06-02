@@ -8,6 +8,7 @@ import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.util.ErrorType;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import it.polimi.ingsw.am16.server.controller.GameController;
@@ -104,7 +105,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
     @Override
     public void createGame(String username, int numPlayers) throws RemoteException {
         if (gameController != null) {
-            clientInterface.promptError("You are already in a game!");
+            clientInterface.promptError("You are already in a game!", ErrorType.JOIN_ERROR);
             return;
         }
 
@@ -113,7 +114,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         try {
             gameId = lobbyManager.createGame(numPlayers);
         } catch (IllegalArgumentException e) {
-            clientInterface.promptError(e.getMessage());
+            clientInterface.promptError(e.getMessage(), ErrorType.JOIN_ERROR);
             return;
         }
 
@@ -121,7 +122,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
         try {
             gameController.createPlayer(username);
         } catch (UnexpectedActionException e) {
-            clientInterface.promptError("Couldn't join game: " + e.getMessage());
+            clientInterface.promptError("Couldn't join game: " + e.getMessage(), ErrorType.JOIN_ERROR);
             gameController = null;
             return;
         }
@@ -139,13 +140,13 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
     @Override
     public void joinGame(String gameId, String username) throws RemoteException {
         if (gameController != null) {
-            clientInterface.promptError("You are already in a game.");
+            clientInterface.promptError("You are already in a game.", ErrorType.JOIN_ERROR);
             return;
         }
 
         gameController = lobbyManager.getGame(gameId);
         if (gameController == null) {
-            clientInterface.promptError("No game with the given id.");
+            clientInterface.promptError("No game with the given id.", ErrorType.JOIN_ERROR);
             return;
         }
 
@@ -153,7 +154,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
             try {
                 gameController.createPlayer(username);
             } catch (UnexpectedActionException e) {
-                clientInterface.promptError("Couldn't join game: " + e.getMessage());
+                clientInterface.promptError("Couldn't join game: " + e.getMessage(), ErrorType.JOIN_ERROR);
                 gameController = null;
                 this.username = null;
                 return;
@@ -164,7 +165,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements Serv
             gameController.joinPlayer(username, clientInterface);
             this.username = username;
         } catch (UnexpectedActionException e) {
-            clientInterface.promptError("User already rejoined the game.");
+            clientInterface.promptError("User already rejoined the game.", ErrorType.JOIN_ERROR);
             gameController = null;
             this.username = null;
         }

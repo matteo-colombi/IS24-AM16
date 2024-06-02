@@ -7,6 +7,7 @@ import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.util.ErrorType;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
 
@@ -499,7 +500,7 @@ public class CLI implements ViewInterface {
     }
 
     @Override
-    public synchronized void promptError(String errorMessage) {
+    public synchronized void promptError(String errorMessage, ErrorType errorType) {
         System.out.println(errorMessage);
         printCommandPrompt();
     }

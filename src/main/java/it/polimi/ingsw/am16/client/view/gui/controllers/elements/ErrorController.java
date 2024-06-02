@@ -40,45 +40,45 @@ public class ErrorController {
         CodexGUI.getGUI().switchToWelcomeScreen();
     }
 
-    public void setErrorText(String errorText) {
-        this.errorText.setText(errorText);
-    }
-
-    public void setButtonText(String buttonText) {
-        this.buttonText.setText(buttonText);
-    }
-
-    public void setButtonIcon(String iconPath) {
-        buttonIcon.setImage(new Image(getClass().getResource(iconPath).toExternalForm()));
-    }
-
-    /**
-     * This method sets the error popup to show up when the server has crashed,
-     * thus forcing the application to close
-     */
-    public void quitStance(){
-        this.errorText.setText("The server blew up!!!");
-        this.buttonText.setText("Quit");
-        buttonIcon.setImage(new Image(getClass().getResource("/assets/gui/icons/door.png").toExternalForm()));
-        errorButton.setOnAction(this::quit);
-    }
-
-    /**
-     * This method sets the error popup to show up when either the player or
-     * another client has lost connection, and thus every player in the lobby is returned
-     * to the home screen. Unlike {@link ErrorController#quitStance},
-     * this method can set the error message to show who crashed between you
-     * or another plauer.
-     * @param errorMessage The message to show in the error popup
-     */
-    public void homeStance(String errorMessage){
-        this.errorText.setText(errorMessage);
-        this.buttonText.setText("Home");
-        buttonIcon.setImage(new Image(getClass().getResource("/assets/gui/icons/home.png").toExternalForm()));
-        errorButton.setOnAction(this::goHome);
-    }
-
-    //TODO refactor these to a single method with a switch?
+//    public void setErrorText(String errorText) {
+//        this.errorText.setText(errorText);
+//    }
+//
+//    public void setButtonText(String buttonText) {
+//        this.buttonText.setText(buttonText);
+//    }
+//
+//    public void setButtonIcon(String iconPath) {
+//        buttonIcon.setImage(new Image(getClass().getResource(iconPath).toExternalForm()));
+//    }
+//
+//    /**
+//     * This method sets the error popup to show up when the server has crashed,
+//     * thus forcing the application to close
+//     */
+//    public void quitStance(){
+//        this.errorText.setText("The server blew up!!!");
+//        this.buttonText.setText("Quit");
+//        buttonIcon.setImage(new Image(getClass().getResource("/assets/gui/icons/door.png").toExternalForm()));
+//        errorButton.setOnAction(this::quit);
+//    }
+//
+//    /**
+//     * This method sets the error popup to show up when either the player or
+//     * another client has lost connection, and thus every player in the lobby is returned
+//     * to the home screen. Unlike {@link ErrorController#quitStance},
+//     * this method can set the error message to show who crashed between you
+//     * or another plauer.
+//     * @param errorMessage The message to show in the error popup
+//     */
+//    public void homeStance(String errorMessage){
+//        this.errorText.setText(errorMessage);
+//        this.buttonText.setText("Home");
+//        buttonIcon.setImage(new Image(getClass().getResource("/assets/gui/icons/home.png").toExternalForm()));
+//        errorButton.setOnAction(this::goHome);
+//    }
+//
+//    //TODO refactor these to a single method with a switch?
 
     public void show(ErrorEvent e){
         this.errorText.setText(e.getErrorMsg());
@@ -99,6 +99,10 @@ public class ErrorController {
                 buttonIcon.setImage(new Image(getClass().getResource("/assets/gui/icons/home.png").toExternalForm()));
                 errorButton.setOnAction(this::goHome);
                 break;
+            default:
+                this.buttonText.setText("Quit");
+                buttonIcon.setImage(new Image(getClass().getResource("/assets/gui/icons/door.png").toExternalForm()));
+                errorButton.setOnAction(this::goHome);
         }
     }
 
