@@ -15,6 +15,7 @@ import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.tcpMessages.response.AddPlayer;
 import it.polimi.ingsw.am16.common.tcpMessages.response.JoinGameResponse;
 import it.polimi.ingsw.am16.common.tcpMessages.response.SignalDisconnection;
+import it.polimi.ingsw.am16.common.util.ErrorType;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.tcpMessages.TCPMessage;
@@ -582,7 +583,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
     }
 
     @Override
-    public void promptError(String errorMessage) {
+    public void promptError(String errorMessage, ErrorType errorType) {
         TCPMessage tcpMessage = new TCPMessage(MessageType.PROMPT_ERROR, new PromptError(errorMessage));
         sendTCPMessage(tcpMessage);
     }

@@ -152,4 +152,14 @@ public class ElementFactory {
             throw new RuntimeException(e);
         }
     }
+
+    public static ErrorController getErrorPopup() {
+        FXMLLoader errorPopupLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/error.fxml"));
+        try {
+            errorPopupLoader.load();
+            return errorPopupLoader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

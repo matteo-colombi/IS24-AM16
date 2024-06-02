@@ -16,7 +16,9 @@ import static it.polimi.ingsw.am16.client.view.cli.CLIConstants.CARD_HEIGHT;
 import static it.polimi.ingsw.am16.client.view.cli.CLIConstants.CARD_WIDTH;
 
 /**
- * DOCME
+ * The CLI class is the main class for the CLI view.
+ * It is responsible for displaying the game state to the user and for displaying the state
+ * of the game.
  */
 public class CLI implements ViewInterface {
 
@@ -148,7 +150,7 @@ public class CLI implements ViewInterface {
         } catch (IllegalArgumentException e) {
             return;
         }
-
+        System.out.println(serverInterface);
         this.cliInputManager.setServerInterface(serverInterface);
 
         printBanner();

@@ -89,6 +89,7 @@ public class PlayScreenController {
     private StarterPopupController starterPopupController;
     private ColorPopupController colorPopupController;
     private ObjectivePopupController objectivePopupController;
+    private ErrorController errorController;
 
     private List<CardController> commonResourceCards;
     private List<CardController> commonGoldCards;
@@ -150,7 +151,7 @@ public class PlayScreenController {
     }
 
     public void showError(String errorMessage) {
-        //TODO
+        errorController = ElementFactory.getErrorPopup();
     }
 
     @FXML
