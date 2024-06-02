@@ -80,12 +80,11 @@ public class PlayScreenController {
     @FXML
     private StackPane leaveButton;
     @FXML
+    private StackPane rulesButton;
+    @FXML
     private StackPane otherPlayersArea;
     @FXML
     private VBox playersBox;
-    @FXML
-    private StackPane more;
-
 
     private ServerInterface serverInterface;
 
@@ -108,8 +107,6 @@ public class PlayScreenController {
 
     private CardController resourceDeck;
     private CardController goldDeck;
-
-    private RulesPopupController rulesPopupController;
 
     @FXML
     public void initialize() {
@@ -192,7 +189,7 @@ public class PlayScreenController {
         guiState.setPlayerColor(username, color);
         guiState.getPlayerPeg(username).setPegColor(color);
 
-        if (currentlyShowingPlayArea != null && currentlyShowingPlayArea.getOwnerUsername().equals(username)) {
+        if (currentlyShowingPlayArea != null && currentlyShowingPlayArea.getOwnerUsername().equals(username) && !currentlyShowingPlayArea.getOwnerUsername().equals(guiState.getUsername())) {
             applyHalo(color);
         }
 
@@ -211,19 +208,19 @@ public class PlayScreenController {
 
         for (int i = 0; i < startOrder.size(); i++) {
             PlayerButtonController playerButtonController = playerButtons.get(startOrder.get(i));
-            playerButtonController.setImage(i+1);
+            playerButtonController.setImage(i + 1);
             playersBox.getChildren().remove(playerButtonController.getRoot());
             playersBox.getChildren().addLast(playerButtonController.getRoot());
         }
 
         if (startOrder.getFirst().equals(guiState.getUsername()) && currentlyShowingPlayArea.getOwnerUsername().equals(guiState.getUsername())) {
-            setIsStartingPlayer();
+            addBlackPeg();
         }
 
         playersBox.requestLayout();
     }
 
-    private void setIsStartingPlayer() {
+    private void addBlackPeg() {
         PegController pegController = ElementFactory.getPeg();
         pegController.setPegColor((PlayerColor) null);
         pegController.setPegRadius(20);
@@ -383,7 +380,7 @@ public class PlayScreenController {
         PlayAreaGridController playAreaGridController = ElementFactory.getPlayAreaGrid();
         playAreaGridController.setOwnerUsername(username);
         Set<Position> emptySet = Set.of();
-        for(Position pos : placementOrder) {
+        for (Position pos : placementOrder) {
             BoardCard card = field.get(pos);
             SideType side = activeSides.get(card);
             CardController cardController = ElementFactory.getCard();
@@ -541,10 +538,10 @@ public class PlayScreenController {
 
         otherPlayersArea.getChildren().addLast(otherHandController.getRoot());
         otherHandController.getRoot().setTranslateX(-75);
-        otherHandController.getRoot().setTranslateY(-(playersBox.getHeight()/2 - playerButton.getRoot().getBoundsInParent().getCenterY()));
+        otherHandController.getRoot().setTranslateY(-(playersBox.getHeight() / 2 - playerButton.getRoot().getBoundsInParent().getCenterY()));
 
         playerButton.getRoot().boundsInParentProperty().addListener((observable, oldValue, newValue) -> {
-            otherHandController.getRoot().setTranslateY(-(playersBox.getHeight()/2 - newValue.getCenterY()));
+            otherHandController.getRoot().setTranslateY(-(playersBox.getHeight() / 2 - newValue.getCenterY()));
         });
 
         playerButton.setHovers(otherHandController, currentlyShowingOtherHand);
@@ -562,7 +559,7 @@ public class PlayScreenController {
     }
 
     private void switchToOtherPlayer(String username) {
-        for(String u : guiState.getPlayerUsernames()) {
+        for (String u : guiState.getPlayerUsernames()) {
             if (!u.equals(username) && !u.equals(guiState.getUsername())) {
                 playerButtons.get(u).setDisabled(guiState.getPlayArea(u) == null);
                 OtherHandController otherHandController = otherHandControllers.get(u);
@@ -591,7 +588,7 @@ public class PlayScreenController {
         pegContainer.getChildren().add(peg.getRoot());
         List<String> turnOrder = guiState.getTurnOrder();
         if (!turnOrder.isEmpty() && turnOrder.getFirst().equals(username)) {
-            setIsStartingPlayer();
+            addBlackPeg();
         }
     }
 
@@ -627,7 +624,7 @@ public class PlayScreenController {
         pegContainer.getChildren().add(peg.getRoot());
         List<String> turnOrder = guiState.getTurnOrder();
         if (!turnOrder.isEmpty() && turnOrder.getFirst().equals(guiState.getUsername())) {
-            setIsStartingPlayer();
+            addBlackPeg();
         }
     }
 
@@ -708,6 +705,15 @@ public class PlayScreenController {
         CodexGUI.getGUI().switchToWelcomeScreen();
     }
 
+    /**
+     * Shows the rules popup.
+     */
+    @FXML
+    public void showRules() {
+        RulesPopupController rulesPopupController = ElementFactory.getRulesPopup();
+        root.getChildren().addLast(rulesPopupController.getRoot());
+    }
+
     private void registerEvents() {
         root.addEventFilter(GUIEventTypes.ERROR_EVENT, e -> showError(e.getErrorMsg()));
 
@@ -784,6 +790,18 @@ public class PlayScreenController {
         });
          */
 
+        rulesButton.setOnMouseClicked(e -> {
+            showRules();
+            e.consume();
+        });
+
+        rulesButton.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                showRules();
+                keyEvent.consume();
+            }
+        });
+
         CodexGUI.getGUI().getStage().getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, evt -> {
             if (evt.getPickResult().getIntersectedNode() != chatFilterButton && !inHierarchy(evt.getPickResult().getIntersectedNode(), chatFilters)) {
                 chatFilters.setVisible(false);
@@ -822,24 +840,5 @@ public class PlayScreenController {
             node = node.getParent();
         }
         return false;
-    }
-
-    /**
-     * Shows or hides the "more" section.
-     * @param ignored The action event (which is ignored).
-     */
-    @FXML
-    public void showMore(ActionEvent ignored) {
-        more.setVisible(!more.isVisible());
-    }
-
-    /**
-     * Shows the rules screen.
-     * @param ignored The action event (which is ignored).
-     */
-    @FXML
-    public void showRules(ActionEvent ignored) {
-        rulesPopupController = ElementFactory.getRulesPopup();
-        root.getChildren().addLast(rulesPopupController.getRoot());
     }
 }

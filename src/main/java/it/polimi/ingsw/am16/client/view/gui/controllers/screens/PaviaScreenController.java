@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers.screens;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
+import it.polimi.ingsw.am16.common.util.FilePaths;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
@@ -9,6 +10,7 @@ import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 public class PaviaScreenController {
     @FXML
@@ -22,11 +24,11 @@ public class PaviaScreenController {
 
         if (paviaBurns.getMediaPlayer() == null) {
             try {
-                String filename = getClass().getResource("/assets/gui/pavia.mp4").toURI().toString();
+                String filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/pavia.mp4")).toURI().toString();
                 Media media = new Media(filename);
                 MediaPlayer mediaPlayer = new MediaPlayer(media);
                 paviaBurns.setMediaPlayer(mediaPlayer);
-            } catch (URISyntaxException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

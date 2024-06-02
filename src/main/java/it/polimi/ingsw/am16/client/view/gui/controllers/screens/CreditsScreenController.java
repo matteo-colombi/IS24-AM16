@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers.screens;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
+import it.polimi.ingsw.am16.common.util.FilePaths;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,6 +12,7 @@ import javafx.scene.media.MediaView;
 
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class CreditsScreenController implements Initializable {
@@ -34,13 +36,13 @@ public class CreditsScreenController implements Initializable {
 
     @FXML
     public void rick(ActionEvent ignored) {
-        if(rick.getMediaPlayer() == null) {
+        if (rick.getMediaPlayer() == null) {
             try {
-                String filename = getClass().getResource("/assets/gui/rk.mp4").toURI().toString();
+                String filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/rk.mp4")).toURI().toString();
                 Media media = new Media(filename);
                 MediaPlayer mediaPlayer = new MediaPlayer(media);
                 rick.setMediaPlayer(mediaPlayer);
-            } catch (URISyntaxException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -53,7 +55,7 @@ public class CreditsScreenController implements Initializable {
 
     @FXML
     public void back(ActionEvent ignored) {
-        if(rick.getMediaPlayer() != null && rick.getMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING) {
+        if (rick.getMediaPlayer() != null && rick.getMediaPlayer().getStatus() == MediaPlayer.Status.PLAYING) {
             rick.getMediaPlayer().stop();
             rick.setVisible(false);
             links.setVisible(false);

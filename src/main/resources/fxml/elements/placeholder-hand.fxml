@@ -21,7 +21,7 @@
                <children>
                   <ImageView id="cardImage" fx:id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                        <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
                      </image>
                      <styleClass>
                         <String fx:value="card" />
@@ -39,7 +39,7 @@
                <children>
                   <ImageView id="cardImage" fx:id="cardImage1" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                        <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
                      </image>
                      <styleClass>
                         <String fx:value="card" />
@@ -57,7 +57,7 @@
                <children>
                   <ImageView id="cardImage" fx:id="cardImage2" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                        <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
                      </image>
                      <styleClass>
                         <String fx:value="card" />

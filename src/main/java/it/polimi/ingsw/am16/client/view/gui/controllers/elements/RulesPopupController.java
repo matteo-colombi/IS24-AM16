@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers.elements;
 
+import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIAssetRegistry;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +14,7 @@ import java.util.Objects;
 
 public class RulesPopupController {
     @FXML
-    StackPane root;
+    StackPane rootPopup;
     @FXML
     ImageView rulesBook;
 
@@ -24,6 +25,9 @@ public class RulesPopupController {
     @FXML
     public void initialize() {
         idx = 0;
+
+        rootPopup.setPrefWidth(CodexGUI.getGUI().getStage().getWidth());
+        rootPopup.setPrefHeight(CodexGUI.getGUI().getStage().getHeight());
     }
 
     @FXML
@@ -42,10 +46,10 @@ public class RulesPopupController {
 
     @FXML
     public void back(ActionEvent ignored) {
-        root.setVisible(false);
+        ((StackPane) rootPopup.getParent()).getChildren().remove(rootPopup);
     }
 
     public Parent getRoot() {
-        return root;
+        return rootPopup;
     }
 }

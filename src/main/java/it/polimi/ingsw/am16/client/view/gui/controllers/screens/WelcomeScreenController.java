@@ -2,6 +2,7 @@ package it.polimi.ingsw.am16.client.view.gui.controllers.screens;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
+import it.polimi.ingsw.am16.common.util.FilePaths;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -12,6 +13,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 /**
  * Controller for the welcome screen.
@@ -72,11 +74,11 @@ public class WelcomeScreenController {
 
         if (createSound.getMediaPlayer() == null) {
             try {
-                String filename = getClass().getResource("/assets/gui/QUANDO.mp4").toURI().toString();
+                String filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/QUANDO.mp4")).toURI().toString();
                 Media media = new Media(filename);
                 MediaPlayer mediaPlayer = new MediaPlayer(media);
                 createSound.setMediaPlayer(mediaPlayer);
-            } catch (URISyntaxException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -101,13 +103,13 @@ public class WelcomeScreenController {
             return;
         }
 
-        if(joinSound.getMediaPlayer() == null) {
+        if (joinSound.getMediaPlayer() == null) {
             try {
-                String filename = getClass().getResource("/assets/gui/SINCERELY.mp4").toURI().toString();
+                String filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/SINCERELY.mp4")).toURI().toString();
                 Media media = new Media(filename);
                 MediaPlayer mediaPlayer = new MediaPlayer(media);
                 joinSound.setMediaPlayer(mediaPlayer);
-            } catch (URISyntaxException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -152,6 +154,7 @@ public class WelcomeScreenController {
 
     /**
      * Shows the rules screen.
+     *
      * @param ignored The action event (which is ignored).
      */
     @FXML
@@ -173,6 +176,7 @@ public class WelcomeScreenController {
 
     /**
      * Shows the Pavia screen.
+     *
      * @param ignored The action event (which is ignored).
      */
     @FXML

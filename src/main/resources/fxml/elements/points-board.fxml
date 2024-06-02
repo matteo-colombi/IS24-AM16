@@ -9,7 +9,7 @@
    <children>
       <ImageView fitHeight="360.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../assets/gui/score_board.png" />
+            <Image url="@../../assets/gui/gameplay/score_board.png" />
          </image>
       </ImageView>
       <StackPane fx:id="points0" layoutX="34.1" layoutY="321.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />

@@ -62,7 +62,7 @@
                      <children>
                         <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                              <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
                            </image>
                            <styleClass>
                               <String fx:value="card" />
@@ -79,7 +79,7 @@
                      <children>
                         <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                              <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
                            </image>
                            <styleClass>
                               <String fx:value="card" />
@@ -92,7 +92,7 @@
                      <children>
                         <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                              <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
                            </image>
                            <styleClass>
                               <String fx:value="card" />
@@ -116,7 +116,7 @@
                      <children>
                         <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                              <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
                            </image>
                            <styleClass>
                               <String fx:value="card" />
@@ -129,7 +129,7 @@
                      <children>
                         <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                              <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
                            </image>
                            <styleClass>
                               <String fx:value="card" />
@@ -146,7 +146,7 @@
                      <children>
                         <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                              <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
                            </image>
                            <styleClass>
                               <String fx:value="card" />
@@ -162,6 +162,37 @@
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </padding>
       </HBox>
+      <StackPane fx:id="rulesButton" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="hex-button" translateX="-68.5" translateY="70.0" StackPane.alignment="TOP_RIGHT">
+         <children>
+            <Polygon fill="#cacca0" focusTraversable="true" layoutX="108.0" layoutY="121.0" stroke="#573b21" strokeLineCap="ROUND" strokeType="OUTSIDE" strokeWidth="3.0" styleClass="polygon">
+               <points>
+                  <Double fx:value="0.0" />
+                  <Double fx:value="-25.0" />
+                  <Double fx:value="-22.0" />
+                  <Double fx:value="-13.0" />
+                  <Double fx:value="-22.0" />
+                  <Double fx:value="12.0" />
+                  <Double fx:value="0.0" />
+                  <Double fx:value="25.0" />
+                  <Double fx:value="22.0" />
+                  <Double fx:value="13.0" />
+                  <Double fx:value="22.0" />
+                  <Double fx:value="-12.0" />
+               </points>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Polygon>
+            <ImageView fitHeight="18.0" fitWidth="18.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/gui/icons/open-book.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+      </StackPane>
       <VBox fx:id="objectivesCardGroup" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" styleClass="card_group" translateX="30.0" translateY="-65.0" StackPane.alignment="CENTER_LEFT">
          <StackPane.margin>
             <Insets />
@@ -185,7 +216,7 @@
       <StackPane fx:id="centerContentPane" maxHeight="400.0" maxWidth="900.0" minHeight="400.0" minWidth="900.0" prefHeight="400.0" prefWidth="900.0" translateX="-45.0" />
       <StackPane fx:id="otherPlayersArea" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" pickOnBounds="false" translateX="-260.0" StackPane.alignment="CENTER_RIGHT">
          <children>
-            <VBox fx:id="playersBox" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" styleClass="card_group">
+            <VBox fx:id="playersBox" maxHeight="-Infinity" maxWidth="-Infinity" spacing="15.0" styleClass="card_group">
                <children>
                   <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" snapToPixel="false">
                      <children>
@@ -253,7 +284,7 @@
                   </StackPane>
                </children>
                <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
             </VBox>
          </children>
@@ -280,7 +311,7 @@
                      <children>
                         <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                              <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
                            </image>
                            <styleClass>
                               <String fx:value="card" />
@@ -304,7 +335,7 @@
                            <children>
                               <ImageView id="cardImage" fx:id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                                    <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
                                  </image>
                                  <styleClass>
                                     <String fx:value="card" />
@@ -322,7 +353,7 @@
                            <children>
                               <ImageView id="cardImage" fx:id="cardImage1" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                                    <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
                                  </image>
                                  <styleClass>
                                     <String fx:value="card" />
@@ -340,7 +371,7 @@
                            <children>
                               <ImageView id="cardImage" fx:id="cardImage2" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../assets/gui/cards/fronts/resource_fungi_1_front.png" />
+                                    <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
                                  </image>
                                  <styleClass>
                                     <String fx:value="card" />
@@ -431,30 +462,6 @@
                   </VBox>
                </children>
             </StackPane>
-         </children>
-      </StackPane>
-      <StackPane alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="73.0" prefWidth="66.0" translateX="680.0" translateY="70.0" StackPane.alignment="TOP_CENTER">
-         <children>
-            <Button fx:id="showMoreButton" mnemonicParsing="false" onAction="#showMore" prefHeight="37.0" prefWidth="62.0" styleClass="transparent" />
-            <ImageView fitHeight="69.0" fitWidth="59.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateX="4.0">
-               <image>
-                  <Image url="@../../assets/gui/icons/ellipsis.png" />
-               </image>
-            </ImageView>
-         </children>
-      </StackPane>
-      <StackPane fx:id="more" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #573B21; -fx-border-radius: 13; -fx-border-width: 3;" translateX="613.0" translateY="125.0" visible="false" StackPane.alignment="TOP_CENTER">
-         <children>
-            <Rectangle fill="#b38c44" height="18.0" rotate="135.0" stroke="#573b21" strokeType="INSIDE" strokeWidth="3.0" translateX="70.0" translateY="-45.0" width="19.0" />
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="94.0" prefWidth="205.0" style="-fx-background-color: #B38C44; -fx-background-radius: 10;">
-               <children>
-                  <Button fx:id="rulesButton" mnemonicParsing="false" onAction="#showRules" prefHeight="110.0" prefWidth="205.0" styleClass="transparent" text="Rules">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Button>
-               </children>
-            </VBox>
          </children>
       </StackPane>
    </children>
