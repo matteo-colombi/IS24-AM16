@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers.elements;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
+import it.polimi.ingsw.am16.client.view.gui.events.ErrorEvent;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -78,6 +79,28 @@ public class ErrorController {
     }
 
     //TODO refactor these to a single method with a switch?
+
+    public void show(ErrorEvent e){
+        this.errorText.setText(e.getErrorMsg());
+        switch(e.errorType){
+            case JOIN_ERROR:
+                //maybe make it go to the games list instead?
+                this.buttonText.setText("Home");
+                buttonIcon.setImage(new Image(getClass().getResource("/assets/gui/icons/home.png").toExternalForm()));
+                errorButton.setOnAction(this::goHome);
+                break;
+            case CONNECTION_DEAD:
+                this.buttonText.setText("Quit");
+                buttonIcon.setImage(new Image(getClass().getResource("/assets/gui/icons/door.png").toExternalForm()));
+                errorButton.setOnAction(this::quit);
+                break;
+            case OTHER_PLAYER_DISCONNECTED:
+                this.buttonText.setText("Home");
+                buttonIcon.setImage(new Image(getClass().getResource("/assets/gui/icons/home.png").toExternalForm()));
+                errorButton.setOnAction(this::goHome);
+                break;
+        }
+    }
 
 
 }
