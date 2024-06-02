@@ -92,6 +92,11 @@ public final class FilePaths {
     public static final String GUI_ELEMENTS = GUI_FXML + "/elements";
 
     /**
+     * The path for the GUI rulebook pages.
+     */
+    public static final String GUI_RULEBOOK = GUI_ASSETS + "/rulebook";
+
+    /**
      * The path for JSON files.
      */
     public static final String JSON = "/json";

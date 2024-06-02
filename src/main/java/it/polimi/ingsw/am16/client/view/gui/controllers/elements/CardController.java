@@ -1,7 +1,7 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers.elements;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
-import it.polimi.ingsw.am16.client.view.gui.util.GUICardAssetRegistry;
+import it.polimi.ingsw.am16.client.view.gui.util.GUIAssetRegistry;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
 import it.polimi.ingsw.am16.common.model.cards.Card;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
@@ -67,7 +67,7 @@ public class CardController {
     public void setCardAndShowSide(Card card, SideType side) {
         this.card = card;
         this.currSide = side;
-        String assetPath = GUICardAssetRegistry.getAssetName(this.card.getName(), side);
+        String assetPath = GUIAssetRegistry.getAssetName(this.card.getName(), side);
         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(assetPath)), cardImage.getFitWidth()*1.3, cardImage.getFitHeight()*1.3, true, true);
         switch (side) {
             case FRONT -> front = image;
@@ -79,9 +79,9 @@ public class CardController {
 
     public void setCard(Card card) {
         this.card = card;
-        String assetPathFront = GUICardAssetRegistry.getAssetName(card.getName(), SideType.FRONT);
+        String assetPathFront = GUIAssetRegistry.getAssetName(card.getName(), SideType.FRONT);
         front = new Image(Objects.requireNonNull(getClass().getResourceAsStream(assetPathFront)), cardImage.getFitWidth()*1.3, cardImage.getFitHeight()*1.3, true, true);
-        String assetPathBack = GUICardAssetRegistry.getAssetName(card.getName(), SideType.BACK);
+        String assetPathBack = GUIAssetRegistry.getAssetName(card.getName(), SideType.BACK);
         back = new Image(Objects.requireNonNull(getClass().getResourceAsStream(assetPathBack)), cardImage.getFitWidth()*1.3, cardImage.getFitHeight()*1.3, true, true);
     }
 

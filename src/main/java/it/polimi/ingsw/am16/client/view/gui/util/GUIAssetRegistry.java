@@ -3,7 +3,13 @@ package it.polimi.ingsw.am16.client.view.gui.util;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.util.FilePaths;
 
-public class GUICardAssetRegistry {
+import java.util.ArrayList;
+import java.util.List;
+
+public class GUIAssetRegistry {
+
+    private GUIAssetRegistry() {}
+
     public static String getAssetName(String cardName, SideType side) {
         switch (side) {
             case FRONT -> {
@@ -21,5 +27,17 @@ public class GUICardAssetRegistry {
             }
         }
         throw new RuntimeException("Unknown card name: " + cardName);
+    }
+
+    public static List<String> getGUIRulebookPaths() {
+        List<String> paths = new ArrayList<>();
+
+        final int rulebookPageNum = 12;
+
+        for(int i = 1; i<=rulebookPageNum; i++) {
+            paths.add(String.format("%s/rulebook-%d.png", FilePaths.GUI_RULEBOOK, i));
+        }
+
+        return paths;
     }
 }
