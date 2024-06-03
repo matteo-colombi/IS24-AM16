@@ -32,6 +32,7 @@ public class PaviaScreenController {
                 e.printStackTrace();
             }
         }
+        paviaBurns.getMediaPlayer().seek(paviaBurns.getMediaPlayer().getStartTime());
         paviaBurns.getMediaPlayer().play();
     }
 
