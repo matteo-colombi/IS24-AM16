@@ -65,7 +65,7 @@ public class GUIEventTypes {
 
     public static final EventType<TurnEvent> TURN_EVENT = new EventType<>("TURN_EVENT");
 
-    public static final EventType<SetWinnersEvent> SET_WINNERS_EVENT = new EventType<>("SET_WINNERS_EVENT");
+    public static final EventType<SetEndGameInfoEvent> SET_END_GAME_INFO_EVENT = new EventType<>("SET_END_GAME_INFO_EVENT");
 
     public static final EventType<AddChatMessagesEvent> ADD_CHAT_MESSAGES_EVENT = new EventType<>("ADD_CHAT_MESSAGES_EVENT");
 

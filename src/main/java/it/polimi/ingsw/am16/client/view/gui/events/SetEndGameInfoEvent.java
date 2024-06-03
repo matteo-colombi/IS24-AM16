@@ -7,7 +7,7 @@ import java.io.Serial;
 import java.util.List;
 import java.util.Map;
 
-public class SetWinnersEvent extends Event {
+public class SetEndGameInfoEvent extends Event {
 
     @Serial
     private static final long serialVersionUID = -2539754234054233423L;
@@ -15,8 +15,8 @@ public class SetWinnersEvent extends Event {
     private final List<String> winnerUsernames;
     private final Map<String, ObjectiveCard> personalObjectives;
 
-    public SetWinnersEvent(List<String> winnerUsernames, Map<String, ObjectiveCard> personalObjectives) {
-        super(GUIEventTypes.SET_WINNERS_EVENT);
+    public SetEndGameInfoEvent(List<String> winnerUsernames, Map<String, ObjectiveCard> personalObjectives) {
+        super(GUIEventTypes.SET_END_GAME_INFO_EVENT);
         this.winnerUsernames = winnerUsernames;
         this.personalObjectives = personalObjectives;
     }

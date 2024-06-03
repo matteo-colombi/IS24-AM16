@@ -751,7 +751,7 @@ public class PlayScreenController {
 
         root.addEventFilter(GUIEventTypes.NOTIFY_DONT_DRAW_EVENT, e -> notifyDontDraw());
 
-        root.addEventFilter(GUIEventTypes.SET_WINNERS_EVENT, e -> setWinners(e.getWinnerUsernames()));
+        root.addEventFilter(GUIEventTypes.SET_END_GAME_INFO_EVENT, e -> setWinners(e.getWinnerUsernames()));
 
         root.addEventFilter(GUIEventTypes.SET_START_ORDER_EVENT, e -> setStartOrder(e.getUsernames()));
 

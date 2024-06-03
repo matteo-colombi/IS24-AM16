@@ -14,12 +14,12 @@
    <children>
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" translateY="50.0" StackPane.alignment="TOP_CENTER">
          <children>
-            <Text fill="#922790" strokeType="OUTSIDE" strokeWidth="0.0" text="The winner is:">
+            <Text fx:id="winnersTitleText" fill="#922790" strokeType="OUTSIDE" strokeWidth="0.0" text="The winner is:">
                <font>
                   <Font name="System Bold Italic" size="64.0" />
                </font>
             </Text>
-            <Text fx:id="winnerText" strokeType="OUTSIDE" strokeWidth="0.0" text="Eolo">
+            <Text fx:id="winnersText" strokeType="OUTSIDE" strokeWidth="0.0" text="Eolo">
                <font>
                   <Font name="System Italic" size="48.0" />
                </font>

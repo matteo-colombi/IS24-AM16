@@ -445,7 +445,7 @@ public class CodexGUI extends Application implements ViewInterface {
 
     @Override
     public synchronized void setWinners(List<String> winnerUsernames, Map<String, ObjectiveCard> personalObjectives) {
-        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetWinnersEvent(winnerUsernames, personalObjectives)));
+        Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetEndGameInfoEvent(winnerUsernames, personalObjectives)));
     }
 
     @Override

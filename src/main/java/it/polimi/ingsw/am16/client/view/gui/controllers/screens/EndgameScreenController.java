@@ -3,6 +3,7 @@ package it.polimi.ingsw.am16.client.view.gui.controllers.screens;
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
+import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
@@ -18,7 +19,9 @@ public class EndgameScreenController {
     @FXML
     public StackPane root;
     @FXML
-    public Text winnerText;
+    public Text winnersTitleText;
+    @FXML
+    public Text winnersText;
     @FXML
     public VBox playerCol;
     @FXML
@@ -45,6 +48,32 @@ public class EndgameScreenController {
         totalPoints = new HashMap<>();
     }
 
+    private void setWinners(List<String> winnerUsernames) {
+        String winners = String.join(", ", winnerUsernames);
+
+        if (winnerUsernames.size() == 1) {
+            winnersTitleText.setText("The winner is:");
+        } else {
+            winnersTitleText.setText("The winners are:");
+        }
+
+        winnersText.setText(winners);
+    }
+
+    private void setPersonalObjectives(Map<String, ObjectiveCard> personalObjectives) {
+        //TODO
+    }
+
+    private void setPoints(String username, int objPoints) {
+        gamePoints.put(username, guiState.getGamePoints(username));
+        objectivePoints.put(username, objPoints);
+        totalPoints.put(username, gamePoints.get(username) + objectivePoints.get(username));
+
+        if (objectivePoints.keySet().size() == guiState.getNumPlayers()) {
+            evaluate();
+        }
+    }
+
     private void evaluate() {
         List<String> sortedUsernames = this.guiState.getPlayerUsernames()
                 .stream()
@@ -56,8 +85,6 @@ public class EndgameScreenController {
                             }
                         }
                 ).toList().reversed();
-
-        winnerText.setText(sortedUsernames.getFirst());
 
         for (String username : sortedUsernames) {
             Text playerText = new Text(username);
@@ -113,17 +140,11 @@ public class EndgameScreenController {
             errorEvent.consume();
         });
 
-        root.addEventFilter(GUIEventTypes.SET_OBJECTIVE_POINTS_EVENT, e -> {
-            String username = e.getUsername();
-            int objPoints = e.getObjectivePoints();
-
-            gamePoints.put(username, guiState.getGamePoints(username));
-            objectivePoints.put(username, objPoints);
-            totalPoints.put(username, gamePoints.get(username) + objectivePoints.get(username));
-
-            if (objectivePoints.keySet().size() == guiState.getNumPlayers()) {
-                evaluate();
-            }
+        root.addEventFilter(GUIEventTypes.SET_END_GAME_INFO_EVENT, e -> {
+            setWinners(e.getWinnerUsernames());
+            setPersonalObjectives(e.getPersonalObjectives());
         });
+
+        root.addEventFilter(GUIEventTypes.SET_OBJECTIVE_POINTS_EVENT, e -> setPoints(e.getUsername(), e.getObjectivePoints()));
     }
 }
