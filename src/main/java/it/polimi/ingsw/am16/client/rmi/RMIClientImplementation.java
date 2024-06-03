@@ -232,6 +232,7 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
 
     @Override
     public void setWinners(List<String> winnerUsernames, Map<String, ObjectiveCard> personalObjectives) throws RemoteException {
+        serverInterface.leaveGame(true);
         view.setWinners(winnerUsernames, personalObjectives);
     }
 

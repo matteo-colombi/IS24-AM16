@@ -563,6 +563,9 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     @Override
     public void setWinners(List<String> winnerUsernames, Map<String, ObjectiveCard> personalObjectives) {
+        gameController = null;
+        username = null;
+
         TCPMessage tcpMessage = new TCPMessage(MessageType.SET_WINNERS, new SetWinners(winnerUsernames, personalObjectives));
         sendTCPMessage(tcpMessage);
     }
