@@ -444,6 +444,11 @@ public class CLIInputManager implements Runnable {
                     System.out.println("Unknown user: \"" + receiverUsername + "\"");
                     return;
                 }
+                if (cliView.getUsername().equals(receiverUsername)) {
+                    System.out.println("You can't whisper to yourself!");
+                    return;
+                }
+
                 String text = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
 
                 try {

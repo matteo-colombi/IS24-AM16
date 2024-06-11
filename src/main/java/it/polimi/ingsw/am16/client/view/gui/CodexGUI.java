@@ -224,19 +224,6 @@ public class CodexGUI extends Application implements ViewInterface {
     }
 
     /**
-     * Switches to the credits screen.
-     */
-    public void switchToCreditsScreen() {
-        FXMLLoader creditsScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/credits-screen.fxml"));
-        try {
-            Parent creditsScreen = creditsScreenLoader.load();
-            stage.getScene().setRoot(creditsScreen);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Switches to the endgame screen.
      */
     public void switchToEndgameScreen() {
@@ -250,19 +237,6 @@ public class CodexGUI extends Application implements ViewInterface {
     }
 
     /**
-     * Switches to the Pavia screen.
-     */
-    public void switchToPaviaScreen() {
-        FXMLLoader paviaScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/pavia-screen.fxml"));
-        try {
-            Parent paviaScreen = paviaScreenLoader.load();
-            stage.getScene().setRoot(paviaScreen);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
      * Switches to the rules screen.
      */
     public void switchToRulesScreen() {
@@ -270,6 +244,19 @@ public class CodexGUI extends Application implements ViewInterface {
         try {
             Parent rulesScreen = rulesScreenLoader.load();
             stage.getScene().setRoot(rulesScreen);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Switches to the credits screen.
+     */
+    public void switchToCreditsScreen() {
+        FXMLLoader creditsScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/credits-screen.fxml"));
+        try {
+            Parent creditsScreen = creditsScreenLoader.load();
+            stage.getScene().setRoot(creditsScreen);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

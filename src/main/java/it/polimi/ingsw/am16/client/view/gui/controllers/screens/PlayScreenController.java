@@ -10,6 +10,7 @@ import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.util.FilePaths;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import javafx.application.Platform;
@@ -24,6 +25,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 
 import java.rmi.RemoteException;
@@ -61,6 +65,8 @@ public class PlayScreenController {
     private Button chatFilterButton;
     @FXML
     private VBox chatFilterNames;
+    @FXML
+    public MediaView rick;
     @FXML
     private VBox objectivesCardGroup;
     @FXML
@@ -525,6 +531,41 @@ public class PlayScreenController {
 
             chatMessages.getChildren().addLast(messageText);
             chatScrollPane.setVvalue(1);
+
+            if (message.text().equals("rick")) {
+                if (rick.getMediaPlayer() == null) {
+                    try {
+                        String filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/rick.mp4")).toURI().toString();
+                        Media media = new Media(filename);
+                        MediaPlayer mediaPlayer = new MediaPlayer(media);
+                        rick.setMediaPlayer(mediaPlayer);
+
+                        //FIXME It's probably not possible to load the file multiple times with multiple game instances on the same machine
+                        rick.setOnError(mediaErrorEvent -> {
+                            System.out.println("error");
+                            System.out.println(filename);
+                            System.out.println(media);
+                            System.out.println(mediaPlayer);
+                            System.out.println(rick.getMediaPlayer());
+                            System.out.println(mediaErrorEvent);
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                rick.setVisible(true);
+                rick.requestFocus();
+                rick.getMediaPlayer().seek(rick.getMediaPlayer().getStartTime());
+                rick.getMediaPlayer().setOnEndOfMedia(() -> {
+                    rick.setVisible(false);
+                });
+                rick.getMediaPlayer().setOnError(() -> {
+                    System.err.println("error");
+                    rick.setVisible(false);
+                });
+                rick.getMediaPlayer().play();
+            }
         }
     }
 

@@ -36,6 +36,7 @@ public class WelcomeScreenController {
 
     @FXML
     private MediaView createSound;
+
     @FXML
     private MediaView joinSound;
 
@@ -172,17 +173,6 @@ public class WelcomeScreenController {
     public void showCredits(ActionEvent ignored) {
         CodexGUI.getGUI().getGuiState().setUsername(usernameField.getText());
         CodexGUI.getGUI().switchToCreditsScreen();
-    }
-
-    /**
-     * Shows the Pavia screen.
-     *
-     * @param ignored The action event (which is ignored).
-     */
-    @FXML
-    public void burnPavia(ActionEvent ignored) {
-        CodexGUI.getGUI().getGuiState().setUsername(usernameField.getText());
-        CodexGUI.getGUI().switchToPaviaScreen();
     }
 
     /**

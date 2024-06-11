@@ -38,7 +38,7 @@ public class CreditsScreenController implements Initializable {
     public void rick(ActionEvent ignored) {
         if (rick.getMediaPlayer() == null) {
             try {
-                String filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/rk.mp4")).toURI().toString();
+                String filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/rick.mp4")).toURI().toString();
                 Media media = new Media(filename);
                 MediaPlayer mediaPlayer = new MediaPlayer(media);
                 rick.setMediaPlayer(mediaPlayer);

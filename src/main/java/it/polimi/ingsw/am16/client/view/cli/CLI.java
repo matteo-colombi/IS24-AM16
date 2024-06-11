@@ -110,6 +110,10 @@ public class CLI implements ViewInterface {
         this.inputManagerThread = new Thread(cliInputManager);
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     @Override
     public synchronized void startView(String[] args) {
         List<String> argsList = Arrays.asList(args);

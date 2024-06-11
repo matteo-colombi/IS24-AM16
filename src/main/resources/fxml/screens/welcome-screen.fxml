@@ -83,11 +83,6 @@
                               <Font size="24.0" />
                            </font>
                         </Button>
-                        <Button fx:id="paviaButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#burnPavia" prefHeight="100.0" prefWidth="200.0" styleClass="transparent" text="Pavia">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Button>
                      </children>
                   </VBox>
                </children>
