@@ -14,7 +14,11 @@ import java.rmi.registry.Registry;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Main class for the Server.
+ */
 public class Server {
+
     /**
      * Starts the server.
      *

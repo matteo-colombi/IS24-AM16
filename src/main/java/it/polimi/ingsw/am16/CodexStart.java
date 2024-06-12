@@ -7,6 +7,9 @@ import it.polimi.ingsw.am16.server.Server;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Main class of the game. Contains the <code>main</code> method.
+ */
 public class CodexStart {
 
     /**

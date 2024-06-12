@@ -26,7 +26,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * This class is the TCP client that connects to the server.
+ * This class is a Runnable that is meant to handle incoming and outgoing messages for a TCP client.
+ * This class also handles the ping routine to check that the connection with the server is still active.
  */
 public class TCPClient implements Runnable, ServerInterface {
 

@@ -5,6 +5,9 @@ import it.polimi.ingsw.am16.common.model.cards.ResourceType;
 
 import java.util.Map;
 
+/**
+ * DOCME
+ */
 public class CLIInfoTable {
 
     private final static int AMOUNT_COLUMN = 19;

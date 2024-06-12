@@ -1,5 +1,8 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
+/**
+ * DOCME
+ */
 public class CLIPositionLabelAsset {
 
     private final CLIText label;

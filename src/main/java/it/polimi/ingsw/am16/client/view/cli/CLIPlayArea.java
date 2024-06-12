@@ -11,6 +11,9 @@ import java.util.*;
 
 import static it.polimi.ingsw.am16.client.view.cli.CLIConstants.*;
 
+/**
+ * DOCME
+ */
 public class CLIPlayArea {
 
     private final List<Position> cardPlacementOrder;

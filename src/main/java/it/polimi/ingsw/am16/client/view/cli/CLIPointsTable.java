@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * DOCME
+ */
 public class CLIPointsTable {
 
     private final static int COLOR_COLUMN = 3;

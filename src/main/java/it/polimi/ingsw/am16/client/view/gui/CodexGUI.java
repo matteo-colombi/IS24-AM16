@@ -144,7 +144,8 @@ public class CodexGUI extends Application implements ViewInterface {
 
         stage.setFullScreen(true);
         stage.setFullScreenExitHint("");
-        stage.setResizable(false);
+
+        stage.setResizable(true);
         stage.getIcons().add(icon);
         stage.setTitle("Codex Naturalis");
         stage.setScene(scene);
