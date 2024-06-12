@@ -524,14 +524,6 @@ public class PlayScreenController {
     private void receiveMessages(List<ChatMessage> messages) {
         guiState.addNewMessages(messages);
         for (ChatMessage message : messages) {
-            Text messageText = new Text();
-
-            messageText.setText(message.toString());
-            messageText.setWrappingWidth(chatMessages.getWidth() - chatMessages.getPadding().getRight());
-
-            chatMessages.getChildren().addLast(messageText);
-            chatScrollPane.setVvalue(1);
-
             if (message.text().equals("rick")) {
                 if (rick.getMediaPlayer() == null) {
                     try {
@@ -565,6 +557,14 @@ public class PlayScreenController {
                     rick.setVisible(false);
                 });
                 rick.getMediaPlayer().play();
+            } else {
+                Text messageText = new Text();
+
+                messageText.setText(message.toString());
+                messageText.setWrappingWidth(chatMessages.getWidth() - chatMessages.getPadding().getRight());
+
+                chatMessages.getChildren().addLast(messageText);
+                chatScrollPane.setVvalue(1);
             }
         }
     }
