@@ -113,6 +113,13 @@ public class EndgameScreenController {
         CodexGUI.getGUI().switchToWelcomeScreen();
     }
 
+
+    /**
+     * This method sets up and shows the error popup whenever an error occurs
+     * (and consequently, an error event is fired).
+     *
+     * @param errorEvent the fired error event
+     */
     public void showError(ErrorEvent errorEvent) {
         errorController = ElementFactory.getErrorPopup();
         GUIError error = errorFactory.getError(errorEvent.getErrorType());
