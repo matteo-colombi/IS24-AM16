@@ -1,8 +1,13 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers.screens;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
+import it.polimi.ingsw.am16.client.view.gui.controllers.elements.ErrorController;
+import it.polimi.ingsw.am16.client.view.gui.events.ErrorEvent;
 import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
+import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
+import it.polimi.ingsw.am16.client.view.gui.util.ErrorFactory;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
+import it.polimi.ingsw.am16.client.view.gui.util.guiErrors.GUIError;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.server.ServerInterface;
@@ -46,6 +51,9 @@ public class LobbyScreenController {
     private RadioButton everyoneFilter;
 
     private GUIState guiState;
+
+    private ErrorController errorController;
+    private ErrorFactory errorFactory;
 
     private ServerInterface serverInterface;
 
@@ -145,6 +153,14 @@ public class LobbyScreenController {
 
 //        chatFilterToggleGroup.selectToggle(chatFilterToggleGroup.getToggles().getFirst());
         chatBox.clear();
+    }
+
+    public void showError(ErrorEvent errorEvent) {
+        errorController = ElementFactory.getErrorPopup();
+        GUIError error = errorFactory.getError(errorEvent.getErrorType());
+        error.configurePopup(errorController);
+        errorController.setErrorText(errorEvent.getErrorMsg());
+        //TODO display the popup
     }
 
     @FXML

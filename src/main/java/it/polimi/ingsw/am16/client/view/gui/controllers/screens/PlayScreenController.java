@@ -2,9 +2,12 @@ package it.polimi.ingsw.am16.client.view.gui.controllers.screens;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.client.view.gui.controllers.elements.*;
+import it.polimi.ingsw.am16.client.view.gui.events.ErrorEvent;
 import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
 import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
+import it.polimi.ingsw.am16.client.view.gui.util.ErrorFactory;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
+import it.polimi.ingsw.am16.client.view.gui.util.guiErrors.GUIError;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.DrawType;
@@ -97,9 +100,13 @@ public class PlayScreenController {
     private CardController resourceDeck;
     private CardController goldDeck;
 
+    private ErrorFactory errorFactory;
+
     @FXML
     public void initialize() {
         registerEvents();
+
+        errorFactory = new ErrorFactory();
 
         guiState = CodexGUI.getGUI().getGuiState();
 
@@ -150,8 +157,12 @@ public class PlayScreenController {
         }
     }
 
-    public void showError(String errorMessage) {
+    public void showError(ErrorEvent errorEvent) {
         errorController = ElementFactory.getErrorPopup();
+        GUIError error = errorFactory.getError(errorEvent.getErrorType());
+        error.configurePopup(errorController);
+        errorController.setErrorText(errorEvent.getErrorMsg());
+        centerContentPane.getChildren().addLast(errorController.getRoot());
     }
 
     @FXML
@@ -527,7 +538,7 @@ public class PlayScreenController {
     }
 
     private void registerEvents() {
-        root.addEventFilter(GUIEventTypes.ERROR_EVENT, e -> showError(e.getErrorMsg()));
+        root.addEventFilter(GUIEventTypes.ERROR_EVENT, e -> showError(e));
 
         root.addEventFilter(GUIEventTypes.SET_COLOR_EVENT, e -> setPlayerColor(e.getUsername(), e.getColor()));
 

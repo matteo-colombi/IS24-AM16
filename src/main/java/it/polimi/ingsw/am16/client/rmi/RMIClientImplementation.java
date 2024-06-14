@@ -7,6 +7,7 @@ import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.util.ErrorType;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
 import it.polimi.ingsw.am16.server.rmi.WelcomeRMIServer;
@@ -246,8 +247,8 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
     }
 
     @Override
-    public void promptError(String errorMessage) throws RemoteException {
-        view.promptError(errorMessage);
+    public void promptError(String errorMessage, ErrorType errorType) throws RemoteException {
+        view.promptError(errorMessage, errorType);
     }
 
     @Override

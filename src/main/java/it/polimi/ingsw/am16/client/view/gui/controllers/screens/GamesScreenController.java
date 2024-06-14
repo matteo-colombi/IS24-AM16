@@ -1,7 +1,12 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers.screens;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
+import it.polimi.ingsw.am16.client.view.gui.controllers.elements.ErrorController;
+import it.polimi.ingsw.am16.client.view.gui.events.ErrorEvent;
 import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
+import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
+import it.polimi.ingsw.am16.client.view.gui.util.ErrorFactory;
+import it.polimi.ingsw.am16.client.view.gui.util.guiErrors.GUIError;
 import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.util.FilePaths;
 import it.polimi.ingsw.am16.server.ServerInterface;
@@ -43,6 +48,9 @@ public class GamesScreenController {
 
     @FXML
     private TextField gameIdField;
+
+    private ErrorController errorController;
+    private ErrorFactory errorFactory;
 
     @FXML
     public void initialize() {
@@ -121,13 +129,17 @@ public class GamesScreenController {
         }
     }
 
-    public void showError(String errorMessage) {
-        //TODO implement
+    public void showError(ErrorEvent errorEvent) {
+        errorController = ElementFactory.getErrorPopup();
+        GUIError error = errorFactory.getError(errorEvent.getErrorType());
+        error.configurePopup(errorController);
+        errorController.setErrorText(errorEvent.getErrorMsg());
+        //TODO display the popup
     }
 
     private void registerEvents() {
         root.addEventFilter(GUIEventTypes.ERROR_EVENT, errorEvent -> {
-            showError(errorEvent.getErrorMsg());
+            showError(errorEvent);
             errorEvent.consume();
         });
 
