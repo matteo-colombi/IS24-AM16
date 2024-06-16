@@ -22,9 +22,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 /**
- * DOCME
- * N.B. the only parts of this class that are thread safe are the allowedCommands methods
- * Everything else should never be called by multiple threads
+ * {@link Runnable} class to manage user input in the Command Line Interface.
+ * The only parts of this class that are thread safe are the methods {@link CLIInputManager#addCommand}, {@link CLIInputManager#removeCommand}, {@link CLIInputManager#getAllowedCommands} and {@link CLIInputManager#clearCommands}.
+ * All other methods should never be called by multiple threads.
  */
 public class CLIInputManager implements Runnable {
 
@@ -34,12 +34,21 @@ public class CLIInputManager implements Runnable {
     private ServerInterface serverInterface;
     private final Set<CLICommand> allowedCommands;
 
+    /**
+     * Creates a new manager for user input.
+     * @param cliView The view that this manager's input should affect.
+     * @param inputStream The {@link InputStream} to read user input from.
+     */
     public CLIInputManager(CLI cliView, InputStream inputStream) {
         this.cliView = cliView;
         this.inputStream = inputStream;
         this.allowedCommands = new ConcurrentSkipListSet<>();
     }
 
+    /**
+     * Sets this user input manager's server interface. Used so that this manager can communicate to the server when needed.
+     * @param serverInterface The server interface.
+     */
     public void setServerInterface(ServerInterface serverInterface) {
         this.serverInterface = serverInterface;
     }
@@ -485,6 +494,11 @@ public class CLIInputManager implements Runnable {
         }
     }
 
+    /**
+     * Checks the user input against all the available commands and returns a set that contains all the commands that match.
+     * @param input The user's input.
+     * @return The set containing all commands that match the input, even partially and through aliases. Please note that if any command matches exactly, only it will be returned and not any partial matches.
+     */
     private Set<CLICommand> commandMatch(String input) {
         Set<CLICommand> filteredCommands = allowedCommands
                 .stream()
@@ -501,18 +515,32 @@ public class CLIInputManager implements Runnable {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Adds a command to the set of allowed commands.
+     * @param command The new command to add.
+     */
     public void addCommand(CLICommand command) {
         allowedCommands.add(command);
     }
 
+    /**
+     * Removes a command from the set of allowed commands.
+     * @param command The command to remove.
+     */
     public void removeCommand(CLICommand command) {
         allowedCommands.remove(command);
     }
 
+    /**
+     * @return The set of currently allowed commands in this user input manager.
+     */
     public Set<CLICommand> getAllowedCommands() {
         return allowedCommands;
     }
 
+    /**
+     * Clears the set of allowed commands. After this method is run, no commands will be accepted unless they are added back with the {@link CLIInputManager#addCommand} method.
+     */
     public void clearCommands() {
         allowedCommands.clear();
     }

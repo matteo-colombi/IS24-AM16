@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DOCME
+ * Utility class to manage a table to display information about the points that each player has scored.
  */
 public class CLIPointsTable {
 
@@ -21,12 +21,21 @@ public class CLIPointsTable {
 
     private final CLIText pointsTableAsset;
 
+    /**
+     * Creates a new points table and initializes it with the given information.
+     * @param playerUsernames A list containing the player's usernames.
+     * @param playerColors A map containing each player's color.
+     * @param gamePoints A map containing each player's amount of game points, which are points scored with resource and gold cards (not objectives).
+     * @param objectivePoints A map containing each player's amount of objective points, which are points scored with objective cards.
+     */
     public CLIPointsTable(List<String> playerUsernames, Map<String, PlayerColor> playerColors, Map<String, Integer> gamePoints, Map<String, Integer> objectivePoints) {
         this.playerUsernames = playerUsernames;
         this.playerColors = playerColors;
 
         List<String> pointsTableComponents = new ArrayList<>();
 
+        //This is horrible but kind of necessary since the height of this component is dynamic.
+        //Technically we could make a CLIText for the top and bottom margins, one for the center bits and then merge them, but it's not worth it.
         pointsTableComponents.add("╔══════════════════════╗");
 
         for (int i = 0; i < playerUsernames.size(); i++) {
@@ -40,6 +49,11 @@ public class CLIPointsTable {
         update(gamePoints, objectivePoints);
     }
 
+    /**
+     * Updates this points table with the new amounts of points.
+     * @param gamePoints The new amounts of each player's game points.
+     * @param objectivePoints The new amounts of each player's objective points.
+     */
     public void update(Map<String, Integer> gamePoints, Map<String, Integer> objectivePoints) {
         Map<String, Integer> totalPoints = new HashMap<>();
 
@@ -72,6 +86,9 @@ public class CLIPointsTable {
         }
     }
 
+    /**
+     * @return A print-ready {@link CLIText} representation of this points table.
+     */
     public CLIText getText() {
         return this.pointsTableAsset;
     }
