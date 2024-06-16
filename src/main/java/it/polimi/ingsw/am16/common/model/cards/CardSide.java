@@ -41,9 +41,7 @@ public class CardSide implements Serializable {
          */
         @SuppressWarnings("unused") //Suppressing because it's being used by the JSON files, but it goes undetected.
         @JsonProperty("static")
-        STATIC_POLICY(playArea -> {
-            return 1;
-        }),
+        STATIC_POLICY(playArea -> 1),
 
         /**
          * Used by cards that give a proportional amount of points based on the number of covered corners.

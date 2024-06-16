@@ -34,8 +34,7 @@ public class CardRegistry {
             try {
                 instance = new CardRegistry();
             } catch (IOException e) {
-                e.printStackTrace();
-                System.err.println("Error initializing card registry: IOException");
+                System.err.println("Error initializing card registry: " + e.getMessage());
             }
         }
         return instance;

@@ -15,6 +15,7 @@ public class RNG extends Random {
     private static final long serialVersionUID = 1354633369837069111L;
 
     private static RNG instance = null;
+    @SuppressWarnings("SpellCheckingInspection")
     private static final char[] symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
 
     /**

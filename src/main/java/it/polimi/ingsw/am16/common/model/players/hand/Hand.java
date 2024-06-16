@@ -85,7 +85,7 @@ public class Hand implements HandModel{
     }
 
     /**
-     * Curstom deserializer for {@link Hand}. Used to reload entire hands from JSON files.
+     * Custom deserializer for {@link Hand}. Used to reload entire hands from JSON files.
      */
     public static class Deserializer extends StdDeserializer<Hand> {
 

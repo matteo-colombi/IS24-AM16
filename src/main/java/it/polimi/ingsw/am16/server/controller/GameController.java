@@ -425,7 +425,7 @@ public class GameController {
             virtualView.promptError(username, "Illegal draw.");
             return;
         } catch (UnexpectedActionException e) {
-            //TODO handle it
+            //Silently return. This should not happen unless there are hacked clients or there are connection issues which will be caught in other ways.
             return;
         }
 
