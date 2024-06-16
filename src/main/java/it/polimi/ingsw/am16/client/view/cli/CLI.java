@@ -583,7 +583,7 @@ public class CLI implements ViewInterface {
     }
 
     /**
-     * Prints the player's hand in a user friendly format.
+     * Prints the player's hand in a user-friendly format.
      */
     public synchronized void printHand() {
         if (this.hand.isEmpty()) {
@@ -998,7 +998,7 @@ public class CLI implements ViewInterface {
         System.out.println();
         CLIText rick = CLIAssetRegistry.getCLIAssetRegistry().getRick();
         rick.printText();
-        System.out.println("You have been rickrolled!");
+        System.out.println("You have been rick-rolled!");
         printCommandPrompt();
     }
 

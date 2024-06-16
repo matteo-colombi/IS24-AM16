@@ -1,6 +1,5 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
-import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
@@ -16,7 +15,6 @@ import java.io.InputStreamReader;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
@@ -64,7 +62,6 @@ public class CLIInputManager implements Runnable {
             }
         } catch (IOException e) {
             System.err.println("An error occured.");
-            e.printStackTrace();
         }
 
         System.exit(0);
@@ -79,17 +76,6 @@ public class CLIInputManager implements Runnable {
         }
 
         String inputCommand = args[0].toLowerCase();
-
-        //FIXME remove, just for testing
-        if (inputCommand.equals("test")) {
-            Map<String, ObjectiveCard> personalObjectives = Map.of(
-                    "teo", CardRegistry.getRegistry().getObjectiveCardFromName("objective_resources_3"),
-                    "xLorde", CardRegistry.getRegistry().getObjectiveCardFromName("objective_object_1"),
-                    "andre", CardRegistry.getRegistry().getObjectiveCardFromName("objective_pattern_3"),
-                    "l2c", CardRegistry.getRegistry().getObjectiveCardFromName("objective_pattern_8")
-            );
-            cliView.printPersonalObjectives(personalObjectives);
-        }
 
         Set<CLICommand> matchingCommands = commandMatch(inputCommand);
 
@@ -108,9 +94,7 @@ public class CLIInputManager implements Runnable {
         CLICommand command = matchingCommands.iterator().next();
 
         switch (command) {
-            case HELP -> {
-                cliView.printHelp();
-            }
+            case HELP -> cliView.printHelp();
             case GET_GAMES -> {
                 try {
                     serverInterface.getGames();
@@ -145,8 +129,7 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.createGame(username, numPlayers);
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("An error occurred while creating the game. Communication with the server unsuccessful");
                 }
             }
             case JOIN_GAME -> {
@@ -167,22 +150,13 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.joinGame(gameId, username);
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("An error occurred while joining the game. Communication with the server unsuccessful");
                 }
             }
-            case ID -> {
-                cliView.printGameId();
-            }
-            case PLAYERS -> {
-                cliView.printPlayers();
-            }
-            case DRAW_OPTIONS -> {
-                cliView.printDrawOptions();
-            }
-            case COMMON_OBJECTIVES -> {
-                cliView.printCommonObjectives();
-            }
+            case ID -> cliView.printGameId();
+            case PLAYERS -> cliView.printPlayers();
+            case DRAW_OPTIONS -> cliView.printDrawOptions();
+            case COMMON_OBJECTIVES -> cliView.printCommonObjectives();
             case STARTER -> {
                 if (args.length == 1) {
                     cliView.printStarterCard();
@@ -204,8 +178,7 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.setStarterCard(sideType);
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
             }
             case COLOR -> {
@@ -232,8 +205,7 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.setColor(color);
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
             }
             case OBJECTIVE -> {
@@ -252,13 +224,10 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.setPersonalObjective(objectiveCard);
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
             }
-            case OBJECTIVES -> {
-                cliView.printAllObjectives();
-            }
+            case OBJECTIVES -> cliView.printAllObjectives();
             case HAND -> {
                 if (args.length == 1) {
                     cliView.printHand();
@@ -344,8 +313,7 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.playCard(playedCard, sideType, new Position(x, y));
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
             }
             case DRAW_CARD -> {
@@ -389,8 +357,7 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.drawCard(drawType);
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
 
                 cliView.printCommandPrompt();
@@ -416,12 +383,8 @@ public class CLIInputManager implements Runnable {
 
                 cliView.printCommandPrompt();
             }
-            case POINTS -> {
-                cliView.printPoints();
-            }
-            case WINNERS -> {
-                cliView.printWinners();
-            }
+            case POINTS -> cliView.printPoints();
+            case WINNERS -> cliView.printWinners();
             case CHAT -> {
                 if (args.length == 1) {
                     cliView.printUnreadChat();
@@ -431,16 +394,13 @@ public class CLIInputManager implements Runnable {
                     try {
                         serverInterface.sendChatMessage(text);
                     } catch (RemoteException e) {
-                        //TODO handle it
-                        e.printStackTrace();
+                        System.err.println("Communication with the server unsuccessful");
                     }
 
                     cliView.printCommandPrompt();
                 }
             }
-            case CHAT_HISTORY -> {
-                cliView.printChatHistory();
-            }
+            case CHAT_HISTORY -> cliView.printChatHistory();
             case WHISPER -> {
                 if (args.length < 3) {
                     System.out.println("Invalid arguments. Usage: " + CLICommand.WHISPER.getUsage());
@@ -463,8 +423,7 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.sendChatMessage(text, receiverUsername);
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
 
                 cliView.printCommandPrompt();
@@ -476,8 +435,7 @@ public class CLIInputManager implements Runnable {
                     cliView.resetToStartup();
                     System.out.println("Game left.");
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
                 cliView.printCommandPrompt();
             }
@@ -486,8 +444,7 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.disconnect();
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
                 running = false;
             }
