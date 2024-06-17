@@ -6,7 +6,6 @@ import it.polimi.ingsw.am16.client.view.gui.util.guiErrors.GUIInnocuousError;
 import it.polimi.ingsw.am16.client.view.gui.util.guiErrors.GUIQuitError;
 import it.polimi.ingsw.am16.common.util.ErrorType;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**

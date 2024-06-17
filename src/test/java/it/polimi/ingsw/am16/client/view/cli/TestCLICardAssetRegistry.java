@@ -3,8 +3,6 @@ package it.polimi.ingsw.am16.client.view.cli;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-
 class TestCLICardAssetRegistry {
     @Test
     void testCliAssetRegistry() {

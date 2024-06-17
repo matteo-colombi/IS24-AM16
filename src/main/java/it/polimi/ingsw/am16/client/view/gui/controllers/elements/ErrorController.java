@@ -5,7 +5,6 @@ import it.polimi.ingsw.am16.client.view.gui.util.Popup;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;

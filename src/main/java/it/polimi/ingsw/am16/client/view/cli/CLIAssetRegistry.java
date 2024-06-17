@@ -23,7 +23,6 @@ public class CLIAssetRegistry {
     private final CLIText positionLabel;
     private final CLIText infoTable;
     private final CLIText banner;
-    private final CLIText rick;
     private final CLIText finalRoundLabel;
 
     private final Map<RestrictedCard, CLIText> restrictedCliCards;
@@ -62,10 +61,6 @@ public class CLIAssetRegistry {
 
         try (InputStream f = CLIAssetRegistry.class.getResourceAsStream(FilePaths.CLI_FINAL_ROUND_LABEL)) {
             finalRoundLabel = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
-        }
-
-        try (InputStream f = CLIAssetRegistry.class.getResourceAsStream(FilePaths.CLI_ASSETS + "/rick.json")) {
-            rick = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
         }
     }
 
@@ -127,12 +122,5 @@ public class CLIAssetRegistry {
      */
     public CLIText getFinalRoundLabel() {
         return finalRoundLabel;
-    }
-
-    /**
-     * You saw nothing.
-     */
-    public CLIText getRick() {
-        return rick;
     }
 }

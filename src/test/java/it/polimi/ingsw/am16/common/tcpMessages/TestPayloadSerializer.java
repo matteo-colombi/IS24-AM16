@@ -3,11 +3,7 @@ package it.polimi.ingsw.am16.common.tcpMessages;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
-import it.polimi.ingsw.am16.common.model.cards.PlayableCardType;
-import it.polimi.ingsw.am16.common.model.cards.ResourceType;
-import it.polimi.ingsw.am16.common.tcpMessages.response.AddCardToHand;
 import it.polimi.ingsw.am16.common.tcpMessages.response.SetCommonCards;
-import it.polimi.ingsw.am16.common.tcpMessages.response.SetDeckTopType;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import org.junit.jupiter.api.Test;
 
