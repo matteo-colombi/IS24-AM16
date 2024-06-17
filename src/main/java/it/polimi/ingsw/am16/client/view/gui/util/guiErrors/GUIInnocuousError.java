@@ -8,7 +8,7 @@ public class GUIInnocuousError implements GUIError{
     /**
      * This implementation is meant to be used when the error doesn't require the user
      * to change screen (e.g. an illegal move is performed during a game),
-     * and thus won't perform any action
+     * and thus won't require the error controller to perform any action
      * @param errorController The error controller.
      */
     @Override

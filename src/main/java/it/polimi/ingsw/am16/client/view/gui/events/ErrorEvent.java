@@ -32,6 +32,11 @@ public class ErrorEvent extends Event {
         return errorMsg;
     }
 
+    /**
+     *
+     * @return The type of error that occurred.
+     */
+
     public ErrorType getErrorType() {
         return errorType;
     }
