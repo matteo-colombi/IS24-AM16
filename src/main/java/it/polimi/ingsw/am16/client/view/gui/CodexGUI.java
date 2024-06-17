@@ -32,6 +32,7 @@ import java.util.Set;
 
 /**
  * The main class of the GUI. This class is responsible for starting the GUI and switching between the different screens.
+ * It also handles incoming calls from the server.
  */
 public class CodexGUI extends Application implements ViewInterface {
 
