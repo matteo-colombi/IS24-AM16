@@ -53,23 +53,23 @@ public class PlayerButtonController {
         }
     }
 
-    public void setHovers(OtherHandController otherHandController, final AtomicReference<OtherHandController> currentlyShowingOtherHand) {
+    public void setHovers(OtherPlayerInfoController otherPlayerInfoController, final AtomicReference<OtherPlayerInfoController> currentlyShowingOtherHand) {
         button.setOnMouseEntered(e -> {
             if (currentlyShowingOtherHand.get() == null)
-                otherHandController.getRoot().setVisible(true);
+                otherPlayerInfoController.getRoot().setVisible(true);
         });
 
         button.setOnMouseExited(e -> {
             if (currentlyShowingOtherHand.get() == null)
-                otherHandController.getRoot().setVisible(false);
+                otherPlayerInfoController.getRoot().setVisible(false);
         });
 
         setOnMouseClicked(e -> {
             if (currentlyShowingOtherHand.get() == null) {
-                otherHandController.getRoot().setVisible(true);
-                currentlyShowingOtherHand.set(otherHandController);
+                otherPlayerInfoController.getRoot().setVisible(true);
+                currentlyShowingOtherHand.set(otherPlayerInfoController);
             } else {
-                otherHandController.getRoot().setVisible(false);
+                otherPlayerInfoController.getRoot().setVisible(false);
                 currentlyShowingOtherHand.set(null);
             }
         });

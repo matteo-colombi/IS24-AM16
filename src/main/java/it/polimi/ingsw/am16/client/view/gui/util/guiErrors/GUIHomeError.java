@@ -8,7 +8,7 @@ import javafx.scene.layout.Pane;
 import java.util.Objects;
 
 /**
- * Implementation of GUIError for errors that require the user to go back to the home screen.
+ * Implementation of {@link GUIError} for errors that require the user to go back to the home screen.
  */
 public class GUIHomeError implements GUIError{
 

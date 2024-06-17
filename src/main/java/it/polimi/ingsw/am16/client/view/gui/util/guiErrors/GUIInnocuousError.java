@@ -7,6 +7,9 @@ import javafx.scene.layout.Pane;
 
 import java.util.Objects;
 
+/**
+ * Implementation of {@link GUIError} for error popups that can just be closed without further consequences.
+ */
 public class GUIInnocuousError implements GUIError{
 
     private ErrorController errorController;

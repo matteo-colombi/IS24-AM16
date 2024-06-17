@@ -104,8 +104,8 @@ public class PlayScreenController {
 
     private Map<String, PlayerButtonController> playerButtons;
 
-    private Map<String, OtherHandController> otherHandControllers;
-    private AtomicReference<OtherHandController> currentlyShowingOtherHand;
+    private Map<String, OtherPlayerInfoController> otherHandControllers;
+    private AtomicReference<OtherPlayerInfoController> currentlyShowingOtherHand;
     private PlayAreaGridController currentlyShowingPlayArea;
 
     private StarterPopupController starterPopupController;
@@ -310,7 +310,7 @@ public class PlayScreenController {
     }
 
     private void drawingCards() {
-        //TODO
+        //TODO maybe play a sound? Or just remove this if it does nothing.
     }
 
     private void setHand(List<PlayableCard> hand) {
@@ -341,12 +341,12 @@ public class PlayScreenController {
         }
         handController.setUsername(username);
         guiState.setOtherHand(username, handController);
-        OtherHandController otherHandController = otherHandControllers.get(username);
+        OtherPlayerInfoController otherPlayerInfoController = otherHandControllers.get(username);
         if (currentlyShowingPlayArea != null && currentlyShowingPlayArea.getOwnerUsername().equals(username)) {
             handSlot.getChildren().set(0, handController.getRoot());
         } else {
-            if (otherHandController != null) {
-                otherHandController.setHandController(handController);
+            if (otherPlayerInfoController != null) {
+                otherPlayerInfoController.setHandController(handController);
             }
         }
     }
@@ -517,7 +517,8 @@ public class PlayScreenController {
 
     private void notifyDontDraw() {
         guiState.setDontDraw(true);
-        //TODO create a custom popup
+        //TODO create a custom popup to signal that it's the last round.
+        //  Or maybe play a sound?
     }
 
     private void signalDeadLock(String username) {
@@ -594,25 +595,25 @@ public class PlayScreenController {
 
     private void createOtherHandHover(String username) {
         PlayerButtonController playerButton = playerButtons.get(username);
-        OtherHandController otherHandController = ElementFactory.getOtherHand();
-        otherHandController.setUsername(username);
-        otherHandControllers.put(username, otherHandController);
+        OtherPlayerInfoController otherPlayerInfoController = ElementFactory.getOtherPlayerInfo();
+        otherPlayerInfoController.setUsername(username);
+        otherHandControllers.put(username, otherPlayerInfoController);
 
-        otherHandController.getRoot().setVisible(false);
+        otherPlayerInfoController.getRoot().setVisible(false);
 
-        otherPlayersArea.getChildren().addLast(otherHandController.getRoot());
-        otherHandController.getRoot().setTranslateX(-75);
-        otherHandController.getRoot().setTranslateY(-(playersBox.getHeight() / 2 - playerButton.getRoot().getBoundsInParent().getCenterY()));
+        otherPlayersArea.getChildren().addLast(otherPlayerInfoController.getRoot());
+        otherPlayerInfoController.getRoot().setTranslateX(-75);
+        otherPlayerInfoController.getRoot().setTranslateY(-(playersBox.getHeight() / 2 - playerButton.getRoot().getBoundsInParent().getCenterY()));
 
         playerButton.getRoot().boundsInParentProperty().addListener((observable, oldValue, newValue) -> {
-            otherHandController.getRoot().setTranslateY(-(playersBox.getHeight() / 2 - newValue.getCenterY()));
+            otherPlayerInfoController.getRoot().setTranslateY(-(playersBox.getHeight() / 2 - newValue.getCenterY()));
         });
 
-        playerButton.setHovers(otherHandController, currentlyShowingOtherHand);
+        playerButton.setHovers(otherPlayerInfoController, currentlyShowingOtherHand);
         playerButton.setDisabled(false);
 
-        otherHandController.setPlayAreaButtonAction(event -> {
-            OtherHandController current = currentlyShowingOtherHand.get();
+        otherPlayerInfoController.setPlayAreaButtonAction(event -> {
+            OtherPlayerInfoController current = currentlyShowingOtherHand.get();
             if (current != null) {
                 current.getRoot().setVisible(false);
                 currentlyShowingOtherHand.set(null);
@@ -626,10 +627,10 @@ public class PlayScreenController {
         for (String u : guiState.getPlayerUsernames()) {
             if (!u.equals(username) && !u.equals(guiState.getUsername())) {
                 playerButtons.get(u).setDisabled(guiState.getPlayArea(u) == null);
-                OtherHandController otherHandController = otherHandControllers.get(u);
+                OtherPlayerInfoController otherPlayerInfoController = otherHandControllers.get(u);
                 HandController otherHand = guiState.getOtherHand(u);
-                if (otherHandController != null && otherHand != null) {
-                    otherHandController.setHandController(otherHand);
+                if (otherPlayerInfoController != null && otherHand != null) {
+                    otherPlayerInfoController.setHandController(otherHand);
                 }
             }
         }
@@ -661,9 +662,9 @@ public class PlayScreenController {
             if (!u.equals(guiState.getUsername())) {
                 playerButtons.get(u).setDisabled(guiState.getPlayArea(u) == null);
 
-                OtherHandController otherHandController = otherHandControllers.get(u);
+                OtherPlayerInfoController otherPlayerInfoController = otherHandControllers.get(u);
                 HandController otherHand = guiState.getOtherHand(u);
-                if (otherHandController != null && otherHand != null) {
+                if (otherPlayerInfoController != null && otherHand != null) {
                     otherHandControllers.get(u).setHandController(guiState.getOtherHand(u));
                 }
             }
@@ -870,7 +871,7 @@ public class PlayScreenController {
             }
 
             if (currentlyShowingOtherHand.get() != null) {
-                OtherHandController current = currentlyShowingOtherHand.get();
+                OtherPlayerInfoController current = currentlyShowingOtherHand.get();
                 PlayerButtonController playerButton = playerButtons.get(current.getUsername());
 
                 if (evt.getPickResult().getIntersectedNode() != current.getRoot() && !inHierarchy(evt.getPickResult().getIntersectedNode(), current.getRoot())) {

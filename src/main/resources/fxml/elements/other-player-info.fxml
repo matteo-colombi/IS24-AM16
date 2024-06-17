@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="hand-popup" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.elements.OtherHandController">
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="hand-popup" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.elements.OtherPlayerInfoController">
    <children>
       <Rectangle fill="#b38c44" height="25.0" pickOnBounds="true" rotate="135.0" stroke="#573b21" strokeType="INSIDE" strokeWidth="2.0" translateX="12.5" width="25.0" StackPane.alignment="CENTER_RIGHT" />
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" StackPane.alignment="CENTER">
@@ -28,7 +28,7 @@
             </Text>
             <StackPane fx:id="handSlot">
                <children>
-                  <Text fx:id="placeholderText" boundsType="VISUAL" fill="#4b4b4b" strokeType="OUTSIDE" strokeWidth="0.0" text="No cards yet...">
+                  <Text boundsType="VISUAL" fill="#4b4b4b" strokeType="OUTSIDE" strokeWidth="0.0" text="No cards yet...">
                      <font>
                         <Font name="System Italic" size="20.0" />
                      </font>

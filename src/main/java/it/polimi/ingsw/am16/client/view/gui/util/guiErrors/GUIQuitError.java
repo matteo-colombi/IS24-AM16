@@ -8,7 +8,7 @@ import javafx.scene.layout.Pane;
 import java.util.Objects;
 
 /**
- * Implementation of GUIError for errors that require the user to quit the application.
+ * Implementation of GUIError for critical errors that require the user to quit the application.
  */
 public class GUIQuitError implements GUIError{
 

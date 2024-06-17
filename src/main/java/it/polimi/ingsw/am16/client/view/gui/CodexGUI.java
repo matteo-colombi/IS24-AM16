@@ -7,7 +7,6 @@ import it.polimi.ingsw.am16.client.view.gui.events.*;
 import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
 import it.polimi.ingsw.am16.client.view.gui.util.ErrorFactory;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
-import it.polimi.ingsw.am16.client.view.gui.util.Popup;
 import it.polimi.ingsw.am16.client.view.gui.util.guiErrors.GUIError;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
@@ -99,9 +98,9 @@ public class CodexGUI extends Application implements ViewInterface {
     }
 
     /**
-     * Starts the GUI, connecting it to the server and displaying the splash screen for 3 seconds before switching to the welcome screen.
+     * Starts the GUI, connecting it to the server and displaying the splash screen for 2 seconds before switching to the welcome screen.
      *
-     * @param stage The arguments of the GUI.
+     * @inheritDoc
      */
     @Override
     public void start(Stage stage) throws IOException {
@@ -159,9 +158,7 @@ public class CodexGUI extends Application implements ViewInterface {
         stage.show();
 
         PauseTransition delay = new PauseTransition(Duration.seconds(2));
-        delay.setOnFinished(event -> {
-            switchToWelcomeScreen();
-        });
+        delay.setOnFinished(event -> switchToWelcomeScreen());
         delay.play();
     }
 
@@ -270,15 +267,12 @@ public class CodexGUI extends Application implements ViewInterface {
         }
     }
 
-    /**
-     * Stops the GUI application and closes the connection with the server.
-     */
     @Override
     public void stop() {
         try {
             serverInterface.disconnect();
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Couldn't communicate to the server that the client is stopping: " + e.getMessage());
         }
     }
 
@@ -324,7 +318,6 @@ public class CodexGUI extends Application implements ViewInterface {
 
     @Override
     public synchronized void setGameState(GameState state) {
-        guiState.setGameState(state);
         Platform.runLater(() -> stage.getScene().getRoot().fireEvent(new SetGameStateEvent(state)));
     }
 

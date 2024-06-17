@@ -6,10 +6,19 @@ import it.polimi.ingsw.am16.common.util.FilePaths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility class to retrieve asset names and paths.
+ */
 public class GUIAssetRegistry {
 
     private GUIAssetRegistry() {}
 
+    /**
+     * Constructs a card's asset path based on its name and the desired side.
+     * @param cardName The card's name.
+     * @param side The desired side.
+     * @return The constructed asset path.
+     */
     public static String getAssetName(String cardName, SideType side) {
         switch (side) {
             case FRONT -> {
@@ -25,10 +34,13 @@ public class GUIAssetRegistry {
                     return FilePaths.GUI_CARD_BACKS + "/" + cardName + "_back.png";
                 }
             }
+            default -> throw new IllegalArgumentException("Invalid card name or side: " + cardName + ", " + side);
         }
-        throw new RuntimeException("Unknown card name: " + cardName);
     }
 
+    /**
+     * @return The list of paths for all the pages of the rulebook.
+     */
     public static List<String> getGUIRulebookPaths() {
         List<String> paths = new ArrayList<>();
 

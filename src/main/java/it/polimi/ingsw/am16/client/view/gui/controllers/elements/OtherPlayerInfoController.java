@@ -8,15 +8,13 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
-public class OtherHandController {
+public class OtherPlayerInfoController {
     @FXML
     private StackPane root;
     @FXML
     private Text usernameField;
     @FXML
     private StackPane handSlot;
-    @FXML
-    private Text placeholderText;
     @FXML
     private Button playAreaButton;
 

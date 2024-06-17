@@ -193,9 +193,7 @@ public class TCPClient implements Runnable, ServerInterface {
 
                         view.promptColorChoice(payload.getColorChoices());
                     }
-                    case CHOOSING_COLORS -> {
-                        view.choosingColors();
-                    }
+                    case CHOOSING_COLORS -> view.choosingColors();
                     case SET_COLOR -> {
                         SetColor payload;
                         try {
@@ -306,9 +304,7 @@ public class TCPClient implements Runnable, ServerInterface {
 
                         view.removeCardFromOtherHand(payload.getUsername(), payload.getCardToRemove());
                     }
-                    case DRAWING_CARDS -> {
-                        view.drawingCards();
-                    }
+                    case DRAWING_CARDS -> view.drawingCards();
                     case TURN -> {
                         Turn payload;
                         try {
@@ -349,9 +345,7 @@ public class TCPClient implements Runnable, ServerInterface {
 
                         view.setObjectivePoints(payload.getWhosePoints(), payload.getObjectivePoints());
                     }
-                    case NOTIFY_DONT_DRAW -> {
-                        view.notifyDontDraw();
-                    }
+                    case NOTIFY_DONT_DRAW -> view.notifyDontDraw();
                     case SET_WINNERS -> {
                         SetWinners payload;
                         try {
@@ -449,7 +443,7 @@ public class TCPClient implements Runnable, ServerInterface {
     }
 
     /**
-     * This method checks if the server has pinged in the last 15 seconds. If it hasn't, the connection is considered lost and the client is stopped.
+     * This method starts a routine that checks if the server has pinged in the last 15 seconds. If it hasn't, the connection is considered lost and the client is stopped.
      */
     private void checkConnectionRoutine() {
         TimerTask task = new TimerTask() {
