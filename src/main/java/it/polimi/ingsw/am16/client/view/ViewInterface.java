@@ -272,7 +272,7 @@ public interface ViewInterface {
      * Tells the client that an error has occurred.
      *
      * @param errorMessage The message that should be displayed to the user.
-     * @param errorType The type of error that occurred. It will only be used by the GUI
+     * @param errorType The type of error that occurred.
      */
     void promptError(String errorMessage, ErrorType errorType);
 

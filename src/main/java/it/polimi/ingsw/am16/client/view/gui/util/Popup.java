@@ -1,5 +1,6 @@
 package it.polimi.ingsw.am16.client.view.gui.util;
 
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -40,7 +41,7 @@ public class Popup {
     }
 
     public void show() {
-        root.getChildren().addLast(background);
+        Platform.runLater(() -> root.getChildren().addLast(background));
     }
 
     public void hide() {

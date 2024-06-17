@@ -17,7 +17,7 @@ public class PromptError extends Payload {
      * @param errorType The type of error that occured.
      */
     @JsonCreator
-    public PromptError(@JsonProperty("errorMessage") String errorMessage, ErrorType errorType) {
+    public PromptError(@JsonProperty("errorMessage") String errorMessage, @JsonProperty("errorType") ErrorType errorType) {
         this.errorMessage = errorMessage;
         this.errorType = errorType;
     }

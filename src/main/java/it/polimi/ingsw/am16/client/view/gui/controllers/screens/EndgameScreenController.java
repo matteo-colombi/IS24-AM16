@@ -37,7 +37,6 @@ public class EndgameScreenController {
     public VBox totalPointsCol;
 
     private ErrorController errorController;
-    private ErrorFactory errorFactory;
 
     private GUIState guiState;
 
@@ -50,7 +49,6 @@ public class EndgameScreenController {
         registerEvents();
 
         guiState = CodexGUI.getGUI().getGuiState();
-        errorFactory = new ErrorFactory();
 
         gamePoints = new HashMap<>();
         objectivePoints = new HashMap<>();
@@ -148,7 +146,7 @@ public class EndgameScreenController {
      */
     public void showError(ErrorEvent errorEvent) {
         errorController = ElementFactory.getErrorPopup();
-        GUIError error = errorFactory.getError(errorEvent.getErrorType());
+        GUIError error = ErrorFactory.getError(errorEvent.getErrorType());
         error.configurePopup(errorController);
         errorController.setErrorText(errorEvent.getErrorMsg());
         //TODO display the popup

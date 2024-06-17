@@ -3,6 +3,7 @@ package it.polimi.ingsw.am16.client.view.gui.controllers.screens;
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
 import it.polimi.ingsw.am16.common.util.FilePaths;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -128,7 +129,7 @@ public class WelcomeScreenController {
      */
     @FXML
     public void quit(ActionEvent ignored) {
-        CodexGUI.getGUI().getStage().close();
+        Platform.exit();
     }
 
     /**
@@ -175,11 +176,6 @@ public class WelcomeScreenController {
         CodexGUI.getGUI().switchToCreditsScreen();
     }
 
-    /**
-     * DOCME
-     *
-     * @param errorMessage
-     */
     public void showError(String errorMessage) {
         //TODO implement an event listener that calls this method
     }

@@ -2,9 +2,13 @@ package it.polimi.ingsw.am16.client.view.gui;
 
 import it.polimi.ingsw.am16.client.Client;
 import it.polimi.ingsw.am16.client.view.ViewInterface;
+import it.polimi.ingsw.am16.client.view.gui.controllers.elements.ErrorController;
 import it.polimi.ingsw.am16.client.view.gui.events.*;
+import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
+import it.polimi.ingsw.am16.client.view.gui.util.ErrorFactory;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
 import it.polimi.ingsw.am16.client.view.gui.util.Popup;
+import it.polimi.ingsw.am16.client.view.gui.util.guiErrors.GUIError;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
@@ -21,6 +25,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -480,21 +485,10 @@ public class CodexGUI extends Application implements ViewInterface {
 
     @Override
     public void signalConnectionLost() {
-        //TODO make an actual popup :)
-
-        Platform.runLater(() -> {
-            FXMLLoader errorLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_ELEMENTS + "/error.fxml"));
-            try {
-                Parent error = errorLoader.load();
-
-                Popup popup = new Popup();
-                popup.setContent(error);
-                popup.setAutoHide(false);
-
-                popup.show();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        ErrorController errorController = ElementFactory.getErrorPopup();
+        GUIError error = ErrorFactory.getError(ErrorType.CONNECTION_DEAD);
+        error.configurePopup(errorController);
+        errorController.setErrorText("Connection lost with the server.");
+        error.show((Pane) stage.getScene().getRoot());
     }
 }

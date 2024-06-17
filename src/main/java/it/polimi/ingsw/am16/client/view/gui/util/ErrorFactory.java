@@ -16,21 +16,19 @@ public class ErrorFactory {
     /**
      * Data structure to map server errors to GUI errors.
      */
-    private final Map<ErrorType, GUIError> errorMap;
+    private static final Map<ErrorType, GUIError> errorMap = Map.of(
+            ErrorType.CONNECTION_DEAD, new GUIQuitError(),
+            ErrorType.OTHER_PLAYER_DISCONNECTED, new GUIHomeError()
+    );
 
-    public ErrorFactory() {
-        errorMap = new HashMap<>();
-        errorMap.put(ErrorType.JOIN_ERROR, new GUIHomeError());
-        errorMap.put(ErrorType.CONNECTION_DEAD, new GUIQuitError());
-        errorMap.put(ErrorType.OTHER_PLAYER_DISCONNECTED, new GUIHomeError());
-    }
+    private ErrorFactory() {}
 
     /**
      * Returns the GUI error corresponding to the server error.
      * @param errorType The type of error sent by the server
      * @return The corresponding GUI error
      */
-    public GUIError getError(ErrorType errorType) {
+    public static GUIError getError(ErrorType errorType) {
         if(errorMap.containsKey(errorType)) {
             return errorMap.get(errorType);
         }

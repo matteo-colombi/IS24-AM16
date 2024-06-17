@@ -24,7 +24,7 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
 
     @Override
     public void notifyGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers, Map<String, LobbyState> lobbyStates) throws RemoteException {
-        //TODO
+
     }
 
     @Override

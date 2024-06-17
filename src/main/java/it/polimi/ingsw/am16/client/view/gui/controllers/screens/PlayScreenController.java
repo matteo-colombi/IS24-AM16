@@ -13,6 +13,7 @@ import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.util.ErrorType;
 import it.polimi.ingsw.am16.common.util.FilePaths;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.ServerInterface;
@@ -110,7 +111,6 @@ public class PlayScreenController {
     private StarterPopupController starterPopupController;
     private ColorPopupController colorPopupController;
     private ObjectivePopupController objectivePopupController;
-    private ErrorController errorController;
 
     private List<CardController> commonResourceCards;
     private List<CardController> commonGoldCards;
@@ -118,13 +118,10 @@ public class PlayScreenController {
     private CardController resourceDeck;
     private CardController goldDeck;
 
-    private ErrorFactory errorFactory;
-
     @FXML
     public void initialize() {
         registerEvents();
 
-        errorFactory = new ErrorFactory();
 
         guiState = CodexGUI.getGUI().getGuiState();
 
@@ -189,7 +186,6 @@ public class PlayScreenController {
     }
 
     private void setGameState(GameState state) {
-        //TODO
         if (state == GameState.ENDED) {
             CodexGUI.getGUI().switchToEndgameScreen();
         }
@@ -203,11 +199,11 @@ public class PlayScreenController {
      * @param errorEvent the fired error event
      */
     public void showError(ErrorEvent errorEvent) {
-        errorController = ElementFactory.getErrorPopup();
-        GUIError error = errorFactory.getError(errorEvent.getErrorType());
+        ErrorController errorController = ElementFactory.getErrorPopup();
+        GUIError error = ErrorFactory.getError(errorEvent.getErrorType());
         error.configurePopup(errorController);
         errorController.setErrorText(errorEvent.getErrorMsg());
-        //TODO display the popup
+        error.show(root);
     }
 
     private void setPlayerColor(String username, PlayerColor color) {
@@ -521,23 +517,31 @@ public class PlayScreenController {
 
     private void notifyDontDraw() {
         guiState.setDontDraw(true);
-        //TODO
-    }
-
-    private void setWinners(List<String> winnerUsernames) {
-        //TODO
+        //TODO create a custom popup
     }
 
     private void signalDeadLock(String username) {
-        //TODO
+        ErrorController errorController = ElementFactory.getErrorPopup();
+        GUIError error = ErrorFactory.getError(ErrorType.GENERIC_ERROR);
+        error.configurePopup(errorController);
+        errorController.setErrorText(username + " has deadlocked themselves.");
+        error.show(root);
     }
 
     private void signalGameSuspension(String whoDisconnected) {
-        //TODO
+        ErrorController errorController = ElementFactory.getErrorPopup();
+        GUIError error = ErrorFactory.getError(ErrorType.OTHER_PLAYER_DISCONNECTED);
+        error.configurePopup(errorController);
+        errorController.setErrorText(whoDisconnected + " disconnected. Rejoin later.");
+        error.show(root);
     }
 
     private void signalGameDeletion(String whoDisconnected) {
-        //TODO
+        ErrorController errorController = ElementFactory.getErrorPopup();
+        GUIError error = ErrorFactory.getError(ErrorType.OTHER_PLAYER_DISCONNECTED);
+        error.configurePopup(errorController);
+        errorController.setErrorText(whoDisconnected + " disconnected.\nThe game was deleted.");
+        error.show(root);
     }
 
     private void receiveMessages(List<ChatMessage> messages) {
@@ -775,7 +779,7 @@ public class PlayScreenController {
     }
 
     private void registerEvents() {
-        root.addEventFilter(GUIEventTypes.ERROR_EVENT, e -> showError(e));
+        root.addEventFilter(GUIEventTypes.ERROR_EVENT, this::showError);
 
         root.addEventFilter(GUIEventTypes.SET_COLOR_EVENT, e -> setPlayerColor(e.getUsername(), e.getColor()));
 
@@ -810,8 +814,6 @@ public class PlayScreenController {
         root.addEventFilter(GUIEventTypes.SIGNAL_GAME_DELETION_EVENT, e -> signalGameDeletion(e.getWhoDisconnected()));
 
         root.addEventFilter(GUIEventTypes.NOTIFY_DONT_DRAW_EVENT, e -> notifyDontDraw());
-
-        root.addEventFilter(GUIEventTypes.SET_END_GAME_INFO_EVENT, e -> setWinners(e.getWinnerUsernames()));
 
         root.addEventFilter(GUIEventTypes.SET_START_ORDER_EVENT, e -> setStartOrder(e.getUsernames()));
 

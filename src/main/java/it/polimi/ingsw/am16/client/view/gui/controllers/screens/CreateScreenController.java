@@ -33,7 +33,6 @@ public class CreateScreenController {
     private ToggleGroup numPLayersToggleGroup;
 
     private ErrorController errorController;
-    private ErrorFactory errorFactory;
 
     /**
      * The server interface.
@@ -47,7 +46,6 @@ public class CreateScreenController {
     @FXML
     public void initialize() {
         registerEvents();
-        errorFactory = new ErrorFactory();
         this.serverInterface = CodexGUI.getGUI().getServerInterface();
     }
 
@@ -78,14 +76,14 @@ public class CreateScreenController {
      */
     public void showError(ErrorEvent errorEvent) {
         errorController = ElementFactory.getErrorPopup();
-        GUIError error = errorFactory.getError(errorEvent.getErrorType());
+        GUIError error = ErrorFactory.getError(errorEvent.getErrorType());
         error.configurePopup(errorController);
         errorController.setErrorText(errorEvent.getErrorMsg());
-        //TODO display the popup
+        error.show(root);
     }
 
     private void registerEvents() {
-        root.addEventFilter(GUIEventTypes.ERROR_EVENT, errorEvent -> showError(errorEvent));
+        root.addEventFilter(GUIEventTypes.ERROR_EVENT, this::showError);
 
         numPlayers2.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER) {

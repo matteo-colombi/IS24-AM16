@@ -15,7 +15,7 @@
          <children>
             <VBox alignment="CENTER">
                <children>
-                  <Text fx:id="errorText" fill="#ef3f36" strokeType="OUTSIDE" strokeWidth="0.0" text="Il server è esploso!!!">
+                  <Text fx:id="errorText" fill="#ef3f36" strokeType="OUTSIDE" strokeWidth="0.0" text="Error" textAlignment="CENTER">
                      <font>
                         <Font size="36.0" />
                      </font>
@@ -43,7 +43,7 @@
             </HBox>
             <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
                <children>
-                  <Button fx:id="errorButton" mnemonicParsing="false" onAction="#quit" prefHeight="40.0" prefWidth="160.0" StackPane.alignment="CENTER">
+                  <Button fx:id="errorButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" StackPane.alignment="CENTER">
                      <font>
                         <Font name="System Italic" size="10.0" />
                      </font>

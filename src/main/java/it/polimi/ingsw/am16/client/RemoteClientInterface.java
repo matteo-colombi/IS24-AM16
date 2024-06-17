@@ -302,6 +302,7 @@ public interface RemoteClientInterface extends Remote {
      * Tells the client that an error has occurred.
      *
      * @param errorMessage The message that should be displayed to the user.
+     * @param errorType The type of error that occurred.
      * @throws RemoteException thrown if an error occurs during Java RMI communication.
      */
     void promptError(String errorMessage, ErrorType errorType) throws RemoteException;

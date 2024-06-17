@@ -138,10 +138,10 @@ public class GamesScreenController {
      */
     public void showError(ErrorEvent errorEvent) {
         errorController = ElementFactory.getErrorPopup();
-        GUIError error = errorFactory.getError(errorEvent.getErrorType());
+        GUIError error = ErrorFactory.getError(errorEvent.getErrorType());
         error.configurePopup(errorController);
         errorController.setErrorText(errorEvent.getErrorMsg());
-        //TODO display the popup
+        error.show(root);
     }
 
     private void registerEvents() {
