@@ -167,6 +167,16 @@ public class ElementFactory {
         }
     }
 
+    public static ErrorController getErrorPopup() {
+        FXMLLoader errorPopupLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/error.fxml"));
+        try {
+            errorPopupLoader.load();
+            return errorPopupLoader.getController();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static OtherHandController getOtherHand() {
         FXMLLoader otherHandLoader = new FXMLLoader(ElementFactory.class.getResource(FilePaths.GUI_ELEMENTS + "/other-hand.fxml"));
         try {

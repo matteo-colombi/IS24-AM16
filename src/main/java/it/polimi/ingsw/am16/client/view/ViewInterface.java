@@ -5,6 +5,7 @@ import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.util.ErrorType;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.util.List;
@@ -271,8 +272,9 @@ public interface ViewInterface {
      * Tells the client that an error has occurred.
      *
      * @param errorMessage The message that should be displayed to the user.
+     * @param errorType The type of error that occurred. It will only be used by the GUI
      */
-    void promptError(String errorMessage);
+    void promptError(String errorMessage, ErrorType errorType);
 
     /**
      * Notifies the client that from now on they shouldn't draw cards anymore.

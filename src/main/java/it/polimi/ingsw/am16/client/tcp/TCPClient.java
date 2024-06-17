@@ -431,7 +431,7 @@ public class TCPClient implements Runnable, ServerInterface {
                             break;
                         }
 
-                        view.promptError(payload.getErrorMessage());
+                        view.promptError(payload.getErrorMessage(), payload.getErrorType());
                     }
                     case PING -> {
                         lastPinged.set(System.currentTimeMillis());

@@ -15,6 +15,8 @@ import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.model.players.PlayAreaModel;
 import it.polimi.ingsw.am16.common.model.players.Player;
+import it.polimi.ingsw.am16.common.util.ErrorType;
+import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.model.players.PlayerModel;
 import it.polimi.ingsw.am16.common.util.Position;
@@ -379,7 +381,7 @@ public class GameController {
         try {
             game.placeCard(username, card, side, newPos);
         } catch (IllegalMoveException e) {
-            virtualView.promptError(username, "Illegal move.");
+            virtualView.promptError(username, "Illegal move.", ErrorType.GENERIC_ERROR);
             return;
         } catch (UnexpectedActionException e) {
             e.printStackTrace();
@@ -422,7 +424,7 @@ public class GameController {
         try {
             drawnCard = game.drawCard(username, drawType);
         } catch (IllegalMoveException e) {
-            virtualView.promptError(username, "Illegal draw.");
+            virtualView.promptError(username, "Illegal draw.", ErrorType.GENERIC_ERROR);
             return;
         } catch (UnexpectedActionException e) {
             //Silently return. This should not happen unless there are hacked clients or there are connection issues which will be caught in other ways.

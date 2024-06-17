@@ -1,9 +1,14 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers.screens;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
+import it.polimi.ingsw.am16.client.view.gui.controllers.elements.ErrorController;
+import it.polimi.ingsw.am16.client.view.gui.events.ErrorEvent;
 import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
+import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
+import it.polimi.ingsw.am16.client.view.gui.util.ErrorFactory;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
 import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
+import it.polimi.ingsw.am16.client.view.gui.util.guiErrors.GUIError;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
@@ -31,6 +36,9 @@ public class EndgameScreenController {
     @FXML
     public VBox totalPointsCol;
 
+    private ErrorController errorController;
+    private ErrorFactory errorFactory;
+
     private GUIState guiState;
 
     private Map<String, Integer> gamePoints;
@@ -42,6 +50,7 @@ public class EndgameScreenController {
         registerEvents();
 
         guiState = CodexGUI.getGUI().getGuiState();
+        errorFactory = new ErrorFactory();
 
         gamePoints = new HashMap<>();
         objectivePoints = new HashMap<>();
@@ -130,13 +139,24 @@ public class EndgameScreenController {
         CodexGUI.getGUI().switchToWelcomeScreen();
     }
 
-    public void showError(String errorMessage) {
-        //TODO implement
+
+    /**
+     * This method sets up and shows the error popup whenever an error occurs
+     * (and consequently, an error event is fired).
+     *
+     * @param errorEvent the fired error event
+     */
+    public void showError(ErrorEvent errorEvent) {
+        errorController = ElementFactory.getErrorPopup();
+        GUIError error = errorFactory.getError(errorEvent.getErrorType());
+        error.configurePopup(errorController);
+        errorController.setErrorText(errorEvent.getErrorMsg());
+        //TODO display the popup
     }
 
     private void registerEvents() {
         root.addEventFilter(GUIEventTypes.ERROR_EVENT, errorEvent -> {
-            showError(errorEvent.getErrorMsg());
+            showError(errorEvent);
             errorEvent.consume();
         });
 

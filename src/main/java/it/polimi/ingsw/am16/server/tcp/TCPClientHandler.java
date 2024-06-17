@@ -13,6 +13,14 @@ import it.polimi.ingsw.am16.common.tcpMessages.MessageType;
 import it.polimi.ingsw.am16.common.tcpMessages.TCPMessage;
 import it.polimi.ingsw.am16.common.tcpMessages.request.*;
 import it.polimi.ingsw.am16.common.tcpMessages.response.*;
+import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
+import it.polimi.ingsw.am16.common.model.game.GameState;
+import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.tcpMessages.response.AddPlayer;
+import it.polimi.ingsw.am16.common.tcpMessages.response.JoinGameResponse;
+import it.polimi.ingsw.am16.common.tcpMessages.response.SignalDisconnection;
+import it.polimi.ingsw.am16.common.util.ErrorType;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.controller.GameController;
@@ -120,7 +128,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                         }
                         case GET_GAMES_REQUEST -> {
                             if (gameController != null) {
-                                promptError("You are already in a game.");
+                                promptError("You are already in a game.", ErrorType.JOIN_ERROR);
                                 break;
                             }
 
@@ -141,7 +149,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                         }
                         case CREATE_GAME -> {
                             if (gameController != null) {
-                                promptError("You are already in a game.");
+                                promptError("You are already in a game.", ErrorType.JOIN_ERROR);
                                 break;
                             }
 
@@ -160,7 +168,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                             try {
                                 gameId = lobbyManager.createGame(numPlayers);
                             } catch (IllegalArgumentException e) {
-                                promptError(e.getMessage());
+                                promptError(e.getMessage(), ErrorType.JOIN_ERROR);
                                 break;
                             }
 
@@ -168,7 +176,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                             try {
                                 gameController.createPlayer(username);
                             } catch (UnexpectedActionException e) {
-                                promptError("Couldn't join game: " + e.getMessage());
+                                promptError("Couldn't join game: " + e.getMessage(), ErrorType.JOIN_ERROR);
                                 break;
                             }
 
@@ -183,7 +191,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                         }
                         case JOIN_GAME_REQUEST -> {
                             if (gameController != null) {
-                                promptError("You are already in a game.");
+                                promptError("You are already in a game.", ErrorType.JOIN_ERROR);
                                 break;
                             }
 
@@ -199,7 +207,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
                             gameController = lobbyManager.getGame(gameId);
                             if (gameController == null) {
-                                promptError("No game with the given id.");
+                                promptError("No game with the given id.", ErrorType.JOIN_ERROR);
                                 break;
                             }
 
@@ -207,7 +215,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                                 try {
                                     gameController.createPlayer(username);
                                 } catch (UnexpectedActionException e) {
-                                    promptError("Couldn't join game: " + e.getMessage());
+                                    promptError("Couldn't join game: " + e.getMessage(), ErrorType.JOIN_ERROR);
                                     gameController = null;
                                     this.username = null;
                                     break;
@@ -218,7 +226,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                                 gameController.joinPlayer(username, this);
                                 this.username = username;
                             } catch (UnexpectedActionException e) {
-                                promptError(e.getMessage());
+                                promptError(e.getMessage(), ErrorType.JOIN_ERROR);
                                 gameController = null;
                                 this.username = null;
                             }
@@ -583,8 +591,8 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
     }
 
     @Override
-    public void promptError(String errorMessage) {
-        TCPMessage tcpMessage = new TCPMessage(MessageType.PROMPT_ERROR, new PromptError(errorMessage));
+    public void promptError(String errorMessage, ErrorType errorType) {
+        TCPMessage tcpMessage = new TCPMessage(MessageType.PROMPT_ERROR, new PromptError(errorMessage, errorType));
         sendTCPMessage(tcpMessage);
     }
 
