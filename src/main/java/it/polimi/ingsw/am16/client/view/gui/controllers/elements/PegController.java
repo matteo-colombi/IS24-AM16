@@ -12,6 +12,9 @@ import javafx.scene.shape.Circle;
 
 import java.util.List;
 
+/**
+ * The controller for GUI peg elements. Pegs are used to mark players' points on the board.
+ */
 public class PegController {
 
     @FXML
@@ -35,6 +38,11 @@ public class PegController {
         peg.getStyleClass().add(styleClass);
     }
 
+    /**
+     * Creates a peg with multiple colors. The peg will be sliced in equal parts for each color.
+     * Useful when multiple players have the same amount of points.
+     * @param colors The colors of this peg.
+     */
     public void setPegColor(List<PlayerColor> colors) {
         if (colors.size() == 1) {
             setPegColor(colors.getFirst());
@@ -72,10 +80,18 @@ public class PegController {
         }
     }
 
+    /**
+     * Sets the radius of this circular peg. The default radius is 13.3.
+     * @param radius The radius of this circular peg.
+     */
     public void setPegRadius(double radius) {
         peg.setRadius(radius);
     }
 
+    /**
+     * Sets whether this peg is interactable. An interactable peg has a mouse hover effect.
+     * @param interactable Whether this peg is interactable.
+     */
     public void setInteractable(boolean interactable) {
         if (interactable) {
             if (!peg.getStyleClass().contains("interactable")) {
@@ -86,6 +102,10 @@ public class PegController {
         }
     }
 
+    /**
+     * Sets whether this peg is selected or not. A selected peg has a shadow effect.
+     * @param selected Whether this peg is selected.
+     */
     public void setSelected(boolean selected) {
         if (selected) {
             peg.getStyleClass().add("selected");
@@ -94,6 +114,10 @@ public class PegController {
         }
     }
 
+    /**
+     * Sets whether this peg is a placeholder. Placeholder pegs are invisible.
+     * @param placeholder Whether this peg is a placeholder.
+     */
     public void setPlaceholder(boolean placeholder) {
         if (placeholder) {
             peg.getStyleClass().add("placeholder");
@@ -102,6 +126,9 @@ public class PegController {
         }
     }
 
+    /**
+     * @return The root node of this peg element.
+     */
     public Parent getRoot() {
         return pegPane;
     }

@@ -32,31 +32,30 @@ public class ErrorController {
 
     private Popup popup;
 
-
-    private String[] paths = new String[]{"/assets/gui/icons/home.png", "/assets/gui/icons/door.png"};
-
-    @FXML
-    public void initialize() {
-
-    }
-
+    /**
+     * @return The image view for the icon that has to be showed inside the button on the popup. Change the image as needed with the method {@link ImageView#setImage}.
+     */
     public ImageView getButtonIcon() {
         return buttonIcon;
     }
 
+    /**
+     * @return The button element on the popup. Change the action when clicked as needed with {@link Button#setOnAction}.
+     */
     public Button getErrorButton() {
         return errorButton;
     }
 
+    /**
+     * @return The text element inside the button of the popup. Change as needed with {@link Text#setText}.
+     */
     public Text getButtonText() {
         return buttonText;
     }
 
-
-
     /**
      * Action method to quit the application.
-     * It's made to be assigned to the button of the popup.
+     * Made to be assigned to the button of the popup.
      */
     public void quit(ActionEvent ignored) {
         Platform.exit();
@@ -64,14 +63,15 @@ public class ErrorController {
 
     /**
      * Action method to return to the home screen.
-     * It's made to be assigned to the button of the popup.
+     * Made to be assigned to the button of the popup.
      */
     public void goHome(ActionEvent ignored) {
         CodexGUI.getGUI().switchToWelcomeScreen();
     }
 
     /**
-     * Action method to close the error popup. Made to be assigned to the button of the popup.
+     * Action method to close the error popup.
+     * Made to be assigned to the button of the popup.
      */
     public void close(ActionEvent ignored) {
         if (popup != null) {
@@ -79,15 +79,25 @@ public class ErrorController {
         }
     }
 
-
+    /**
+     * Sets the title of the error popup.
+     * @param errorText The text to be displayed.
+     */
     public void setErrorText(String errorText) {
         this.errorText.setText(errorText);
     }
 
+    /**
+     * @return The root element of this error popup element.
+     */
     public Parent getRoot() {
         return root;
     }
 
+    /**
+     * Displays the popup as a child of the given node. Uses {@link Popup}.
+     * @param parent The parent node inside which the popup should be shown. Usually the root of the scene.
+     */
     public void show(Pane parent) {
         popup = new Popup();
         popup.setAutoHide(false);

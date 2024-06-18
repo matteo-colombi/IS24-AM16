@@ -9,7 +9,6 @@ import it.polimi.ingsw.am16.common.model.cards.ResourceType;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.util.Position;
-import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
@@ -24,15 +23,10 @@ import java.rmi.RemoteException;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Controller class for card assets in the Graphical User Interface.
+ */
 public class CardController {
-
-    private static final PseudoClass FUNGI = PseudoClass.getPseudoClass("card_fungi");
-    private static final PseudoClass PLANT = PseudoClass.getPseudoClass("card_plant");
-    private static final PseudoClass ANIMAL = PseudoClass.getPseudoClass("card_animal");
-    private static final PseudoClass INSECT = PseudoClass.getPseudoClass("card_insect");
-
-    private static final PseudoClass INTERACTABLE = PseudoClass.getPseudoClass("interactable");
-
     @FXML
     private StackPane cardPane;
     @FXML
@@ -53,10 +47,9 @@ public class CardController {
     private boolean costSatisfied;
     private boolean active;
 
-    public ImageView getCardImage() {
-        return cardImage;
-    }
-
+    /**
+     * @return The image currently displayed in this card.
+     */
     public Image getImage() {
         return switch (currSide) {
             case FRONT -> front;
@@ -64,6 +57,11 @@ public class CardController {
         };
     }
 
+    /**
+     * Loads the card image for the specified card and side and inserts them in the GUI element.
+     * @param card The card to be displayed.
+     * @param side The requested side.
+     */
     public void setCardAndShowSide(Card card, SideType side) {
         this.card = card;
         this.currSide = side;
@@ -77,6 +75,10 @@ public class CardController {
         cardImage.getStyleClass().remove("card_placeholder");
     }
 
+    /**
+     * Loads the image for both sides of the given card, without actually inserting it in the GUI element. Use {@link CardController#showSide} to actually display a side of the card.
+     * @param card The card to be displayed.
+     */
     public void setCard(Card card) {
         this.card = card;
         String assetPathFront = GUIAssetRegistry.getAssetName(card.getName(), SideType.FRONT);
@@ -85,11 +87,19 @@ public class CardController {
         back = new Image(Objects.requireNonNull(getClass().getResourceAsStream(assetPathBack)), cardImage.getFitWidth()*1.3, cardImage.getFitHeight()*1.3, true, true);
     }
 
+    /**
+     * Loads the image for both sides of the given playable card. Also extracts the card's cost. Like {@link CardController#setCard(Card)}, this method does not insert the card image in the GUI element. Use {@link CardController#showSide} to display a side of the card.
+     * @param card The playable card to be displayed.
+     */
     public void setCard(PlayableCard card) {
         this.cost = card.getFrontSide().getCost();
         setCard((Card) card);
     }
 
+    /**
+     * Shows one side of the loaded card. If {@link CardController#setCard} was not called, this method does nothing.
+     * @param side The side to show.
+     */
     public void showSide(SideType side) {
         switch (side) {
             case FRONT -> {
@@ -108,6 +118,9 @@ public class CardController {
         cardImage.getStyleClass().remove("card_placeholder");
     }
 
+    /**
+     * Toggles which side of the card is shown.
+     */
     public void toggleSide() {
         if (currSide == SideType.FRONT) {
             currSide = SideType.BACK;
@@ -119,31 +132,42 @@ public class CardController {
         showSide(currSide);
     }
 
-    public void removeCardImage() {
-        if (!cardImage.getStyleClass().contains("card_placeholder"))
-            cardImage.getStyleClass().add("card_placeholder");
-    }
-
-    public void toggleInteractable() {
-        boolean isInteractable = cardImage.getPseudoClassStates().contains(INTERACTABLE);
-        cardImage.pseudoClassStateChanged(INTERACTABLE, !isInteractable);
-    }
-
+    /**
+     * Sets whether this card is active. Only active cards can be dragged and display a shadow when hovered over.
+     * @param active The active flag.
+     */
     public void setActive(boolean active) {
         this.active = active;
         updateActive();
     }
 
+    /**
+     * Updates the style classes on the cards after a change in the active flag.
+     */
     public void updateActive() {
         boolean ok = active && (currSide == SideType.BACK || costSatisfied);
         setInteractable(ok);
         setDraggable(ok);
     }
 
+    /**
+     * Sets the style class for whether this card should have a hover shadow effect.
+     * @param interactable The interactable flag.
+     */
     public void setInteractable(boolean interactable) {
-        cardImage.pseudoClassStateChanged(INTERACTABLE, interactable);
+        if (interactable) {
+            if (!cardImage.getStyleClass().contains("interactable")) {
+                cardImage.getStyleClass().add("interactable");
+            }
+        } else {
+            cardImage.getStyleClass().remove("interactable");
+        }
     }
 
+    /**
+     * Sets whether this card is selected. A card with the <code>selected</code> style class has a shadow effect.
+     * @param selected The selected flag.
+     */
     public void setSelected(boolean selected) {
         if (selected) {
             if (!cardImage.getStyleClass().contains("selected")) {
@@ -154,6 +178,10 @@ public class CardController {
         }
     }
 
+    /**
+     * Updates whether this card should be active based on whether its cost is satisfied.
+     * @param resourceCounts A map containing the amount of every resource currently visible on the player's play area.
+     */
     public void updateCostSatisfied(Map<ResourceType, Integer> resourceCounts) {
         costSatisfied = true;
         for(ResourceType resourceType : cost.keySet()) {
@@ -166,6 +194,9 @@ public class CardController {
         updateActive();
     }
 
+    /**
+     * Updates whether this card should be disabled. A <code>disabled</code> card is semi-transparent.
+     */
     public void updateDisabled() {
         if (currSide == SideType.FRONT && !costSatisfied) {
             if (!cardPane.getStyleClass().contains("disabled")) {
@@ -176,46 +207,56 @@ public class CardController {
         }
     }
 
+    /**
+     * Allows this card to be turned by clicking on it.
+     */
     public void setTurnable() {
         cardPane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
             toggleSide();
             mouseEvent.consume();
         });
 
-        cardPane.addEventFilter(MouseEvent.MOUSE_ENTERED, mouseEvent -> {
-            turnImage.setVisible(true);
-        });
+        cardPane.addEventFilter(MouseEvent.MOUSE_ENTERED, mouseEvent -> turnImage.setVisible(true));
 
-        cardPane.addEventFilter(MouseEvent.MOUSE_EXITED, mouseEvent -> {
-            turnImage.setVisible(false);
-        });
+        cardPane.addEventFilter(MouseEvent.MOUSE_EXITED, mouseEvent -> turnImage.setVisible(false));
     }
 
+    /**
+     * Sets the color of the hover shadow for this card.
+     * @param resourceType The resource type of the card, which determines its color.
+     */
     public void setShadowColor(ResourceType resourceType) {
-        cardImage.pseudoClassStateChanged(FUNGI, false);
-        cardImage.pseudoClassStateChanged(PLANT, false);
-        cardImage.pseudoClassStateChanged(ANIMAL, false);
-        cardImage.pseudoClassStateChanged(INSECT, false);
+        cardImage.getStyleClass().remove("card_fungi");
+        cardImage.getStyleClass().remove("card_plant");
+        cardImage.getStyleClass().remove("card_animal");
+        cardImage.getStyleClass().remove("card_insect");
+
         switch (resourceType) {
-            case FUNGI -> cardImage.pseudoClassStateChanged(FUNGI, true);
-            case PLANT -> cardImage.pseudoClassStateChanged(PLANT, true);
-            case ANIMAL -> cardImage.pseudoClassStateChanged(ANIMAL, true);
-            case INSECT -> cardImage.pseudoClassStateChanged(INSECT, true);
+            case FUNGI -> cardImage.getStyleClass().add("card_fungi");
+            case PLANT -> cardImage.getStyleClass().add("card_plant");
+            case ANIMAL -> cardImage.getStyleClass().add("card_animal");
+            case INSECT -> cardImage.getStyleClass().add("card_insect");
         }
     }
 
+    /**
+     * @return The root element of this card element.
+     */
     public Parent getRoot() {
         return cardPane;
     }
 
-    public String getCardName() {
-        return card.getName();
-    }
-
+    /**
+     * @return Which card is displayed in this card GUI element.
+     */
     public Card getCard() {
         return card;
     }
 
+    /**
+     * Sets whether this card can be dragged.
+     * @param isDraggable Whether this card can be dragged.
+     */
     public void setDraggable(boolean isDraggable) {
         if (isDraggable) {
             cardPane.setOnDragDetected(e -> {
@@ -236,7 +277,7 @@ public class CardController {
                 try {
                     CodexGUI.getGUI().getGuiState().getServerInterface().playCard(playableCard, currSide, position);
                 } catch (RemoteException e) {
-                    e.printStackTrace();
+                    System.err.println("Error communicating with the server: " + e.getMessage());
                 }
                 db.clear();
                 dragEvent.consume();
@@ -246,17 +287,25 @@ public class CardController {
         }
     }
 
+    /**
+     * Sets the type of draw for this card. Should only be set for cards that are in the draw options.
+     * @param drawType The draw type for this card (one of the decks or one of the 4 common cards).
+     */
     public void setDrawType(DrawType drawType) {
         this.drawType = drawType;
     }
 
+    /**
+     * Sets whether this card is in the draw options.
+     * @param drawable Whether this card is in the draw options.
+     */
     public void setDrawable(boolean drawable) {
         if (drawable) {
             cardPane.setOnMouseClicked(mouseEvent -> {
                 try {
                     CodexGUI.getGUI().getServerInterface().drawCard(drawType);
                 } catch (RemoteException e) {
-                    e.printStackTrace();
+                    System.err.println("Error communicating with the server: " + e.getMessage());
                 }
             });
         } else {

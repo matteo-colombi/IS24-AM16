@@ -3,22 +3,24 @@ package it.polimi.ingsw.am16.client.view.gui.controllers.elements;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
 import it.polimi.ingsw.am16.common.model.cards.Card;
 import it.polimi.ingsw.am16.common.util.Position;
-import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.Pane;
 
+/**
+ * Controller for fillers that are supposed to be placed inside the {@link PlayAreaGridController} to detect the player dropping cards.
+ */
 public class GridFillerController {
-    private static final PseudoClass LEGAL = PseudoClass.getPseudoClass("legal");
-    private static final PseudoClass ILLEGAL = PseudoClass.getPseudoClass("illegal");
-
     @FXML
     private Pane fillerPane;
 
     private Position position;
 
+    /**
+     * Initializes this grid filler and sets the needed events.
+     */
     @FXML
     public void initialize() {
         fillerPane.setOnDragOver(dragEvent -> {
@@ -27,13 +29,15 @@ public class GridFillerController {
         });
 
         fillerPane.setOnDragEntered(dragEvent -> {
-            fillerPane.pseudoClassStateChanged(LEGAL, true);
+            if (!fillerPane.getStyleClass().contains("legal")) {
+                fillerPane.getStyleClass().add("legal");
+            }
 
             dragEvent.consume();
         });
 
         fillerPane.setOnDragExited(dragEvent -> {
-            fillerPane.pseudoClassStateChanged(LEGAL, false);
+            fillerPane.getStyleClass().remove("legal");
             dragEvent.consume();
         });
 
@@ -50,7 +54,7 @@ public class GridFillerController {
             dragEvent.setDropCompleted(true);
             dragEvent.consume();
 
-            fillerPane.pseudoClassStateChanged(LEGAL, false);
+            fillerPane.getStyleClass().remove("legal");
 
             fillerPane.setOnDragOver(e -> {});
             fillerPane.setOnDragEntered(e -> {});
@@ -59,14 +63,24 @@ public class GridFillerController {
         });
     }
 
+    /**
+     * @return The position of this grid filler in the play area grid.
+     */
     public Position getPosition() {
         return position;
     }
 
+    /**
+     * Sets the position of this grid filler inside the play area grid.
+     * @param position The position of this grid filler inside the play area grid.
+     */
     public void setPosition(Position position) {
         this.position = position;
     }
 
+    /**
+     * @return The root pane of this grid filler.
+     */
     public Pane getFillerPane() {
         return fillerPane;
     }

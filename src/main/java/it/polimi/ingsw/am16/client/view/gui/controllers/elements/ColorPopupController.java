@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controller class for the popup that allows the player to select their color.
+ */
 public class ColorPopupController {
 
     @FXML
@@ -31,6 +34,9 @@ public class ColorPopupController {
 
     private boolean done;
 
+    /**
+     * Initializes this controller with default values. By default, the popup shows a placeholder text.
+     */
     @FXML
     public void initialize() {
         pegControllers = new HashMap<>();
@@ -40,6 +46,10 @@ public class ColorPopupController {
         done = false;
     }
 
+    /**
+     * Sets the colors available for the player to choose and displays them.
+     * @param availableColors The list of colors from which the player can choose.
+     */
     public void setColors(List<PlayerColor> availableColors) {
         for(PlayerColor color : availableColors) {
             PegController pegController = ElementFactory.getPeg();
@@ -54,6 +64,9 @@ public class ColorPopupController {
         chooseColorBox.setVisible(true);
     }
 
+    /**
+     * Handles the submission to the server of the player's color choice.
+     */
     @FXML
     public void submitColor() {
         if (selectedColor == null || done) return;
@@ -61,13 +74,17 @@ public class ColorPopupController {
         try {
             CodexGUI.getGUI().getServerInterface().setColor(selectedColor);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating with the server: " + e.getMessage());
             return;
         }
 
         done = true;
     }
 
+    /**
+     * Selects the peg of the specified color.
+     * @param color The color that the player selected.
+     */
     private void selectColor(PlayerColor color) {
         this.selectedColor = color;
         for(PlayerColor playerColor : pegControllers.keySet()) {
@@ -81,6 +98,9 @@ public class ColorPopupController {
         }
     }
 
+    /**
+     * @return The root node of this GUI element.
+     */
     public Parent getRoot() {
         return root;
     }

@@ -13,6 +13,9 @@ import java.util.List;
 
 import static it.polimi.ingsw.am16.common.model.cards.SideType.FRONT;
 
+/**
+ * Controller for the popup that allows the player to select their personal objective.
+ */
 public class ObjectivePopupController {
 
     @FXML
@@ -29,6 +32,9 @@ public class ObjectivePopupController {
 
     private boolean done;
 
+    /**
+     * Initializes this element, preparing it for later use.
+     */
     @FXML
     private void initialize() {
         option1.getChildren().clear();
@@ -36,9 +42,14 @@ public class ObjectivePopupController {
         done = false;
     }
 
+    /**
+     * Sets which objectives the player can choose from.
+     * Will throw an {@link IllegalArgumentException} if there aren't at least two objectives to choose from.
+     * @param possibleObjectives The objectives from which the player can choose.
+     */
     public void setObjectives(List<ObjectiveCard> possibleObjectives) {
         if (possibleObjectives.size() < 2) {
-            throw new RuntimeException("There should be at least 2 objectives to choose from");
+            throw new IllegalArgumentException("There should be at least 2 objectives to choose from");
         }
 
         ObjectiveCard option1Card = possibleObjectives.get(0);
@@ -74,6 +85,9 @@ public class ObjectivePopupController {
 
     }
 
+    /**
+     * Submits an objective choice to the server.
+     */
     @FXML
     private void submitObjective() {
         if (selectedObjective == null || done) return;
@@ -81,13 +95,16 @@ public class ObjectivePopupController {
         try {
             CodexGUI.getGUI().getServerInterface().setPersonalObjective(selectedObjective);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating with the server: " + e.getMessage());
             return;
         }
 
         done = true;
     }
 
+    /**
+     * @return The root node of this element.
+     */
     public Parent getRoot() {
         return root;
     }

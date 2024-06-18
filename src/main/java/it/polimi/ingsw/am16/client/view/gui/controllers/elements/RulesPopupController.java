@@ -12,6 +12,9 @@ import javafx.scene.layout.StackPane;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Controller class for the popup that displays game rules.
+ */
 public class RulesPopupController {
     @FXML
     StackPane rootPopup;
@@ -22,6 +25,9 @@ public class RulesPopupController {
 
     private static final List<String> paths = GUIAssetRegistry.getGUIRulebookPaths();
 
+    /**
+     * Initializes the element for later use.
+     */
     @FXML
     public void initialize() {
         idx = 0;
@@ -30,6 +36,9 @@ public class RulesPopupController {
         rootPopup.setPrefHeight(CodexGUI.getGUI().getStage().getHeight());
     }
 
+    /**
+     * Flips to the previous page of the rulebook.
+     */
     @FXML
     public void prev(ActionEvent ignored) {
         idx = (paths.size() + idx - 1) % paths.size();
@@ -37,6 +46,9 @@ public class RulesPopupController {
         rulesBook.setImage(new Image(Objects.requireNonNull(RulesPopupController.class.getResourceAsStream(paths.get(idx)))));
     }
 
+    /**
+     * Flips to the next page of the rulebook.
+     */
     @FXML
     public void next(ActionEvent ignored) {
         idx = (paths.size() + idx + 1) % paths.size();
@@ -44,11 +56,17 @@ public class RulesPopupController {
         rulesBook.setImage(new Image(Objects.requireNonNull(RulesPopupController.class.getResourceAsStream(paths.get(idx)))));
     }
 
+    /**
+     * Closes the popup.
+     */
     @FXML
     public void back(ActionEvent ignored) {
         ((StackPane) rootPopup.getParent()).getChildren().remove(rootPopup);
     }
 
+    /**
+     * @return The root node of this element.
+     */
     public Parent getRoot() {
         return rootPopup;
     }

@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controller class for the points board.
+ */
 public class PointsBoardController {
 
     @FXML
@@ -82,43 +85,54 @@ public class PointsBoardController {
 
     private Map<Integer, List<PlayerColor>> pegsInSlots;
 
+    /**
+     * Initializes this element, preparing it for later use.
+     */
     @FXML
     public void initialize() {
-        pointSlots = new HashMap<>();
-        pointSlots.put(0, points0);
-        pointSlots.put(1, points1);
-        pointSlots.put(2, points2);
-        pointSlots.put(3, points3);
-        pointSlots.put(4, points4);
-        pointSlots.put(5, points5);
-        pointSlots.put(6, points6);
-        pointSlots.put(7, points7);
-        pointSlots.put(8, points8);
-        pointSlots.put(9, points9);
-        pointSlots.put(10, points10);
-        pointSlots.put(11, points11);
-        pointSlots.put(12, points12);
-        pointSlots.put(13, points13);
-        pointSlots.put(14, points14);
-        pointSlots.put(15, points15);
-        pointSlots.put(16, points16);
-        pointSlots.put(17, points17);
-        pointSlots.put(18, points18);
-        pointSlots.put(19, points19);
-        pointSlots.put(20, points20);
-        pointSlots.put(21, points21);
-        pointSlots.put(22, points22);
-        pointSlots.put(23, points23);
-        pointSlots.put(24, points24);
-        pointSlots.put(25, points25);
-        pointSlots.put(26, points26);
-        pointSlots.put(27, points27);
-        pointSlots.put(28, points28);
-        pointSlots.put(29, points29);
+        //I know it's not great, but it works and the alternative is hardcoding positions.
+
+        pointSlots = Map.ofEntries(
+                Map.entry(0, points0),
+                Map.entry(1, points1),
+                Map.entry(2, points2),
+                Map.entry(3, points3),
+                Map.entry(4, points4),
+                Map.entry(5, points5),
+                Map.entry(6, points6),
+                Map.entry(7, points7),
+                Map.entry(8, points8),
+                Map.entry(9, points9),
+                Map.entry(10, points10),
+                Map.entry(11, points11),
+                Map.entry(12, points12),
+                Map.entry(13, points13),
+                Map.entry(14, points14),
+                Map.entry(15, points15),
+                Map.entry(16, points16),
+                Map.entry(17, points17),
+                Map.entry(18, points18),
+                Map.entry(19, points19),
+                Map.entry(20, points20),
+                Map.entry(21, points21),
+                Map.entry(22, points22),
+                Map.entry(23, points23),
+                Map.entry(24, points24),
+                Map.entry(25, points25),
+                Map.entry(26, points26),
+                Map.entry(27, points27),
+                Map.entry(28, points28),
+                Map.entry(29, points29)
+        );
 
         pegsInSlots = new HashMap<>();
     }
 
+    /**
+     * Adds a peg in a point slot.
+     * @param slot The slot in which the peg should be added.
+     * @param color The color of the peg to add. If a peg is already in that slow, a multicolored peg will be created.
+     */
     public void addPegInSlot(int slot, PlayerColor color) {
         List<PlayerColor> pegs = pegsInSlots.computeIfAbsent(slot, k -> new ArrayList<>());
         pegs.add(color);
@@ -128,6 +142,11 @@ public class PointsBoardController {
         putPegInSlot(slot, pegController);
     }
 
+    /**
+     * Removes a peg from a slot.
+     * @param slot The slot from which the peg should be removed.
+     * @param playerColor The color of the peg to remove. If other pegs are in the slot, only one color will be removed.
+     */
     public void removePegInSlot(int slot, PlayerColor playerColor) {
         if (pegsInSlots.containsKey(slot)) {
             pegsInSlots.get(slot).remove(playerColor);
@@ -142,6 +161,11 @@ public class PointsBoardController {
         }
     }
 
+    /**
+     * Actually puts a peg in a slot.
+     * @param slot The slot.
+     * @param peg The peg element.
+     */
     private void putPegInSlot(int slot, PegController peg) {
         StackPane pegSlot = pointSlots.get(slot);
         Platform.runLater(() -> {
@@ -150,6 +174,9 @@ public class PointsBoardController {
         });
     }
 
+    /**
+     * @return The root node of this points board.
+     */
     public Parent getRoot() {
         return root;
     }

@@ -6,23 +6,23 @@
     -fx-opacity: 0;
 }
 
-.card:interactable:hover {
+.card.interactable:hover {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 12, 0.4, 0, 0);
 }
 
-.card:card_fungi:interactable:hover {
+.card.card_fungi.interactable:hover {
     -fx-effect: dropshadow(gaussian, rgba(182, 26, 42, 0.8), 12, 0.4, 0, 0);
 }
 
-.card:card_plant:interactable:hover {
+.card.card_plant.interactable:hover {
     -fx-effect: dropshadow(gaussian, rgba(43, 127, 55, 0.8), 12, 0.4, 0, 0);
 }
 
-.card:card_animal:interactable:hover {
+.card.card_animal.interactable:hover {
     -fx-effect: dropshadow(gaussian, rgba(66, 124, 163, 0.8), 12, 0.4, 0, 0);
 }
 
-.card:card_insect:interactable:hover {
+.card.card_insect.interactable:hover {
     -fx-effect: dropshadow(gaussian, rgba(152, 48, 151, 0.8), 12, 0.4, 0, 0);
 }
 

@@ -12,6 +12,9 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Controller class for the info table GUI element. Used to display the amount of each resource and object currently visible on the player's play area.
+ */
 public class InfoTableController {
 
     @FXML
@@ -36,6 +39,9 @@ public class InfoTableController {
 
     private Map<ResourceType, Integer> resourceCounts;
 
+    /**
+     * Initializes the element, preparing it for later use.
+     */
     @FXML
     public void initialize() {
         infoTableTexts = new HashMap<>();
@@ -49,6 +55,11 @@ public class InfoTableController {
         resourceCounts = new EnumMap<>(ResourceType.class);
     }
 
+    /**
+     * Updates the values displayed on the info table.
+     * @param resourceCounts The amount of each resource currently visible on the player's play area.
+     * @param objectCounts The amount of each object currently visible on the player's play area.
+     */
     public void updateInfoTable(Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         this.resourceCounts = resourceCounts;
         for(Map.Entry<ResourceType, Integer> entry : resourceCounts.entrySet()) {
@@ -65,10 +76,16 @@ public class InfoTableController {
         }
     }
 
+    /**
+     * @return A map containing the amount of each resource currently visible on the player's play field.
+     */
     public Map<ResourceType, Integer> getResourceCounts() {
         return resourceCounts;
     }
 
+    /**
+     * @return The root node of this info table element.
+     */
     public Parent getRoot() {
         return root;
     }
