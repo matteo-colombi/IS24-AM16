@@ -395,6 +395,8 @@ public class PlayScreenController {
     private void setPersonalObjective(ObjectiveCard personalObjective) {
         if (objectivePopupController != null)
             centerContentPane.getChildren().remove(objectivePopupController.getRoot());
+        else
+            objectivePopupController = ElementFactory.getObjectivePopup();
         CardController cardController = ElementFactory.getCard();
         cardController.setCard(personalObjective);
         cardController.showSide(SideType.FRONT);
@@ -437,7 +439,7 @@ public class PlayScreenController {
                 centerContentPane.getChildren().remove(starterPopupController.getRoot());
             }
         } else {
-            createOtherHandHover(username);
+            setOtherHandActions(username);
         }
 
         updateInfoTable(username, resourceCounts, objectCounts);
@@ -603,7 +605,7 @@ public class PlayScreenController {
         }
     }
 
-    private void createOtherHandHover(String username) {
+    private void setOtherHandActions(String username) {
         PlayerButtonController playerButton = playerButtons.get(username);
         OtherPlayerInfoController otherPlayerInfoController = ElementFactory.getOtherPlayerInfo();
         otherPlayerInfoController.setUsername(username);
@@ -619,7 +621,7 @@ public class PlayScreenController {
             otherPlayerInfoController.getRoot().setTranslateY(-(playersBox.getHeight() / 2 - newValue.getCenterY()));
         });
 
-        playerButton.setHovers(otherPlayerInfoController, currentlyShowingOtherHand);
+        playerButton.setActions(otherPlayerInfoController, currentlyShowingOtherHand);
         playerButton.setDisabled(false);
 
         otherPlayerInfoController.setPlayAreaButtonAction(event -> {
