@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -108,15 +109,12 @@ public class WelcomeScreenController {
         if (joinSound.getMediaPlayer() == null) {
             try {
                 String filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/SINCERELY.mp4")).toURI().toString();
-                Media media = new Media(filename);
-                MediaPlayer mediaPlayer = new MediaPlayer(media);
-                joinSound.setMediaPlayer(mediaPlayer);
+                AudioClip audioClip = new AudioClip(filename);
+                audioClip.play();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        joinSound.getMediaPlayer().seek(joinSound.getMediaPlayer().getStartTime());
-        joinSound.getMediaPlayer().play();
 
         CodexGUI.getGUI().getGuiState().setUsername(username);
         CodexGUI.getGUI().switchToGamesScreen();
@@ -192,6 +190,12 @@ public class WelcomeScreenController {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 showMore();
                 keyEvent.consume();
+            }
+        });
+
+        usernameField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.contains(" ")) {
+                usernameField.setText(oldValue);
             }
         });
 
