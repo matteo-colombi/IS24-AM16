@@ -48,6 +48,14 @@ public class CardController {
     private boolean active;
 
     /**
+     * Prepares the element for later use.
+     */
+    @FXML
+    private void initialize() {
+        costSatisfied = true;
+    }
+
+    /**
      * @return The image currently displayed in this card.
      */
     public Image getImage() {
@@ -274,10 +282,12 @@ public class CardController {
                 Dragboard db = dragEvent.getDragboard();
                 PlayableCard playableCard = (PlayableCard) this.card;
                 Position position = (Position) db.getContent(GUIState.droppedOnPos);
-                try {
-                    CodexGUI.getGUI().getGuiState().getServerInterface().playCard(playableCard, currSide, position);
-                } catch (RemoteException e) {
-                    System.err.println("Error communicating with the server: " + e.getMessage());
+                if (position != null) {
+                    try {
+                        CodexGUI.getGUI().getGuiState().getServerInterface().playCard(playableCard, currSide, position);
+                    } catch (RemoteException e) {
+                        System.err.println("Error communicating with the server: " + e.getMessage());
+                    }
                 }
                 db.clear();
                 dragEvent.consume();

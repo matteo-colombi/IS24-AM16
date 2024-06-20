@@ -604,9 +604,6 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
     @Override
     public void signalDisconnection(String whoDisconnected) {
-        gameController = null;
-        username = null;
-
         TCPMessage tcpMessage = new TCPMessage(MessageType.SIGNAL_DISCONNECTION, new SignalDisconnection(whoDisconnected));
         sendTCPMessage(tcpMessage);
     }
