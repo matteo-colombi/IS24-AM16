@@ -29,11 +29,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 
+import java.net.URISyntaxException;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -258,6 +260,14 @@ public class PlayScreenController {
         if (username.equals(guiState.getUsername())) {
             HandController handController = guiState.getHand();
             handController.setActive(true);
+            String filename = null;
+            try {
+                filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/ding.mp3")).toURI().toString();
+            } catch (URISyntaxException e) {
+                System.err.println("Error loading audio file");;
+            }
+            AudioClip audioClip = new AudioClip(filename);
+            audioClip.play();
         }
     }
 
