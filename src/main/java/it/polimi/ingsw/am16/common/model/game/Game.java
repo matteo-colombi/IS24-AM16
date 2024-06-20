@@ -517,41 +517,6 @@ public class Game implements GameModel {
                         .map(Player::getUsername)
                         .toList()
         );
-        //FIXME remove this old version if the new one works
-//        int tmpPoints = 0;
-//        String tmpUsername = null;
-//        int tmpObjPoints = 0;
-//        List<String> tmpWinners = new ArrayList<>();
-//        for (Player p : players.values()) {
-//            if (p.getTotalPoints() > tmpPoints) {
-//                tmpPoints = p.getTotalPoints();
-//                tmpUsername = p.getUsername();
-//            }
-//        }
-//        tmpWinners.add(tmpUsername);
-//        for (Player p : players.values()) {
-//            if (p.getTotalPoints() == tmpPoints && !p.getUsername().equals(tmpUsername)) {
-//                tmpWinners.add(p.getUsername());
-//            }
-//        }
-//        if (tmpWinners.size() == 1) {
-//            winnerUsernames.add(tmpUsername);
-//            return;
-//        }
-//        if (tmpWinners.size() > 1) {
-//            for (Player p : players.values()) {
-//                if (p.getObjectivePoints() > tmpObjPoints && tmpWinners.contains(p.getUsername())) {
-//                    tmpObjPoints = p.getObjectivePoints();
-//                    tmpUsername = p.getUsername();
-//                }
-//            }
-//        }
-//        winnerUsernames.add(tmpUsername);
-//        for (Player p : players.values()) {
-//            if (p.getObjectivePoints() == tmpObjPoints && !p.getUsername().equals(tmpUsername) && tmpWinners.contains(p.getUsername())) {
-//                winnerUsernames.add(p.getUsername());
-//            }
-//        }
     }
 
     @Override

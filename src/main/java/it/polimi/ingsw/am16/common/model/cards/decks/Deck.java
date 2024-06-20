@@ -55,14 +55,6 @@ public abstract class Deck<T extends Card> {
     }
 
     /**
-     * Adds the given card to the bottom of the deck.
-     * @param card The card to be added to the deck.
-     */
-    public void addCard(T card) {
-        cards.add(card);
-    }
-
-    /**
      * Adds the given cards to the bottom of the deck, in the order they are given
      * @param newCards The cards to be added.
      */
@@ -75,14 +67,6 @@ public abstract class Deck<T extends Card> {
      */
     public void shuffle() {
         Collections.shuffle(cards, RNG.getRNG());
-    }
-
-    /**
-     * @return The number of cards present in the deck.
-     */
-    @JsonIgnore
-    public int getDeckSize() {
-        return cards.size();
     }
 
     /**
@@ -123,10 +107,5 @@ public abstract class Deck<T extends Card> {
         Deck<?> deck = (Deck<?>) o;
 
         return cards.equals(deck.cards);
-    }
-
-    @Override
-    public int hashCode() {
-        return cards.hashCode();
     }
 }

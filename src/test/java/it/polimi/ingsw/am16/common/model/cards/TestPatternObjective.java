@@ -14,7 +14,6 @@ public class TestPatternObjective {
 
     private CardRegistry registry;
     private List<ObjectiveCard> objectiveCards;
-    private ObjectiveCard objective;
     private StarterCard starterCard;
     private Player testPlayer;
 
@@ -23,23 +22,7 @@ public class TestPatternObjective {
         // Creating some objects used in the test.
         initialize();
 
-        testObjective1();
-        //TODO test other objectives
-    }
-
-    public void initialize() {
-        registry = CardRegistry.getRegistry();
-
-        objectiveCards = registry.getObjectiveCards();
-
-        starterCard = registry.getStarterCards().getFirst();
-        assertEquals("starter_1", starterCard.getName());
-
-        testPlayer = new Player("testPlayer");
-    }
-
-    private void testObjective1() throws IllegalMoveException, NoStarterCardException {
-        objective = objectiveCards.getFirst();
+        ObjectiveCard objective = objectiveCards.getFirst();
         assertEquals("objective_pattern_1", objective.getName());
 
         assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
@@ -185,5 +168,16 @@ public class TestPatternObjective {
         testPlayer.playCard(insectCard, SideType.BACK, new Position(3,3));
 
         assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
+    }
+
+    public void initialize() {
+        registry = CardRegistry.getRegistry();
+
+        objectiveCards = registry.getObjectiveCards();
+
+        starterCard = registry.getStarterCards().getFirst();
+        assertEquals("starter_1", starterCard.getName());
+
+        testPlayer = new Player("testPlayer");
     }
 }

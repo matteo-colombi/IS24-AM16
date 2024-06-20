@@ -13,10 +13,6 @@ import it.polimi.ingsw.am16.common.tcpMessages.MessageType;
 import it.polimi.ingsw.am16.common.tcpMessages.TCPMessage;
 import it.polimi.ingsw.am16.common.tcpMessages.request.*;
 import it.polimi.ingsw.am16.common.tcpMessages.response.*;
-import it.polimi.ingsw.am16.common.model.cards.*;
-import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
-import it.polimi.ingsw.am16.common.model.game.GameState;
-import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.tcpMessages.response.AddPlayer;
 import it.polimi.ingsw.am16.common.tcpMessages.response.JoinGameResponse;
 import it.polimi.ingsw.am16.common.tcpMessages.response.SignalDisconnection;
@@ -95,7 +91,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
 
                     //Connection lost with client.
 
-                    System.out.println("TCP client disconnected.");
+                    System.out.println("TCP client " + clientSocket.getInetAddress() + ":" + clientSocket.getPort() + " disconnected.");
 
                     pingTimer.cancel();
 
@@ -186,7 +182,6 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                             } catch (UnexpectedActionException e) {
                                 gameController = null;
                                 System.err.println("Unexpected error: " + e.getMessage());
-                                e.printStackTrace();
                             }
                         }
                         case JOIN_GAME_REQUEST -> {
@@ -332,12 +327,8 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
                                 gameController.sendChatMessage(username, text, Set.of(receiverUsername));
                             }
                         }
-                        case PONG -> {
-                            ponged.set(true);
-                        }
-                        default -> {
-                            System.out.println("Client " + username + " sent a malformed message.");
-                        }
+                        case PONG -> ponged.set(true);
+                        default -> System.out.println("Client " + username + " sent a malformed message.");
                     }
                 }
             }
@@ -345,7 +336,7 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
             out.close();
             clientSocket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("IOException: " + e.getMessage());
         }
     }
 
@@ -391,7 +382,6 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
         } catch (IOException e) {
             System.err.println("Error serializing object to send to a TCP client. Printing the error message:");
             System.err.println(e.getMessage());
-            e.printStackTrace();
         }
     }
 

@@ -199,7 +199,7 @@ public class CardSide implements Serializable {
      * @return The awarded points.
      */
     public int getAwardedPoints(PlayArea playArea) {
-        return points * pointMultiplierPolicy.evaluate(playArea);
+        return getPoints() * pointMultiplierPolicy.evaluate(playArea);
     }
 
     @Override

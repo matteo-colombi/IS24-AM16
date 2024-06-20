@@ -41,11 +41,13 @@ public class TestGameSaving {
         game.initializeObjectives();
         game.setPlayerObjective("leonardo", game.getPlayers().get("leonardo").getPersonalObjectiveOptions().getFirst());
 
-        String path = "src/test/resources/json/testSaves/ABCD.json";
+        String directoryPath = "src/test/resources/json/testSaves";
+        String filePath = directoryPath + "/ABCD.json";
+        File directory = new File(directoryPath);
+        directory.mkdirs();
+        JsonMapper.getObjectMapper().writeValue(new File(filePath), game);
 
-        JsonMapper.getObjectMapper().writeValue(new File(path), game);
-
-        Game reloadedGame = JsonMapper.getObjectMapper().readValue(new File(path), Game.class);
+        Game reloadedGame = JsonMapper.getObjectMapper().readValue(new File(filePath), Game.class);
 
         assertEquals(game.getId(), reloadedGame.getId());
         assertEquals(game.getNumPlayers(), reloadedGame.getNumPlayers());

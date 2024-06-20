@@ -18,7 +18,11 @@ import java.util.Arrays;
 public class TestPayloadSerializer {
     @Test
     void testPayloadSerializer() throws IOException {
-        File f = new File("src/test/resources/json/testPayloadSerializer/test.json");
+        String directoryPath = "src/test/resources/json/testPayloadSerializer";
+        File directory = new File(directoryPath);
+        directory.mkdirs();
+        String filePath = directoryPath + "/test.json";
+        File f = new File(filePath);
         ObjectMapper mapper = JsonMapper.getObjectMapper();
 
         PlayableCard[] commonResource = new PlayableCard[]{

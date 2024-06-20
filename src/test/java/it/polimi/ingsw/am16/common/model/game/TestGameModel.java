@@ -12,8 +12,10 @@ import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.util.RNG;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,18 +34,31 @@ public class TestGameModel {
         assertThrows(UnexpectedActionException.class, game::initializeGame);
 
         game.addPlayer("teo");
+        game.removePlayer("teo");
+        game.addPlayer("teo");
 
         assertThrows(UnexpectedActionException.class, () -> game.addPlayer("teo"));
+        assertThrows(UnexpectedActionException.class, () -> game.addPlayer("l2c"));
         assertThrows(UnexpectedActionException.class, game::startGame);
+
+        assertFalse(game.isRejoiningAfterCrash());
 
         game.setConnected("xLorde", true);
         game.setConnected("teo", true);
 
+        assertTrue(game.everybodyConnected());
+
         game.initializeGame();
+
+        assertThrows(UnexpectedActionException.class, () -> game.addPlayer("l2c"));
+        assertThrows(UnexpectedActionException.class, () -> game.initializeGame());
 
         Map<String, Player> players = game.getPlayers();
         Player xLorde = players.get("xLorde");
         Player teo = players.get("teo");
+        Set<Player> playerSet = new HashSet<>(players.values());
+        assertTrue(playerSet.contains(xLorde));
+        assertTrue(playerSet.contains(teo));
         HandModel xLordeHand = xLorde.getHand();
         HandModel teoHand = teo.getHand();
 
@@ -54,11 +69,16 @@ public class TestGameModel {
         System.out.println(teo.getStarterCard());
 
         game.setPlayerStarterSide("xLorde", SideType.BACK);
+
+        assertFalse(game.allPlayersChoseStarterSide());
+
         game.setPlayerStarterSide("teo", SideType.BACK);
 
         assertTrue(game.allPlayersChoseStarterSide());
 
         game.setPlayerColor("xLorde", PlayerColor.BLUE);
+
+        assertFalse(game.allPlayersChoseColor());
 
         assertThrows(UnexpectedActionException.class, () -> game.setPlayerColor("teo", PlayerColor.BLUE));
 
@@ -74,6 +94,16 @@ public class TestGameModel {
         printCommonObjectives();
 
         game.setPlayerObjective("teo", teo.getPersonalObjectiveOptions().get(0));
+
+        assertFalse(game.allPlayersChoseObjective());
+
+        assertThrows(UnexpectedActionException.class, () -> game.startGame());
+        assertThrows(UnexpectedActionException.class, () -> game.placeCard("teo", CardRegistry.getRegistry().getResourceCardFromName("resource_fungi_3"), SideType.FRONT, new Position(1,1)));
+        assertThrows(UnexpectedActionException.class, () -> game.drawCard("xLorde", DrawType.RESOURCE_2));
+        assertThrows(UnexpectedActionException.class, () -> game.advanceTurn());
+        assertThrows(UnexpectedActionException.class, () -> game.triggerFinalRound());
+        assertThrows(UnexpectedActionException.class, () -> game.endGame());
+
         game.setPlayerObjective("xLorde", xLorde.getPersonalObjectiveOptions().get(0));
 
         assertTrue(game.allPlayersChoseObjective());
@@ -88,6 +118,10 @@ public class TestGameModel {
 
         game.startGame();
         game.distributeCards();
+
+        assertThrows(UnexpectedActionException.class, () -> game.setPlayerStarterSide("xLorde", SideType.FRONT));
+        assertThrows(UnexpectedActionException.class, () -> game.setPlayerColor("xLorde", PlayerColor.GREEN));
+        assertThrows(UnexpectedActionException.class, () -> game.setPlayerObjective("username", xLorde.getPersonalObjective()));
 
         printCommonResourceCards();
         printCommonGoldCards();
@@ -117,6 +151,14 @@ public class TestGameModel {
 
         assertEquals(1, teo.getGamePoints());
         game.advanceTurn();
+
+        game.pause();
+        assertTrue(game.isRejoiningAfterCrash());
+        game.setConnected("xLorde", true);
+        game.setConnected("teo", true);
+        game.initializeGame();
+        assertFalse(game.isRejoiningAfterCrash());
+
         assertEquals("xLorde", game.getActivePlayer());
 
         game.placeCard("xLorde", xLordeHand.getCards().get(0), SideType.FRONT, new Position(0, 2));

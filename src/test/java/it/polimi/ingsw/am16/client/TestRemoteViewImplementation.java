@@ -18,28 +18,26 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
 
     String username;
 
-    public TestRemoteViewImplementation(String username) {
-        this.username = username;
-    }
-
     @Override
-    public void notifyGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers, Map<String, LobbyState> lobbyStates) throws RemoteException {
-
-    }
+    public void notifyGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers, Map<String, LobbyState> lobbyStates) throws RemoteException {}
 
     @Override
     public void joinGame(String gameId, String username, int numPlayers) throws RemoteException {
-        System.out.println("You joined a game with username: " + username);
+        this.username = username;
+        System.out.println("[" + username + "] " + gameId + " joined the game");
+        System.out.println("Joined game " + gameId  + " with username " + username + ". Expected " + numPlayers + " players." );
     }
 
     @Override
     public void rejoinInformationStart() throws RemoteException {
-
+        System.out.print("[" + this.username + "]: ");
+        System.out.println("Rejoin info start");
     }
 
     @Override
     public void rejoinInformationEnd() throws RemoteException {
-
+        System.out.println("[" + this.username + "]: ");
+        System.out.println("Rejoin info end");
     }
 
     @Override
@@ -51,7 +49,8 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
 
     @Override
     public void setPlayers(List<String> usernames) throws RemoteException {
-
+        System.out.println("[" + this.username + "]: ");
+        System.out.println("Players in the game: " + usernames);
     }
 
     @Override
@@ -238,7 +237,8 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
 
     @Override
     public void signalGameDeletion(String whoDisconnected) throws RemoteException {
-
+        System.out.println("[" + username + "]: ");
+        System.err.println("Player " + whoDisconnected + " has disconnected! The game is deleted.");
     }
 
     @Override
@@ -248,8 +248,6 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
     }
 
     @Override
-    public void ping() throws RemoteException {
-
-    }
+    public void ping() throws RemoteException {}
 
 }

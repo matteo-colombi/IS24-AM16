@@ -26,8 +26,11 @@ public class TestPlayerReloading {
     void testPlayerReloading() throws NoStarterCardException, UnknownObjectiveCardException, IllegalMoveException, IOException {
         CardRegistry registry = CardRegistry.getRegistry();
         ObjectMapper mapper = JsonMapper.getObjectMapper();
-
-        File f = new File("src/test/resources/json/testPlayerReloading.json");
+        String directoryPath = "src/test/resources/json";
+        File directory = new File(directoryPath);
+        directory.mkdirs();
+        String filePath = directoryPath + "/testPlayerReloading.json";
+        File f = new File(filePath);
 
         Player player = new Player("matteo");
 
@@ -69,6 +72,9 @@ public class TestPlayerReloading {
         assertEquals(player.getPersonalObjectiveOptions(), reloadedPlayer.getPersonalObjectiveOptions());
         assertEquals(player.getPersonalObjective(), reloadedPlayer.getPersonalObjective());
         assertEquals(player.getHand().getCards(), reloadedPlayer.getHand().getCards());
+        assertEquals(player.getHand().getRestrictedVersion(), reloadedPlayer.getHand().getRestrictedVersion());
+        assertEquals(player.getHand().getRestrictedVersion().toString(), reloadedPlayer.getHand().getRestrictedVersion().toString());
+        assertEquals(player.getHand().toString(), reloadedPlayer.getHand().toString());
         assertEquals(player.getChosePersonalObjective(), reloadedPlayer.getChosePersonalObjective());
         assertEquals(player.getChoseColor(), reloadedPlayer.getChoseColor());
         assertEquals(player.getChoseStarterCardSide(), reloadedPlayer.getChoseStarterCardSide());

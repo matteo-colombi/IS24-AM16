@@ -4,7 +4,10 @@ import it.polimi.ingsw.am16.server.VirtualView;
 import it.polimi.ingsw.am16.server.controller.ChatController;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TestChat {
 
@@ -43,5 +46,12 @@ class TestChat {
         for(ChatMessage m : chatGiacomo.getMessages()) {
             System.out.println(m);
         }
+
+        Set<ChatMessage> chatMessageSet = new HashSet<>();
+        chatMessageSet.addAll(chatGiacomo.getMessages());
+        chatMessageSet.addAll(chatAldo.getMessages());
+        chatMessageSet.addAll(chatGiovanni.getMessages());
+
+        assertEquals(chatMessageSet.size(), 4);
     }
 }

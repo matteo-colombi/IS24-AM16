@@ -1,27 +1,34 @@
 package it.polimi.ingsw.am16.common.model.player;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 import it.polimi.ingsw.am16.common.model.players.Player;
+import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestPlayArea {
     @Test
-    public void testPlayArea() throws IllegalMoveException, UnknownObjectiveCardException {
+    public void testPlayArea() throws IllegalMoveException, UnknownObjectiveCardException, JsonProcessingException {
         CardRegistry registry = CardRegistry.getRegistry();
 
         Player p = new Player("cornerable");
         PlayArea playArea = p.getPlayArea();
 
         ResourceCard plantResource = registry.getResourceCards().get(10);
+
+        Collection<Cornerable> corners = plantResource.getFrontSide().getCorners().values().stream().toList();
+        String serializedCorners = JsonMapper.getObjectMapper().writeValueAsString(corners);
+        assertEquals(corners, JsonMapper.getObjectMapper().readValue(serializedCorners, new TypeReference<Collection<Cornerable>>() {}).stream().toList());
 
         // check that you can't place isolated cards (no starting card yet)
         assertThrows(IllegalMoveException.class, () -> playArea.playCard(plantResource, SideType.BACK, new Position(0, 0)));
@@ -51,6 +58,9 @@ public class TestPlayArea {
         assertThrows(IllegalMoveException.class, () -> playArea.playCard(finalGoldCard, SideType.FRONT, new Position(1, 1)));
 
         playArea.playCard(plantResource, SideType.FRONT, new Position(-1, 1));
+
+        System.out.println(playArea.getAddedLegalPositions());
+        System.out.println(playArea.getRemovedLegalPositions());
 
         Map<ResourceType, Integer> resourceCounts = playArea.getResourceCounts();
         Map<ObjectType, Integer> objectCounts = playArea.getObjectCounts();

@@ -14,7 +14,11 @@ public class TestDeckReloading {
     public void testDeckReloading() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         CardRegistry.getRegistry();
-        File f = new File("src/test/resources/json/testDeckSave.json");
+        String directoryPath = "src/test/resources/json";
+        File directory = new File(directoryPath);
+        directory.mkdirs();
+        String filePath = directoryPath + "/testDeckSave.json";
+        File f = new File(filePath);
         f.createNewFile();
 
         ObjectiveCardsDeck objectiveDeck = DeckFactory.getObjectiveCardsDeck();
