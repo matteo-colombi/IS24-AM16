@@ -53,7 +53,9 @@ public class PlayerButtonController {
         }
     }
 
-    public void setHovers(OtherPlayerInfoController otherPlayerInfoController, final AtomicReference<OtherPlayerInfoController> currentlyShowingOtherHand) {
+    public void setActions(OtherPlayerInfoController otherPlayerInfoController, final AtomicReference<OtherPlayerInfoController> currentlyShowingOtherHand) {
+        //FIXME remove comment if we like not having hovers.
+        /*
         button.setOnMouseEntered(e -> {
             if (currentlyShowingOtherHand.get() == null)
                 otherPlayerInfoController.getRoot().setVisible(true);
@@ -63,6 +65,7 @@ public class PlayerButtonController {
             if (currentlyShowingOtherHand.get() == null)
                 otherPlayerInfoController.getRoot().setVisible(false);
         });
+        */
 
         setOnMouseClicked(e -> {
             if (currentlyShowingOtherHand.get() == null) {
