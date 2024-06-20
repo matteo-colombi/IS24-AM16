@@ -1,56 +1,32 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers.screens;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
-import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
-import it.polimi.ingsw.am16.common.util.FilePaths;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
-import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
-
-import java.net.URISyntaxException;
-import java.util.Objects;
 
 /**
  * Controller for the welcome screen.
  */
 public class WelcomeScreenController {
     @FXML
-    private StackPane root;
-
-    @FXML
     private StackPane showMoreButton;
 
     @FXML
     private StackPane more;
 
-    /**
-     * The text field for the username.
-     */
     @FXML
     private TextField usernameField;
 
-    @FXML
-    private MediaView createSound;
-
-    @FXML
-    private MediaView joinSound;
-
-
     /**
-     * Initializes the controller. The username is kept when returning to the welcome screen from the games screen.
+     * Initializes the controller, prefilling the username field if a username is available and registering events handled by this screen.
      */
     @FXML
     public void initialize() {
         registerEvents();
-
-        addTextLimiter(usernameField, 10);
 
         String username = CodexGUI.getGUI().getGuiState().getUsername();
         if (username != null) {
@@ -62,58 +38,31 @@ public class WelcomeScreenController {
     }
 
     /**
-     * Creates a new game.
-     *
-     * @param ignored The action event (which is ignored).
+     * Switches the screen to the game creation screen, if the player inserted a valid username.
      */
     @FXML
-    public void create(ActionEvent ignored) throws URISyntaxException {
+    public void create(ActionEvent ignored) {
         String username = usernameField.getText();
-        if (username.isEmpty() || username.length() > 10) {
+        if (username.isEmpty()) {
             usernameField.selectAll();
             usernameField.requestFocus();
             return;
         }
-
-        if (createSound.getMediaPlayer() == null) {
-            try {
-                String filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/QUANDO.mp4")).toURI().toString();
-                Media media = new Media(filename);
-                MediaPlayer mediaPlayer = new MediaPlayer(media);
-                createSound.setMediaPlayer(mediaPlayer);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        createSound.getMediaPlayer().seek(createSound.getMediaPlayer().getStartTime());
-        createSound.getMediaPlayer().play();
 
         CodexGUI.getGUI().getGuiState().setUsername(username);
         CodexGUI.getGUI().switchToCreateScreen();
     }
 
     /**
-     * Joins a game.
-     *
-     * @param ignored The action event (which is ignored).
+     * Switches to the game joining screen, if the player inserted a valid username.
      */
     @FXML
     public void join(ActionEvent ignored) {
         String username = usernameField.getText();
-        if (username.isEmpty() || username.length() > 10) {
+        if (username.isEmpty()) {
             usernameField.selectAll();
             usernameField.requestFocus();
             return;
-        }
-
-        if (joinSound.getMediaPlayer() == null) {
-            try {
-                String filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/SINCERELY.mp4")).toURI().toString();
-                AudioClip audioClip = new AudioClip(filename);
-                audioClip.play();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
 
         CodexGUI.getGUI().getGuiState().setUsername(username);
@@ -122,27 +71,10 @@ public class WelcomeScreenController {
 
     /**
      * Quits the application.
-     *
-     * @param ignored The action event (which is ignored).
      */
     @FXML
     public void quit(ActionEvent ignored) {
         Platform.exit();
-    }
-
-    /**
-     * Adds a text limiter to a text field.
-     *
-     * @param tf        The text field to which this constraint should be applied.
-     * @param maxLength The maximum length.
-     */
-    private static void addTextLimiter(final TextField tf, final int maxLength) {
-        tf.textProperty().addListener((ov, oldValue, newValue) -> {
-            if (tf.getText().length() > maxLength) {
-                String s = tf.getText().substring(0, maxLength);
-                tf.setText(s);
-            }
-        });
     }
 
     /**
@@ -153,9 +85,7 @@ public class WelcomeScreenController {
     }
 
     /**
-     * Shows the rules screen.
-     *
-     * @param ignored The action event (which is ignored).
+     * Switches to the rules screen.
      */
     @FXML
     public void showRules(ActionEvent ignored) {
@@ -164,9 +94,7 @@ public class WelcomeScreenController {
     }
 
     /**
-     * Shows the credits screen.
-     *
-     * @param ignored The action event (which is ignored).
+     * Switches to the credits screen.
      */
     @FXML
     public void showCredits(ActionEvent ignored) {
@@ -174,13 +102,7 @@ public class WelcomeScreenController {
         CodexGUI.getGUI().switchToCreditsScreen();
     }
 
-    public void showError(String errorMessage) {
-        //TODO implement an event listener that calls this method
-    }
-
     private void registerEvents() {
-        root.addEventFilter(GUIEventTypes.ERROR_EVENT, errorEvent -> showError(errorEvent.getErrorMsg()));
-
         showMoreButton.setOnMouseClicked(e -> {
             showMore();
             e.consume();
@@ -190,6 +112,13 @@ public class WelcomeScreenController {
             if (keyEvent.getCode() == KeyCode.ENTER) {
                 showMore();
                 keyEvent.consume();
+            }
+        });
+
+        usernameField.textProperty().addListener((ov, oldValue, newValue) -> {
+            if (usernameField.getText().length() > 10) {
+                String s = usernameField.getText().substring(0, 10);
+                usernameField.setText(s);
             }
         });
 

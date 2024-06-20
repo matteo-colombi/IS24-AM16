@@ -18,7 +18,7 @@ import javafx.scene.layout.StackPane;
 import java.rmi.RemoteException;
 
 /**
- * Controller for the welcome screen.
+ * Controller for the screen that allows players to create a new game.
  */
 public class CreateScreenController {
     @FXML
@@ -32,16 +32,10 @@ public class CreateScreenController {
     @FXML
     private ToggleGroup numPLayersToggleGroup;
 
-    private ErrorController errorController;
-
-    /**
-     * The server interface.
-     */
     private ServerInterface serverInterface;
 
     /**
-     * Initializes the controller. The username is kept when returning to the welcome screen from the games screen.
-     *
+     * Initializes the controller, registering the events on the screen buttons.
      */
     @FXML
     public void initialize() {
@@ -49,11 +43,17 @@ public class CreateScreenController {
         this.serverInterface = CodexGUI.getGUI().getServerInterface();
     }
 
+    /**
+     * Goes back to the welcome screen.
+     */
     @FXML
     public void back(ActionEvent ignored) {
         CodexGUI.getGUI().switchToWelcomeScreen();
     }
 
+    /**
+     * Creates a game with the selected amount of players.
+     */
     @FXML
     public void create(ActionEvent ignored) {
         String username = CodexGUI.getGUI().getGuiState().getUsername();
@@ -64,24 +64,26 @@ public class CreateScreenController {
         try {
             serverInterface.createGame(username, numPlayers);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error occurred while communicating with the server: " + e.getMessage());
         }
     }
 
     /**
-     * This method sets up and shows the error popup whenever an error occurs
-     * (and consequently, an error event is fired).
+     * This method sets up and shows the error popup whenever an error occurs.
      *
      * @param errorEvent the fired error event
      */
     public void showError(ErrorEvent errorEvent) {
-        errorController = ElementFactory.getErrorPopup();
+        ErrorController errorController = ElementFactory.getErrorPopup();
         GUIError error = ErrorFactory.getError(errorEvent.getErrorType());
         error.configurePopup(errorController);
         errorController.setErrorText(errorEvent.getErrorMsg());
         error.show(root);
     }
 
+    /**
+     * Registers the events for this screen's buttons.
+     */
     private void registerEvents() {
         root.addEventFilter(GUIEventTypes.ERROR_EVENT, this::showError);
 

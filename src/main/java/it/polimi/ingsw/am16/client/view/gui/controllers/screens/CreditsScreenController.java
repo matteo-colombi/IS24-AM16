@@ -4,18 +4,17 @@ import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.common.util.FilePaths;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
-public class CreditsScreenController implements Initializable {
+/**
+ * Controller for the credits screen.
+ */
+public class CreditsScreenController {
 
     @FXML
     private MediaView rick;
@@ -23,11 +22,6 @@ public class CreditsScreenController implements Initializable {
     private VBox links;
     @FXML
     private VBox rickText;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
 
     @FXML
     public void click(ActionEvent ignored) {
@@ -43,7 +37,7 @@ public class CreditsScreenController implements Initializable {
                 MediaPlayer mediaPlayer = new MediaPlayer(media);
                 rick.setMediaPlayer(mediaPlayer);
             } catch (Exception e) {
-                e.printStackTrace();
+                System.err.println("Error while loading media: " + e.getMessage());
             }
         }
 

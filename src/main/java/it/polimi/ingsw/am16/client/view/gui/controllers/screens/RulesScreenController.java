@@ -11,8 +11,11 @@ import javafx.scene.layout.StackPane;
 import java.util.List;
 import java.util.Objects;
 
-
+/**
+ * Controller for the rules screen.
+ */
 public class RulesScreenController {
+
     @FXML
     StackPane root;
     @FXML
@@ -22,11 +25,17 @@ public class RulesScreenController {
 
     private static final List<String> paths = GUIAssetRegistry.getGUIRulebookPaths();
 
+    /**
+     * Initializes the screen, setting the page index to 0.
+     */
     @FXML
     public void initialize() {
         idx = 0;
     }
 
+    /**
+     * Goes back one page on the manual.
+     */
     @FXML
     public void prev(ActionEvent ignored) {
         idx = (paths.size() + idx - 1) % paths.size();
@@ -34,6 +43,9 @@ public class RulesScreenController {
         rulesBook.setImage(new Image(Objects.requireNonNull(RulesScreenController.class.getResourceAsStream(paths.get(idx)))));
     }
 
+    /**
+     * Goes forward one page on the manual.
+     */
     @FXML
     public void next(ActionEvent ignored) {
         idx = (paths.size() + idx + 1) % paths.size();
@@ -41,6 +53,9 @@ public class RulesScreenController {
         rulesBook.setImage(new Image(Objects.requireNonNull(RulesScreenController.class.getResourceAsStream(paths.get(idx)))));
     }
 
+    /**
+     * Returns to the welcome screen.
+     */
     @FXML
     public void back(ActionEvent ignored) {
         CodexGUI.getGUI().switchToWelcomeScreen();

@@ -20,7 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controller for the end game screen. The end game screen displays the amount of points for each player as well as the name of the winner(s) of the game.
+ */
 public class EndgameScreenController {
+
     @FXML
     public StackPane root;
     @FXML
@@ -35,8 +39,6 @@ public class EndgameScreenController {
     public VBox objectivePointsCol;
     @FXML
     public VBox totalPointsCol;
-
-    private ErrorController errorController;
 
     private GUIState guiState;
 
@@ -145,7 +147,7 @@ public class EndgameScreenController {
      * @param errorEvent the fired error event
      */
     public void showError(ErrorEvent errorEvent) {
-        errorController = ElementFactory.getErrorPopup();
+        ErrorController errorController = ElementFactory.getErrorPopup();
         GUIError error = ErrorFactory.getError(errorEvent.getErrorType());
         error.configurePopup(errorController);
         errorController.setErrorText(errorEvent.getErrorMsg());
