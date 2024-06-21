@@ -22,6 +22,11 @@ public final class FilePaths {
     public static final String CLI_CARDS = CLI_ASSETS + "/cliCards.json";
 
     /**
+     * The path for a placeholder blank card for the command line interface.
+     */
+    public static final String CLI_BLANK_CARD = CLI_ASSETS + "/cliBlankCard.json";
+
+    /**
      * The path for the label used to signal positions in the CLI play area.
      */
     public static final String CLI_POSITION_LABEL = CLI_ASSETS + "/label.json";

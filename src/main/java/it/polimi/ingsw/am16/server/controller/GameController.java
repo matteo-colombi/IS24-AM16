@@ -338,7 +338,6 @@ public class GameController {
         }
 
         if (Objects.equals(game.getActivePlayer(), game.getStartingPlayer())) {
-            lobbyManager.saveGame(game);
             if (game.getState() == GameState.FINAL_ROUND) {
                 endGame();
                 return;
@@ -354,6 +353,7 @@ public class GameController {
                 virtualView.communicateGameState(game.getState());
                 virtualView.communicateDontDraw();
             }
+            lobbyManager.saveGame(game);
         }
 
         if (game.getPlayers().get(game.getActivePlayer()).isDeadlocked()) {

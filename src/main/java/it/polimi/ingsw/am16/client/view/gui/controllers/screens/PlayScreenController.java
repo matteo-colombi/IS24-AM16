@@ -462,11 +462,16 @@ public class PlayScreenController {
     }
 
     private void setDeckTopType(PlayableCardType whichDeck, ResourceType deckTopType) {
-        CardController cardBack = ElementFactory.getCardBackOnly(whichDeck, deckTopType);
+        CardController cardBack;
+        if (deckTopType != null) {
+            cardBack = ElementFactory.getCardBackOnly(whichDeck, deckTopType);
 
-        if (cardBack == null) throw new RuntimeException("Unknown Card Type: " + whichDeck);
+            if (cardBack == null) throw new RuntimeException("Unknown Card Type: " + whichDeck);
 
-        cardBack.setShadowColor(deckTopType);
+            cardBack.setShadowColor(deckTopType);
+        } else {
+            cardBack = ElementFactory.getCard();
+        }
 
         Parent cardPane = cardBack.getRoot();
 
@@ -486,25 +491,29 @@ public class PlayScreenController {
 
     private void setCommonCards(PlayableCard[] resourceCards, PlayableCard[] goldCards) {
         for (int i = 0; i < resourceCards.length; i++) {
-            CardController cardController = ElementFactory.getCard();
             PlayableCard card = resourceCards[i];
-            cardController.setCardAndShowSide(card, SideType.FRONT);
-            cardController.setShadowColor(card.getType());
-            switch (i) {
-                case 0 -> cardController.setDrawType(DrawType.RESOURCE_1);
-                case 1 -> cardController.setDrawType(DrawType.RESOURCE_2);
+            CardController cardController = ElementFactory.getCard();
+            if (card != null) {
+                cardController.setCardAndShowSide(card, SideType.FRONT);
+                cardController.setShadowColor(card.getType());
+                switch (i) {
+                    case 0 -> cardController.setDrawType(DrawType.RESOURCE_1);
+                    case 1 -> cardController.setDrawType(DrawType.RESOURCE_2);
+                }
             }
             commonResourceCards.set(i, cardController);
             commonResourceCardsSlot.getChildren().set(i, cardController.getRoot());
         }
         for (int i = 0; i < goldCards.length; i++) {
-            CardController cardController = ElementFactory.getCard();
             PlayableCard card = goldCards[i];
-            cardController.setCardAndShowSide(card, SideType.FRONT);
-            cardController.setShadowColor(card.getType());
-            switch (i) {
-                case 0 -> cardController.setDrawType(DrawType.GOLD_1);
-                case 1 -> cardController.setDrawType(DrawType.GOLD_2);
+            CardController cardController = ElementFactory.getCard();
+            if (card != null) {
+                cardController.setCardAndShowSide(card, SideType.FRONT);
+                cardController.setShadowColor(card.getType());
+                switch (i) {
+                    case 0 -> cardController.setDrawType(DrawType.GOLD_1);
+                    case 1 -> cardController.setDrawType(DrawType.GOLD_2);
+                }
             }
             commonGoldCards.set(i, cardController);
             commonGoldCardsSlot.getChildren().set(i, cardController.getRoot());
