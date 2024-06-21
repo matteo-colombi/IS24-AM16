@@ -40,6 +40,9 @@ import java.rmi.RemoteException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Controller for the main play screen. Handles all the main game events and interactions.
+ */
 public class PlayScreenController {
 
     private static final Map<PlayerColor, String> haloClasses = Map.of(
@@ -120,6 +123,9 @@ public class PlayScreenController {
     private CardController resourceDeck;
     private CardController goldDeck;
 
+    /**
+     * Initializes the screen, registering all event handlers, adding buttons to switch play areas for all the players, preparing the points board, slots for common cards, for common objectives, for the player's personal objective and the hand.
+     */
     @FXML
     public void initialize() {
         registerEvents();
@@ -151,6 +157,11 @@ public class PlayScreenController {
         setPlayers(guiState.getPlayerUsernames());
     }
 
+    /**
+     * Sets the players for this game. This is a definitive list that will not be changed in the future.
+     * This method creates all the necessary elements to handle the players, including the buttons to switch play areas.
+     * @param usernames A list containing the username of each player in the game.
+     */
     private void setPlayers(List<String> usernames) {
         playerButtons = new HashMap<>();
         otherHandControllers = new HashMap<>();
@@ -187,6 +198,10 @@ public class PlayScreenController {
         playersBox.layout();
     }
 
+    /**
+     * Sets the new state of the game. If the game is ending, switches to the end screen.
+     * @param state The new state of the game.
+     */
     private void setGameState(GameState state) {
         if (state == GameState.ENDED) {
             CodexGUI.getGUI().switchToEndgameScreen();
@@ -195,10 +210,8 @@ public class PlayScreenController {
 
 
     /**
-     * This method sets up and shows the error popup whenever an error occurs
-     * (and consequently, an error event is fired).
-     *
-     * @param errorEvent the fired error event
+     * Sets up and shows the error popup whenever an error occurs.
+     * @param errorEvent the fired error event.
      */
     public void showError(ErrorEvent errorEvent) {
         ErrorController errorController = ElementFactory.getErrorPopup();
@@ -208,6 +221,12 @@ public class PlayScreenController {
         error.show(root);
     }
 
+    /**
+     * Sets the color of the given player, creating a colored peg and adding it to the points board.
+     * This method also adds the colored peg to the peg slot.
+     * @param username The username of the player whose color is being set.
+     * @param color The player's color.
+     */
     private void setPlayerColor(String username, PlayerColor color) {
         guiState.setPlayerColor(username, color);
         guiState.getPlayerPeg(username).setPegColor(color);
@@ -226,6 +245,10 @@ public class PlayScreenController {
         playerButtonController.setColor(color);
     }
 
+    /**
+     * Sets the order in which players will play during this game. This method orders the player buttons in the correct order.
+     * @param startOrder The order in which players will play during this game.
+     */
     private void setStartOrder(List<String> startOrder) {
         guiState.setTurnOrder(startOrder);
 
@@ -243,6 +266,9 @@ public class PlayScreenController {
         playersBox.requestLayout();
     }
 
+    /**
+     * Adds the black peg to the starting player next to their standard colored peg.
+     */
     private void addBlackPeg() {
         PegController pegController = ElementFactory.getPeg();
         pegController.setPegColor((PlayerColor) null);
@@ -250,6 +276,15 @@ public class PlayScreenController {
         pegContainer.getChildren().addFirst(pegController.getRoot());
     }
 
+    /**
+     * Initiates the given player's turn. Adds a white halo the player's button.<br>
+     * If it's this client's user's turn, a series of further actions is performed:
+     * <ul>
+     *     <li>plays a sound to alert the player that they have to play;</li>
+     *     <li>enables drag and drop functionality on the cards.</li>
+     * </ul>
+     * @param username The username of the player whose turn has just started.
+     */
     private void turn(String username) {
         if (guiState.getActivePlayer() != null) {
             playerButtons.get(guiState.getActivePlayer()).setActive(false);
@@ -264,13 +299,19 @@ public class PlayScreenController {
             try {
                 filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/ding.mp3")).toURI().toString();
             } catch (URISyntaxException e) {
-                System.err.println("Error loading audio file");;
+                System.err.println("Error loading audio file");
             }
             AudioClip audioClip = new AudioClip(filename);
             audioClip.play();
         }
     }
 
+    /**
+     * Updates the given player's info table with new values.
+     * @param username The username of the player whose resource and object counts are being updated.
+     * @param resourceCounts A map containing the amount of each resource currently visible on the player's play area.
+     * @param objectCounts A map containing the amount of each object currently visible on the player's play area.
+     */
     private void updateInfoTable(String username, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         InfoTableController infoTableController = guiState.getInfoTable(username);
         infoTableController.updateInfoTable(resourceCounts, objectCounts);
@@ -280,11 +321,17 @@ public class PlayScreenController {
         }
     }
 
+    /**
+     * Shows the chat filter box, allowing players to send both private and public messages.
+     */
     @FXML
     public void showChatFilter(ActionEvent ignored) {
         chatFilters.setVisible(!chatFilters.isVisible());
     }
 
+    /**
+     * Sends a chat message.
+     */
     private void sendChatMessage() {
         String text = chatBox.getText();
         if (text.isEmpty())
@@ -300,12 +347,16 @@ public class PlayScreenController {
                 serverInterface.sendChatMessage(text, username);
             }
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error sending message: " + e.getMessage());
         }
 
         chatBox.clear();
     }
 
+    /**
+     * Sets the common objectives for this game, showing them in the correct slot.
+     * @param commonObjectives The common objectives for this game.
+     */
     private void setCommonObjectives(ObjectiveCard[] commonObjectives) {
         List<Parent> cardPanes = new ArrayList<>();
         for (ObjectiveCard objectiveCard : commonObjectives) {
@@ -319,10 +370,10 @@ public class PlayScreenController {
         });
     }
 
-    private void drawingCards() {
-        //TODO maybe play a sound? Or just remove this if it does nothing.
-    }
-
+    /**
+     * Sets this client's player's hand.
+     * @param hand The cards in the player's hand.
+     */
     private void setHand(List<PlayableCard> hand) {
         HandController handController = guiState.getHand();
         for (PlayableCard playableCard : hand) {
@@ -331,6 +382,10 @@ public class PlayScreenController {
         handController.updateCostSatisfied();
     }
 
+    /**
+     * Adds a card to this client's player's hand.
+     * @param card The card to be added.
+     */
     private void addCardToHand(PlayableCard card) {
         enableDraw(false);
 
@@ -339,11 +394,20 @@ public class PlayScreenController {
         handController.updateCostSatisfied();
     }
 
+    /**
+     * Removes the given card from this client's player's hand.
+     * @param card The card to remove.
+     */
     private void removeCardFromHand(PlayableCard card) {
         HandController handController = guiState.getHand();
         handController.removeCard(card);
     }
 
+    /**
+     * Sets another player's restricted view of their hand.
+     * @param username The username of the player whose restricted hand is being set.
+     * @param hand The player's restricted hand.
+     */
     private void setOtherHand(String username, List<RestrictedCard> hand) {
         HandController handController = ElementFactory.getHandSlot();
         for (RestrictedCard card : hand) {
@@ -361,37 +425,67 @@ public class PlayScreenController {
         }
     }
 
+    /**
+     * Adds a restricted card to another player's hand.
+     * @param username The username of the player whose hand this card should be added to.
+     * @param card The card to be added.
+     */
     private void addCardToOtherHand(String username, RestrictedCard card) {
         HandController handController = guiState.getOtherHand(username);
         handController.addCard(card);
     }
 
+    /**
+     * Removes a restricted card from another player's hand.
+     * @param username The username of the player whose hand this card should be removed from.
+     * @param card The card to be removed.
+     */
     private void removeCardFromOtherHand(String username, RestrictedCard card) {
         HandController handController = guiState.getOtherHand(username);
         handController.removeCard(card);
     }
 
+    /**
+     * Opens a popup to allow the player to choose the side on which to play their starter card.
+     * @param starterCard The starter card that was assigned to the player.
+     */
     private void promptStarterChoice(StarterCard starterCard) {
         starterPopupController = ElementFactory.getStarterPopup();
         starterPopupController.setStarterCard(starterCard);
         centerContentPane.getChildren().addLast(starterPopupController.getRoot());
     }
 
+    /**
+     * Opens a popup to allow the player to choose their color. By default, this popup tells the player to wait.
+     */
     private void choosingColors() {
         colorPopupController = ElementFactory.getColorPopup();
         centerContentPane.getChildren().addLast(colorPopupController.getRoot());
     }
 
+    /**
+     * Shows the color options on the previously opened color popup. If {@link PlayScreenController#choosingColors} methods wasn't called previously, this method will call it automatically.
+     * @param colorChoices The options from which the player can choose their color.
+     */
     private void promptColorChoice(List<PlayerColor> colorChoices) {
+        if (colorPopupController == null) choosingColors();
         colorPopupController.setColors(colorChoices);
     }
 
+    /**
+     * Opens a popup from which the player can choose their personal objective.
+     * @param possiblePersonalObjectives The options from which the player can pick their personal objective.
+     */
     private void promptObjectiveChoice(List<ObjectiveCard> possiblePersonalObjectives) {
         objectivePopupController = ElementFactory.getObjectivePopup();
         objectivePopupController.setObjectives(possiblePersonalObjectives);
         centerContentPane.getChildren().addLast(objectivePopupController.getRoot());
     }
 
+    /**
+     * Sets the player's personal objective and closes the choice popup.
+     * @param personalObjective The player's personal objective.
+     */
     private void setPersonalObjective(ObjectiveCard personalObjective) {
         if (objectivePopupController != null)
             centerContentPane.getChildren().remove(objectivePopupController.getRoot());
@@ -409,6 +503,18 @@ public class PlayScreenController {
         guiState.setPersonalObjective(cardController);
     }
 
+    /**
+     * Sets the given player's starter card and creates their play area, and initializes the info table.<br>
+     * This method also closes the starter card choice popup if the given username if this client's player's username.
+     * @param username The username of the player whose new play area is being given.
+     * @param placementOrder The order in which card were placed in this play area.
+     * @param field A map containing the position of each card in the play area.
+     * @param activeSides The side on which each card was played in this play area.
+     * @param legalPositions The set of positions where a card can be placed.
+     * @param illegalPositions The set of positions where a card cannot be placed.
+     * @param resourceCounts A map containing the amount of each resource currently visible on the player's play area.
+     * @param objectCounts A map containing the amount of each object currently visible on the player's play area.
+     */
     private void setPlayArea(String username, List<Position> placementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         PlayAreaGridController playAreaGridController = ElementFactory.getPlayAreaGrid();
         playAreaGridController.setOwnerUsername(username);
@@ -439,12 +545,23 @@ public class PlayScreenController {
                 centerContentPane.getChildren().remove(starterPopupController.getRoot());
             }
         } else {
-            setOtherHandActions(username);
+            setPlayerButtonActions(username);
         }
 
         updateInfoTable(username, resourceCounts, objectCounts);
     }
 
+    /**
+     * Plays a card on the given player's play area and adds them to their grid.
+     * @param username The username of the player who played the card.
+     * @param card The card that was played.
+     * @param side The side on which the card was played.
+     * @param pos The position where the card was played.
+     * @param addedLegalPositions The set of new positions where a card can be placed.
+     * @param removedLegalPositions The set of positions where a card can no longer be placed.
+     * @param resourceCounts A map containing the new amount of each resource currently visible on the player's play area.
+     * @param objectCounts A map containing the amount of each object currently visible on the player's play area.
+     */
     private void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         PlayAreaGridController playAreaGridController = guiState.getPlayArea(username);
 
@@ -461,6 +578,11 @@ public class PlayScreenController {
         }
     }
 
+    /**
+     * Sets and shows the type of card currently on top of the given deck.
+     * @param whichDeck The type of deck.
+     * @param deckTopType The type of card on top of the specified deck.
+     */
     private void setDeckTopType(PlayableCardType whichDeck, ResourceType deckTopType) {
         CardController cardBack;
         if (deckTopType != null) {
@@ -489,6 +611,11 @@ public class PlayScreenController {
         }
     }
 
+    /**
+     * Sets and shows the common cards from which the players can draw.
+     * @param resourceCards The resource cards from which the players can draw from.
+     * @param goldCards The gold cards from which the players can draw from.
+     */
     private void setCommonCards(PlayableCard[] resourceCards, PlayableCard[] goldCards) {
         for (int i = 0; i < resourceCards.length; i++) {
             PlayableCard card = resourceCards[i];
@@ -520,6 +647,11 @@ public class PlayScreenController {
         }
     }
 
+    /**
+     * Sets the amount of game points earned by the given player and updates the points table.
+     * @param username The username of the player whose game points are being given.
+     * @param gamePoints The amount of game points earned by the player.
+     */
     private void setGamePoints(String username, int gamePoints) {
         int tempGamePoints = gamePoints;
         if (tempGamePoints > 29) {
@@ -536,20 +668,31 @@ public class PlayScreenController {
         guiState.setObjectivePoints(username, objectivePoints);
     }
 
+    /**
+     * DOCME once functionality is fully determined
+     */
     private void notifyDontDraw() {
         guiState.setDontDraw(true);
         //TODO create a custom popup to signal that it's the last round.
         //  Or maybe play a sound?
     }
 
+    /**
+     * Tells the user that the given player is in a deadlock situation and their turn is skipped.
+     * @param username The username of the player who is in a deadlock situation.
+     */
     private void signalDeadLock(String username) {
         ErrorController errorController = ElementFactory.getErrorPopup();
         GUIError error = ErrorFactory.getError(ErrorType.GENERIC_ERROR);
         error.configurePopup(errorController);
-        errorController.setErrorText(username + " has deadlocked themselves.");
+        errorController.setErrorText(username + " has deadlocked themselves.\nTheir turn is skipped.");
         error.show(root);
     }
 
+    /**
+     * Tells the player that the given player has disconnected and the game is being suspended as a result.
+     * @param whoDisconnected The username of the player who disconnected.
+     */
     private void signalGameSuspension(String whoDisconnected) {
         ErrorController errorController = ElementFactory.getErrorPopup();
         GUIError error = ErrorFactory.getError(ErrorType.OTHER_PLAYER_DISCONNECTED);
@@ -558,6 +701,10 @@ public class PlayScreenController {
         error.show(root);
     }
 
+    /**
+     * Tells the player that the given player has disconnected and the game is being deleted as a result.
+     * @param whoDisconnected The username of the player who disconnected.
+     */
     private void signalGameDeletion(String whoDisconnected) {
         ErrorController errorController = ElementFactory.getErrorPopup();
         GUIError error = ErrorFactory.getError(ErrorType.OTHER_PLAYER_DISCONNECTED);
@@ -566,6 +713,10 @@ public class PlayScreenController {
         error.show(root);
     }
 
+    /**
+     * Adds the given messages to the chat.
+     * @param messages The newly received messages.
+     */
     private void receiveMessages(List<ChatMessage> messages) {
         guiState.addNewMessages(messages);
         for (ChatMessage message : messages) {
@@ -587,16 +738,14 @@ public class PlayScreenController {
                             System.out.println(mediaErrorEvent);
                         });
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        System.err.println("Error loading media: " + e.getMessage());
                     }
                 }
 
                 rick.setVisible(true);
                 rick.requestFocus();
                 rick.getMediaPlayer().seek(rick.getMediaPlayer().getStartTime());
-                rick.getMediaPlayer().setOnEndOfMedia(() -> {
-                    rick.setVisible(false);
-                });
+                rick.getMediaPlayer().setOnEndOfMedia(() -> rick.setVisible(false));
                 rick.getMediaPlayer().setOnError(() -> {
                     System.err.println("error");
                     rick.setVisible(false);
@@ -614,7 +763,11 @@ public class PlayScreenController {
         }
     }
 
-    private void setOtherHandActions(String username) {
+    /**
+     * Adds event listeners to the player buttons to show other player's basic info, like their hand, and to allow the switch to see their play area.
+     * @param username The username of the player whose player button should be updated with event listeners.
+     */
+    private void setPlayerButtonActions(String username) {
         PlayerButtonController playerButton = playerButtons.get(username);
         OtherPlayerInfoController otherPlayerInfoController = ElementFactory.getOtherPlayerInfo();
         otherPlayerInfoController.setUsername(username);
@@ -626,9 +779,7 @@ public class PlayScreenController {
         otherPlayerInfoController.getRoot().setTranslateX(-75);
         otherPlayerInfoController.getRoot().setTranslateY(-(playersBox.getHeight() / 2 - playerButton.getRoot().getBoundsInParent().getCenterY()));
 
-        playerButton.getRoot().boundsInParentProperty().addListener((observable, oldValue, newValue) -> {
-            otherPlayerInfoController.getRoot().setTranslateY(-(playersBox.getHeight() / 2 - newValue.getCenterY()));
-        });
+        playerButton.getRoot().boundsInParentProperty().addListener((observable, oldValue, newValue) -> otherPlayerInfoController.getRoot().setTranslateY(-(playersBox.getHeight() / 2 - newValue.getCenterY())));
 
         playerButton.setActions(otherPlayerInfoController, currentlyShowingOtherHand);
         playerButton.setDisabled(false);
@@ -644,6 +795,11 @@ public class PlayScreenController {
 
     }
 
+    /**
+     * Switches the currently visible screen to the given player's screen.
+     * This method changes the visible play area, info table, hand and personal objective. This method also adds a colored halo around the screen.
+     * @param username The username of the player whose screen should be shown.
+     */
     private void switchToOtherPlayer(String username) {
         for (String u : guiState.getPlayerUsernames()) {
             if (!u.equals(username) && !u.equals(guiState.getUsername())) {
@@ -678,6 +834,9 @@ public class PlayScreenController {
         }
     }
 
+    /**
+     * Resets the screen to this client's player's and removes any halos around the screen.
+     */
     private void resetPlayer() {
         for (String u : guiState.getPlayerUsernames()) {
             if (!u.equals(guiState.getUsername())) {
@@ -714,6 +873,10 @@ public class PlayScreenController {
         }
     }
 
+    /**
+     * Switches the currently visible play area to the given player's.
+     * @param username The username of the player whose play area should be shown.
+     */
     private void switchToPlayArea(String username) {
         int playAreaIndex;
         if (currentlyShowingPlayArea == null) {
@@ -738,6 +901,10 @@ public class PlayScreenController {
         }
     }
 
+    /**
+     * Switches the visible hand to the requested player's.
+     * @param username The username of the player whose hand should be shown.
+     */
     private void switchToHand(String username) {
         handSlot.getChildren().clear();
         if (username.equals(guiState.getUsername())) {
@@ -751,6 +918,10 @@ public class PlayScreenController {
         }
     }
 
+    /**
+     * Applies a colored halo around the screen.
+     * @param color The color of the halo to apply. If <code>null</code>, a black halo will be applied.
+     */
     private void applyHalo(PlayerColor color) {
         removeHalo();
         if (color != null) {
@@ -760,12 +931,19 @@ public class PlayScreenController {
         }
     }
 
+    /**
+     * Removes any halos around the screen.
+     */
     private void removeHalo() {
         List<String> rootClasses = root.getStyleClass();
         haloClasses.forEach((key, value) -> rootClasses.remove(value));
         rootClasses.remove("halo-unknown");
     }
 
+    /**
+     * Enables or disables the common cards and decks so that the player can draw a card.
+     * @param enabled Whether the common cards and decks should be enabled.
+     */
     private void enableDraw(boolean enabled) {
         for (CardController drawOption : commonResourceCards) {
             drawOption.setInteractable(enabled);
@@ -781,11 +959,14 @@ public class PlayScreenController {
         goldDeck.setDrawable(enabled);
     }
 
+    /**
+     * Leaves the game.
+     */
     private void leave() {
         try {
             serverInterface.leaveGame();
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating with the server: " + e.getMessage());
         }
 
         CodexGUI.getGUI().switchToWelcomeScreen();
@@ -800,6 +981,9 @@ public class PlayScreenController {
         root.getChildren().addLast(rulesPopupController.getRoot());
     }
 
+    /**
+     * Registers all the main event handlers for this screen, including buttons and events fired by incoming messages from the server.
+     */
     private void registerEvents() {
         root.addEventFilter(GUIEventTypes.ERROR_EVENT, this::showError);
 
@@ -847,8 +1031,6 @@ public class PlayScreenController {
 
         root.addEventFilter(GUIEventTypes.CHOOSING_COLORS_EVENT, e -> choosingColors());
 
-        root.addEventFilter(GUIEventTypes.DRAWING_CARDS_EVENT, e -> drawingCards());
-
         root.addEventFilter(GUIEventTypes.SET_GAME_STATE_EVENT, e -> setGameState(e.getState()));
 
         root.addEventFilter(GUIEventTypes.TURN_EVENT, e -> turn(e.getUsername()));
@@ -863,16 +1045,6 @@ public class PlayScreenController {
             leave();
             e.consume();
         });
-
-        //FIXME remove the comment. This is nonsense
-        /*
-        leaveButton.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER) {
-                leave();
-                keyEvent.consume();
-            }
-        });
-         */
 
         rulesButton.setOnMouseClicked(e -> {
             showRules();
@@ -913,6 +1085,12 @@ public class PlayScreenController {
         });
     }
 
+    /**
+     * Checks whether the given node contains another node between its descendants.
+     * @param node The "father" node.
+     * @param potentialHierarchyElement A potential descendant of the father node.
+     * @return Whether the given node is a descendant of the father node.
+     */
     private static boolean inHierarchy(Node node, Node potentialHierarchyElement) {
         if (potentialHierarchyElement == null) {
             return true;
