@@ -685,7 +685,11 @@ public class PlayScreenController {
         ErrorController errorController = ElementFactory.getErrorPopup();
         GUIError error = ErrorFactory.getError(ErrorType.GENERIC_ERROR);
         error.configurePopup(errorController);
-        errorController.setErrorText(username + " has deadlocked themselves.\nTheir turn is skipped.");
+        if (username.equals(guiState.getUsername())) {
+            errorController.setErrorText("You have deadlocked yourself.\nYour turn is skipped.");
+        } else {
+            errorController.setErrorText(username + " has deadlocked themselves.\nTheir turn is skipped.");
+        }
         error.show(root);
     }
 

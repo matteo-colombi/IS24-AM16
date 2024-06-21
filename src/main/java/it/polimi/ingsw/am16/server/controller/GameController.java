@@ -40,6 +40,7 @@ public class GameController {
     private final VirtualView virtualView;
     private final ChatController chatController;
     private final LobbyManager lobbyManager;
+    private final Set<String> deadlockedPlayers;
 
     private Queue<PlayerModel> playerQueue = null;
 
@@ -55,6 +56,7 @@ public class GameController {
         this.game = game;
         this.virtualView = new VirtualView();
         this.chatController = new ChatController(this.virtualView);
+        this.deadlockedPlayers = new HashSet<>();
     }
 
     /**
@@ -346,8 +348,8 @@ public class GameController {
             if (game.checkFinalRound()) {
                 try {
                     game.triggerFinalRound();
-                } catch (UnexpectedActionException e) {
-                    e.printStackTrace();
+                } catch (UnexpectedActionException ignored) {
+                    System.err.println("Unexpected error while initiating final round.");
                     return;
                 }
                 virtualView.communicateGameState(game.getState());
@@ -357,7 +359,15 @@ public class GameController {
         }
 
         if (game.getPlayers().get(game.getActivePlayer()).isDeadlocked()) {
+            deadlockedPlayers.add(game.getActivePlayer());
             virtualView.communicateDeadlock(game.getActivePlayer());
+            if (deadlockedPlayers.size() == game.getNumPlayers()) {
+                for(Player p : game.getPlayers().values()) {
+                    virtualView.promptError(p.getUsername(), "Everybody has deadlocked themselves... The game has been deleted.", ErrorType.OTHER_PLAYER_DISCONNECTED);
+                    virtualView.disconnectEverybody();
+                    lobbyManager.deleteGame(game.getId());
+                }
+            }
             turnManager();
         } else {
             virtualView.notifyTurnStart(game.getActivePlayer());

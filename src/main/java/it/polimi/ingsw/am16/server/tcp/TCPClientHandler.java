@@ -620,6 +620,12 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
     }
 
     @Override
+    public void disconnectFromGame() throws RemoteException {
+        gameController = null;
+        username = null;
+    }
+
+    @Override
     public void ping() {
         TCPMessage tcpMessage = new TCPMessage(MessageType.PING, null);
         sendTCPMessage(tcpMessage);

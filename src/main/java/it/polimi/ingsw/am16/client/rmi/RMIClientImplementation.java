@@ -280,6 +280,11 @@ public class RMIClientImplementation extends UnicastRemoteObject implements Remo
     }
 
     @Override
+    public void disconnectFromGame() throws RemoteException {
+        serverInterface.leaveGame(true);
+    }
+
+    @Override
     public void ping() throws RemoteException {
         lastPinged.set(System.currentTimeMillis());
         serverInterface.pong();

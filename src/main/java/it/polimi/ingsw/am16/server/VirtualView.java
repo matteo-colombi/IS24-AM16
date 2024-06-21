@@ -608,4 +608,19 @@ public class VirtualView {
             }
         });
     }
+
+    /**
+     * Removes every player from this virtual view.
+     */
+    public void disconnectEverybody() {
+        userViews.values().forEach(userView -> {
+            try {
+                userView.disconnectFromGame();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+
+        userViews.clear();
+    }
 }
