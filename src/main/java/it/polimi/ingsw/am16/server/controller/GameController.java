@@ -79,6 +79,7 @@ public class GameController {
      * Sets the player with the given username's status to connected, and adds it to the list of players which should receive updates about the game.
      * @param username The player's username. If an invalid username is given, this method does nothing.
      * @param userView The {@link RemoteClientInterface}, used to communicate with the player.
+     * @throws UnexpectedActionException If a user with the given username is already connected, or if the user has not been created with {@link GameController#createPlayer}.
      */
     public synchronized void joinPlayer(String username, RemoteClientInterface userView) throws UnexpectedActionException {
         Map<String, Player> players = game.getPlayers();

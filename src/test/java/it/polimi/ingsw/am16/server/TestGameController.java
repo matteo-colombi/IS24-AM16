@@ -26,6 +26,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestGameController {
 
+    /*
+     * This test uses a controller with two mockup player interfaces connected directly
+     * to simulate a game. The simulated game is the same as that of GameModel.
+     */
+
     @Test
     void testGameController() throws UnexpectedActionException {
         CardRegistry.getRegistry();
@@ -39,6 +44,8 @@ public class TestGameController {
         RemoteClientInterface user1Interface = new TestRemoteViewImplementation();
         RemoteClientInterface user2Interface = new TestRemoteViewImplementation();
 
+        assertThrows(UnexpectedActionException.class, () -> controller.joinPlayer("xLorde", user1Interface));
+
         controller.createPlayer("xLorde");
         controller.joinPlayer("xLorde", user1Interface);
         assertEquals(1, controller.getCurrentPlayerCount());
@@ -48,7 +55,11 @@ public class TestGameController {
         controller.createPlayer("xLorde");
         controller.joinPlayer("xLorde", user1Interface);
         controller.createPlayer("teo");
+
+        assertThrows(UnexpectedActionException.class, () -> controller.createPlayer("test"));
+
         controller.joinPlayer("teo", user2Interface);
+
 
         /*
          *  This is done just for convenience to have a reference to the player's hands
@@ -61,6 +72,8 @@ public class TestGameController {
         HandModel teoHand = teo.getHand();
 
         assertEquals(LobbyState.IN_GAME, controller.getLobbyState());
+
+        assertThrows(UnexpectedActionException.class, () -> controller.createPlayer("test"));
 
         controller.sendChatMessage("xLorde", "Hi", Set.of("teo"));
         controller.sendChatMessage("teo", "hello");
