@@ -12,6 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestPatternObjective {
 
+    /*
+     * This test checks that pattern objectives' points are counted correctly in a few different arrangements.
+     */
+
     private CardRegistry registry;
     private List<ObjectiveCard> objectiveCards;
     private StarterCard starterCard;

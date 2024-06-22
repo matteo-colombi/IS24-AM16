@@ -11,6 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestResourceObjective {
 
+    /*
+     * This test checks that resource objectives' points are counted correctly.
+     */
+
     @Test
     public void testResourceObjective() throws NoStarterCardException, UnknownObjectiveCardException, IllegalMoveException {
         CardRegistry registry = CardRegistry.getRegistry();

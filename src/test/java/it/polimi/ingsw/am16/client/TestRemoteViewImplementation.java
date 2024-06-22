@@ -16,6 +16,10 @@ import java.util.Set;
 
 public class TestRemoteViewImplementation implements RemoteClientInterface {
 
+    /*
+     * This class is implemented to be used in the TestGameController test.
+     */
+
     String username;
 
     @Override

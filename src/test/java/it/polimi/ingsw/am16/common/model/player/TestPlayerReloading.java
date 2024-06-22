@@ -22,6 +22,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestPlayerReloading {
 
+    /*
+     * This test checks that players are serialized and deserialized correctly.
+     */
+
     @Test
     void testPlayerReloading() throws NoStarterCardException, UnknownObjectiveCardException, IllegalMoveException, IOException {
         CardRegistry registry = CardRegistry.getRegistry();

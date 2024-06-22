@@ -19,6 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestGameSaving {
 
+    /*
+     * This test checks that complete games are serialized and deserialized correctly.
+     */
+
     @Test
     public void testLobby() throws UnexpectedActionException, NoStarterCardException, UnknownObjectiveCardException, IOException, InterruptedException {
         CardRegistry.getRegistry();

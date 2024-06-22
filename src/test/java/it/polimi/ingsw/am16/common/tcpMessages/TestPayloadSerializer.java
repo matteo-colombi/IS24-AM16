@@ -12,6 +12,11 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class TestPayloadSerializer {
+
+    /*
+     * This test checks that tcp message payloads are serialized and deserialized correctly.
+     */
+
     @Test
     void testPayloadSerializer() throws IOException {
         String directoryPath = "src/test/resources/json/testPayloadSerializer";

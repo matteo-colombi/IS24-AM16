@@ -1,6 +1,7 @@
-package it.polimi.ingsw.am16.common.model.chat;
+package it.polimi.ingsw.am16.server;
 
-import it.polimi.ingsw.am16.server.VirtualView;
+import it.polimi.ingsw.am16.common.model.chat.Chat;
+import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.server.controller.ChatController;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +10,11 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TestChat {
+class TestChatController {
+
+    /*
+     * This test checks that chat messages are getting routed appropriately.
+     */
 
     @Test
     void testChat() {

@@ -10,6 +10,11 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestDeckReloading {
+
+    /*
+     * This test checks that decks get serialized and deserialized correctly.
+     */
+
     @Test
     public void testDeckReloading() throws IOException {
         ObjectMapper mapper = new ObjectMapper();

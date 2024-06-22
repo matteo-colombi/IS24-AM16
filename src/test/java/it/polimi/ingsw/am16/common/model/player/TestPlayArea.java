@@ -18,6 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestPlayArea {
+
+    /*
+     * This test checks that the play area plays cards correctly and throws exceptions when moves are not allowed.
+     */
+
     @Test
     public void testPlayArea() throws IllegalMoveException, UnknownObjectiveCardException, JsonProcessingException {
         CardRegistry registry = CardRegistry.getRegistry();

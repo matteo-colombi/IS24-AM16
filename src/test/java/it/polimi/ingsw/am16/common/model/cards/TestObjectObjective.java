@@ -11,6 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestObjectObjective {
 
+    /*
+     * This test checks that object objectives' points are counted correctly.
+     */
+
     @Test
     public void testObjectObjective() throws NoStarterCardException, IllegalMoveException, UnknownObjectiveCardException {
         CardRegistry registry = CardRegistry.getRegistry();

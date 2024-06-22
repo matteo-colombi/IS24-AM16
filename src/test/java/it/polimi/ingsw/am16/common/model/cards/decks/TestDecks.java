@@ -13,6 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestDecks {
 
+    /*
+     * This test checks that deck factories create correct decks.
+     */
+
     @Test
     public void testDecks() {
         CardRegistry.getRegistry();
