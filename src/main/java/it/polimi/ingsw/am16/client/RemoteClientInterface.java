@@ -345,6 +345,12 @@ public interface RemoteClientInterface extends Remote {
     void signalDeadlock(String username) throws RemoteException;
 
     /**
+     * Forces the client disconnection from the game.
+     * @throws RemoteException thrown if an error occurs during Java RMI communication.
+     */
+    void disconnectFromGame() throws RemoteException;
+
+    /**
      * Ping request used by the server to check that the client is still connected.
      *
      * @throws RemoteException thrown if an error occurs during Java RMI communication.

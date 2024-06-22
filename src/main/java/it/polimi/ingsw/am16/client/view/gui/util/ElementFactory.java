@@ -42,7 +42,7 @@ public class ElementFactory {
     private static final ObjectiveCard objectiveBack = CardRegistry.getRegistry().getObjectiveCardFromName("objective_pattern_1");
 
     /**
-     * Loads a card GUI element.
+     * Loads a card GUI element. By default, the returned card element is a transparent placeholder.
      * @return The controller for the GUI card element.
      */
     public static CardController getCard() {

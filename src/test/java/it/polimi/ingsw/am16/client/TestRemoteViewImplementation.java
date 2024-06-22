@@ -248,6 +248,9 @@ public class TestRemoteViewImplementation implements RemoteClientInterface {
     }
 
     @Override
+    public void disconnectFromGame() throws RemoteException {}
+
+    @Override
     public void ping() throws RemoteException {}
 
 }

@@ -1,13 +1,8 @@
 package it.polimi.ingsw.am16.client.view.gui.controllers.screens;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
-import it.polimi.ingsw.am16.client.view.gui.controllers.elements.ErrorController;
-import it.polimi.ingsw.am16.client.view.gui.events.ErrorEvent;
 import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
-import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
-import it.polimi.ingsw.am16.client.view.gui.util.ErrorFactory;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
-import it.polimi.ingsw.am16.client.view.gui.util.guiErrors.GUIError;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
 import it.polimi.ingsw.am16.server.ServerInterface;
@@ -24,6 +19,9 @@ import javafx.scene.text.Text;
 import java.rmi.RemoteException;
 import java.util.List;
 
+/**
+ * Controller class for the lobby screen.
+ */
 public class LobbyScreenController {
     @FXML
     private StackPane root;
@@ -54,11 +52,11 @@ public class LobbyScreenController {
 
     private GUIState guiState;
 
-    private ErrorController errorController;
-    private ErrorFactory errorFactory;
-
     private ServerInterface serverInterface;
 
+    /**
+     * Initializes the lobby screen, registering events on the screen's buttons and to listen to incoming information from the server.
+     */
     @FXML
     public void initialize() {
         registerEvents();
@@ -72,15 +70,17 @@ public class LobbyScreenController {
     }
 
     /**
-     * Sets the game ID.
-     *
+     * Sets the game ID to display on the screen.
      * @param gameId The game ID.
      */
     private void setGameId(String gameId) {
         gameIdField.setText(gameId);
     }
 
-
+    /**
+     * Sets the currently connected players so that their usernames can be shown to the player.
+     * @param usernames The list of currently connected players.
+     */
     private void setPlayers(List<String> usernames) {
         playersBox.getChildren().clear();
         for (String username : usernames) {
@@ -90,6 +90,10 @@ public class LobbyScreenController {
         updateMotd();
     }
 
+    /**
+     * Adds a new player to the lobby and shows their username to the player.
+     * @param username The username of the new player.
+     */
     private void addPlayer(String username) {
         guiState.addPlayer(username);
         Text usernameText = new Text(username);
@@ -105,6 +109,10 @@ public class LobbyScreenController {
         updateMotd();
     }
 
+    /**
+     * Removes the player with the given username and removes their name from the screen.
+     * @param whoDisconnected The username of the player who disconnected from the lobby.
+     */
     private void removePlayer(String whoDisconnected) {
         guiState.removePlayer(whoDisconnected);
         Text usernameText = (Text) playersBox.lookup("#" + whoDisconnected);
@@ -118,6 +126,10 @@ public class LobbyScreenController {
         updateMotd();
     }
 
+    /**
+     * Updates the "Message Of The Day" in the lobby, showing the number of players missing for the game to start.
+     * If the number of expected players is reached, shows a message that tells the player that the game is starting shortly instead.
+     */
     private void updateMotd() {
         String motd;
         if (guiState.getNumPlayers() == guiState.getPlayerUsernames().size()) {
@@ -129,16 +141,24 @@ public class LobbyScreenController {
         motdText.setText(motd);
     }
 
+    /**
+     * Leaves the lobby, communicating this to the server.
+     * Switches back to the welcome screen.
+     */
     private void leave() {
         try {
             serverInterface.leaveGame();
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating with the server: " + e.getMessage());
         }
 
         CodexGUI.getGUI().switchToWelcomeScreen();
     }
 
+    /**
+     * Adds the new messages to the chat.
+     * @param messages The received messages.
+     */
     private void receiveMessages(List<ChatMessage> messages) {
         guiState.addNewMessages(messages);
         for (ChatMessage message : messages) {
@@ -152,6 +172,9 @@ public class LobbyScreenController {
         }
     }
 
+    /**
+     * Sends a new chat message to the server.
+     */
     private void sendChatMessage() {
         String text = chatBox.getText();
         if (text.isEmpty())
@@ -167,32 +190,23 @@ public class LobbyScreenController {
                 serverInterface.sendChatMessage(text, username);
             }
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error sending chat message: " + e.getMessage());
         }
 
         chatBox.clear();
     }
 
-
     /**
-     * This method sets up and shows the error popup whenever an error occurs
-     * (and consequently, an error event is fired).
-     *
-     * @param errorEvent the fired error event
+     * Shows the chat filter box, with which users can decide whether to send public or private chat messages.
      */
-    public void showError(ErrorEvent errorEvent) {
-        errorController = ElementFactory.getErrorPopup();
-        GUIError error = ErrorFactory.getError(errorEvent.getErrorType());
-        error.configurePopup(errorController);
-        errorController.setErrorText(errorEvent.getErrorMsg());
-        error.show(root);
-    }
-
     @FXML
     public void showChatFilter(ActionEvent ignored) {
         chatFilters.setVisible(!chatFilters.isVisible());
     }
 
+    /**
+     * Registers event handlers for this screen's buttons, or events fired by incoming information from the server.
+     */
     private void registerEvents() {
         root.addEventFilter(GUIEventTypes.SET_PLAYERS_EVENT, e -> setPlayers(e.getUsernames()));
 
@@ -237,6 +251,12 @@ public class LobbyScreenController {
         });
     }
 
+    /**
+     * Checks whether the given node contains another node between its descendants.
+     * @param node The "father" node.
+     * @param potentialHierarchyElement A potential descendant of the father node.
+     * @return Whether the given node is a descendant of the father node.
+     */
     private static boolean inHierarchy(Node node, Node potentialHierarchyElement) {
         if (potentialHierarchyElement == null) {
             return true;

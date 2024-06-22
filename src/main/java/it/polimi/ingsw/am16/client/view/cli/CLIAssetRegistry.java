@@ -20,6 +20,7 @@ public class CLIAssetRegistry {
     private static CLIAssetRegistry instance;
 
     private final Map<String, CLICardAsset> cliCards;
+    private final CLIText blankCard;
     private final CLIText positionLabel;
     private final CLIText infoTable;
     private final CLIText banner;
@@ -45,6 +46,10 @@ public class CLIAssetRegistry {
                         cliCards.get(String.format("%s_%s_1", cardType.name().toLowerCase(), resourceType.name().toLowerCase())).back()
                 );
             }
+        }
+
+        try (InputStream f = CLIAssetRegistry.class.getResourceAsStream(FilePaths.CLI_BLANK_CARD)) {
+            blankCard = JsonMapper.getObjectMapper().readValue(f, CLIText.class);
         }
 
         try (InputStream f = CLIAssetRegistry.class.getResourceAsStream(FilePaths.CLI_POSITION_LABEL)) {
@@ -122,5 +127,9 @@ public class CLIAssetRegistry {
      */
     public CLIText getFinalRoundLabel() {
         return finalRoundLabel;
+    }
+
+    public CLIText getBlankCard() {
+        return blankCard;
     }
 }

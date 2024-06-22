@@ -669,12 +669,14 @@ public class CLI implements ViewInterface {
         drawOptions.mergeText(goldLabel, CARD_HEIGHT + 2, 0);
         drawOptions.mergeText(indexLabel, 2 * CARD_HEIGHT + 4, 0);
 
-        CLIText resourceDeckTop = CLIAssetRegistry.getCLIAssetRegistry().getCardBack(new RestrictedCard(PlayableCardType.RESOURCE, resourceDeckTopType));
-        CLIText goldDeckTop = CLIAssetRegistry.getCLIAssetRegistry().getCardBack(new RestrictedCard(PlayableCardType.GOLD, goldDeckTopType));
-        CLIText commonResource1 = CLIAssetRegistry.getCLIAssetRegistry().getCard(commonResourceCards[0].getName()).front();
-        CLIText commonResource2 = CLIAssetRegistry.getCLIAssetRegistry().getCard(commonResourceCards[1].getName()).front();
-        CLIText commonGold1 = CLIAssetRegistry.getCLIAssetRegistry().getCard(commonGoldCards[0].getName()).front();
-        CLIText commonGold2 = CLIAssetRegistry.getCLIAssetRegistry().getCard(commonGoldCards[1].getName()).front();
+        CLIText resourceDeckTop = getDrawOptionAsset(new RestrictedCard(PlayableCardType.RESOURCE, resourceDeckTopType));
+        CLIText goldDeckTop = getDrawOptionAsset(new RestrictedCard(PlayableCardType.GOLD, goldDeckTopType));
+
+        CLIText commonResource1 = getDrawOptionAsset(commonResourceCards[0]);
+        CLIText commonResource2 = getDrawOptionAsset(commonResourceCards[1]);
+
+        CLIText commonGold1 = getDrawOptionAsset(commonGoldCards[0]);
+        CLIText commonGold2 = getDrawOptionAsset(commonGoldCards[1]);
 
         drawOptions.mergeText(resourceDeckTop, 1, 5);
         drawOptions.mergeText(goldDeckTop, CARD_HEIGHT + 3, 5);
@@ -689,6 +691,36 @@ public class CLI implements ViewInterface {
 
         drawOptions.printText();
         printCommandPrompt();
+    }
+
+    /**
+     * Returns the asset for the front of the given card, or a blank card as a placeholder.
+     * @param card The card whose asset is needed.
+     * @return The requested asset, or a blank card if <code>card</code> is <code>null</code>.
+     */
+    private CLIText getDrawOptionAsset(PlayableCard card) {
+        CLIText asset;
+        if (card != null) {
+            asset = CLIAssetRegistry.getCLIAssetRegistry().getCard(card.getName()).front();
+        } else {
+            asset = CLIAssetRegistry.getCLIAssetRegistry().getBlankCard();
+        }
+        return asset;
+    }
+
+    /**
+     * Returns the asset for the back of the given restricted card, or a blank card as a placeholder.
+     * @param card The card whose asset is needed.
+     * @return The requested asset, or a blank card if <code>card</code> is <code>null</code>.
+     */
+    private CLIText getDrawOptionAsset(RestrictedCard card) {
+        CLIText asset;
+        if (card.resourceType() != null) {
+            asset = CLIAssetRegistry.getCLIAssetRegistry().getCardBack(card);
+        } else {
+            asset = CLIAssetRegistry.getCLIAssetRegistry().getBlankCard();
+        }
+        return asset;
     }
 
     /**

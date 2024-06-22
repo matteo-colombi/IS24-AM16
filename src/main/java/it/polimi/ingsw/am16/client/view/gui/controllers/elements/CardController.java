@@ -310,6 +310,8 @@ public class CardController {
      * @param drawable Whether this card is in the draw options.
      */
     public void setDrawable(boolean drawable) {
+        if (drawType == null) return;
+
         if (drawable) {
             cardPane.setOnMouseClicked(mouseEvent -> {
                 try {

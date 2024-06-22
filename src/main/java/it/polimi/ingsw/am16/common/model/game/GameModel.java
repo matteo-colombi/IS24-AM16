@@ -65,7 +65,7 @@ public interface GameModel {
 
     /**
      *
-     * @return The username of the player who has to finish their turn.
+     * @return The username of the player who is currently playing.
      */
     String getActivePlayer();
 
