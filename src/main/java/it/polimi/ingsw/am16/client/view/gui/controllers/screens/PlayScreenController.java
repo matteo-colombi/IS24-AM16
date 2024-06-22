@@ -160,6 +160,7 @@ public class PlayScreenController {
     /**
      * Sets the players for this game. This is a definitive list that will not be changed in the future.
      * This method creates all the necessary elements to handle the players, including the buttons to switch play areas.
+     *
      * @param usernames A list containing the username of each player in the game.
      */
     private void setPlayers(List<String> usernames) {
@@ -200,6 +201,7 @@ public class PlayScreenController {
 
     /**
      * Sets the new state of the game. If the game is ending, switches to the end screen.
+     *
      * @param state The new state of the game.
      */
     private void setGameState(GameState state) {
@@ -211,6 +213,7 @@ public class PlayScreenController {
 
     /**
      * Sets up and shows the error popup whenever an error occurs.
+     *
      * @param errorEvent the fired error event.
      */
     public void showError(ErrorEvent errorEvent) {
@@ -224,8 +227,9 @@ public class PlayScreenController {
     /**
      * Sets the color of the given player, creating a colored peg and adding it to the points board.
      * This method also adds the colored peg to the peg slot.
+     *
      * @param username The username of the player whose color is being set.
-     * @param color The player's color.
+     * @param color    The player's color.
      */
     private void setPlayerColor(String username, PlayerColor color) {
         guiState.setPlayerColor(username, color);
@@ -247,6 +251,7 @@ public class PlayScreenController {
 
     /**
      * Sets the order in which players will play during this game. This method orders the player buttons in the correct order.
+     *
      * @param startOrder The order in which players will play during this game.
      */
     private void setStartOrder(List<String> startOrder) {
@@ -283,6 +288,7 @@ public class PlayScreenController {
      *     <li>plays a sound to alert the player that they have to play;</li>
      *     <li>enables drag and drop functionality on the cards.</li>
      * </ul>
+     *
      * @param username The username of the player whose turn has just started.
      */
     private void turn(String username) {
@@ -308,9 +314,10 @@ public class PlayScreenController {
 
     /**
      * Updates the given player's info table with new values.
-     * @param username The username of the player whose resource and object counts are being updated.
+     *
+     * @param username       The username of the player whose resource and object counts are being updated.
      * @param resourceCounts A map containing the amount of each resource currently visible on the player's play area.
-     * @param objectCounts A map containing the amount of each object currently visible on the player's play area.
+     * @param objectCounts   A map containing the amount of each object currently visible on the player's play area.
      */
     private void updateInfoTable(String username, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         InfoTableController infoTableController = guiState.getInfoTable(username);
@@ -355,9 +362,12 @@ public class PlayScreenController {
 
     /**
      * Sets the common objectives for this game, showing them in the correct slot.
+     *
      * @param commonObjectives The common objectives for this game.
      */
     private void setCommonObjectives(ObjectiveCard[] commonObjectives) {
+        guiState.setCommonObjectives(List.of(commonObjectives));
+
         List<Parent> cardPanes = new ArrayList<>();
         for (ObjectiveCard objectiveCard : commonObjectives) {
             CardController cardController = ElementFactory.getCard();
@@ -372,6 +382,7 @@ public class PlayScreenController {
 
     /**
      * Sets this client's player's hand.
+     *
      * @param hand The cards in the player's hand.
      */
     private void setHand(List<PlayableCard> hand) {
@@ -384,6 +395,7 @@ public class PlayScreenController {
 
     /**
      * Adds a card to this client's player's hand.
+     *
      * @param card The card to be added.
      */
     private void addCardToHand(PlayableCard card) {
@@ -396,6 +408,7 @@ public class PlayScreenController {
 
     /**
      * Removes the given card from this client's player's hand.
+     *
      * @param card The card to remove.
      */
     private void removeCardFromHand(PlayableCard card) {
@@ -405,8 +418,9 @@ public class PlayScreenController {
 
     /**
      * Sets another player's restricted view of their hand.
+     *
      * @param username The username of the player whose restricted hand is being set.
-     * @param hand The player's restricted hand.
+     * @param hand     The player's restricted hand.
      */
     private void setOtherHand(String username, List<RestrictedCard> hand) {
         HandController handController = ElementFactory.getHandSlot();
@@ -427,8 +441,9 @@ public class PlayScreenController {
 
     /**
      * Adds a restricted card to another player's hand.
+     *
      * @param username The username of the player whose hand this card should be added to.
-     * @param card The card to be added.
+     * @param card     The card to be added.
      */
     private void addCardToOtherHand(String username, RestrictedCard card) {
         HandController handController = guiState.getOtherHand(username);
@@ -437,8 +452,9 @@ public class PlayScreenController {
 
     /**
      * Removes a restricted card from another player's hand.
+     *
      * @param username The username of the player whose hand this card should be removed from.
-     * @param card The card to be removed.
+     * @param card     The card to be removed.
      */
     private void removeCardFromOtherHand(String username, RestrictedCard card) {
         HandController handController = guiState.getOtherHand(username);
@@ -447,6 +463,7 @@ public class PlayScreenController {
 
     /**
      * Opens a popup to allow the player to choose the side on which to play their starter card.
+     *
      * @param starterCard The starter card that was assigned to the player.
      */
     private void promptStarterChoice(StarterCard starterCard) {
@@ -465,6 +482,7 @@ public class PlayScreenController {
 
     /**
      * Shows the color options on the previously opened color popup. If {@link PlayScreenController#choosingColors} methods wasn't called previously, this method will call it automatically.
+     *
      * @param colorChoices The options from which the player can choose their color.
      */
     private void promptColorChoice(List<PlayerColor> colorChoices) {
@@ -474,6 +492,7 @@ public class PlayScreenController {
 
     /**
      * Opens a popup from which the player can choose their personal objective.
+     *
      * @param possiblePersonalObjectives The options from which the player can pick their personal objective.
      */
     private void promptObjectiveChoice(List<ObjectiveCard> possiblePersonalObjectives) {
@@ -484,6 +503,7 @@ public class PlayScreenController {
 
     /**
      * Sets the player's personal objective and closes the choice popup.
+     *
      * @param personalObjective The player's personal objective.
      */
     private void setPersonalObjective(ObjectiveCard personalObjective) {
@@ -506,14 +526,15 @@ public class PlayScreenController {
     /**
      * Sets the given player's starter card and creates their play area, and initializes the info table.<br>
      * This method also closes the starter card choice popup if the given username if this client's player's username.
-     * @param username The username of the player whose new play area is being given.
-     * @param placementOrder The order in which card were placed in this play area.
-     * @param field A map containing the position of each card in the play area.
-     * @param activeSides The side on which each card was played in this play area.
-     * @param legalPositions The set of positions where a card can be placed.
+     *
+     * @param username         The username of the player whose new play area is being given.
+     * @param placementOrder   The order in which card were placed in this play area.
+     * @param field            A map containing the position of each card in the play area.
+     * @param activeSides      The side on which each card was played in this play area.
+     * @param legalPositions   The set of positions where a card can be placed.
      * @param illegalPositions The set of positions where a card cannot be placed.
-     * @param resourceCounts A map containing the amount of each resource currently visible on the player's play area.
-     * @param objectCounts A map containing the amount of each object currently visible on the player's play area.
+     * @param resourceCounts   A map containing the amount of each resource currently visible on the player's play area.
+     * @param objectCounts     A map containing the amount of each object currently visible on the player's play area.
      */
     private void setPlayArea(String username, List<Position> placementOrder, Map<Position, BoardCard> field, Map<BoardCard, SideType> activeSides, Set<Position> legalPositions, Set<Position> illegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         PlayAreaGridController playAreaGridController = ElementFactory.getPlayAreaGrid();
@@ -553,14 +574,15 @@ public class PlayScreenController {
 
     /**
      * Plays a card on the given player's play area and adds them to their grid.
-     * @param username The username of the player who played the card.
-     * @param card The card that was played.
-     * @param side The side on which the card was played.
-     * @param pos The position where the card was played.
-     * @param addedLegalPositions The set of new positions where a card can be placed.
+     *
+     * @param username              The username of the player who played the card.
+     * @param card                  The card that was played.
+     * @param side                  The side on which the card was played.
+     * @param pos                   The position where the card was played.
+     * @param addedLegalPositions   The set of new positions where a card can be placed.
      * @param removedLegalPositions The set of positions where a card can no longer be placed.
-     * @param resourceCounts A map containing the new amount of each resource currently visible on the player's play area.
-     * @param objectCounts A map containing the amount of each object currently visible on the player's play area.
+     * @param resourceCounts        A map containing the new amount of each resource currently visible on the player's play area.
+     * @param objectCounts          A map containing the amount of each object currently visible on the player's play area.
      */
     private void playCard(String username, BoardCard card, SideType side, Position pos, Set<Position> addedLegalPositions, Set<Position> removedLegalPositions, Map<ResourceType, Integer> resourceCounts, Map<ObjectType, Integer> objectCounts) {
         PlayAreaGridController playAreaGridController = guiState.getPlayArea(username);
@@ -580,7 +602,8 @@ public class PlayScreenController {
 
     /**
      * Sets and shows the type of card currently on top of the given deck.
-     * @param whichDeck The type of deck.
+     *
+     * @param whichDeck   The type of deck.
      * @param deckTopType The type of card on top of the specified deck.
      */
     private void setDeckTopType(PlayableCardType whichDeck, ResourceType deckTopType) {
@@ -613,8 +636,9 @@ public class PlayScreenController {
 
     /**
      * Sets and shows the common cards from which the players can draw.
+     *
      * @param resourceCards The resource cards from which the players can draw from.
-     * @param goldCards The gold cards from which the players can draw from.
+     * @param goldCards     The gold cards from which the players can draw from.
      */
     private void setCommonCards(PlayableCard[] resourceCards, PlayableCard[] goldCards) {
         for (int i = 0; i < resourceCards.length; i++) {
@@ -649,7 +673,8 @@ public class PlayScreenController {
 
     /**
      * Sets the amount of game points earned by the given player and updates the points table.
-     * @param username The username of the player whose game points are being given.
+     *
+     * @param username   The username of the player whose game points are being given.
      * @param gamePoints The amount of game points earned by the player.
      */
     private void setGamePoints(String username, int gamePoints) {
@@ -679,6 +704,7 @@ public class PlayScreenController {
 
     /**
      * Tells the user that the given player is in a deadlock situation and their turn is skipped.
+     *
      * @param username The username of the player who is in a deadlock situation.
      */
     private void signalDeadLock(String username) {
@@ -695,6 +721,7 @@ public class PlayScreenController {
 
     /**
      * Tells the player that the given player has disconnected and the game is being suspended as a result.
+     *
      * @param whoDisconnected The username of the player who disconnected.
      */
     private void signalGameSuspension(String whoDisconnected) {
@@ -707,6 +734,7 @@ public class PlayScreenController {
 
     /**
      * Tells the player that the given player has disconnected and the game is being deleted as a result.
+     *
      * @param whoDisconnected The username of the player who disconnected.
      */
     private void signalGameDeletion(String whoDisconnected) {
@@ -719,6 +747,7 @@ public class PlayScreenController {
 
     /**
      * Adds the given messages to the chat.
+     *
      * @param messages The newly received messages.
      */
     private void receiveMessages(List<ChatMessage> messages) {
@@ -769,6 +798,7 @@ public class PlayScreenController {
 
     /**
      * Adds event listeners to the player buttons to show other player's basic info, like their hand, and to allow the switch to see their play area.
+     *
      * @param username The username of the player whose player button should be updated with event listeners.
      */
     private void setPlayerButtonActions(String username) {
@@ -802,6 +832,7 @@ public class PlayScreenController {
     /**
      * Switches the currently visible screen to the given player's screen.
      * This method changes the visible play area, info table, hand and personal objective. This method also adds a colored halo around the screen.
+     *
      * @param username The username of the player whose screen should be shown.
      */
     private void switchToOtherPlayer(String username) {
@@ -879,6 +910,7 @@ public class PlayScreenController {
 
     /**
      * Switches the currently visible play area to the given player's.
+     *
      * @param username The username of the player whose play area should be shown.
      */
     private void switchToPlayArea(String username) {
@@ -907,6 +939,7 @@ public class PlayScreenController {
 
     /**
      * Switches the visible hand to the requested player's.
+     *
      * @param username The username of the player whose hand should be shown.
      */
     private void switchToHand(String username) {
@@ -924,6 +957,7 @@ public class PlayScreenController {
 
     /**
      * Applies a colored halo around the screen.
+     *
      * @param color The color of the halo to apply. If <code>null</code>, a black halo will be applied.
      */
     private void applyHalo(PlayerColor color) {
@@ -946,6 +980,7 @@ public class PlayScreenController {
 
     /**
      * Enables or disables the common cards and decks so that the player can draw a card.
+     *
      * @param enabled Whether the common cards and decks should be enabled.
      */
     private void enableDraw(boolean enabled) {
@@ -1091,7 +1126,8 @@ public class PlayScreenController {
 
     /**
      * Checks whether the given node contains another node between its descendants.
-     * @param node The "father" node.
+     *
+     * @param node                      The "father" node.
      * @param potentialHierarchyElement A potential descendant of the father node.
      * @return Whether the given node is a descendant of the father node.
      */

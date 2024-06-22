@@ -115,22 +115,15 @@ public class WelcomeScreenController {
             }
         });
 
-        usernameField.textProperty().addListener((ov, oldValue, newValue) -> {
-            if (usernameField.getText().length() > 10) {
-                String s = usernameField.getText().substring(0, 10);
-                usernameField.setText(s);
+        usernameField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER) {
+                join(null);
             }
         });
 
         usernameField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.contains(" ")) {
+            if (newValue.length() > 10 || newValue.contains(" ")) {
                 usernameField.setText(oldValue);
-            }
-        });
-
-        usernameField.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.getCode() == KeyCode.ENTER) {
-                join(null);
             }
         });
     }

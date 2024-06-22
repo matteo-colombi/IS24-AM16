@@ -24,6 +24,7 @@
 }
 
 .button.transparent {
+    -fx-background-radius: 0;
     -fx-background-color: transparent;
     -fx-border-style: hidden;
 }
@@ -187,6 +188,14 @@
     -fx-fill: #b38c44;
 }
 
+.endgame-player-info {
+    -fx-border-color: #573B21;
+    -fx-border-radius: 3;
+    -fx-border-width: 3;
+    -fx-background-color: #B38C44;
+    -fx-background-radius: 5;
+}
+
 .halo-green {
     -fx-effect: innershadow(gaussian, rgba(30, 177, 76, 1), 50, 0.5, 0, 0);
 }
@@ -194,7 +203,6 @@
 .halo-yellow {
     -fx-effect: innershadow(gaussian, rgba(255, 242, 0, 1), 50, 0.5, 0, 0);
 }
-
 .halo-red {
     -fx-effect: innershadow(gaussian, rgba(237, 28, 36, 1), 50, 0.5, 0, 0);
 }

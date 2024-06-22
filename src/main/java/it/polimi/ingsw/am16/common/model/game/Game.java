@@ -504,11 +504,6 @@ public class Game implements GameModel {
 
                             @Override
                             public boolean test(Player player) {
-                                System.out.println(player.getUsername());
-                                System.out.println(player.getTotalPoints());
-                                System.out.println(player.getObjectivePoints());
-                                System.out.println(maxTotal);
-                                System.out.println(maxObjective);
                                 maxTotal = Math.max(player.getTotalPoints(), maxTotal);
                                 maxObjective = Math.max(player.getObjectivePoints(), maxObjective);
                                 return player.getTotalPoints() == maxTotal && player.getObjectivePoints() == maxObjective;

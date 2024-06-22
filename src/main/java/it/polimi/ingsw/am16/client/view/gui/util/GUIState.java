@@ -1,6 +1,7 @@
 package it.polimi.ingsw.am16.client.view.gui.util;
 
 import it.polimi.ingsw.am16.client.view.gui.controllers.elements.*;
+import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.server.ServerInterface;
@@ -33,6 +34,7 @@ public class GUIState {
     private final Map<String, InfoTableController> infoTables;
 
     private CardController personalObjective;
+    private List<ObjectiveCard> commonObjectives;
 
     private final Map<String, HandController> otherHands;
 
@@ -250,6 +252,21 @@ public class GUIState {
         synchronized (infoTables) {
             return infoTables.get(username);
         }
+    }
+
+    /**
+     * Stores the common objectives.
+     * @param commonObjectives The common objectives.
+     */
+    public synchronized void setCommonObjectives(List<ObjectiveCard> commonObjectives) {
+        this.commonObjectives = commonObjectives;
+    }
+
+    /**
+     * @return The common objectives.
+     */
+    public synchronized List<ObjectiveCard> getCommonObjectives() {
+        return commonObjectives;
     }
 
     /**

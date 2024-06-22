@@ -191,5 +191,11 @@ public class GamesScreenController {
             setGamesList(gamesListEvent.getGameIds(), gamesListEvent.getCurrentPlayers(), gamesListEvent.getMaxPlayers(), gamesListEvent.getLobbyStates());
             gamesListEvent.consume();
         });
+
+        gameIdField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > 6 || newValue.contains(" ")) {
+                gameIdField.setText(oldValue);
+            }
+        });
     }
 }

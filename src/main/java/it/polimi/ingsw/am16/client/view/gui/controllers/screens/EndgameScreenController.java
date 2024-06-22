@@ -2,14 +2,15 @@ package it.polimi.ingsw.am16.client.view.gui.controllers.screens;
 
 import it.polimi.ingsw.am16.client.view.gui.CodexGUI;
 import it.polimi.ingsw.am16.client.view.gui.controllers.elements.ErrorController;
-import it.polimi.ingsw.am16.client.view.gui.controllers.elements.PlayerButtonController;
 import it.polimi.ingsw.am16.client.view.gui.events.ErrorEvent;
 import it.polimi.ingsw.am16.client.view.gui.events.GUIEventTypes;
 import it.polimi.ingsw.am16.client.view.gui.util.ElementFactory;
 import it.polimi.ingsw.am16.client.view.gui.util.ErrorFactory;
+import it.polimi.ingsw.am16.client.view.gui.util.GUIAssetRegistry;
 import it.polimi.ingsw.am16.client.view.gui.util.GUIState;
 import it.polimi.ingsw.am16.client.view.gui.util.guiErrors.GUIError;
 import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
+import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.util.FilePaths;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -48,12 +49,26 @@ public class EndgameScreenController {
     public VBox totalPointsCol;
     @FXML
     public VBox infoCol;
+    @FXML
+    public StackPane playerInfo;
+    @FXML
+    public Text usernameField;
+    @FXML
+    public ImageView personalObjective;
+    @FXML
+    public ImageView commonObjective0;
+    @FXML
+    public ImageView commonObjective1;
+    @FXML
+    public StackPane playAreaPane;
 
     private GUIState guiState;
 
     private Map<String, Integer> gamePoints;
     private Map<String, Integer> objectivePoints;
     private Map<String, Integer> totalPoints;
+
+    private Map<String, ObjectiveCard> personalObjectives;
 
     @FXML
     public void initialize() {
@@ -79,7 +94,7 @@ public class EndgameScreenController {
     }
 
     private void setPersonalObjectives(Map<String, ObjectiveCard> personalObjectives) {
-        //TODO
+        this.personalObjectives = personalObjectives;
     }
 
     private void setPoints(String username, int objPoints) {
@@ -120,9 +135,7 @@ public class EndgameScreenController {
             infoButton.setPrefWidth(45);
             infoButton.setPrefHeight(45);
             infoButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-            infoButton.setOnMousePressed(e -> {
-                //TODO
-            });
+            infoButton.setOnMousePressed(e -> showPlayerInfo(username));
 
             infoImage.setFitWidth(24);
             infoImage.setFitHeight(24);
@@ -152,7 +165,8 @@ public class EndgameScreenController {
             gamePointsPane.getStyleClass().add("endgame-cell");
             objectivePointsPane.getStyleClass().add("endgame-cell");
             totalPointsPane.getStyleClass().add("endgame-cell");
-            infoPane.getStyleClass().add("endgame-cell");
+            if (!username.equals(sortedUsernames.getFirst()))
+                infoPane.getStyleClass().add("endgame-cell");
 
             playerCol.getChildren().add(playerPane);
             gamePointsCol.getChildren().add(gamePointsPane);
@@ -162,11 +176,37 @@ public class EndgameScreenController {
         }
     }
 
+    private void showPlayerInfo(String username) {
+        usernameField.setText(username);
+
+        String personalObjectivePath = GUIAssetRegistry.getAssetName(this.personalObjectives.get(username).getName(), SideType.FRONT);
+        String commonObjectivePath0 = GUIAssetRegistry.getAssetName(guiState.getCommonObjectives().getFirst().getName(), SideType.FRONT);
+        String commonObjectivePath1 = GUIAssetRegistry.getAssetName(guiState.getCommonObjectives().getLast().getName(), SideType.FRONT);
+
+        Image personalObjectiveImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(personalObjectivePath)), personalObjective.getFitWidth() * 1.3, personalObjective.getFitHeight() * 1.3, true, true);
+        Image commonObjectiveImage0 = new Image(Objects.requireNonNull(getClass().getResourceAsStream(commonObjectivePath0)), personalObjective.getFitWidth() * 1.3, personalObjective.getFitHeight() * 1.3, true, true);
+        Image commonObjectiveImage1 = new Image(Objects.requireNonNull(getClass().getResourceAsStream(commonObjectivePath1)), personalObjective.getFitWidth() * 1.3, personalObjective.getFitHeight() * 1.3, true, true);
+
+        personalObjective.setImage(personalObjectiveImage);
+        commonObjective0.setImage(commonObjectiveImage0);
+        commonObjective1.setImage(commonObjectiveImage1);
+
+        if (!playAreaPane.getChildren().isEmpty())
+            playAreaPane.getChildren().removeFirst();
+
+        playAreaPane.getChildren().addFirst(guiState.getPlayArea(username).getRoot());
+
+        playerInfo.setVisible(true);
+    }
+
+    public void close(ActionEvent ignored) {
+        playerInfo.setVisible(false);
+    }
+
     public void home(ActionEvent ignored) {
         //TODO should we call something on the server?
         CodexGUI.getGUI().switchToWelcomeScreen();
     }
-
 
     /**
      * This method sets up and shows the error popup whenever an error occurs
