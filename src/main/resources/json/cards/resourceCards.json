@@ -86,7 +86,7 @@
         "permanentResourcesGiven" : {},
         "pointMultiplierPolicy" : "static",
         "sideType" : "front",
-        "corners" : ["fungi", "insect", "empty", "manuscript"]
+        "corners" : ["fungi", "insect", "blocked", "manuscript"]
       },
       "backSide" : "fungiBack",
       "type" : "fungi"
