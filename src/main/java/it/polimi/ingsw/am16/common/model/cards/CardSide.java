@@ -39,14 +39,12 @@ public class CardSide implements Serializable {
         /**
          * Used by cards that give a fixed amount of points.
          */
-        @SuppressWarnings("unused") //Suppressing because it's being used by the JSON files, but it goes undetected.
         @JsonProperty("static")
         STATIC_POLICY(playArea -> 1),
 
         /**
          * Used by cards that give a proportional amount of points based on the number of covered corners.
          */
-        @SuppressWarnings("unused") //Suppressing because it's being used by the JSON files, but it goes undetected.
         @JsonProperty("corners_covered")
         CORNERS_COVERED_POLICY(playArea -> {
             int neighbourCounter = 0;
@@ -65,7 +63,6 @@ public class CardSide implements Serializable {
         /**
          * Used by cards that give a proportional amount of points based on the number of visible {@link ObjectType}<code>.INKWELL</code>.
          */
-        @SuppressWarnings("unused") //Suppressing because it's being used by the JSON files, but it goes undetected.
         @JsonProperty("inkwell")
         INKWELL_POLICY(playArea -> {
             Map<ObjectType, Integer> objCounts = playArea.getObjectCounts();
@@ -76,7 +73,6 @@ public class CardSide implements Serializable {
         /**
          * Used by cards that give a proportional amount of points based on the number of visible {@link ObjectType}<code>.MANUSCRIPT</code>.
          */
-        @SuppressWarnings("unused") //Suppressing because it's being used by the JSON files, but it goes undetected.
         @JsonProperty("manuscript")
         MANUSCRIPT_POLICY(playArea -> {
             Map<ObjectType, Integer> objCounts = playArea.getObjectCounts();
@@ -87,7 +83,6 @@ public class CardSide implements Serializable {
         /**
          * Used by cards that give a proportional amount of points based on the number of visible {@link ObjectType}<code>.QUILL</code>.
          */
-        @SuppressWarnings("unused") //Suppressing because it's being used by the JSON files, but it goes undetected.
         @JsonProperty("quill")
         QUILL_POLICY(playArea -> {
             Map<ObjectType, Integer> objCounts = playArea.getObjectCounts();

@@ -77,19 +77,6 @@ public class PlayerButtonController {
      * @param currentlyShowingOtherInfo A reference to the element that is already being shown and that should be hidden when this new element is displayed.
      */
     public void setActions(OtherPlayerInfoController otherPlayerInfoController, final AtomicReference<OtherPlayerInfoController> currentlyShowingOtherInfo) {
-        //FIXME remove comment if we like not having hovers.
-        /*
-        button.setOnMouseEntered(e -> {
-            if (currentlyShowingOtherHand.get() == null)
-                otherPlayerInfoController.getRoot().setVisible(true);
-        });
-
-        button.setOnMouseExited(e -> {
-            if (currentlyShowingOtherHand.get() == null)
-                otherPlayerInfoController.getRoot().setVisible(false);
-        });
-        */
-
         setOnMouseClicked(e -> {
             if (currentlyShowingOtherInfo.get() == null) {
                 otherPlayerInfoController.getRoot().setVisible(true);

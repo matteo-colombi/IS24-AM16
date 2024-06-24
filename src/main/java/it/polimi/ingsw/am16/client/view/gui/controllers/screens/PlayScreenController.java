@@ -301,14 +301,16 @@ public class PlayScreenController {
         if (username.equals(guiState.getUsername())) {
             HandController handController = guiState.getHand();
             handController.setActive(true);
-            String filename = null;
-            try {
-                filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/ding.mp3")).toURI().toString();
-            } catch (URISyntaxException e) {
-                System.err.println("Error loading audio file");
+            if (!(guiState.getDontDraw() && guiState.getUsername().equals(guiState.getTurnOrder().getFirst()))) {
+                String filename = null;
+                try {
+                    filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/ding.mp3")).toURI().toString();
+                } catch (URISyntaxException e) {
+                    System.err.println("Error loading audio file");
+                }
+                AudioClip audioClip = new AudioClip(filename);
+                audioClip.play();
             }
-            AudioClip audioClip = new AudioClip(filename);
-            audioClip.play();
         }
     }
 
@@ -694,12 +696,19 @@ public class PlayScreenController {
     }
 
     /**
-     * DOCME once functionality is fully determined
+     * Disables draws for subsequent turns.
+     * Plays a sound to alert the player that the last round has begun.
      */
     private void notifyDontDraw() {
         guiState.setDontDraw(true);
-        //TODO create a custom popup to signal that it's the last round.
-        //  Or maybe play a sound?
+        String filename = null;
+        try {
+            filename = Objects.requireNonNull(getClass().getResource(FilePaths.GUI_MEDIA + "/final_round.mp3")).toURI().toString();
+        } catch (URISyntaxException e) {
+            System.err.println("Error loading audio file");
+        }
+        AudioClip audioClip = new AudioClip(filename);
+        audioClip.play();
     }
 
     /**
@@ -760,16 +769,6 @@ public class PlayScreenController {
                         Media media = new Media(filename);
                         MediaPlayer mediaPlayer = new MediaPlayer(media);
                         rick.setMediaPlayer(mediaPlayer);
-
-                        //FIXME It's probably not possible to load the file multiple times with multiple game instances on the same machine
-                        rick.setOnError(mediaErrorEvent -> {
-                            System.out.println("error");
-                            System.out.println(filename);
-                            System.out.println(media);
-                            System.out.println(mediaPlayer);
-                            System.out.println(rick.getMediaPlayer());
-                            System.out.println(mediaErrorEvent);
-                        });
                     } catch (Exception e) {
                         System.err.println("Error loading media: " + e.getMessage());
                     }
@@ -779,10 +778,7 @@ public class PlayScreenController {
                 rick.requestFocus();
                 rick.getMediaPlayer().seek(rick.getMediaPlayer().getStartTime());
                 rick.getMediaPlayer().setOnEndOfMedia(() -> rick.setVisible(false));
-                rick.getMediaPlayer().setOnError(() -> {
-                    System.err.println("error");
-                    rick.setVisible(false);
-                });
+                rick.getMediaPlayer().setOnError(() -> rick.setVisible(false));
                 rick.getMediaPlayer().play();
             } else {
                 Text messageText = new Text();

@@ -109,6 +109,8 @@ public class CodexGUI extends Application implements ViewInterface {
 
         List<String> args = getParameters().getRaw();
 
+        System.out.println(args);
+
         String protocol;
         int protocolIndex = args.indexOf("--socket");
         if (protocolIndex == -1) {

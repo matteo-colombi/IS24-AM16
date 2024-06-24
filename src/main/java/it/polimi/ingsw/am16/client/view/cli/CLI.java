@@ -113,6 +113,9 @@ public class CLI implements ViewInterface {
     @Override
     public synchronized void startView(String[] args) {
         List<String> argsList = Arrays.asList(args);
+
+        System.out.println(argsList);
+
         String protocol;
         int protocolIndex = argsList.indexOf("--socket");
         if (protocolIndex == -1) {

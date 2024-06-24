@@ -181,6 +181,7 @@ public class Game implements GameModel {
     /**
      * @return whether all the players in this game are connected.
      */
+    @Override
     public boolean everybodyConnected() {
         for (Player player : players.values()) {
             if (!player.isConnected())

@@ -47,7 +47,7 @@ public class LobbyManager {
      * @return The created lobby's id.
      */
     public String createGame(int numPlayers) {
-        if ((numPlayers != 1) && numPlayers < 2 || numPlayers > 4) { //FIXME 1 is only allowed for testing
+        if (numPlayers < 2 || numPlayers > 4) {
             throw new IllegalArgumentException("Number of players must be between 2 and 4");
         }
 

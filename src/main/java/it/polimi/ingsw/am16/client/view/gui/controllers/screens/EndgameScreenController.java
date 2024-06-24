@@ -204,7 +204,6 @@ public class EndgameScreenController {
     }
 
     public void home(ActionEvent ignored) {
-        //TODO should we call something on the server?
         CodexGUI.getGUI().switchToWelcomeScreen();
     }
 
@@ -219,7 +218,7 @@ public class EndgameScreenController {
         GUIError error = ErrorFactory.getError(errorEvent.getErrorType());
         error.configurePopup(errorController);
         errorController.setErrorText(errorEvent.getErrorMsg());
-        //TODO display the popup
+        error.show(root);
     }
 
     private void registerEvents() {

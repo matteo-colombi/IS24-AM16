@@ -117,7 +117,7 @@ public class GameController {
         try {
             game.initializeGame();
         } catch (UnexpectedActionException e) {
-            e.printStackTrace();
+            System.err.println("Error while initializing game: " + e.getMessage());
             return;
         }
 
@@ -144,7 +144,7 @@ public class GameController {
         try {
             game.setPlayerStarterSide(username, starterSide);
         } catch (UnexpectedActionException | NoStarterCardException e) {
-            e.printStackTrace();
+            System.err.println("Error setting starter card: " + e.getMessage());
             return;
         }
         PlayAreaModel playArea = players.get(username).getPlayArea();
@@ -200,7 +200,7 @@ public class GameController {
         try {
             game.setPlayerColor(username, color);
         } catch (UnexpectedActionException e) {
-            e.printStackTrace();
+            System.err.println("Error setting player color: " + e.getMessage());
             return;
         }
         virtualView.communicateColor(username, color);
@@ -245,7 +245,7 @@ public class GameController {
         try {
             game.initializeGame();
         } catch (UnexpectedActionException e) {
-            e.printStackTrace();
+            System.err.println("Error restarting the game: " + e.getMessage());
         }
     }
 
@@ -298,7 +298,7 @@ public class GameController {
         try {
             game.setPlayerObjective(username, objectiveCard);
         } catch (UnknownObjectiveCardException | UnexpectedActionException e) {
-            e.printStackTrace();
+            System.err.println("Error setting player objective: " + e.getMessage());
             return;
         }
 
@@ -317,7 +317,7 @@ public class GameController {
         try {
             game.startGame();
         } catch (UnexpectedActionException e) {
-            e.printStackTrace();
+            System.err.println("Error starting game: " + e.getMessage());
             return;
         }
 
@@ -336,7 +336,7 @@ public class GameController {
         try {
             game.advanceTurn();
         } catch (UnexpectedActionException e) {
-            e.printStackTrace();
+            System.err.println("Error advancing turn: " + e.getMessage());
             return;
         }
 
@@ -394,7 +394,7 @@ public class GameController {
             virtualView.promptError(username, "Illegal move.", ErrorType.GENERIC_ERROR);
             return;
         } catch (UnexpectedActionException e) {
-            e.printStackTrace();
+            System.err.println("Error placing card: " + e.getMessage());
             return;
         }
 
@@ -472,7 +472,7 @@ public class GameController {
         try {
             game.endGame();
         } catch (UnexpectedActionException e) {
-            e.printStackTrace();
+            System.err.println("Error ending game: " + e.getMessage());
             return;
         }
 
