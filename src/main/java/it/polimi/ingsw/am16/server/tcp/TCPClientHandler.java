@@ -332,6 +332,8 @@ public class TCPClientHandler implements Runnable, RemoteClientInterface {
             in.close();
             out.close();
             clientSocket.close();
+            pingTimer.cancel();
+            System.out.println("TCP client disconnected");
         } catch (IOException e) {
             System.err.println("IOException: " + e.getMessage());
         }
