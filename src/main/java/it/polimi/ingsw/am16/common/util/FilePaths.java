@@ -1,7 +1,5 @@
 package it.polimi.ingsw.am16.common.util;
 
-import java.net.URL;
-
 /**
  * Class that contains all the static paths for resources.
  */
@@ -24,6 +22,11 @@ public final class FilePaths {
     public static final String CLI_CARDS = CLI_ASSETS + "/cliCards.json";
 
     /**
+     * The path for a placeholder blank card for the command line interface.
+     */
+    public static final String CLI_BLANK_CARD = CLI_ASSETS + "/cliBlankCard.json";
+
+    /**
      * The path for the label used to signal positions in the CLI play area.
      */
     public static final String CLI_POSITION_LABEL = CLI_ASSETS + "/label.json";
@@ -42,6 +45,66 @@ public final class FilePaths {
      * The path for the label shown in the CLI when the final round of a game is triggered
      */
     public static final String CLI_FINAL_ROUND_LABEL = CLI_ASSETS + "/cliFinalRoundLabel.json";
+
+    /**
+     * The path for GUI assets.
+     */
+    public static final String GUI_ASSETS = ASSETS + "/gui";
+
+    /**
+     * The path for GUI gameplay assets, that is assets that are an integral part of the game such as cards and score board.
+     */
+    public static final String GUI_GAMEPLAY = GUI_ASSETS + "/gameplay";
+
+    /**
+     * The path for GUI card assets.
+     */
+    public static final String GUI_CARDS = GUI_GAMEPLAY + "/cards";
+
+    /**
+     * The path for the fronts of GUI cards.
+     */
+    public static final String GUI_CARD_FRONTS = GUI_CARDS + "/fronts";
+
+    /**
+     * The path for the backs of GUI cards.
+     */
+    public static final String GUI_CARD_BACKS = GUI_CARDS + "/backs";
+
+    /**
+     * The path for the GUI icons.
+     */
+    public static final String GUI_ICONS = GUI_ASSETS + "/icons";
+
+    /**
+     * The path for the GUI media files.
+     */
+    public static final String GUI_MEDIA = GUI_ASSETS + "/media";
+
+    /**
+     * The path for the GUI rulebook pages.
+     */
+    public static final String GUI_RULEBOOK = GUI_ASSETS + "/rulebook";
+
+    /**
+     * The path for the GUI app logo.
+     */
+    public static final String GUI_LOGO = GUI_ASSETS + "/logo.png";
+
+    /**
+     * The path for .fxml files.
+     */
+    public static final String GUI_FXML = "/fxml";
+
+    /**
+     * The path for GUI elements.
+     */
+    public static final String GUI_ELEMENTS = GUI_FXML + "/elements";
+
+    /**
+     * The path for GUI screens.
+     */
+    public static final String GUI_SCREENS = GUI_FXML + "/screens";
 
     /**
      * The path for JSON files.

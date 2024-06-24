@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import java.lang.*?>
+<StackPane fx:id="root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.elements.HandController">
+   <children>
+      <Text fx:id="placeholderText" boundsType="VISUAL" fill="#4b4b4b" strokeType="OUTSIDE" strokeWidth="0.0" text="No cards yet...">
+         <font>
+            <Font name="System Italic" size="20.0" />
+         </font>
+      </Text>
+      <HBox fx:id="cardsSlot" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" stylesheets="@../stylesheets/stylesheet.css">
+         <children>
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+               <children>
+                  <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
+                     </image>
+                     <styleClass>
+                        <String fx:value="card" />
+                        <String fx:value="card_placeholder" />
+                     </styleClass>
+                  </ImageView>
+               </children>
+            </StackPane>
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+               <children>
+                  <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
+                     </image>
+                     <styleClass>
+                        <String fx:value="card" />
+                        <String fx:value="card_placeholder" />
+                     </styleClass>
+                  </ImageView>
+               </children>
+            </StackPane>
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+               <children>
+                  <ImageView id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
+                     </image>
+                     <styleClass>
+                        <String fx:value="card" />
+                        <String fx:value="card_placeholder" />
+                     </styleClass>
+                  </ImageView>
+               </children>
+            </StackPane>
+         </children>
+      </HBox>
+   </children>
+</StackPane>

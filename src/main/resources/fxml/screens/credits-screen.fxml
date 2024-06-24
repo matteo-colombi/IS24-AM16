@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.text.*?>
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.screens.CreditsScreenController">
+   <children>
+      <VBox fx:id="links" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="30.0" StackPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="15.0">
+               <children>
+                  <Hyperlink onAction="#click" text="matteo.colombi@mail.polimi.it">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Hyperlink>
+                  <Hyperlink onAction="#click" text="andrea78.colombo@mail.polimi.it">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Hyperlink>
+                  <Hyperlink onAction="#click" text="leonardocarlo.conti@mail.polimi.it">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Hyperlink>
+                  <Hyperlink onAction="#click" text="lorenzo.demontis@mail.polimi.it">
+                     <font>
+                        <Font size="36.0" />
+                     </font>
+                  </Hyperlink>
+               </children>
+            </VBox>
+            <Hyperlink fx:id="facebookLink" onAction="#rick" text="Follow us on Facebook to win €1,000,000!">
+               <font>
+                  <Font size="70.0" />
+               </font>
+            </Hyperlink>
+         </children>
+      </VBox>
+      <MediaView fx:id="rick" fitHeight="720.0" fitWidth="1280.0" visible="false" StackPane.alignment="CENTER" />
+      <VBox fx:id="rickText" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0" visible="false" StackPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="YOU'VE BEEN RICKROLLED" underline="true">
+               <font>
+                  <Font name="System Bold Italic" size="96.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="(Whoops...)">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateY="-100.0" StackPane.alignment="BOTTOM_CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#back" style="-fx-background-radius: 5px;" styleClass="medium" StackPane.alignment="CENTER">
+               <font>
+                  <Font name="System Italic" size="14.0" />
+               </font>
+            </Button>
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" spacing="5.0" StackPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="14.0" fitWidth="14.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/gui/icons/left-arrow.png" />
+                     </image>
+                  </ImageView>
+                  <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Back" textOrigin="CENTER">
+                     <font>
+                        <Font name="System Italic" size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+         </children>
+      </StackPane>
+   </children>
+</StackPane>

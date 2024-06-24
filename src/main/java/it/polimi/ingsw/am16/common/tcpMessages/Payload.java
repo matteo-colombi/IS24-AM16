@@ -5,6 +5,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.am16.common.tcpMessages.request.*;
 import it.polimi.ingsw.am16.common.tcpMessages.response.*;
 
+/**
+ * Generic abstract class for a message payload. All subclasses of this class are possible payloads for TCP messages.
+ * All payloads are immutable bean-like objects that can be serialized and deserialized to and from JSON.
+ */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "payloadType"
@@ -50,7 +54,8 @@ import it.polimi.ingsw.am16.common.tcpMessages.response.*;
         @JsonSubTypes.Type(value = PlayCardRequest.class, name = "playCardRequest"),
         @JsonSubTypes.Type(value = SendChatMessage.class, name = "sendChatMessage"),
         @JsonSubTypes.Type(value = SendPrivateChatMessage.class, name = "sendPrivateChatMessage"),
-        @JsonSubTypes.Type(value = SignalGameSuspension.class, name = "signalGameSuspension")
+        @JsonSubTypes.Type(value = SignalGameSuspension.class, name = "signalGameSuspension"),
+        @JsonSubTypes.Type(value = SignalGameDeletion.class, name = "signalGameDeletion")
 })
 public abstract class Payload {
 }

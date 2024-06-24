@@ -15,6 +15,7 @@ public class RNG extends Random {
     private static final long serialVersionUID = 1354633369837069111L;
 
     private static RNG instance = null;
+    @SuppressWarnings("SpellCheckingInspection")
     private static final char[] symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".toCharArray();
 
     /**
@@ -51,6 +52,12 @@ public class RNG extends Random {
         return instance;
     }
 
+    /**
+     * Generates a new alphanumeric string of the specified length. The character set from which strings will be created contains only capital letters and digits from 0 to 9.
+     * No checks are in place for what possible words this method produces.
+     * @param length The length of the alphanumeric string to be generated.
+     * @return The generated alphanumeric string.
+     */
     public synchronized String nextAlphNumString(int length) {
         if (instance == null) instance = new RNG(System.nanoTime());
 
@@ -63,6 +70,12 @@ public class RNG extends Random {
         return builder.toString();
     }
 
+    /**
+     * Extracts a random element from the given list.
+     * @param list The list from which an element should be extracted.
+     * @return The extracted element.
+     * @param <T> The static type of the elements of the list and of the element returned by this method.
+     */
     public synchronized <T> T randomFromList(List<T> list) {
         return list.get(this.nextInt(list.size()));
     }

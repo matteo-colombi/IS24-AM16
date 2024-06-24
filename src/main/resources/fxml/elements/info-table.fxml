@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="225.0" styleClass="info_table" stylesheets="@../stylesheets/info-table.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.elements.InfoTableController">
+   <children>
+      <VBox spacing="10.0" styleClass="resources_info_table_section">
+         <children>
+            <StackPane>
+               <children>
+                  <Text fill="#ef3f36" strokeType="OUTSIDE" strokeWidth="0.0" text="Fungi" textOrigin="CENTER" StackPane.alignment="CENTER_LEFT">
+                     <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Text>
+                  <Text fx:id="fungiAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
+                     <font>
+                        <Font name="System Italic" size="18.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+            </StackPane>
+            <StackPane>
+               <children>
+                  <Text fill="#1a8441" strokeType="OUTSIDE" strokeWidth="0.0" text="Plant" textOrigin="CENTER" StackPane.alignment="CENTER_LEFT">
+                     <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Text>
+                  <Text fx:id="plantAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
+                     <font>
+                        <Font name="System Italic" size="18.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+            </StackPane>
+            <StackPane>
+               <children>
+                  <Text fill="#6fbfbf" strokeType="OUTSIDE" strokeWidth="0.0" text="Animal" textOrigin="CENTER" StackPane.alignment="CENTER_LEFT">
+                     <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Text>
+                  <Text fx:id="animalAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
+                     <font>
+                        <Font name="System Italic" size="18.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+            </StackPane>
+            <StackPane>
+               <children>
+                  <Text fill="#922790" strokeType="OUTSIDE" strokeWidth="0.0" text="Insect" textOrigin="CENTER" StackPane.alignment="CENTER_LEFT">
+                     <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Text>
+                  <Text fx:id="insectAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
+                     <font>
+                        <Font name="System Italic" size="18.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+            </StackPane>
+         </children>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding>
+      </VBox>
+      <VBox spacing="10.0" styleClass="objects_info_table_section">
+         <children>
+            <StackPane>
+               <children>
+                  <Text fill="#bfa23f" strokeType="OUTSIDE" strokeWidth="0.0" text="Inkwell" textOrigin="CENTER" StackPane.alignment="CENTER_LEFT">
+                     <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Text>
+                  <Text fx:id="inkwellAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
+                     <font>
+                        <Font name="System Italic" size="18.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+            </StackPane>
+            <StackPane>
+               <children>
+                  <Text fill="#bfa23f" strokeType="OUTSIDE" strokeWidth="0.0" text="Manuscript" textOrigin="CENTER" StackPane.alignment="CENTER_LEFT">
+                     <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Text>
+                  <Text fx:id="manuscriptAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
+                     <font>
+                        <Font name="System Italic" size="18.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+            </StackPane>
+            <StackPane>
+               <children>
+                  <Text fill="#bfa23f" strokeType="OUTSIDE" strokeWidth="0.0" text="Quill" textOrigin="CENTER" StackPane.alignment="CENTER_LEFT">
+                     <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Text>
+                  <Text fx:id="quillAmount" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textOrigin="CENTER" StackPane.alignment="CENTER_RIGHT">
+                     <font>
+                        <Font name="System Italic" size="18.0" />
+                     </font>
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin>
+                  </Text>
+               </children>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+            </StackPane>
+         </children>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </children>
+</VBox>

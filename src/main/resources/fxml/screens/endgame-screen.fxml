@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="background" stylesheets="@../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.screens.EndgameScreenController">
+   <children>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" translateY="50.0" StackPane.alignment="TOP_CENTER">
+         <children>
+            <Text fx:id="winnersTitleText" fill="#922790" strokeType="OUTSIDE" strokeWidth="0.0" text="The winner is:">
+               <font>
+                  <Font name="System Bold Italic" size="64.0" />
+               </font>
+            </Text>
+            <Text fx:id="winnersText" strokeType="OUTSIDE" strokeWidth="0.0" text="Eolo">
+               <font>
+                  <Font name="System Italic" size="48.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+      <HBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" translateY="50.0" StackPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #CACCA0; -fx-background-radius: 3; -fx-border-color: #573B21; -fx-border-radius: 3 3 0 3; -fx-border-width: 3;">
+               <children>
+                  <Text boundsType="LOGICAL_VERTICAL_CENTER" fill="#3c2313" strokeType="OUTSIDE" strokeWidth="0.0" text="Leaderboard" textOrigin="CENTER">
+                     <font>
+                        <Font name="System Bold Italic" size="40.0" />
+                     </font>
+                  </Text>
+                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #573B21; -fx-border-width: 3 0 0 0;">
+                     <children>
+                        <VBox fx:id="playerCol" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="270.0" style="-fx-border-color: #573B21; -fx-border-width: 0 3 0 0;">
+                           <children>
+                              <StackPane>
+                                 <children>
+                                    <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="Player" textOrigin="CENTER">
+                                       <font>
+                                          <Font name="System Bold Italic" size="30.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                                 <padding>
+                                    <Insets left="15.0" right="15.0" />
+                                 </padding>
+                              </StackPane>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="gamePointsCol" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="270.0" style="-fx-border-color: #573B21; -fx-border-width: 0 3 0 0;">
+                           <children>
+                              <StackPane>
+                                 <children>
+                                    <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="Game Points" textOrigin="CENTER">
+                                       <font>
+                                          <Font name="System Bold Italic" size="30.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                                 <padding>
+                                    <Insets left="15.0" right="15.0" />
+                                 </padding>
+                              </StackPane>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="objectivePointsCol" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="270.0" style="-fx-border-color: #573B21; -fx-border-width: 0 3 0 0;">
+                           <children>
+                              <StackPane>
+                                 <children>
+                                    <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="Objective Points" textOrigin="CENTER">
+                                       <font>
+                                          <Font name="System Bold Italic" size="30.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                                 <padding>
+                                    <Insets left="15.0" right="15.0" />
+                                 </padding>
+                              </StackPane>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="totalPointsCol" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="270.0">
+                           <children>
+                              <StackPane>
+                                 <children>
+                                    <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Points" textOrigin="CENTER">
+                                       <font>
+                                          <Font name="System Bold Italic" size="30.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                                 <padding>
+                                    <Insets left="15.0" right="15.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </StackPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox fx:id="infoCol" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #CACCA0; -fx-background-radius: 3; -fx-border-color: #573B21; -fx-border-radius: 0 3 3 0; -fx-border-width: 3 3 3 0;" />
+         </children>
+      </HBox>
+      <StackPane fx:id="playerInfo" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="endgame-player-info" stylesheets="@../stylesheets/stylesheet.css" visible="false">
+         <children>
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="30.0" StackPane.alignment="CENTER">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <Text fx:id="usernameField" boundsType="VISUAL" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="xLorde">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Text>
+                  <HBox alignment="CENTER" spacing="20.0">
+                     <children>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="40.0" styleClass="card_group">
+                           <children>
+                              <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+                                 <children>
+                                    <ImageView id="cardImage" fx:id="personalObjective" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" styleClass="card">
+                                       <image>
+                                          <Image url="@../../assets/gui/gameplay/cards/fronts/objective_pattern_1_front.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <VBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="20.0">
+                                 <children>
+                                    <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                                       <children>
+                                          <ImageView id="cardImage" fx:id="commonObjective0" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" styleClass="card">
+                                             <image>
+                                                <Image url="@../../assets/gui/gameplay/cards/fronts/objective_resources_2_front.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </StackPane>
+                                    <StackPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css">
+                                       <children>
+                                          <ImageView id="cardImage" fx:id="commonObjective1" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" styleClass="card">
+                                             <image>
+                                                <Image url="@../../assets/gui/gameplay/cards/fronts/objective_resources_4_front.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </StackPane>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </padding>
+                        </VBox>
+                        <StackPane fx:id="playAreaPane" prefHeight="150.0" prefWidth="200.0" />
+                     </children>
+                  </HBox>
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+                     <children>
+                        <Button fx:id="playAreaButton" mnemonicParsing="false" onAction="#close" StackPane.alignment="CENTER">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
+                           </padding>
+                        </Button>
+                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" spacing="7.5">
+                           <children>
+                              <ImageView fitHeight="12.0" fitWidth="12.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../assets/gui/icons/close.png" />
+                                 </image>
+                              </ImageView>
+                              <Text boundsType="VISUAL" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Close" textOrigin="CENTER">
+                                 <font>
+                                    <Font name="System Italic" size="16.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                     </children>
+                  </StackPane>
+               </children>
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
+            </VBox>
+         </children>
+      </StackPane>
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" translateY="-100.0" StackPane.alignment="BOTTOM_CENTER">
+         <children>
+            <Button fx:id="homeButton" mnemonicParsing="false" onAction="#home" styleClass="medium" StackPane.alignment="CENTER">
+               <font>
+                  <Font name="System Italic" size="10.0" />
+               </font>
+            </Button>
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" spacing="7.5" StackPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="18.0" fitWidth="18.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/gui/icons/home.png" />
+                     </image>
+                  </ImageView>
+                  <Text boundsType="VISUAL" mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Home" textOrigin="CENTER">
+                     <font>
+                        <Font name="System Italic" size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+         </children>
+      </StackPane>
+   </children>
+</StackPane>

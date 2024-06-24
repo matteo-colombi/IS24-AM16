@@ -10,11 +10,20 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestDeckReloading {
+
+    /*
+     * This test checks that decks get serialized and deserialized correctly.
+     */
+
     @Test
     public void testDeckReloading() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         CardRegistry.getRegistry();
-        File f = new File("src/test/resources/json/testDeckSave.json");
+        String directoryPath = "src/test/resources/json";
+        File directory = new File(directoryPath);
+        directory.mkdirs();
+        String filePath = directoryPath + "/testDeckSave.json";
+        File f = new File(filePath);
         f.createNewFile();
 
         ObjectiveCardsDeck objectiveDeck = DeckFactory.getObjectiveCardsDeck();

@@ -26,7 +26,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * This class is the TCP client that connects to the server.
+ * This class is a Runnable that is meant to handle incoming and outgoing messages for a TCP client.
+ * This class also handles the ping routine to check that the connection with the server is still active.
  */
 public class TCPClient implements Runnable, ServerInterface {
 
@@ -42,16 +43,21 @@ public class TCPClient implements Runnable, ServerInterface {
 
     private final Timer checkConnectionTimer;
 
-
+    /**
+     * Creates a new TCP client. The client will try to connect to the server at the given address using the given port.
+     * @param address The address of the server.
+     * @param port The port of the server.
+     * @param view This client's view.
+     * @throws IOException Thrown if an error occurs when establishing the connection to the server.
+     */
     public TCPClient(String address, int port, ViewInterface view) throws IOException {
         socket = new Socket(address, port);
         out = new PrintWriter(socket.getOutputStream());
         in = new Scanner(socket.getInputStream());
-        this.view = view;
         this.lastPinged = new AtomicLong(System.currentTimeMillis());
         this.running = new AtomicBoolean(true);
         this.checkConnectionTimer = new Timer();
-        this.view.setServerInterface(this);
+        this.view = view;
     }
 
     /**
@@ -60,7 +66,6 @@ public class TCPClient implements Runnable, ServerInterface {
      */
     @Override
     public void run() {
-        this.view.start();
         checkConnectionRoutine();
         try {
             while (running.get()) {
@@ -72,15 +77,14 @@ public class TCPClient implements Runnable, ServerInterface {
                 } catch (IOException e) {
 
                     //Error while deserializing message
-                    e.printStackTrace();
                     System.err.println("Server sent a malformed message: " + serializedMessage);
                     continue;
                 } catch (NoSuchElementException | IllegalStateException ignored) {
 
                     //Connection lost with server
 
-                    System.err.println("\nConnection lost.");
                     checkConnectionTimer.cancel();
+                    view.signalConnectionLost();
 
                     running.set(false);
                     continue;
@@ -95,7 +99,7 @@ public class TCPClient implements Runnable, ServerInterface {
                             break;
                         }
 
-                        view.printGames(payload.getGameIds(), payload.getCurrentPlayers(), payload.getMaxPlayers());
+                        view.printGames(payload.getGameIds(), payload.getCurrentPlayers(), payload.getMaxPlayers(), payload.getLobbyStates());
                     }
                     case JOIN_GAME_RESPONSE -> {
                         JoinGameResponse payload;
@@ -105,8 +109,10 @@ public class TCPClient implements Runnable, ServerInterface {
                             break;
                         }
 
-                        view.joinGame(payload.getGameId(), payload.getUsername());
+                        view.joinGame(payload.getGameId(), payload.getUsername(), payload.getNumPlayers());
                     }
+                    case REJOIN_INFORMATION_START -> view.rejoinInformationStart();
+                    case REJOIN_INFORMATION_END -> view.rejoinInformationEnd();
                     case SET_GAME_STATE -> {
                         SetGameState payload;
                         try {
@@ -187,9 +193,7 @@ public class TCPClient implements Runnable, ServerInterface {
 
                         view.promptColorChoice(payload.getColorChoices());
                     }
-                    case CHOOSING_COLORS -> {
-                        view.choosingColors();
-                    }
+                    case CHOOSING_COLORS -> view.choosingColors();
                     case SET_COLOR -> {
                         SetColor payload;
                         try {
@@ -300,9 +304,7 @@ public class TCPClient implements Runnable, ServerInterface {
 
                         view.removeCardFromOtherHand(payload.getUsername(), payload.getCardToRemove());
                     }
-                    case DRAWING_CARDS -> {
-                        view.drawingCards();
-                    }
+                    case DRAWING_CARDS -> view.drawingCards();
                     case TURN -> {
                         Turn payload;
                         try {
@@ -343,9 +345,7 @@ public class TCPClient implements Runnable, ServerInterface {
 
                         view.setObjectivePoints(payload.getWhosePoints(), payload.getObjectivePoints());
                     }
-                    case NOTIFY_DONT_DRAW -> {
-                        view.notifyDontDraw();
-                    }
+                    case NOTIFY_DONT_DRAW -> view.notifyDontDraw();
                     case SET_WINNERS -> {
                         SetWinners payload;
                         try {
@@ -354,7 +354,7 @@ public class TCPClient implements Runnable, ServerInterface {
                             break;
                         }
 
-                        view.setWinners(payload.getWinnerUsernames());
+                        view.setWinners(payload.getWinnerUsernames(), payload.getPersonalObjectives());
                     }
                     case ADD_MESSAGE -> {
                         AddMessage payload;
@@ -407,6 +407,16 @@ public class TCPClient implements Runnable, ServerInterface {
 
                         view.signalGameSuspension(payload.getWhoDisconnected());
                     }
+                    case SIGNAL_GAME_DELETION -> {
+                        SignalGameDeletion payload;
+                        try {
+                            payload = (SignalGameDeletion) message.payload();
+                        } catch (ClassCastException e) {
+                            break;
+                        }
+
+                        view.signalGameDeletion(payload.getWhoDisconnected());
+                    }
                     case PROMPT_ERROR -> {
                         PromptError payload;
                         try {
@@ -415,10 +425,7 @@ public class TCPClient implements Runnable, ServerInterface {
                             break;
                         }
 
-                        view.promptError(payload.getErrorMessage());
-                    }
-                    case REDRAW_VIEW -> {
-                        view.redrawView();
+                        view.promptError(payload.getErrorMessage(), payload.getErrorType());
                     }
                     case PING -> {
                         lastPinged.set(System.currentTimeMillis());
@@ -431,14 +438,12 @@ public class TCPClient implements Runnable, ServerInterface {
             out.close();
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error: " + e.getMessage());
         }
-
-        System.exit(0);
     }
 
     /**
-     * This method checks if the server has pinged in the last 15 seconds.
+     * This method starts a routine that checks if the server has pinged in the last 15 seconds. If it hasn't, the connection is considered lost and the client is stopped.
      */
     private void checkConnectionRoutine() {
         TimerTask task = new TimerTask() {
@@ -446,7 +451,7 @@ public class TCPClient implements Runnable, ServerInterface {
             public void run() {
                 long diff = System.currentTimeMillis() - lastPinged.get();
                 if (diff > 15000) {
-                    System.err.println("\nServer hasn't pinged in a while. Considering connection as lost.");
+                    System.err.println("\nServer hasn't pinged in a while.");
                     System.out.println("Good bye!");
                     checkConnectionTimer.cancel();
                     in.close();
@@ -454,7 +459,7 @@ public class TCPClient implements Runnable, ServerInterface {
                     try {
                         socket.close();
                     } catch (IOException ignored) {}
-                    System.exit(0);
+                    view.signalConnectionLost();
                 }
             }
         };
@@ -464,7 +469,7 @@ public class TCPClient implements Runnable, ServerInterface {
 
     /**
      * This method sends a message to the server.
-     * @param tcpMessage the message to send.
+     * @param tcpMessage the message to be sent.
      */
     private void sendTCPMessage(TCPMessage tcpMessage) {
         try {
@@ -472,7 +477,7 @@ public class TCPClient implements Runnable, ServerInterface {
             out.flush();
         } catch (IOException e) {
             System.out.println("An error occurred while communicating with the server.");
-            System.out.println("No action was not performed.");
+            System.out.println("No action was performed.");
         }
     }
 
@@ -482,105 +487,60 @@ public class TCPClient implements Runnable, ServerInterface {
         sendTCPMessage(message);
     }
 
-    /**
-     * This method creates a message to tell the server to create a game.
-     * @param username The username of the player that created the game.
-     * @param numPlayers The number of players that will play the game.
-     */
     @Override
     public void createGame(String username, int numPlayers) {
         TCPMessage message = new TCPMessage(MessageType.CREATE_GAME, new CreateGame(username, numPlayers));
         sendTCPMessage(message);
     }
 
-    /**
-     * This method creates a message to tell the server to join a game.
-     * @param gameId The id of the game to join.
-     * @param username The username of the player that wants to join the game.
-     */
     @Override
     public void joinGame(String gameId, String username) {
         TCPMessage message = new TCPMessage(MessageType.JOIN_GAME_REQUEST, new JoinGameRequest(gameId, username));
         sendTCPMessage(message);
     }
 
-    /**
-     * This method creates a message to tell the server to start the game
-     * @param side The side of the starter card.
-     */
     @Override
     public void setStarterCard(SideType side) {
         TCPMessage message = new TCPMessage(MessageType.CHOOSE_STARTER_SIDE, new ChooseStarterSide(side));
         sendTCPMessage(message);
     }
 
-    /**
-     * This method creates a message to tell the server which color was chosen.
-     * @param color The color to choose.
-     */
     @Override
     public void setColor(PlayerColor color) {
         TCPMessage message = new TCPMessage(MessageType.CHOOSE_COLOR, new ChooseColor(color));
         sendTCPMessage(message);
     }
 
-    /**
-     * This method creates a message to tell the server which objective card was chosen.
-     * @param objectiveCard The objective card to choose.
-     */
     @Override
     public void setPersonalObjective(ObjectiveCard objectiveCard) {
         TCPMessage message = new TCPMessage(MessageType.CHOOSE_OBJECTIVE, new ChooseObjective(objectiveCard));
         sendTCPMessage(message);
     }
 
-    /**
-     * This method creates a message to tell the server that the client played a card.
-     * @param playedCard The card to play.
-     * @param side The side on which the card will be played.
-     * @param pos The position where the card will be played.
-     */
     @Override
     public void playCard(PlayableCard playedCard, SideType side, Position pos) {
         TCPMessage message = new TCPMessage(MessageType.PLAY_CARD_REQUEST, new PlayCardRequest(playedCard, side, pos));
         sendTCPMessage(message);
     }
 
-    /**
-     * This method creates a message to tell the server that the client wants to draw a card
-     * from either a deck or the common cards.
-     * @param drawType The type of draw to perform (deck or common).
-     */
     @Override
     public void drawCard(DrawType drawType) {
         TCPMessage message = new TCPMessage(MessageType.DRAW_CARD, new DrawCard(drawType));
         sendTCPMessage(message);
     }
 
-    /**
-     * This method creates a message to be sent as a chat message to every other player in the lobby.
-     * @param text The text of the message.
-     */
     @Override
     public void sendChatMessage(String text) {
         TCPMessage message = new TCPMessage(MessageType.SEND_CHAT_MESSAGE, new SendChatMessage(text));
         sendTCPMessage(message);
     }
 
-    /**
-     * This method creates a message to be sent as a chat message to a specific player in the lobby.
-     * @param text The text of the message.
-     * @param receiverUsername The username of the player that will receive the message.
-     */
     @Override
     public void sendChatMessage(String text, String receiverUsername) {
         TCPMessage message = new TCPMessage(MessageType.SEND_PRIVATE_CHAT_MESSAGE, new SendPrivateChatMessage(text, receiverUsername));
         sendTCPMessage(message);
     }
 
-    /**
-     * This method creates a message to tell the server that the client wants to disconnect.
-     */
     @Override
     public void disconnect() {
         TCPMessage message = new TCPMessage(MessageType.DISCONNECT, null);
@@ -590,19 +550,17 @@ public class TCPClient implements Runnable, ServerInterface {
         System.exit(0);
     }
 
-    /**
-     * This method creates a message to tell the server that the client wants to leave the game.
-     */
     @Override
     public void leaveGame() {
+        leaveGame(false);
+    }
+
+    @Override
+    public void leaveGame(boolean ignored) {
         TCPMessage message = new TCPMessage(MessageType.LEAVE_GAME, null);
         sendTCPMessage(message);
     }
 
-    /**
-     * This method creates a message to respond to a ping from the server, to check that the
-     * connection is still alive.
-     */
     @Override
     public void pong() {
         TCPMessage message = new TCPMessage(MessageType.PONG, null);

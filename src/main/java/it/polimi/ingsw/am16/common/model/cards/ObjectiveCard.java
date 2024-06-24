@@ -1,6 +1,8 @@
 package it.polimi.ingsw.am16.common.model.cards;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import it.polimi.ingsw.am16.common.model.players.PlayArea;
 
 import java.io.Serial;

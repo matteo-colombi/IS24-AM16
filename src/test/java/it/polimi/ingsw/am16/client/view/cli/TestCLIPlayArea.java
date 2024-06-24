@@ -3,7 +3,6 @@ package it.polimi.ingsw.am16.client.view.cli;
 import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.util.Position;
-
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;

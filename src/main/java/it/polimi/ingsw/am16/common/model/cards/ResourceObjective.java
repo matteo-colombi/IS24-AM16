@@ -38,11 +38,6 @@ public final class ResourceObjective extends ObjectiveCard {
         this.quantity = quantity;
     }
 
-    /**
-     * Calculates the points given by this card based on the resources visible on the player's board.
-     * @param playArea The player's play area, including the board state.
-     * @return The points given by this card based on the resources visible on the player's board.
-     */
     @Override
     public int evaluatePoints(PlayArea playArea) {
         return getPoints()*(playArea.getResourceCounts().get(type)/quantity);

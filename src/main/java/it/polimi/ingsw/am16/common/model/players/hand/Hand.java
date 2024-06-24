@@ -8,7 +8,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
+import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
+import it.polimi.ingsw.am16.common.model.cards.RestrictedCard;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
@@ -40,11 +42,15 @@ public class Hand implements HandModel{
         this.cards = new ArrayList<>(List.of(cards));
     }
 
-    /**
-     * @return the list of cards in the hand.
-     */
+    @Override
     public List<PlayableCard> getCards() {
         return new ArrayList<>(this.cards);
+    }
+
+    @Override
+    @JsonIgnore
+    public List<RestrictedCard> getRestrictedVersion() {
+        return cards.stream().map(PlayableCard::getRestrictedVersion).collect(Collectors.toList());
     }
 
     /**
@@ -73,22 +79,13 @@ public class Hand implements HandModel{
         this.cards.add(card);
     }
 
-    /**
-     * @return A {@link List} of {@link RestrictedCard}, used to grant views limited access to the hand information.
-     */
-    @Override
-    @JsonIgnore
-    public List<RestrictedCard> getRestrictedVersion() {
-        return cards.stream().map(PlayableCard::getRestrictedVersion).collect(Collectors.toList());
-    }
-
     @Override
     public String toString() {
         return cards.toString();
     }
 
     /**
-     * Curstom deserializer for {@link Hand}. Used to reload entire hands from JSON files.
+     * Custom deserializer for {@link Hand}. Used to reload entire hands from JSON files.
      */
     public static class Deserializer extends StdDeserializer<Hand> {
 

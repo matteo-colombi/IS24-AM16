@@ -24,6 +24,7 @@ import it.polimi.ingsw.am16.common.util.RNG;
 import java.io.IOException;
 import java.io.Serial;
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * Class to handle game(s). A game has a unique alphanumeric id and a non-variable number of players.
@@ -93,7 +94,7 @@ public class Game implements GameModel {
      * @param state                The game's state.
      * @param players              The players for this game.
      * @param availableColors      The currently available colors from which players can choose.
-     * @param turnOrder            DOCME
+     * @param turnOrder            The order in which players play in this game.
      */
     private Game(
             String id,
@@ -131,20 +132,11 @@ public class Game implements GameModel {
         this.turnOrder = turnOrder;
     }
 
-    /**
-     * @return The game's ID.
-     */
     @Override
     public String getId() {
         return id;
     }
 
-    /**
-     * Adds a new player into the game. The number of players cannot exceed numPlayers.
-     *
-     * @param username The player's username.
-     * @throws UnexpectedActionException Thrown if the game is already full, if the game has already started, or if there is already a player with the same username present in the game.
-     */
     @Override
     public void addPlayer(String username) throws UnexpectedActionException {
         if (players.containsKey(username))
@@ -159,12 +151,6 @@ public class Game implements GameModel {
         players.put(username, player);
     }
 
-    /**
-     * Removes a player from the game. This method can only be used in the initial phase of the game.
-     *
-     * @param username The username of the player to be removed. If a player with the given username does not exist, this method does nothing.
-     * @throws UnexpectedActionException Thrown if an attempt was made to remove a player from a game which has already started.
-     */
     @Override
     public void removePlayer(String username) throws UnexpectedActionException {
         if (state != GameState.JOINING) {
@@ -174,29 +160,17 @@ public class Game implements GameModel {
         players.remove(username);
     }
 
-    /**
-     * @return The non-variable number of players expected to play the game.
-     */
     @Override
     public int getNumPlayers() {
         return numPlayers;
     }
 
-    /**
-     * @return The number of players who joined the game and are currently connected.
-     */
     @Override
     @JsonIgnore
     public int getCurrentPlayerCount() {
         return players.values().stream().filter(Player::isConnected).toList().size();
     }
 
-    /**
-     * Sets a player's connection status.
-     *
-     * @param username  The player's username.
-     * @param connected Whether the player is connected.
-     */
     @Override
     public void setConnected(String username, boolean connected) {
         if (!players.containsKey(username)) return;
@@ -207,6 +181,7 @@ public class Game implements GameModel {
     /**
      * @return whether all the players in this game are connected.
      */
+    @Override
     public boolean everybodyConnected() {
         for (Player player : players.values()) {
             if (!player.isConnected())
@@ -215,35 +190,21 @@ public class Game implements GameModel {
         return true;
     }
 
-    /**
-     * @return The id of the player who has to finish their turn.
-     */
     @Override
     public String getActivePlayer() {
         return activePlayer;
     }
 
-    /**
-     * @return The id of the player whose turn is the first.
-     */
     @Override
     public String getStartingPlayer() {
         return startingPlayer;
     }
 
-    /**
-     * @return The id(s) of the player(s) who won.
-     */
     @Override
     public List<String> getWinnerUsernames() {
         return winnerUsernames;
     }
 
-    /**
-     * Initializes the game by drawing the common gold and resource cards, and distributing the starter cards to the players.
-     *
-     * @throws UnexpectedActionException Thrown if the game was already initialized, or if the game hasn't reached the required number of players.
-     */
     @Override
     public void initializeGame() throws UnexpectedActionException {
         if (state != GameState.JOINING && !rejoiningAfterCrash)
@@ -276,13 +237,6 @@ public class Game implements GameModel {
         players.values().forEach(p -> p.giveStarterCard(starterCardsDeck.drawCard()));
     }
 
-    /**
-     * Lets the player choose the side of their starter card. It can be either front or back.
-     *
-     * @param username The player's username.
-     * @param side     The card's side.
-     * @throws UnexpectedActionException Thrown if the game has already started, hence all players should have already chosen their starter card side.
-     */
     @Override
     public void setPlayerStarterSide(String username, SideType side) throws UnexpectedActionException, NoStarterCardException {
         if (state != GameState.INIT)
@@ -291,13 +245,6 @@ public class Game implements GameModel {
         players.get(username).chooseStarterCardSide(side);
     }
 
-    /**
-     * Sets the color of a player.
-     *
-     * @param username The player's username.
-     * @param color    The color a player chose.
-     * @throws UnexpectedActionException Thrown if the game has already started, hence all the players should have already chosen their color, or if the given color has already been chosen by another player.
-     */
     @Override
     public void setPlayerColor(String username, PlayerColor color) throws UnexpectedActionException {
         if (state != GameState.INIT)
@@ -310,17 +257,11 @@ public class Game implements GameModel {
         availableColors.remove(color);
     }
 
-    /**
-     * @return A {@link List} containing all the colors that are still available for a player to choose.
-     */
     @Override
     public List<PlayerColor> getAvailableColors() {
         return availableColors;
     }
 
-    /**
-     * @return Whether all the players have chosen the side of their starter card.
-     */
     @Override
     public boolean allPlayersChoseStarterSide() {
         for (Player player : players.values()) {
@@ -331,9 +272,6 @@ public class Game implements GameModel {
         return true;
     }
 
-    /**
-     * @return Whether all the players have chosen their color.
-     */
     @Override
     public boolean allPlayersChoseColor() {
         for (Player player : players.values()) {
@@ -344,19 +282,12 @@ public class Game implements GameModel {
         return true;
     }
 
-    /**
-     * Draws the common objective cards and distributes the personal objectives to the players.
-     * This method should only be called after everyone has chosen their starter card side and color.
-     */
     @Override
     public void initializeObjectives() {
         drawCommonObjectives();
         distributePersonalObjectives();
     }
 
-    /**
-     * Distributes two resource cards and a gold card so that the game can start.
-     */
     @Override
     public void distributeCards() {
         for (Player player : players.values()) {
@@ -383,14 +314,6 @@ public class Game implements GameModel {
         }
     }
 
-    /**
-     * Sets the chosen objective card for a specific player.
-     *
-     * @param username      The player's username.
-     * @param objectiveCard The chosen objective card.
-     * @throws UnknownObjectiveCardException Thrown when the given objective card is not in the player's objective card options.
-     * @throws UnexpectedActionException     Thrown if the objectives have not yet been distributed, or the game has already started, or the given player has already chosen their objective.
-     */
     @Override
     public void setPlayerObjective(String username, ObjectiveCard objectiveCard) throws UnexpectedActionException, UnknownObjectiveCardException {
         if (state != GameState.INIT)
@@ -400,9 +323,6 @@ public class Game implements GameModel {
         players.get(username).setObjectiveCard(objectiveCard);
     }
 
-    /**
-     * @return Whether all the players have chosen their personal objective.
-     */
     @Override
     public boolean allPlayersChoseObjective() {
         for (Player player : players.values()) {
@@ -414,11 +334,6 @@ public class Game implements GameModel {
         return true;
     }
 
-    /**
-     * Starts the game by choosing the starting player and distributing the resource and gold cards.
-     *
-     * @throws UnexpectedActionException Thrown if the game has already been started, or if not all players have chosen their objective card.
-     */
     @Override
     public void startGame() throws UnexpectedActionException {
         if (state != GameState.INIT)
@@ -443,16 +358,6 @@ public class Game implements GameModel {
         return turnOrder.getFirst();
     }
 
-    /**
-     * Lets a player place a card.
-     *
-     * @param username   The player's username.
-     * @param placedCard The card the player wants to place.
-     * @param side       The chosen card's side.
-     * @param newCardPos The position of the card.
-     * @throws IllegalMoveException      Thrown if the player made an illegal move.
-     * @throws UnexpectedActionException Thrown if this method is called before the game has been started.
-     */
     @Override
     public void placeCard(String username, PlayableCard placedCard, SideType side, Position newCardPos) throws IllegalMoveException, UnexpectedActionException {
         if (state != GameState.STARTED && state != GameState.FINAL_ROUND)
@@ -460,16 +365,6 @@ public class Game implements GameModel {
         players.get(username).playCard(placedCard, side, newCardPos);
     }
 
-    /**
-     * Lets the player draw a card. A card can be drawn from the deck or from the currently visible cards.
-     * If the card is drawn from one of the common cards, it is replaced with a card of the same type if available. If a card of the same type is not available, it is replaced with a card of the other type.
-     *
-     * @param username The player's username.
-     * @param drawType The place a player wants to draw a card from.
-     * @return The drawn card.
-     * @throws UnexpectedActionException Thrown if this method is called before the game has been started.
-     * @throws IllegalMoveException      Thrown if a draw is attempted from an empty deck, or from an empty common card slot.
-     */
     @Override
     public PlayableCard drawCard(String username, DrawType drawType) throws UnexpectedActionException, IllegalMoveException {
         if (state != GameState.STARTED) throw new UnexpectedActionException("Game not started");
@@ -542,11 +437,6 @@ public class Game implements GameModel {
         return drawnCard;
     }
 
-    /**
-     * Advances the turn to the next player.
-     *
-     * @throws UnexpectedActionException Thrown if the game not started yet, or if it has already ended.
-     */
     @Override
     public void advanceTurn() throws UnexpectedActionException {
         if (state != GameState.STARTED && state != GameState.FINAL_ROUND)
@@ -558,9 +448,6 @@ public class Game implements GameModel {
         activePlayer = turnOrder.get(activePlayerIndex);
     }
 
-    /**
-     * @return Whether the game is ready to enter the final round.
-     */
     @Override
     public boolean checkFinalRound() {
         if (resourceCardsDeck.isEmpty() && goldCardsDeck.isEmpty())
@@ -585,11 +472,6 @@ public class Game implements GameModel {
         }
     }
 
-    /**
-     * Triggers the game to enter the final round, if it is ready to do so; otherwise, this method does nothing.
-     *
-     * @throws UnexpectedActionException Thrown if the game has not started yet, or if it has already ended.
-     */
     @Override
     public void triggerFinalRound() throws UnexpectedActionException {
         if (state != GameState.STARTED) throw new UnexpectedActionException("Game has not started or already ended");
@@ -598,11 +480,6 @@ public class Game implements GameModel {
         state = GameState.FINAL_ROUND;
     }
 
-    /**
-     * Ends the current game and evaluates the objective points of the players. Then, it selects a winner.
-     *
-     * @throws UnexpectedActionException Thrown if the game has not yet entered its final round, or if it has already ended.
-     */
     @Override
     public void endGame() throws UnexpectedActionException {
         if (state != GameState.FINAL_ROUND)
@@ -616,96 +493,59 @@ public class Game implements GameModel {
      * Chooses the winner(s) of the game.
      */
     private void selectWinners() {
-        //TODO check that this actually works.
-        // there's probably a better way to do it too
-        int tmpPoints = 0;
-        String tmpUsername = null;
-        int tmpObjPoints = 0;
-        List<String> tmpWinners = new ArrayList<>();
-        for (Player p : players.values()) {
-            if (p.getTotalPoints() > tmpPoints) {
-                tmpPoints = p.getTotalPoints();
-                tmpUsername = p.getUsername();
-            }
-        }
-        tmpWinners.add(tmpUsername);
-        for (Player p : players.values()) {
-            if (p.getTotalPoints() == tmpPoints && !p.getUsername().equals(tmpUsername)) {
-                tmpWinners.add(p.getUsername());
-            }
-        }
-        if (tmpWinners.size() == 1) {
-            winnerUsernames.add(tmpUsername);
-            return;
-        }
-        if (tmpWinners.size() > 1) {
-            for (Player p : players.values()) {
-                if (p.getObjectivePoints() > tmpObjPoints && tmpWinners.contains(p.getUsername())) {
-                    tmpObjPoints = p.getObjectivePoints();
-                    tmpUsername = p.getUsername();
-                }
-            }
-        }
-        winnerUsernames.add(tmpUsername);
-        for (Player p : players.values()) {
-            if (p.getObjectivePoints() == tmpObjPoints && !p.getUsername().equals(tmpUsername) && tmpWinners.contains(p.getUsername())) {
-                winnerUsernames.add(p.getUsername());
-            }
-        }
+        winnerUsernames.clear();
+        winnerUsernames.addAll(
+                players.values().stream()
+                        .sorted(
+                                Comparator.comparingInt(Player::getTotalPoints)
+                                        .thenComparingInt(Player::getObjectivePoints).reversed())
+                        .filter(new Predicate<>() {
+                            private int maxTotal = 0;
+                            private int maxObjective = 0;
+
+                            @Override
+                            public boolean test(Player player) {
+                                maxTotal = Math.max(player.getTotalPoints(), maxTotal);
+                                maxObjective = Math.max(player.getObjectivePoints(), maxObjective);
+                                return player.getTotalPoints() == maxTotal && player.getObjectivePoints() == maxObjective;
+                            }
+                        })
+                        .map(Player::getUsername)
+                        .toList()
+        );
     }
 
-    /**
-     * @return The players inside the game.
-     */
     @Override
     public Map<String, Player> getPlayers() {
         return players;
     }
 
-    /**
-     * @return The common objective cards.
-     */
     @Override
     public ObjectiveCard[] getCommonObjectiveCards() {
         return commonObjectiveCards.clone();
     }
 
-    /**
-     * @return The visible and drawable gold cards.
-     */
     @Override
     public PlayableCard[] getCommonGoldCards() {
         return commonGoldCards.clone();
     }
 
-    /**
-     * @return The visible and drawable resource cards.
-     */
     @Override
     public PlayableCard[] getCommonResourceCards() {
         return commonResourceCards.clone();
     }
 
-    /**
-     * @return the game's state.
-     */
     @Override
     public GameState getState() {
         return state;
     }
 
-    /**
-     * @return whether the players are rejoining after a server crash.
-     */
     @Override
     @JsonIgnore
     public boolean isRejoiningAfterCrash() {
         return rejoiningAfterCrash;
     }
 
-    /**
-     * @return the type of the card on top of the resource deck, or null if the deck is empty. This information should be visible to the players.
-     */
     @Override
     @JsonIgnore
     public ResourceType getResourceDeckTopType() {
@@ -714,9 +554,6 @@ public class Game implements GameModel {
         return card.getType();
     }
 
-    /**
-     * @return the type of the card on top of the gold deck, or null if the deck is empty. This information should be visible to the player.
-     */
     @Override
     @JsonIgnore
     public ResourceType getGoldDeckTopType() {
@@ -725,17 +562,11 @@ public class Game implements GameModel {
         return card.getType();
     }
 
-    /**
-     * @return a list containing the ids of the players in the order in which they play.
-     */
     @Override
     public List<String> getTurnOrder() {
         return turnOrder;
     }
 
-    /**
-     * Pauses the game. Used when a player disconnects from the game.
-     */
     @Override
     public void pause() {
         this.rejoiningAfterCrash = true;
@@ -747,7 +578,6 @@ public class Game implements GameModel {
     /**
      * @return The deck of gold cards. Used for JSON serialization.
      */
-    @SuppressWarnings("unused") //Suppressing because this method is being used by the JSON serializer.
     public GoldCardsDeck getGoldCardsDeck() {
         return goldCardsDeck;
     }
@@ -755,7 +585,6 @@ public class Game implements GameModel {
     /**
      * @return The deck of resource cards. Used for JSON serialization.
      */
-    @SuppressWarnings("unused") //Suppressing because this method is being used by the JSON serializer.
     public ResourceCardsDeck getResourceCardsDeck() {
         return resourceCardsDeck;
     }
@@ -763,7 +592,6 @@ public class Game implements GameModel {
     /**
      * @return The deck of objective cards. Used for JSON serialization
      */
-    @SuppressWarnings("unused") //Suppressing because this method is being used by the JSON serializer.
     public ObjectiveCardsDeck getObjectiveCardsDeck() {
         return objectiveCardsDeck;
     }
@@ -771,7 +599,6 @@ public class Game implements GameModel {
     /**
      * @return The deck of starter cards. Used for JSON serialization.
      */
-    @SuppressWarnings("unused") //Suppressing because this method is being used by the JSON serializer.
     public StarterCardsDeck getStarterCardsDeck() {
         return starterCardsDeck;
     }

@@ -1,0 +1,216 @@
+.button {
+    -fx-background-color: linear-gradient(#e8dfcc, #c4b8a0);
+    -fx-background-radius: 7;
+    -fx-border-color: #663300;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 5, 0.5, 0, 0);
+}
+
+.button.small {
+    -fx-pref-width: 100;
+    -fx-pref-height: 35;
+}
+
+.button.medium {
+    -fx-pref-width: 140;
+    -fx-pref-height: 45;
+}
+
+.button.big {
+    -fx-pref-width: 200;
+    -fx-pref-height: 60;
+}
+
+.button.transparent {
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+    -fx-border-style: hidden;
+}
+
+.button:hover, .button:focused {
+    -fx-background-color: linear-gradient(#d8cdbf, #b8a992);
+}
+
+.button.transparent:hover, .button.transparent:focused {
+    -fx-background-color: #11111122;
+}
+
+.button:pressed {
+    -fx-background-color: linear-gradient(#c4b8a0, #a89778);
+    -fx-effect: none;
+}
+
+.hex-button .polygon {
+    -fx-fill: linear-gradient(#e8dfcc, #c4b8a0);
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 0, 0);
+}
+
+.hex-button .polygon:hover, .hex-button .polygon:focused {
+    -fx-fill: linear-gradient(#d8cdbf, #b8a992);
+}
+
+.hex-button .polygon:pressed {
+    -fx-fill: linear-gradient(#c4b8a0, #a89a80);
+    -fx-effect: none;
+}
+
+.text-field {
+    -fx-background-color: #f9f5e3;
+    -fx-background-radius: 5;
+    -fx-border-color: #663300;
+    -fx-border-radius: 5;
+    -fx-padding: 5;
+    -fx-text-fill: #663300;
+}
+
+.text-field:focused {
+    -fx-border-color: #855a33;
+}
+
+.scroll-pane {
+    -fx-background: #f9f5e3;
+    -fx-border-color: #663300;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.scroll-pane .viewport {
+    -fx-background: #ffffff;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .thumb, .scroll-bar:horizontal .thumb {
+    -fx-background-color: #c4b8a0;
+    -fx-background-radius: 5;
+    -fx-border-color: #663300;
+    -fx-border-width: 1px;
+}
+
+.scroll-bar:vertical .track, .scroll-bar:horizontal .track {
+    -fx-background-color: #e8dfcc;
+    -fx-background-radius: 5;
+}
+
+.background {
+    -fx-background-image: url("../../assets/gui/background.png");
+}
+
+.background-no-image {
+    -fx-background-color: #E8E1B7;
+}
+
+#gamesList {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+    -fx-background-radius: 5px;
+    -fx-border-color: #57402B;
+    -fx-border-radius: 5px;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.card_group {
+    -fx-background-color: #CACCA0;
+    -fx-background-radius: 3;
+    -fx-border-color: #573B21;
+    -fx-border-radius: 3;
+    -fx-border-width: 3;
+}
+
+#playersSelector {
+    -fx-background-color: #f9f5e3;
+    -fx-background-radius: 5;
+    -fx-border-color: #663300;
+    -fx-border-radius: 5;
+    -fx-padding: 30;
+}
+
+.chat VBox .scroll-pane {
+    -fx-border-color: #573B21;
+    -fx-border-radius: 3 3 0 0;
+    -fx-border-width: 3;
+}
+
+.chat VBox .scroll-pane VBox {
+    -fx-background-color: #CACCA0;
+}
+
+.chat VBox .text-section {
+    -fx-background-color: #CACCA0;
+    -fx-border-color: #573B21;
+    -fx-border-radius: 0 0 3 3;
+    -fx-border-width: 0 3 3 3;
+}
+
+.chat .chat-text-field {
+    -fx-background-color: transparent;
+    -fx-border-style: hidden;
+    -fx-font-size: 14px;
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+    -fx-prompt-text-fill: #B38C44;
+}
+
+.chat .chat-text-field:focused {
+    -fx-prompt-text-fill: transparent;
+}
+
+.endgame-cell {
+    -fx-border-color: #573B21;
+    -fx-border-width: 3 0 0 0;
+}
+
+.endgame-text {
+    -fx-font-size: 30;
+    -fx-font-style: italic;
+    -fx-text-origin: center;
+}
+
+.endgame-text.total {
+    -fx-font-weight: bold;
+    -fx-fill: #b38c44;
+}
+
+.endgame-player-info {
+    -fx-border-color: #573B21;
+    -fx-border-radius: 3;
+    -fx-border-width: 3;
+    -fx-background-color: #B38C44;
+    -fx-background-radius: 5;
+}
+
+.halo-green {
+    -fx-effect: innershadow(gaussian, rgba(30, 177, 76, 1), 50, 0.5, 0, 0);
+}
+
+.halo-yellow {
+    -fx-effect: innershadow(gaussian, rgba(255, 242, 0, 1), 50, 0.5, 0, 0);
+}
+.halo-red {
+    -fx-effect: innershadow(gaussian, rgba(237, 28, 36, 1), 50, 0.5, 0, 0);
+}
+
+.halo-blue {
+    -fx-effect: innershadow(gaussian, rgba(0, 162, 232, 1), 50, 0.5, 0, 0);
+}
+
+.halo-unknown {
+    -fx-effect: innershadow(gaussian, rgba(100, 100, 100, 1), 50, 0.5, 0, 0);
+}

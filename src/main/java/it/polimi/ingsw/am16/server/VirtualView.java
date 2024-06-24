@@ -1,10 +1,11 @@
 package it.polimi.ingsw.am16.server;
 
 import it.polimi.ingsw.am16.client.RemoteClientInterface;
-import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
-import it.polimi.ingsw.am16.common.model.players.*;
 import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
+import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.util.ErrorType;
 import it.polimi.ingsw.am16.common.util.Position;
 
 import java.rmi.RemoteException;
@@ -31,14 +32,40 @@ public class VirtualView {
      * @param gameId   The id of the game that the player just joined.
      * @param username The username of the player who joined.
      */
-    public void joinGame(String gameId, String username) {
+    public void joinGame(String gameId, String username, int numPlayers) {
         RemoteClientInterface userView = userViews.get(username);
         try {
-            userView.joinGame(gameId, username);
+            userView.joinGame(gameId, username, numPlayers);
             userView.setPlayers(new ArrayList<>(userViews.keySet()));
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error sending join game confirmation: " + e.getMessage());
         }
+    }
+
+    /**
+     * Communicates to all the clients in this VirtualView that rejoin information about this game is about to be sent.
+     */
+    public void communicateRejoinInformationStart() {
+        userViews.values().forEach(userView -> {
+            try {
+                userView.rejoinInformationStart();
+            } catch (RemoteException e) {
+                System.err.println("Error communicating rejoin information: " + e.getMessage());
+            }
+        });
+    }
+
+    /**
+     * Communicates to all the clients in this VirtualView that rejoin information about the game has all been sent and the game is about to resume.
+     */
+    public void communicateRejoinInformationEnd() {
+        userViews.values().forEach(userView -> {
+            try {
+                userView.rejoinInformationEnd();
+            } catch (RemoteException e) {
+                System.err.println("Error communicating rejoin information: " + e.getMessage());
+            }
+        });
     }
 
     /**
@@ -52,7 +79,7 @@ public class VirtualView {
             try {
                 userViews.get(otherPlayerUsername).addPlayer(username);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error sending new player username: " + e.getMessage());
             }
         });
 
@@ -69,7 +96,7 @@ public class VirtualView {
             try {
                 userView.setGameState(state);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating new game state: " + e.getMessage());
             }
         });
     }
@@ -85,7 +112,7 @@ public class VirtualView {
             try {
                 userView.setCommonCards(commonResourceCards, commonGoldCards);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating common cards:" + e.getMessage());
             }
         });
     }
@@ -101,7 +128,7 @@ public class VirtualView {
             try {
                 userView.setDeckTopType(whichDeck, resourceType);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating deck top type:" + e.getMessage());
             }
         });
     }
@@ -117,7 +144,7 @@ public class VirtualView {
         try {
             userView.promptStarterChoice(card);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error prompting starter card side choice: " + e.getMessage());
         }
     }
 
@@ -129,7 +156,7 @@ public class VirtualView {
             try {
                 userView.choosingColors();
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating choosing color phase start: " + e.getMessage());
             }
         });
     }
@@ -145,7 +172,7 @@ public class VirtualView {
         try {
             userView.promptColorChoice(colorChoices);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error prompting color choice: " + e.getMessage());
         }
     }
 
@@ -160,7 +187,7 @@ public class VirtualView {
             try {
                 userView.setColor(username, color);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating assigned color: " + e.getMessage());
             }
         });
     }
@@ -173,7 +200,7 @@ public class VirtualView {
             try {
                 userView.drawingCards();
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating drawing cards phase starter: " + e.getMessage());
             }
         });
     }
@@ -189,7 +216,7 @@ public class VirtualView {
         try {
             userView.setHand(hand);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating assigned hand: " + e.getMessage());
         }
     }
 
@@ -204,7 +231,7 @@ public class VirtualView {
         try {
             userView.addCardToHand(card);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating drawn card: " + e.getMessage());
         }
     }
 
@@ -219,7 +246,7 @@ public class VirtualView {
         try {
             userView.removeCardFromHand(card);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating card removal from hand: " + e.getMessage());
         }
     }
 
@@ -235,7 +262,7 @@ public class VirtualView {
         try {
             userView.setOtherHand(username, hand);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating other player hand: " + e.getMessage());
         }
     }
 
@@ -251,7 +278,7 @@ public class VirtualView {
         try {
             userView.addCardToOtherHand(username, newCard);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating new restricted card: " + e.getMessage());
         }
     }
 
@@ -267,7 +294,7 @@ public class VirtualView {
         try {
             userView.removeCardFromOtherHand(username, removedCard);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating restricted card removal: " + e.getMessage());
         }
     }
 
@@ -288,7 +315,7 @@ public class VirtualView {
             try {
                 userView.setPlayArea(username, cardPlacementOrder, field, activeSides, legalPositions, illegalPositions, resourceCounts, objectCounts);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating target player's play area: " + e.getMessage());
             }
         });
     }
@@ -310,7 +337,7 @@ public class VirtualView {
             try {
                 userView.playCard(username, card, side, pos, addedLegalPositions, removedLegalPositions, resourceCounts, objectCounts);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating new played card: " + e.getMessage());
             }
         });
     }
@@ -326,7 +353,7 @@ public class VirtualView {
             try {
                 userView.setGamePoints(username, gamePoints);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating game points: " + e.getMessage());
             }
         });
     }
@@ -342,7 +369,7 @@ public class VirtualView {
             try {
                 userView.setObjectivePoints(username, objectivePoints);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating objective points: " + e.getMessage());
             }
         });
     }
@@ -358,7 +385,7 @@ public class VirtualView {
         try {
             userView.promptObjectiveChoice(possiblePersonalObjectives);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating objective choices: " + e.getMessage());
         }
     }
 
@@ -373,7 +400,7 @@ public class VirtualView {
         try {
             userView.setPersonalObjective(personalObjective);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating personal objective: " + e.getMessage());
         }
     }
 
@@ -387,7 +414,7 @@ public class VirtualView {
             try {
                 userView.setCommonObjectives(commonObjectives);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating common objectives: " + e.getMessage());
             }
         });
     }
@@ -402,7 +429,7 @@ public class VirtualView {
             try {
                 userView.setStartOrder(usernames);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating turn order: " + e.getMessage());
             }
         });
     }
@@ -417,7 +444,7 @@ public class VirtualView {
             try {
                 userView.turn(username);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating turn start: " + e.getMessage());
             }
         });
     }
@@ -427,12 +454,12 @@ public class VirtualView {
      *
      * @param winnerUsernames The list of winners for this game.
      */
-    public void communicateWinners(List<String> winnerUsernames) {
+    public void communicateWinners(List<String> winnerUsernames, Map<String, ObjectiveCard> personalObjectives) {
         userViews.values().forEach(userView -> {
             try {
-                userView.setWinners(winnerUsernames);
+                userView.setWinners(winnerUsernames, personalObjectives);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating winners: " + e.getMessage());
             }
         });
     }
@@ -448,23 +475,8 @@ public class VirtualView {
         try {
             userView.addMessages(messages);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating new chat message: " + e.getMessage());
         }
-    }
-
-    /**
-     * Communicates to all the players in this VirtualView that there is a new message in chat.
-     *
-     * @param newMessage The new message.
-     */
-    public void communicateNewMessage(ChatMessage newMessage) {
-        userViews.values().forEach(userView -> {
-            try {
-                userView.addMessage(newMessage);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        });
     }
 
     /**
@@ -479,7 +491,7 @@ public class VirtualView {
         try {
             userView.addMessage(newMessage);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating new chat message: " + e.getMessage());
         }
     }
 
@@ -488,13 +500,14 @@ public class VirtualView {
      *
      * @param receiverUsername The player which this communication should be sent to.
      * @param errorMessage     The error message.
+     * @param errorType        The type of error that occurred.
      */
-    public void promptError(String receiverUsername, String errorMessage) {
+    public void promptError(String receiverUsername, String errorMessage, ErrorType errorType) {
         RemoteClientInterface userView = userViews.get(receiverUsername);
         try {
-            userView.promptError(errorMessage);
+            userView.promptError(errorMessage, errorType);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            System.err.println("Error communicating the erroring of the errored error: " + e.getMessage());
         }
     }
 
@@ -506,35 +519,7 @@ public class VirtualView {
             try {
                 userView.notifyDontDraw();
             } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    /**
-     * Tells the player with the given player username to redraw their view.
-     *
-     * @param receiverUsername The player which this communication should be sent to.
-     */
-    public void redrawView(String receiverUsername) {
-        RemoteClientInterface userView = userViews.get(receiverUsername);
-        if (userView == null) return;
-        try {
-            userView.redrawView();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Tells all the players in this VirtualView that they should redraw their view.
-     */
-    public void redrawView() {
-        userViews.values().forEach(userView -> {
-            try {
-                userView.redrawView();
-            } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating don't draw phase: " + e.getMessage());
             }
         });
     }
@@ -552,7 +537,7 @@ public class VirtualView {
                 try {
                     userView.signalDisconnection(disconnectedUsername);
                 } catch (RemoteException e) {
-                    e.printStackTrace();
+                    System.err.println("Error disconnecting a player: " + e.getMessage());
                 }
             }
         });
@@ -569,7 +554,25 @@ public class VirtualView {
                 try {
                     userView.signalGameSuspension(disconnectedUsername);
                 } catch (RemoteException e) {
-                    e.printStackTrace();
+                    System.err.println("Error suspending the game: " + e.getMessage());
+                }
+            }
+        });
+        userViews.clear();
+    }
+
+    /**
+     * Communicates to all players that a player has disconnected from the game, and the game is being deleted as a result.
+     *
+     * @param disconnectedUsername The username of the player who disconnected.
+     */
+    public void signalGameDeletion(String disconnectedUsername) {
+        userViews.forEach((username, userView) -> {
+            if (!username.equals(disconnectedUsername)) {
+                try {
+                    userView.signalGameDeletion(disconnectedUsername);
+                } catch (RemoteException e) {
+                    System.err.println("Error communicating player disconnection:" + e.getMessage());
                 }
             }
         });
@@ -586,8 +589,23 @@ public class VirtualView {
             try {
                 userView.signalDeadlock(username);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                System.err.println("Error communicating deadlock:" + e.getMessage());
             }
         });
+    }
+
+    /**
+     * Removes every player from this virtual view.
+     */
+    public void disconnectEverybody() {
+        userViews.values().forEach(userView -> {
+            try {
+                userView.disconnectFromGame();
+            } catch (RemoteException e) {
+                System.err.println("Error disconnecting:" + e.getMessage());
+            }
+        });
+
+        userViews.clear();
     }
 }

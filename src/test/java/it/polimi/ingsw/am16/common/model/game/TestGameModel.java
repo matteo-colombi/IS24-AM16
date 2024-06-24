@@ -4,7 +4,10 @@ import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
-import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
+import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
+import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
+import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.model.players.hand.HandModel;
@@ -12,12 +15,21 @@ import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.util.RNG;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestGameModel {
+
+    /*
+     *  This test simulates a complete game, from start to finish, checking that the model returns the correct
+     *  value at different stages of the game.
+     *  This test also checks that the model throws exceptions when it should.
+     *  The RNG seed is set at the beginning to ensure the same game is played every time this test is run.
+     */
 
     private GameModel game;
 
@@ -32,33 +44,45 @@ public class TestGameModel {
         assertThrows(UnexpectedActionException.class, game::initializeGame);
 
         game.addPlayer("teo");
+        game.removePlayer("teo");
+        game.addPlayer("teo");
 
         assertThrows(UnexpectedActionException.class, () -> game.addPlayer("teo"));
+        assertThrows(UnexpectedActionException.class, () -> game.addPlayer("l2c"));
         assertThrows(UnexpectedActionException.class, game::startGame);
+
+        assertFalse(game.isRejoiningAfterCrash());
 
         game.setConnected("xLorde", true);
         game.setConnected("teo", true);
 
+        assertTrue(game.everybodyConnected());
+
         game.initializeGame();
+
+        assertThrows(UnexpectedActionException.class, () -> game.addPlayer("l2c"));
+        assertThrows(UnexpectedActionException.class, () -> game.initializeGame());
 
         Map<String, Player> players = game.getPlayers();
         Player xLorde = players.get("xLorde");
         Player teo = players.get("teo");
+        Set<Player> playerSet = new HashSet<>(players.values());
+        assertTrue(playerSet.contains(xLorde));
+        assertTrue(playerSet.contains(teo));
         HandModel xLordeHand = xLorde.getHand();
         HandModel teoHand = teo.getHand();
 
-        System.out.println("\nPlayer starter cards:");
-        System.out.println("xLorde:");
-        System.out.println(xLorde.getStarterCard());
-        System.out.println("teo:");
-        System.out.println(teo.getStarterCard());
-
         game.setPlayerStarterSide("xLorde", SideType.BACK);
+
+        assertFalse(game.allPlayersChoseStarterSide());
+
         game.setPlayerStarterSide("teo", SideType.BACK);
 
         assertTrue(game.allPlayersChoseStarterSide());
 
         game.setPlayerColor("xLorde", PlayerColor.BLUE);
+
+        assertFalse(game.allPlayersChoseColor());
 
         assertThrows(UnexpectedActionException.class, () -> game.setPlayerColor("teo", PlayerColor.BLUE));
 
@@ -68,12 +92,17 @@ public class TestGameModel {
 
         game.initializeObjectives();
 
-        System.out.println("\nPlayer objective options:");
-        players.values().forEach(p -> System.out.println(p.getPersonalObjectiveOptions()));
-
-        printCommonObjectives();
-
         game.setPlayerObjective("teo", teo.getPersonalObjectiveOptions().get(0));
+
+        assertFalse(game.allPlayersChoseObjective());
+
+        assertThrows(UnexpectedActionException.class, () -> game.startGame());
+        assertThrows(UnexpectedActionException.class, () -> game.placeCard("teo", CardRegistry.getRegistry().getResourceCardFromName("resource_fungi_3"), SideType.FRONT, new Position(1,1)));
+        assertThrows(UnexpectedActionException.class, () -> game.drawCard("xLorde", DrawType.RESOURCE_2));
+        assertThrows(UnexpectedActionException.class, () -> game.advanceTurn());
+        assertThrows(UnexpectedActionException.class, () -> game.triggerFinalRound());
+        assertThrows(UnexpectedActionException.class, () -> game.endGame());
+
         game.setPlayerObjective("xLorde", xLorde.getPersonalObjectiveOptions().get(0));
 
         assertTrue(game.allPlayersChoseObjective());
@@ -89,16 +118,11 @@ public class TestGameModel {
         game.startGame();
         game.distributeCards();
 
-        printCommonResourceCards();
-        printCommonGoldCards();
+        assertThrows(UnexpectedActionException.class, () -> game.setPlayerStarterSide("xLorde", SideType.FRONT));
+        assertThrows(UnexpectedActionException.class, () -> game.setPlayerColor("xLorde", PlayerColor.GREEN));
+        assertThrows(UnexpectedActionException.class, () -> game.setPlayerObjective("username", xLorde.getPersonalObjective()));
 
         assertEquals(game.getStartingPlayer(), game.getActivePlayer());
-
-        System.out.println(game.getTurnOrder());
-
-        printHand(xLorde);
-
-        printHand(teo);
 
         assertThrows(IllegalMoveException.class, () -> game.placeCard("teo", teoHand.getCards().get(2), SideType.FRONT, new Position(1, 1)));
         assertThrows(IllegalMoveException.class, () -> game.placeCard("teo", teoHand.getCards().get(1), SideType.FRONT, new Position(0, 1)));
@@ -106,8 +130,6 @@ public class TestGameModel {
         game.placeCard("xLorde", xLordeHand.getCards().get(0), SideType.FRONT, new Position(-1, 1));
 
         game.drawCard("xLorde", DrawType.RESOURCE_DECK);
-
-        printHand(xLorde);
 
         game.advanceTurn();
         assertEquals("teo", game.getActivePlayer());
@@ -117,120 +139,94 @@ public class TestGameModel {
 
         assertEquals(1, teo.getGamePoints());
         game.advanceTurn();
+
+        game.pause();
+        assertTrue(game.isRejoiningAfterCrash());
+        game.setConnected("xLorde", true);
+        game.setConnected("teo", true);
+        game.initializeGame();
+        assertFalse(game.isRejoiningAfterCrash());
+
         assertEquals("xLorde", game.getActivePlayer());
 
         game.placeCard("xLorde", xLordeHand.getCards().get(0), SideType.FRONT, new Position(0, 2));
 
         game.drawCard("xLorde", DrawType.GOLD_DECK);
 
-        printHand(xLorde);
-
         game.advanceTurn();
 
         game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(1, 1));
         game.drawCard("teo", DrawType.RESOURCE_2);
-
-        printHand(teo);
 
         game.advanceTurn();
 
         game.placeCard("xLorde", xLordeHand.getCards().get(1), SideType.FRONT, new Position(1, 1));
         game.drawCard("xLorde", DrawType.RESOURCE_2);
 
-        printHand(xLorde);
-
         game.advanceTurn();
 
         game.placeCard("teo", teoHand.getCards().get(2), SideType.FRONT, new Position(0, 2));
         game.drawCard("teo", DrawType.RESOURCE_DECK);
-
-        printHand(teo);
 
         game.advanceTurn();
 
         game.placeCard("xLorde", xLordeHand.getCards().get(1), SideType.BACK, new Position(1, -1));
         game.drawCard("xLorde", DrawType.RESOURCE_DECK);
 
-        printHand(xLorde);
-
         game.advanceTurn();
 
         game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(1, 3));
         game.drawCard("teo", DrawType.GOLD_DECK);
-
-        printHand(teo);
 
         game.advanceTurn();
 
         game.placeCard("xLorde", xLordeHand.getCards().get(1), SideType.FRONT, new Position(2, 2));
         game.drawCard("xLorde", DrawType.RESOURCE_DECK);
 
-        printHand(xLorde);
-
         game.advanceTurn();
 
         game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(0, 4));
         game.drawCard("teo", DrawType.GOLD_2);
-
-        printHand(teo);
-
-        printCommonGoldCards();
 
         game.advanceTurn();
 
         game.placeCard("xLorde", xLordeHand.getCards().get(2), SideType.FRONT, new Position(2, -2));
         game.drawCard("xLorde", DrawType.RESOURCE_2);
 
-        printCommonResourceCards();
-
         game.advanceTurn();
 
         game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(-2, 0));
         game.drawCard("teo", DrawType.RESOURCE_1);
-
-        printCommonResourceCards();
 
         game.advanceTurn();
 
         game.placeCard("xLorde", xLordeHand.getCards().get(2), SideType.FRONT, new Position(1, -3));
         game.drawCard("xLorde", DrawType.GOLD_1);
 
-        printCommonGoldCards();
-
         game.advanceTurn();
 
         game.placeCard("teo", teoHand.getCards().get(2), SideType.FRONT, new Position(-3, -1));
         game.drawCard("teo", DrawType.RESOURCE_DECK);
-
-        printHand(teo);
 
         game.advanceTurn();
 
         game.placeCard("xLorde", xLordeHand.getCards().get(1), SideType.FRONT, new Position(3, -1));
         game.drawCard("xLorde", DrawType.GOLD_DECK);
 
-        printHand(xLorde);
-
         game.advanceTurn();
 
         game.placeCard("teo", teoHand.getCards().get(2), SideType.FRONT, new Position(-1, 5));
         game.drawCard("teo", DrawType.GOLD_DECK);
-
-        printHand(teo);
 
         game.advanceTurn();
 
         game.placeCard("xLorde", xLordeHand.getCards().get(2), SideType.FRONT, new Position(2, -4));
         game.drawCard("xLorde", DrawType.GOLD_DECK);
 
-        printHand(xLorde);
-
         game.advanceTurn();
 
         game.placeCard("teo", teoHand.getCards().get(2), SideType.FRONT, new Position(-2, 2));
         game.drawCard("teo", DrawType.RESOURCE_DECK);
-
-        printHand(teo);
 
         assertEquals(1, xLorde.getGamePoints());
         assertEquals(9, teo.getGamePoints());
@@ -240,21 +236,15 @@ public class TestGameModel {
         game.placeCard("xLorde", xLordeHand.getCards().get(0), SideType.FRONT, new Position(3, 1));
         game.drawCard("xLorde", DrawType.GOLD_DECK);
 
-        printHand(xLorde);
-
         game.advanceTurn();
 
         game.placeCard("teo", teoHand.getCards().get(1), SideType.FRONT, new Position(-2, 4));
         game.drawCard("teo", DrawType.GOLD_DECK);
 
-        printHand(teo);
-
         game.advanceTurn();
 
         game.placeCard("xLorde", xLordeHand.getCards().get(0), SideType.FRONT, new Position(2, 0));
         game.drawCard("xLorde", DrawType.GOLD_DECK);
-
-        printHand(xLorde);
 
         assertEquals(10, xLorde.getGamePoints());
 
@@ -263,16 +253,12 @@ public class TestGameModel {
         game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(-1, 3));
         game.drawCard("teo", DrawType.RESOURCE_DECK);
 
-        printHand(teo);
-
         assertEquals(19, teo.getGamePoints());
 
         game.advanceTurn();
 
         game.placeCard("xLorde", xLordeHand.getCards().get(2), SideType.FRONT, new Position(-1, -1));
         game.drawCard("xLorde", DrawType.GOLD_1);
-
-        printCommonGoldCards();
 
         assertEquals(13, xLorde.getGamePoints());
 
@@ -281,14 +267,10 @@ public class TestGameModel {
         game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(-3, 3));
         game.drawCard("teo", DrawType.GOLD_DECK);
 
-        printHand(teo);
-
         game.advanceTurn();
 
         game.placeCard("xLorde", xLordeHand.getCards().get(1), SideType.FRONT, new Position(4, 2));
         game.drawCard("xLorde", DrawType.GOLD_DECK);
-
-        printHand(xLorde);
 
         game.triggerFinalRound();
 
@@ -299,14 +281,11 @@ public class TestGameModel {
         game.placeCard("teo", teoHand.getCards().get(0), SideType.FRONT, new Position(1, 5));
         game.drawCard("teo", DrawType.GOLD_DECK);
 
-        printHand(teo);
-
         assertEquals(24, teo.getGamePoints());
 
         game.triggerFinalRound();
 
         assertEquals(GameState.FINAL_ROUND, game.getState());
-
 
         game.advanceTurn();
 
@@ -322,6 +301,8 @@ public class TestGameModel {
 
         game.endGame();
 
+        // Checking that everyone has the correct amount of points.
+
         assertEquals(21, xLorde.getGamePoints());
         assertEquals(7, xLorde.getObjectivePoints());
         assertEquals(28, xLorde.getTotalPoints());
@@ -331,6 +312,10 @@ public class TestGameModel {
 
         assertEquals(List.of("teo"), game.getWinnerUsernames());
     }
+
+    /*
+     * Utility methods used while creating the test.
+     */
 
     private void printDeckTopTypes() {
         System.out.println("Deck top types: ");

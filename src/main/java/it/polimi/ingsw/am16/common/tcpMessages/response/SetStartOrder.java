@@ -18,15 +18,24 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Message sent by the server to communicate in which order the players will play.
+ */
 @JsonDeserialize(using = SetStartOrder.Deserializer.class)
 public class SetStartOrder extends Payload {
     private final List<String> usernames;
 
+    /**
+     * @param usernames The list of player usernames, ordered in the order in which they will play during the game.
+     */
     @JsonCreator
     public SetStartOrder(@JsonProperty("usernames") List<String> usernames) {
         this.usernames = usernames;
     }
 
+    /**
+     * @return The list of player usernames, ordered in the order in which they will play during the game.
+     */
     public List<String> getUsernames() {
         return usernames;
     }

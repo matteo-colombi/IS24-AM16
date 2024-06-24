@@ -19,21 +19,35 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Message sent by the server to inform the client about the cards in another player's hand.
+ */
 @JsonDeserialize(using = SetOtherHand.Deserializer.class)
 public class SetOtherHand extends Payload {
     private final String username;
     private final List<RestrictedCard> hand;
 
+    /**
+     *
+     * @param username The username of the player whose hand is being communicated.
+     * @param hand A restricted view of the other player's hand.
+     */
     @JsonCreator
     public SetOtherHand(@JsonProperty("username") String username, @JsonProperty("hand") List<RestrictedCard> hand) {
         this.username = username;
         this.hand = hand;
     }
 
+    /**
+     * @return The username of the player whose hand is being communicated.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * @return A restricted view of the other player's hand.
+     */
     public List<RestrictedCard> getHand() {
         return hand;
     }

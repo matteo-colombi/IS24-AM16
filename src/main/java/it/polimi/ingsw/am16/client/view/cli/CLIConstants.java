@@ -1,5 +1,8 @@
 package it.polimi.ingsw.am16.client.view.cli;
 
+/**
+ * Class that contains numeric constants that are used by the CLI to print cards and other in-game assets.
+ */
 public class CLIConstants {
     public static final int CARD_WIDTH = 21;
     public static final int CARD_HEIGHT = 7;

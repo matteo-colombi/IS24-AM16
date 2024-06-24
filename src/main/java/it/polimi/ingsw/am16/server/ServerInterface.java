@@ -16,9 +16,9 @@ import java.rmi.RemoteException;
 public interface ServerInterface extends Remote {
 
     /**
-     * DOCME
+     * Asks the server to send the list of active games, together with some basic information about them.
      *
-     * @throws RemoteException
+     * @throws RemoteException If an error occurs while asking for the games.
      */
     void getGames() throws RemoteException;
 
@@ -97,14 +97,21 @@ public interface ServerInterface extends Remote {
     void disconnect() throws RemoteException;
 
     /**
-     * Lets the player leave the game, disconnecting them.
+     * Utility method that calls {@link ServerInterface#leaveGame(boolean)} with a default <code>forced=false</code>.
      * @throws RemoteException If an error occurs while leaving the game.
      */
     void leaveGame() throws RemoteException;
 
     /**
-     * Pings the server to check if it's still alive.
+     * Lets the player leave the game, disconnecting them.
+     * @param forced <code>false</code> if the client decided spontaneously to leave; <code>true</code> if the client is leaving because the server told it to do so.
      * @throws RemoteException If an error occurs while leaving the game.
+     */
+    void leaveGame(boolean forced) throws RemoteException;
+
+    /**
+     * Pongs the server to confirm that the client is still active.
+     * @throws RemoteException If an error occurs while sending the pong response to the server.
      */
     void pong() throws RemoteException;
 }

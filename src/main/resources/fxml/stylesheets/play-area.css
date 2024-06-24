@@ -1,0 +1,22 @@
+.scroll-pane {
+    -fx-border-color: #573B21;
+    -fx-border-radius: 3;
+    -fx-border-width: 3;
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.grid-filler {
+    -fx-background-color: transparent;
+}
+
+.grid-filler.legal {
+    -fx-background-color: rgba(0, 255, 0, 0.3);
+}
+
+.grid-filler.illegal {
+    -fx-background-color: rgba(255, 0, 0, 0.3);
+}

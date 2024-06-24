@@ -13,8 +13,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class to manage multiple games.
@@ -42,7 +47,7 @@ public class LobbyManager {
      * @return The created lobby's id.
      */
     public String createGame(int numPlayers) {
-        if ((numPlayers != 1) && numPlayers < 2 || numPlayers > 4) { //FIXME 1 is only allowed for testing
+        if (numPlayers < 2 || numPlayers > 4) {
             throw new IllegalArgumentException("Number of players must be between 2 and 4");
         }
 

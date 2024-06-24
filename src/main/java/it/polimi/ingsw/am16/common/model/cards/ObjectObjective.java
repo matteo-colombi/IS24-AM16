@@ -42,11 +42,6 @@ public final class ObjectObjective extends ObjectiveCard {
         this.objectsRequired = Collections.unmodifiableMap(objectsRequired);
     }
 
-    /**
-     * Calculates the points given by this card based on the objects visible on the player's board.
-     * @param playArea The player's play area, including the board state.
-     * @return The points given by this card based on the objects visible on the player's board
-     */
     @Override
     public int evaluatePoints(PlayArea playArea) {
         int multiplier = Integer.MAX_VALUE;

@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
-import it.polimi.ingsw.am16.common.model.cards.RestrictedCard;
 import it.polimi.ingsw.am16.common.tcpMessages.Payload;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
@@ -20,15 +19,24 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Message sent by the server to inform the client about the cards in the player's hand.
+ */
 @JsonDeserialize(using = SetHand.Deserializer.class)
 public class SetHand extends Payload {
     private final List<PlayableCard> hand;
 
+    /**
+     * @param hand The cards in the player's hand.
+     */
     @JsonCreator
     public SetHand(@JsonProperty("hand") List<PlayableCard> hand) {
         this.hand = hand;
     }
 
+    /**
+     * @return The cards in the player's hand.
+     */
     public List<PlayableCard> getHand() {
         return hand;
     }

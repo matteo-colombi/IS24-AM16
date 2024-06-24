@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.polimi.ingsw.am16.common.model.cards.Card;
 import it.polimi.ingsw.am16.common.util.RNG;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Class used to model Decks of the given card type.
@@ -52,14 +55,6 @@ public abstract class Deck<T extends Card> {
     }
 
     /**
-     * Adds the given card to the bottom of the deck.
-     * @param card The card to be added to the deck.
-     */
-    public void addCard(T card) {
-        cards.add(card);
-    }
-
-    /**
      * Adds the given cards to the bottom of the deck, in the order they are given
      * @param newCards The cards to be added.
      */
@@ -72,14 +67,6 @@ public abstract class Deck<T extends Card> {
      */
     public void shuffle() {
         Collections.shuffle(cards, RNG.getRNG());
-    }
-
-    /**
-     * @return The number of cards present in the deck.
-     */
-    @JsonIgnore
-    public int getDeckSize() {
-        return cards.size();
     }
 
     /**
@@ -120,10 +107,5 @@ public abstract class Deck<T extends Card> {
         Deck<?> deck = (Deck<?>) o;
 
         return cards.equals(deck.cards);
-    }
-
-    @Override
-    public int hashCode() {
-        return cards.hashCode();
     }
 }

@@ -1,6 +1,7 @@
 module it.polimi.ingsw.am16 {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.media;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.databind;
@@ -8,6 +9,7 @@ module it.polimi.ingsw.am16 {
     requires org.controlsfx.controls;
     requires java.rmi;
     requires java.desktop;
+    requires jdk.dynalink;
 
     opens it.polimi.ingsw.am16 to javafx.fxml;
     opens it.polimi.ingsw.am16.common.model.cards to com.fasterxml.jackson.databind;
@@ -38,4 +40,9 @@ module it.polimi.ingsw.am16 {
     exports it.polimi.ingsw.am16.common.util to java.rmi;
     exports it.polimi.ingsw.am16.common.exceptions to java.rmi;
     exports it.polimi.ingsw.am16.common.model.chat to java.rmi;
+
+    opens it.polimi.ingsw.am16.client.view.gui;
+    opens it.polimi.ingsw.am16.client.view.gui.util;
+    opens it.polimi.ingsw.am16.client.view.gui.controllers.elements;
+    opens it.polimi.ingsw.am16.client.view.gui.controllers.screens;
 }

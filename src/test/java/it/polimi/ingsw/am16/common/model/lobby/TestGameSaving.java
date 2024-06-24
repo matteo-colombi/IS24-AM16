@@ -6,12 +6,9 @@ import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.model.game.Game;
-import it.polimi.ingsw.am16.common.model.game.GameModel;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
-import it.polimi.ingsw.am16.common.util.FilePaths;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.RNG;
-import it.polimi.ingsw.am16.server.controller.GameController;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -21,6 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestGameSaving {
+
+    /*
+     * This test checks that complete games are serialized and deserialized correctly.
+     */
 
     @Test
     public void testLobby() throws UnexpectedActionException, NoStarterCardException, UnknownObjectiveCardException, IOException, InterruptedException {
@@ -41,11 +42,13 @@ public class TestGameSaving {
         game.initializeObjectives();
         game.setPlayerObjective("leonardo", game.getPlayers().get("leonardo").getPersonalObjectiveOptions().getFirst());
 
-        String path = "src/test/resources/json/testSaves/ABCD.json";
+        String directoryPath = "src/test/resources/json/testSaves";
+        String filePath = directoryPath + "/ABCD.json";
+        File directory = new File(directoryPath);
+        directory.mkdirs();
+        JsonMapper.getObjectMapper().writeValue(new File(filePath), game);
 
-        JsonMapper.getObjectMapper().writeValue(new File(path), game);
-
-        Game reloadedGame = JsonMapper.getObjectMapper().readValue(new File(path), Game.class);
+        Game reloadedGame = JsonMapper.getObjectMapper().readValue(new File(filePath), Game.class);
 
         assertEquals(game.getId(), reloadedGame.getId());
         assertEquals(game.getNumPlayers(), reloadedGame.getNumPlayers());

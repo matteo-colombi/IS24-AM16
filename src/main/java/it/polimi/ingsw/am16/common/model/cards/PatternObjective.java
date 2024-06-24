@@ -43,11 +43,6 @@ public final class PatternObjective extends ObjectiveCard {
         this.pattern = pattern;
     }
 
-    /**
-     * Calculates the points given by this card based on the player's board state.
-     * @param playArea The player's play area, including the board state.
-     * @return The number of points given by this card based on the patterns present on the board.
-     */
     @Override
     public int evaluatePoints(PlayArea playArea) {
         Set<Position> usedPositions = new HashSet<>();

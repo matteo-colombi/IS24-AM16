@@ -4,7 +4,10 @@ import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
-import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
+import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
+import it.polimi.ingsw.am16.common.model.cards.ResourceType;
+import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.Position;
@@ -62,7 +65,7 @@ public interface GameModel {
 
     /**
      *
-     * @return The username of the player who has to finish their turn.
+     * @return The username of the player who is currently playing.
      */
     String getActivePlayer();
 

@@ -3,9 +3,10 @@ package it.polimi.ingsw.am16.client.view;
 import it.polimi.ingsw.am16.common.model.cards.*;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.model.game.GameState;
+import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
+import it.polimi.ingsw.am16.common.util.ErrorType;
 import it.polimi.ingsw.am16.common.util.Position;
-import it.polimi.ingsw.am16.server.ServerInterface;
 
 import java.util.List;
 import java.util.Map;
@@ -18,15 +19,10 @@ public interface ViewInterface {
 
     /**
      * Starts the view. This includes the view's user input manager.
-     */
-    void start();
-
-    /**
-     * Set's the view's {@link ServerInterface}. This interface will be used by the view to send communications to the server.
      *
-     * @param serverInterface The interface which this view should use to communicate with the server.
+     * @param args The command line arguments to start the view with.
      */
-    void setServerInterface(ServerInterface serverInterface);
+    void startView(String[] args);
 
     /**
      * Show the existing game IDs to the player.
@@ -34,16 +30,28 @@ public interface ViewInterface {
      * @param gameIds        The existing games' IDs.
      * @param currentPlayers The number of current players
      * @param maxPlayers     The maximum number of players
+     * @param lobbyStates    The {@link LobbyState} of each game.
      */
-    void printGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers);
+    void printGames(Set<String> gameIds, Map<String, Integer> currentPlayers, Map<String, Integer> maxPlayers, Map<String, LobbyState> lobbyStates);
 
     /**
      * Tells the view that the player has joined a game with the given username.
      *
      * @param gameId   The id of the game which the player just joined.
      * @param username The username the player has joined the game with.
+     * @param numPlayers The number of players expected to join the game.
      */
-    void joinGame(String gameId, String username);
+    void joinGame(String gameId, String username, int numPlayers);
+
+    /**
+     * Tells the view that information about a game which is being resumed is about to be sent.
+     */
+    void rejoinInformationStart();
+
+    /**
+     * Tells the view that information about the has all been sent and the game is about to resume.
+     */
+    void rejoinInformationEnd();
 
     /**
      * Adds a player to the game. Used to communicate the connection of a new player.
@@ -242,8 +250,9 @@ public interface ViewInterface {
      * Tells the client the winners of the game.
      *
      * @param winnerUsernames The winners of the game.
+     * @param personalObjectives The personal objective of every player.
      */
-    void setWinners(List<String> winnerUsernames);
+    void setWinners(List<String> winnerUsernames, Map<String, ObjectiveCard> personalObjectives);
 
     /**
      * Adds all the messages given to the player's chat.
@@ -263,13 +272,9 @@ public interface ViewInterface {
      * Tells the client that an error has occurred.
      *
      * @param errorMessage The message that should be displayed to the user.
+     * @param errorType The type of error that occurred.
      */
-    void promptError(String errorMessage);
-
-    /**
-     * Forces the client to redraw the view.
-     */
-    void redrawView();
+    void promptError(String errorMessage, ErrorType errorType);
 
     /**
      * Notifies the client that from now on they shouldn't draw cards anymore.
@@ -277,17 +282,23 @@ public interface ViewInterface {
     void notifyDontDraw();
 
     /**
-     * Tells the client that another client has disconnected. This ends the game, if it had started. If the game hadn't started already, the player is simply removed.
+     * Tells the client that another client has disconnected from the lobby.
      *
      * @param whoDisconnected The username of the player who disconnected.
      */
     void signalDisconnection(String whoDisconnected);
 
     /**
-     * DOCME
-     * @param whoDisconnected
+     * Tells the client that another client has disconnected, and the game is being suspended as a result to be rejoined later.
+     * @param whoDisconnected The username of the player who disconnected.
      */
     void signalGameSuspension(String whoDisconnected);
+
+    /**
+     * Tells the client that another client has disconnected, and the game is being deleted as a result.
+     * @param whoDisconnected The username of the player who disconnected.
+     */
+    void signalGameDeletion(String whoDisconnected);
 
     /**
      * Tells the client that a player has skipped their turn because of a deadlock.
@@ -295,4 +306,10 @@ public interface ViewInterface {
      * @param username The username of the player who skipped their turn.
      */
     void signalDeadlock(String username);
+
+    /**
+     * Tells the client that connection to the server was lost.
+     */
+    void signalConnectionLost();
+
 }

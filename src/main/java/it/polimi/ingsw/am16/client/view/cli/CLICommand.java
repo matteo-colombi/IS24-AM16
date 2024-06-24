@@ -3,7 +3,7 @@ package it.polimi.ingsw.am16.client.view.cli;
 import java.util.Set;
 
 /**
- * DOCME
+ * Enum that contains the types of commands available to players in the Command Line Interface.
  */
 public enum CLICommand {
     HELP(false,
@@ -111,10 +111,25 @@ public enum CLICommand {
     private final boolean isGameCommand;
     private final Set<String> aliases;
 
+    /**
+     * Creates a new command for players to use in the Command Line Interface. This constructor defaults to the command having no aliases.
+     * @param isGameCommand Whether the command is game-specific or relative so some other functionality (e.g. the chat).
+     * @param command The command string.
+     * @param arguments The arguments for the command. This is only used to print the usage of this command.
+     * @param description A description of what the command does.
+     */
     CLICommand(boolean isGameCommand, String command, String arguments, String description) {
         this(isGameCommand, command, arguments, description, Set.of());
     }
 
+    /**
+     * Creates a new command for players to use in the Command Line Interface.
+     * @param isGameCommand Whether the command is game-specific or relative to some other functionality (e.g. the chat).
+     * @param command The command string.
+     * @param arguments The arguments for the command. This is only used to print the usage of this command.
+     * @param description A description of what the command does.
+     * @param aliases A set of aliases for this command. An alias is an alternative way of spelling the command (e.g. color and colour are both valid).
+     */
     CLICommand(boolean isGameCommand, String command, String arguments, String description, Set<String> aliases) {
         this.isGameCommand = isGameCommand;
         this.command = command;
@@ -123,22 +138,41 @@ public enum CLICommand {
         this.aliases = aliases;
     }
 
+    /**
+     * @return Whether this command is game-specific or relative to some other functionality.
+     */
     public boolean isGameCommand() {
         return isGameCommand;
     }
 
+    /**
+     * Checks whether an input matches this command or one of its aliases.
+     * @param input The user's input.
+     * @return <code>true</code> if the input matches this command or any of its aliases, <code>false</code> otherwise. Note that a command matches even if it's partially spelled (e.g. "a" matches "games"). It is up to the caller to check that this is the command the user actually meant to execute.
+     */
     public boolean matches(String input) {
         return command.contains(input) || aliases.stream().anyMatch(c -> c.contains(input));
     }
 
+    /**
+     * Checks whether an input matches exactly this command (does not count aliases).
+     * @param input The user's input.
+     * @return <code>true</code> if the input exactly matches this command, <code>false</code> otherwise.
+     */
     public boolean exactMatch(String input) {
         return command.equals(input);
     }
 
+    /**
+     * @return A user-friendly string to represent this command's usage.
+     */
     public String getUsage() {
         return String.format("%s %s", command, arguments);
     }
 
+    /**
+     * @return A user-friendly string to represent this command's usage and its description.
+     */
     @Override
     public String toString() {
         return String.format("%s%s%s - %s", command, arguments.isEmpty() ? "" : " ", arguments, description);

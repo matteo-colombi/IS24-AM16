@@ -12,12 +12,15 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
-import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
+import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
+import it.polimi.ingsw.am16.common.model.cards.SideType;
+import it.polimi.ingsw.am16.common.model.cards.StarterCard;
 import it.polimi.ingsw.am16.common.model.chat.Chat;
+import it.polimi.ingsw.am16.common.model.game.Game;
 import it.polimi.ingsw.am16.common.model.players.hand.Hand;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
-import it.polimi.ingsw.am16.common.model.game.Game;
 
 import java.io.IOException;
 import java.io.Serial;
@@ -115,119 +118,67 @@ public class Player implements PlayerModel {
         this.isConnected = false;
     }
 
-    /**
-     * @return The player's username.
-     */
     @Override
     public String getUsername() {
         return username;
     }
 
-    /**
-     *
-     * @return The player's in-game color
-     */
     @Override
     public PlayerColor getPlayerColor() {
         return color;
     }
 
-    /**
-     *
-     * @return The player's points gathered by placing cards on the board
-     */
     @Override
     public int getGamePoints() {
         return currGamePoints;
     }
 
-    /**
-     *
-     * @return The player's points gathered by fulfilling conditions on their personal
-     * objective and the common objectives of the game
-     */
     @Override
     public int getObjectivePoints() {
         return currObjectivePoints;
     }
 
-    /**
-     *
-     * @return The total points the player got at the end of the game, after evaluating
-     * their completion of the objectives
-     */
     @Override
     @JsonIgnore
     public int getTotalPoints() {
         return currGamePoints + currObjectivePoints;
     }
 
-    /**
-     *
-     * @return The player's personal objective card
-     */
     @Override
     public ObjectiveCard getPersonalObjective() {
         return personalObjective;
     }
 
-    /**
-     * @return The player's starter card, regardless of whether they have already chosen the side to use.
-     */
     @Override
     public StarterCard getStarterCard() {
         return starterCard;
     }
 
-    /**
-     *
-     * @return The player's hand, giving access only to its non-modifier methods
-     */
     @Override
     public Hand getHand() {
         return hand;
     }
 
-    /**
-     *
-     * @return The player's board state, giving access only to its non-modifier methods
-     */
     @Override
     public PlayArea getPlayArea() {
         return playArea;
     }
 
-    /**
-     *
-     * @return The player's two objective cards from which they'll choose their personal
-     * objective
-     */
     @Override
     public List<ObjectiveCard> getPersonalObjectiveOptions() {
         return List.copyOf(possiblePersonalObjectives);
     }
 
-    /**
-     *
-     * @return whether the player has chosen which side of their starter card to display
-     */
     @Override
     public boolean getChoseStarterCardSide() {
         return choseStarterCardSide;
     }
 
-    /**
-     *
-     * @return which of the two given possible personal objectives the player chose
-     */
     @Override
     public boolean getChosePersonalObjective() {
         return choseObjectiveCard;
     }
 
-    /**
-     * @return whether the player has already chosen their color.
-     */
     @Override
     public boolean getChoseColor() {
         return choseColor;
@@ -345,29 +296,21 @@ public class Player implements PlayerModel {
         }
     }
 
+    @Override
     public Chat getChat() {
         return chat;
     }
 
-    /**
-     * @return whether the player is connected.
-     */
     @Override
     public boolean isConnected() {
         return isConnected;
     }
 
-    /**
-     * @param isConnected Whether the player is connected or not.
-     */
     @Override
     public void setConnected(boolean isConnected) {
         this.isConnected = isConnected;
     }
 
-    /**
-     * @return Whether the player is deadlocked.
-     */
     @Override
     public boolean isDeadlocked() {
         return playArea.isDeadlocked();
@@ -375,8 +318,8 @@ public class Player implements PlayerModel {
 
     /**
      * Checks an object is equal to the player by comparing their usernames (if the parameter object is also a player).
-     * @param o The object to compare the player to
-     * @return true if the two are equal, false if they aren't
+     * @param o The object to compare the player to.
+     * @return <code>true</code> if the two are equal, <code>false</code> otherwise.
      */
     @Override
     public boolean equals(Object o) {

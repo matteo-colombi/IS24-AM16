@@ -1,0 +1,12 @@
+.hand-popup {
+    -fx-border-color: #573B21;
+    -fx-border-radius: 3;
+    -fx-border-width: 2;
+    -fx-background-color: #B38C44;
+    -fx-background-radius: 5;
+}
+
+.hand-popup VBox {
+    -fx-background-color: #B38C44;
+    -fx-background-radius: 3;
+}

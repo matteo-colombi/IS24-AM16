@@ -54,13 +54,11 @@ public class ChatController {
                 if (!rick) chats.get(username).receiveMessage(message);
 
                 virtualView.communicateNewMessage(username, message);
-                virtualView.redrawView(username);
             }
         }
         if (chats.containsKey(senderUsername) && !rick) {
             chats.get(senderUsername).receiveMessage(message);
             virtualView.communicateNewMessage(senderUsername, message);
-            virtualView.redrawView(senderUsername);
         }
     }
 
@@ -82,7 +80,7 @@ public class ChatController {
     }
 
     /**
-     * DOCME
+     * Removes all chats from this controller.
      */
     public void clear() {
         chats.clear();

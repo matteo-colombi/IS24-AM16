@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.io.Serial;
 import java.util.*;
 
+/**
+ * Message sent by the server to tell the client a player's play area state.
+ */
 @JsonDeserialize(using = SetPlayArea.Deserializer.class)
 public class SetPlayArea extends Payload {
     private final String username;
@@ -36,6 +39,17 @@ public class SetPlayArea extends Payload {
     private final Map<ResourceType, Integer> resourceCounts;
     private final Map<ObjectType, Integer> objectCounts;
 
+    /**
+     *
+     * @param username The username of the player whose play area information is being sent.
+     * @param cardPlacementOrder The order in which cards were played on this play area.
+     * @param field The field of cards.
+     * @param activeSides The side on which each card was played.
+     * @param legalPositions The set of positions where a card can be placed, expected where specified otherwise by the set of illegal positions.
+     * @param illegalPositions The set of positions where a card cannot be placed under any circumstance.
+     * @param resourceCounts The amount of each resource currently visible on the player's field.
+     * @param objectCounts The amount of each object currently visible on the player's field.
+     */
     @JsonCreator
     public SetPlayArea(
             @JsonProperty("username") String username,
@@ -56,34 +70,58 @@ public class SetPlayArea extends Payload {
         this.objectCounts = objectCounts;
     }
 
+    /**
+     * @return The username of the player whose play area information is being sent.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * @return The order in which cards were played on this play area.
+     */
     public List<Position> getCardPlacementOrder() {
         return cardPlacementOrder;
     }
 
+    /**
+     * @return The field of cards.
+     */
     public Map<Position, BoardCard> getField() {
         return field;
     }
 
+    /**
+     * @return The side on which each card was played.
+     */
     public Map<BoardCard, SideType> getActiveSides() {
         return activeSides;
     }
 
+    /**
+     * @return The set of positions where a card can be placed, expected where specified otherwise by the set of illegal positions.
+     */
     public Set<Position> getLegalPositions() {
         return legalPositions;
     }
 
+    /**
+     * @return The set of positions where a card cannot be placed under any circumstance.
+     */
     public Set<Position> getIllegalPositions() {
         return illegalPositions;
     }
 
+    /**
+     * @return The amount of each resource currently visible on the player's field.
+     */
     public Map<ResourceType, Integer> getResourceCounts() {
         return resourceCounts;
     }
 
+    /**
+     * @return The amount of each object currently visible on the player's field.
+     */
     public Map<ObjectType, Integer> getObjectCounts() {
         return objectCounts;
     }

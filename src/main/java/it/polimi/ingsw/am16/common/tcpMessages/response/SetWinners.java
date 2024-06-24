@@ -11,34 +11,46 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
-import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
-import it.polimi.ingsw.am16.common.model.cards.decks.GoldCardsDeck;
-import it.polimi.ingsw.am16.common.model.cards.decks.ObjectiveCardsDeck;
-import it.polimi.ingsw.am16.common.model.cards.decks.ResourceCardsDeck;
-import it.polimi.ingsw.am16.common.model.cards.decks.StarterCardsDeck;
-import it.polimi.ingsw.am16.common.model.game.Game;
-import it.polimi.ingsw.am16.common.model.game.GameState;
-import it.polimi.ingsw.am16.common.model.players.Player;
-import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.tcpMessages.Payload;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 
 import java.io.IOException;
 import java.io.Serial;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+/**
+ * Message sent by the server to tell the client who the winners of the game are. This message also contains information about each player's personal objective.
+ */
 @JsonDeserialize(using = SetWinners.Deserializer.class)
 public class SetWinners extends Payload {
     private final List<String> winnerUsernames;
+    private final Map<String, ObjectiveCard> personalObjectives;
 
+    /**
+     * @param winnerUsernames The list of players (which only contains multiple usernames in the case of a tie) who have won the game.
+     * @param personalObjectives A map containing each player's personal objective, which was kept secret for the duration of the game.
+     */
     @JsonCreator
-    public SetWinners(@JsonProperty("winnerUsernames") List<String> winnerUsernames) {
+    public SetWinners(@JsonProperty("winnerUsernames") List<String> winnerUsernames, @JsonProperty("personalObjectives") Map<String, ObjectiveCard> personalObjectives) {
         this.winnerUsernames = winnerUsernames;
+        this.personalObjectives = personalObjectives;
     }
 
+    /**
+     * @return The list of players (which only contains multiple usernames in the case of a tie) who have won the game.
+     */
     public List<String> getWinnerUsernames() {
         return winnerUsernames;
+    }
+
+    /**
+     * @return A map containing each player's personal objective, which was kept secret for the duration of the game.
+     */
+    public Map<String, ObjectiveCard> getPersonalObjectives() {
+        return personalObjectives;
     }
 
     /**
@@ -72,8 +84,12 @@ public class SetWinners extends Payload {
             TypeReference<ArrayList<String>> winnersTypeRef = new TypeReference<>() {};
             List<String> winnerUsernames = mapper.readValue(node.get("winnerUsernames").toString(), winnersTypeRef);
 
+            TypeReference<HashMap<String, ObjectiveCard>> objectivesTypeRef = new TypeReference<>() {};
+            Map<String, ObjectiveCard> personalObjectives = mapper.readValue(node.get("personalObjectives").toString(), objectivesTypeRef);
+
             return new SetWinners(
-                    winnerUsernames
+                    winnerUsernames,
+                    personalObjectives
             );
         }
     }

@@ -20,9 +20,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.stream.Collectors;
 
 /**
- * DOCME
- * N.B. the only parts of this class that are thread safe are the allowedCommands methods
- * Everything else should never be called by multiple threads
+ * {@link Runnable} class to manage user input in the Command Line Interface.
+ * The only parts of this class that are thread safe are the methods {@link CLIInputManager#addCommand}, {@link CLIInputManager#removeCommand}, {@link CLIInputManager#getAllowedCommands} and {@link CLIInputManager#clearCommands}.
+ * All other methods should never be called by multiple threads.
  */
 public class CLIInputManager implements Runnable {
 
@@ -32,12 +32,21 @@ public class CLIInputManager implements Runnable {
     private ServerInterface serverInterface;
     private final Set<CLICommand> allowedCommands;
 
+    /**
+     * Creates a new manager for user input.
+     * @param cliView The view that this manager's input should affect.
+     * @param inputStream The {@link InputStream} to read user input from.
+     */
     public CLIInputManager(CLI cliView, InputStream inputStream) {
         this.cliView = cliView;
         this.inputStream = inputStream;
         this.allowedCommands = new ConcurrentSkipListSet<>();
     }
 
+    /**
+     * Sets this user input manager's server interface. Used so that this manager can communicate to the server when needed.
+     * @param serverInterface The server interface.
+     */
     public void setServerInterface(ServerInterface serverInterface) {
         this.serverInterface = serverInterface;
     }
@@ -53,14 +62,18 @@ public class CLIInputManager implements Runnable {
             }
         } catch (IOException e) {
             System.err.println("An error occured.");
-            e.printStackTrace();
         }
 
         System.exit(0);
     }
 
     private void parseCommand(String input) {
-        String[] args = input.split(" ");
+        String[] args;
+        if (input == null) {
+            args = new String[]{""};
+        } else {
+            args = input.split(" ");
+        }
 
         String inputCommand = args[0].toLowerCase();
 
@@ -81,9 +94,7 @@ public class CLIInputManager implements Runnable {
         CLICommand command = matchingCommands.iterator().next();
 
         switch (command) {
-            case HELP -> {
-                cliView.printHelp();
-            }
+            case HELP -> cliView.printHelp();
             case GET_GAMES -> {
                 try {
                     serverInterface.getGames();
@@ -118,8 +129,7 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.createGame(username, numPlayers);
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("An error occurred while creating the game. Communication with the server unsuccessful");
                 }
             }
             case JOIN_GAME -> {
@@ -140,22 +150,13 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.joinGame(gameId, username);
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("An error occurred while joining the game. Communication with the server unsuccessful");
                 }
             }
-            case ID -> {
-                cliView.printGameId();
-            }
-            case PLAYERS -> {
-                cliView.printPlayers();
-            }
-            case DRAW_OPTIONS -> {
-                cliView.printDrawOptions();
-            }
-            case COMMON_OBJECTIVES -> {
-                cliView.printCommonObjectives();
-            }
+            case ID -> cliView.printGameId();
+            case PLAYERS -> cliView.printPlayers();
+            case DRAW_OPTIONS -> cliView.printDrawOptions();
+            case COMMON_OBJECTIVES -> cliView.printCommonObjectives();
             case STARTER -> {
                 if (args.length == 1) {
                     cliView.printStarterCard();
@@ -177,15 +178,13 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.setStarterCard(sideType);
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
             }
             case COLOR -> {
-                if (args.length < 2 || args[1] == null) {
-                    System.out.println("Invalid arguments. Usage: " + CLICommand.COLOR.getUsage());
-                    cliView.printCommandPrompt();
-                    break;
+                if (args.length == 1) {
+                    cliView.printColorOptions();
+                    return;
                 }
 
                 String colorString = args[1];
@@ -206,8 +205,7 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.setColor(color);
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
             }
             case OBJECTIVE -> {
@@ -226,13 +224,10 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.setPersonalObjective(objectiveCard);
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
             }
-            case OBJECTIVES -> {
-                cliView.printAllObjectives();
-            }
+            case OBJECTIVES -> cliView.printAllObjectives();
             case HAND -> {
                 if (args.length == 1) {
                     cliView.printHand();
@@ -318,8 +313,7 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.playCard(playedCard, sideType, new Position(x, y));
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
             }
             case DRAW_CARD -> {
@@ -363,8 +357,7 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.drawCard(drawType);
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
 
                 cliView.printCommandPrompt();
@@ -390,12 +383,8 @@ public class CLIInputManager implements Runnable {
 
                 cliView.printCommandPrompt();
             }
-            case POINTS -> {
-                cliView.printPoints();
-            }
-            case WINNERS -> {
-                cliView.printWinners();
-            }
+            case POINTS -> cliView.printPoints();
+            case WINNERS -> cliView.printWinners();
             case CHAT -> {
                 if (args.length == 1) {
                     cliView.printUnreadChat();
@@ -405,16 +394,13 @@ public class CLIInputManager implements Runnable {
                     try {
                         serverInterface.sendChatMessage(text);
                     } catch (RemoteException e) {
-                        //TODO handle it
-                        e.printStackTrace();
+                        System.err.println("Communication with the server unsuccessful");
                     }
 
                     cliView.printCommandPrompt();
                 }
             }
-            case CHAT_HISTORY -> {
-                cliView.printChatHistory();
-            }
+            case CHAT_HISTORY -> cliView.printChatHistory();
             case WHISPER -> {
                 if (args.length < 3) {
                     System.out.println("Invalid arguments. Usage: " + CLICommand.WHISPER.getUsage());
@@ -427,13 +413,17 @@ public class CLIInputManager implements Runnable {
                     System.out.println("Unknown user: \"" + receiverUsername + "\"");
                     return;
                 }
+                if (cliView.getUsername().equals(receiverUsername)) {
+                    System.out.println("You can't whisper to yourself!");
+                    return;
+                }
+
                 String text = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
 
                 try {
                     serverInterface.sendChatMessage(text, receiverUsername);
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
 
                 cliView.printCommandPrompt();
@@ -445,8 +435,7 @@ public class CLIInputManager implements Runnable {
                     cliView.resetToStartup();
                     System.out.println("Game left.");
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
                 cliView.printCommandPrompt();
             }
@@ -455,14 +444,18 @@ public class CLIInputManager implements Runnable {
                 try {
                     serverInterface.disconnect();
                 } catch (RemoteException e) {
-                    //TODO handle it
-                    e.printStackTrace();
+                    System.err.println("Communication with the server unsuccessful");
                 }
                 running = false;
             }
         }
     }
 
+    /**
+     * Checks the user input against all the available commands and returns a set that contains all the commands that match.
+     * @param input The user's input.
+     * @return The set containing all commands that match the input, even partially and through aliases. Please note that if any command matches exactly, only it will be returned and not any partial matches.
+     */
     private Set<CLICommand> commandMatch(String input) {
         Set<CLICommand> filteredCommands = allowedCommands
                 .stream()
@@ -479,18 +472,32 @@ public class CLIInputManager implements Runnable {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Adds a command to the set of allowed commands.
+     * @param command The new command to add.
+     */
     public void addCommand(CLICommand command) {
         allowedCommands.add(command);
     }
 
+    /**
+     * Removes a command from the set of allowed commands.
+     * @param command The command to remove.
+     */
     public void removeCommand(CLICommand command) {
         allowedCommands.remove(command);
     }
 
+    /**
+     * @return The set of currently allowed commands in this user input manager.
+     */
     public Set<CLICommand> getAllowedCommands() {
         return allowedCommands;
     }
 
+    /**
+     * Clears the set of allowed commands. After this method is run, no commands will be accepted unless they are added back with the {@link CLIInputManager#addCommand} method.
+     */
     public void clearCommands() {
         allowedCommands.clear();
     }

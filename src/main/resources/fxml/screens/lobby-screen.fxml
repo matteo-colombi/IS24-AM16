@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.URL?>
+<StackPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" styleClass="background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.screens.LobbyScreenController">
+   <children>
+      <StackPane fx:id="leaveButton" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="hex-button" translateX="68.5" translateY="70.0" StackPane.alignment="TOP_LEFT">
+         <children>
+            <Polygon fill="#cacca0" focusTraversable="true" layoutX="108.0" layoutY="121.0" stroke="#573b21" strokeLineCap="ROUND" strokeType="OUTSIDE" strokeWidth="3.0" styleClass="polygon">
+               <points>
+                  <Double fx:value="0.0" />
+                  <Double fx:value="-25.0" />
+                  <Double fx:value="-22.0" />
+                  <Double fx:value="-13.0" />
+                  <Double fx:value="-22.0" />
+                  <Double fx:value="12.0" />
+                  <Double fx:value="0.0" />
+                  <Double fx:value="25.0" />
+                  <Double fx:value="22.0" />
+                  <Double fx:value="13.0" />
+                  <Double fx:value="22.0" />
+                  <Double fx:value="-12.0" />
+               </points>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Polygon>
+            <ImageView fitHeight="16.0" fitWidth="16.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/gui/icons/door.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+      </StackPane>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="10.0" translateY="100.0" StackPane.alignment="TOP_CENTER">
+         <children>
+            <Text fill="#ef3f36" strokeType="OUTSIDE" strokeWidth="0.0" text="Game ID:" textOrigin="CENTER">
+               <font>
+                  <Font name="System Bold Italic" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="gameIdField" boundsType="VISUAL" strokeType="OUTSIDE" strokeWidth="0.0" text="WIM9CL" textOrigin="CENTER">
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Text>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="40.0" StackPane.alignment="CENTER">
+         <children>
+            <Text fx:id="motdText" strokeType="OUTSIDE" strokeWidth="0.0" text="Almost ready! Just a few more players..." textOrigin="CENTER">
+               <font>
+                  <Font name="System Italic" size="30.0" />
+               </font>
+            </Text>
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="100.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" spacing="5.0">
+                     <children>
+                        <Text fill="#922790" strokeType="OUTSIDE" strokeWidth="0.0" text="Players:">
+                           <font>
+                              <Font name="System Bold Italic" size="36.0" />
+                           </font>
+                        </Text>
+                        <VBox fx:id="playersBox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="5.0" styleClass="usernames-box">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Eolo">
+                                 <font>
+                                    <Font name="System Italic" size="36.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Eola">
+                                 <font>
+                                    <Font name="System Italic" size="36.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="EULA">
+                                 <font>
+                                    <Font name="System Italic" size="36.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Leola">
+                                 <font>
+                                    <Font name="System Italic" size="36.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="136.8" styleClass="chat">
+                     <children>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <ScrollPane fx:id="chatScrollPane" fitToWidth="true" hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" pannable="true" prefHeight="225.0" prefWidth="450.0" style="-fx-border-color: #573B21; -fx-border-radius: 3 3 0 0; -fx-border-width: 3;" vbarPolicy="ALWAYS">
+                                 <content>
+                                    <VBox fx:id="chatMessages" alignment="BOTTOM_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="217.0" minWidth="427.0" style="-fx-background-color: #CACCA0;">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </VBox>
+                                 </content>
+                              </ScrollPane>
+                              <HBox alignment="CENTER" prefHeight="35.0" prefWidth="400.0" spacing="1.0" styleClass="text-section">
+                                 <children>
+                                    <TextField fx:id="chatBox" prefHeight="30.0" prefWidth="413.0" promptText="Write a message..." styleClass="chat-text-field" StackPane.alignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold Italic" size="14.0" />
+                                       </font>
+                                    </TextField>
+                                    <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+                                       <children>
+                                          <Button fx:id="chatFilterButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showChatFilter" prefHeight="28.0" prefWidth="28.0" styleClass="transparent" StackPane.alignment="CENTER">
+                                             <font>
+                                                <Font size="1.0" />
+                                             </font>
+                                          </Button>
+                                          <ImageView fitHeight="16.0" fitWidth="16.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER">
+                                             <image>
+                                                <Image url="@../../assets/gui/icons/filter2.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </StackPane>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <StackPane fx:id="chatFilters" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-border-color: #573B21; -fx-border-radius: 3; -fx-border-width: 2;" translateX="10.0" translateY="-40.0" visible="false" StackPane.alignment="BOTTOM_RIGHT">
+                           <children>
+                              <Rectangle fill="#b38c44" height="20.0" rotate="135.0" stroke="#573b21" strokeType="INSIDE" strokeWidth="2.0" translateX="-16.0" translateY="10.0" width="20.0" StackPane.alignment="BOTTOM_RIGHT" />
+                              <VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="109.0" spacing="10.0" style="-fx-background-color: #B38C44; -fx-background-radius: 3;">
+                                 <children>
+                                    <RadioButton fx:id="everyoneFilter" mnemonicParsing="false" selected="true" style="-fx-border-color: #573B21; -fx-border-width: 0 0 2 0; -fx-border-insets: -7;" text="Everyone">
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="chatFilterToggleGroup" />
+                                       </toggleGroup>
+                                    </RadioButton>
+                                    <VBox fx:id="chatFilterNames" spacing="5.0">
+                                       <children>
+                                          <RadioButton mnemonicParsing="false" text="teo" toggleGroup="$chatFilterToggleGroup" />
+                                          <RadioButton mnemonicParsing="false" text="obi" toggleGroup="$chatFilterToggleGroup" />
+                                          <RadioButton mnemonicParsing="false" text="CODEX" toggleGroup="$chatFilterToggleGroup" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </StackPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="30.0" translateY="-100.0" StackPane.alignment="BOTTOM_CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tired of waiting?">
+               <font>
+                  <Font size="36.0" />
+               </font>
+            </Text>
+            <StackPane maxHeight="-Infinity" maxWidth="-Infinity">
+               <children>
+                  <Button fx:id="waitFasterButton" mnemonicParsing="false" styleClass="medium" StackPane.alignment="CENTER">
+                     <font>
+                        <Font name="System Italic" size="18.0" />
+                     </font>
+                  </Button>
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" spacing="7.5" StackPane.alignment="CENTER">
+                     <children>
+                        <ImageView fitHeight="18.0" fitWidth="18.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/gui/icons/sync-black.png" />
+                           </image>
+                        </ImageView>
+                        <Text mouseTransparent="true" strokeType="OUTSIDE" strokeWidth="0.0" text="Wait faster!" textOrigin="CENTER">
+                           <font>
+                              <Font name="System Italic" size="18.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+               </children>
+            </StackPane>
+         </children>
+      </HBox>
+   </children>
+   <stylesheets>
+      <URL value="@../stylesheets/stylesheet.css" />
+      <URL value="@../stylesheets/lobby-screen.css" />
+   </stylesheets>
+</StackPane>

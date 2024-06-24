@@ -1,0 +1,36 @@
+.button {
+    -fx-background-radius: 50%;
+    -fx-border-color: black;
+    -fx-border-radius: 50%;
+    -fx-border-width: 3;
+    -fx-border-insets: -1;
+    -fx-effect: none;
+}
+
+.button.green {
+    -fx-border-color: #22b14c;
+}
+
+.button.red {
+    -fx-border-color: #ed1c24;
+}
+
+.button.yellow {
+    -fx-border-color: #fff200;
+}
+
+.button.blue {
+    -fx-border-color: #00a2e8;
+}
+
+#root {
+    -fx-background-radius: 50%;
+}
+
+.active {
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 1), 25, 0.5, 0, 0);
+}
+
+.disabled {
+    -fx-opacity: 0.5;
+}

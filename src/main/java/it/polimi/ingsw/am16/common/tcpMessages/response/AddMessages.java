@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
 import it.polimi.ingsw.am16.common.model.chat.ChatMessage;
 import it.polimi.ingsw.am16.common.tcpMessages.Payload;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
@@ -20,15 +19,26 @@ import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Message sent by the server to inform the client that multiple new messages have arrived in their chat.
+ */
 @JsonDeserialize(using = AddMessages.Deserializer.class)
 public class AddMessages extends Payload {
     private final List<ChatMessage> messages;
 
+    /**
+     *
+     * @param messages The new messages.
+     */
     @JsonCreator
     public AddMessages(@JsonProperty("messages") List<ChatMessage> messages) {
         this.messages = messages;
     }
 
+    /**
+     *
+     * @return The new messages.
+     */
     public List<ChatMessage> getMessages() {
         return messages;
     }

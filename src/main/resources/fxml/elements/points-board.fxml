@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.elements.PointsBoardController">
+   <children>
+      <ImageView fitHeight="360.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../assets/gui/gameplay/score_board.png" />
+         </image>
+      </ImageView>
+      <StackPane fx:id="points0" layoutX="34.1" layoutY="321.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points1" layoutX="76.4" layoutY="321.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points2" layoutX="118.8" layoutY="321.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points3" layoutX="140.0" layoutY="282.6" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points4" layoutX="97.7" layoutY="282.6" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points5" layoutX="55.4" layoutY="282.6" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points6" layoutX="13.0" layoutY="282.6" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points7" layoutX="13.0" layoutY="243.8" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points8" layoutX="55.3" layoutY="243.8" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points9" layoutX="97.7" layoutY="243.8" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points10" layoutX="140.0" layoutY="243.8" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points11" layoutX="140.0" layoutY="205.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points12" layoutX="97.7" layoutY="205.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points13" layoutX="55.3" layoutY="205.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points14" layoutX="13.0" layoutY="205.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points15" layoutX="13.0" layoutY="166.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points16" layoutX="55.3" layoutY="166.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points17" layoutX="97.7" layoutY="166.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points18" layoutX="140.0" layoutY="166.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points19" layoutX="140.0" layoutY="127.7" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points20" layoutX="76.4" layoutY="108.7" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points21" layoutX="13.0" layoutY="127.7" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points22" layoutX="13.0" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points23" layoutX="13.0" layoutY="50.3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points24" layoutX="37.5" layoutY="18.3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points25" layoutX="76.4" layoutY="11.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points26" layoutX="115.5" layoutY="18.3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points27" layoutX="140.0" layoutY="50.3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points28" layoutX="140.0" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+      <StackPane fx:id="points29" layoutX="76.4" layoutY="58.4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.2" prefWidth="27.2" />
+   </children>
+</AnchorPane>

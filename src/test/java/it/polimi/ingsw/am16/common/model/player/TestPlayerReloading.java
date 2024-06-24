@@ -6,12 +6,12 @@ import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
 import it.polimi.ingsw.am16.common.model.cards.CardRegistry;
 import it.polimi.ingsw.am16.common.model.cards.SideType;
-import it.polimi.ingsw.am16.server.controller.ChatController;
 import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.util.JsonMapper;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.server.VirtualView;
+import it.polimi.ingsw.am16.server.controller.ChatController;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -22,12 +22,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestPlayerReloading {
 
+    /*
+     * This test checks that players are serialized and deserialized correctly.
+     */
+
     @Test
     void testPlayerReloading() throws NoStarterCardException, UnknownObjectiveCardException, IllegalMoveException, IOException {
         CardRegistry registry = CardRegistry.getRegistry();
         ObjectMapper mapper = JsonMapper.getObjectMapper();
-
-        File f = new File("src/test/resources/json/testPlayerReloading.json");
+        String directoryPath = "src/test/resources/json";
+        File directory = new File(directoryPath);
+        directory.mkdirs();
+        String filePath = directoryPath + "/testPlayerReloading.json";
+        File f = new File(filePath);
 
         Player player = new Player("matteo");
 
@@ -69,6 +76,9 @@ public class TestPlayerReloading {
         assertEquals(player.getPersonalObjectiveOptions(), reloadedPlayer.getPersonalObjectiveOptions());
         assertEquals(player.getPersonalObjective(), reloadedPlayer.getPersonalObjective());
         assertEquals(player.getHand().getCards(), reloadedPlayer.getHand().getCards());
+        assertEquals(player.getHand().getRestrictedVersion(), reloadedPlayer.getHand().getRestrictedVersion());
+        assertEquals(player.getHand().getRestrictedVersion().toString(), reloadedPlayer.getHand().getRestrictedVersion().toString());
+        assertEquals(player.getHand().toString(), reloadedPlayer.getHand().toString());
         assertEquals(player.getChosePersonalObjective(), reloadedPlayer.getChosePersonalObjective());
         assertEquals(player.getChoseColor(), reloadedPlayer.getChoseColor());
         assertEquals(player.getChoseStarterCardSide(), reloadedPlayer.getChoseStarterCardSide());

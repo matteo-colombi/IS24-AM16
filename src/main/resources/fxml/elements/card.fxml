@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import java.lang.String?>
+<StackPane fx:id="cardPane" maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheets/cards.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.am16.client.view.gui.controllers.elements.CardController">
+   <children>
+      <ImageView id="cardImage" fx:id="cardImage" fitHeight="100.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../assets/gui/gameplay/cards/fronts/resource_fungi_1_front.png" />
+         </image>
+         <styleClass>
+            <String fx:value="card" />
+            <String fx:value="card_placeholder" />
+         </styleClass>
+      </ImageView>
+      <ImageView fx:id="turnImage" fitHeight="50.0" fitWidth="50.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../assets/gui/icons/sync-transparent-1.png" />
+         </image>
+      </ImageView>
+   </children>
+</StackPane>

@@ -6,15 +6,18 @@ import it.polimi.ingsw.am16.common.model.players.Player;
 import it.polimi.ingsw.am16.common.util.Position;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestPatternObjective {
 
+    /*
+     * This test checks that pattern objectives' points are counted correctly in a few different arrangements.
+     */
+
     private CardRegistry registry;
     private List<ObjectiveCard> objectiveCards;
-    private ObjectiveCard objective;
     private StarterCard starterCard;
     private Player testPlayer;
 
@@ -23,23 +26,7 @@ public class TestPatternObjective {
         // Creating some objects used in the test.
         initialize();
 
-        testObjective1();
-        //TODO test other objectives
-    }
-
-    public void initialize() {
-        registry = CardRegistry.getRegistry();
-
-        objectiveCards = registry.getObjectiveCards();
-
-        starterCard = registry.getStarterCards().getFirst();
-        assertEquals("starter_1", starterCard.getName());
-
-        testPlayer = new Player("testPlayer");
-    }
-
-    private void testObjective1() throws IllegalMoveException, NoStarterCardException {
-        objective = objectiveCards.getFirst();
+        ObjectiveCard objective = objectiveCards.getFirst();
         assertEquals("objective_pattern_1", objective.getName());
 
         assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
@@ -185,5 +172,16 @@ public class TestPatternObjective {
         testPlayer.playCard(insectCard, SideType.BACK, new Position(3,3));
 
         assertEquals(0, objective.evaluatePoints(testPlayer.getPlayArea()));
+    }
+
+    public void initialize() {
+        registry = CardRegistry.getRegistry();
+
+        objectiveCards = registry.getObjectiveCards();
+
+        starterCard = registry.getStarterCards().getFirst();
+        assertEquals("starter_1", starterCard.getName());
+
+        testPlayer = new Player("testPlayer");
     }
 }

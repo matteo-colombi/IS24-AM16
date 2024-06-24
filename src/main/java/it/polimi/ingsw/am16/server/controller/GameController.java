@@ -5,25 +5,33 @@ import it.polimi.ingsw.am16.common.exceptions.IllegalMoveException;
 import it.polimi.ingsw.am16.common.exceptions.NoStarterCardException;
 import it.polimi.ingsw.am16.common.exceptions.UnexpectedActionException;
 import it.polimi.ingsw.am16.common.exceptions.UnknownObjectiveCardException;
-import it.polimi.ingsw.am16.common.model.cards.*;
+import it.polimi.ingsw.am16.common.model.cards.ObjectiveCard;
+import it.polimi.ingsw.am16.common.model.cards.PlayableCard;
+import it.polimi.ingsw.am16.common.model.cards.PlayableCardType;
+import it.polimi.ingsw.am16.common.model.cards.SideType;
 import it.polimi.ingsw.am16.common.model.game.DrawType;
 import it.polimi.ingsw.am16.common.model.game.GameModel;
 import it.polimi.ingsw.am16.common.model.game.GameState;
+import it.polimi.ingsw.am16.common.model.game.LobbyState;
 import it.polimi.ingsw.am16.common.model.players.PlayAreaModel;
 import it.polimi.ingsw.am16.common.model.players.Player;
-import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 import it.polimi.ingsw.am16.common.model.players.PlayerColor;
 import it.polimi.ingsw.am16.common.model.players.PlayerModel;
+import it.polimi.ingsw.am16.common.util.ErrorType;
 import it.polimi.ingsw.am16.common.util.Position;
 import it.polimi.ingsw.am16.common.util.RNG;
 import it.polimi.ingsw.am16.server.VirtualView;
+import it.polimi.ingsw.am16.server.lobby.LobbyManager;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Controller for the Game.
  * Is responsible for receiving the requests from views, updating the Game's model,
  * and notifying the views of the changes that have occurred.
+ * This class can be used by multiple threads without risk of conflicts, as all public methods are
+ * synchronized GameController instance.
  */
 public class GameController {
     private String choosingColor;
@@ -32,6 +40,7 @@ public class GameController {
     private final VirtualView virtualView;
     private final ChatController chatController;
     private final LobbyManager lobbyManager;
+    private final Set<String> deadlockedPlayers;
 
     private Queue<PlayerModel> playerQueue = null;
 
@@ -47,6 +56,7 @@ public class GameController {
         this.game = game;
         this.virtualView = new VirtualView();
         this.chatController = new ChatController(this.virtualView);
+        this.deadlockedPlayers = new HashSet<>();
     }
 
     /**
@@ -69,6 +79,7 @@ public class GameController {
      * Sets the player with the given username's status to connected, and adds it to the list of players which should receive updates about the game.
      * @param username The player's username. If an invalid username is given, this method does nothing.
      * @param userView The {@link RemoteClientInterface}, used to communicate with the player.
+     * @throws UnexpectedActionException If a user with the given username is already connected, or if the user has not been created with {@link GameController#createPlayer}.
      */
     public synchronized void joinPlayer(String username, RemoteClientInterface userView) throws UnexpectedActionException {
         Map<String, Player> players = game.getPlayers();
@@ -81,7 +92,7 @@ public class GameController {
             throw new UnexpectedActionException("User " + username + " already reconnected.");
         }
         virtualView.addPlayer(userView, username);
-        virtualView.joinGame(game.getId(), username);
+        virtualView.joinGame(game.getId(), username, game.getNumPlayers());
         game.setConnected(username,true);
 
         if (game.isRejoiningAfterCrash()) {
@@ -89,11 +100,17 @@ public class GameController {
         }
 
         if (game.getCurrentPlayerCount() == game.getNumPlayers() && game.everybodyConnected()) {
-            if (!game.isRejoiningAfterCrash()) {
-                initializingProcedures();
-            } else {
-                restartingProcedures();
-            }
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (!game.isRejoiningAfterCrash()) {
+                        initializingProcedures();
+                    } else {
+                        restartingProcedures();
+                    }
+                }
+            }, 3000);
         }
 
         chatController.subscribe(username, players.get(username).getChat());
@@ -106,8 +123,7 @@ public class GameController {
         try {
             game.initializeGame();
         } catch (UnexpectedActionException e) {
-            //TODO handle it
-            e.printStackTrace();
+            System.err.println("Error while initializing game: " + e.getMessage());
             return;
         }
 
@@ -131,23 +147,15 @@ public class GameController {
         Map<String, Player> players = game.getPlayers();
         if (!players.containsKey(username)) return;
 
-        StarterCard card = players.get(username).getStarterCard();
-
         try {
             game.setPlayerStarterSide(username, starterSide);
-        } catch (UnexpectedActionException e) {
-            //TODO handle it
-            e.printStackTrace();
-            return;
-        } catch (NoStarterCardException e) {
-            //TODO handle it
-            e.printStackTrace();
+        } catch (UnexpectedActionException | NoStarterCardException e) {
+            System.err.println("Error setting starter card: " + e.getMessage());
             return;
         }
         PlayAreaModel playArea = players.get(username).getPlayArea();
 
         virtualView.communicatePlayArea(username, playArea.getPlacementOrder(), playArea.getField(), playArea.getActiveSides(), playArea.getLegalPositions(), playArea.getIllegalPositions(), playArea.getResourceCounts(), playArea.getObjectCounts());
-        virtualView.redrawView(username);
 
         if (game.allPlayersChoseStarterSide()) {
             initializingColors();
@@ -189,7 +197,6 @@ public class GameController {
     public synchronized void setPlayerColor(String username, PlayerColor color) {
         if (choosingColor == null || !choosingColor.equals(username)) {
             System.err.println("Wrong player!");
-            //TODO handle it better?
             return;
         }
 
@@ -199,12 +206,10 @@ public class GameController {
         try {
             game.setPlayerColor(username, color);
         } catch (UnexpectedActionException e) {
-            //TODO handle it
-            e.printStackTrace();
+            System.err.println("Error setting player color: " + e.getMessage());
             return;
         }
         virtualView.communicateColor(username, color);
-        virtualView.redrawView();
         promptColor();
     }
 
@@ -212,6 +217,8 @@ public class GameController {
      * Handles the updating of all the views after a game has restarted after a server crash.
      */
     private void restartingProcedures() {
+        virtualView.communicateRejoinInformationStart();
+
         virtualView.communicateGameState(game.getState());
         if (game.getState() == GameState.FINAL_ROUND) {
             virtualView.communicateDontDraw();
@@ -220,15 +227,14 @@ public class GameController {
         virtualView.communicateDeckTopType(PlayableCardType.RESOURCE, game.getResourceDeckTopType());
         virtualView.communicateDeckTopType(PlayableCardType.GOLD, game.getGoldDeckTopType());
         virtualView.communicateCommonObjectives(game.getCommonObjectiveCards());
-        virtualView.communicateTurnOrder(game.getTurnOrder());
 
         for(Player p : game.getPlayers().values()) {
-            virtualView.communicateHand(p.getUsername(), p.getHand().getCards());
             virtualView.communicatePlayArea(p.getUsername(), p.getPlayArea().getPlacementOrder(), p.getPlayArea().getField(), p.getPlayArea().getActiveSides(), p.getPlayArea().getLegalPositions(), p.getPlayArea().getIllegalPositions(), p.getPlayArea().getResourceCounts(), p.getPlayArea().getObjectCounts());
-            virtualView.communicatePersonalObjective(p.getUsername(), p.getPersonalObjective());
             virtualView.communicateColor(p.getUsername(), p.getPlayerColor());
+            virtualView.communicatePersonalObjective(p.getUsername(), p.getPersonalObjective());
             virtualView.communicateGamePoints(p.getUsername(), p.getGamePoints());
             virtualView.communicateObjectivePoints(p.getUsername(), p.getObjectivePoints());
+            virtualView.communicateHand(p.getUsername(), p.getHand().getCards());
 
             for (Player p2 : game.getPlayers().values()) {
                 if (!p2.equals(p)) {
@@ -236,16 +242,16 @@ public class GameController {
                 }
             }
         }
+        virtualView.communicateTurnOrder(game.getTurnOrder());
+
+        virtualView.communicateRejoinInformationEnd();
 
         virtualView.notifyTurnStart(game.getActivePlayer());
-
-        virtualView.redrawView();
 
         try {
             game.initializeGame();
         } catch (UnexpectedActionException e) {
-            e.printStackTrace();
-            //TODO handle it
+            System.err.println("Error restarting the game: " + e.getMessage());
         }
     }
 
@@ -281,7 +287,6 @@ public class GameController {
         virtualView.communicateCommonObjectives(game.getCommonObjectiveCards());
         for(Player p : game.getPlayers().values()) {
             virtualView.promptObjectiveChoice(p.getUsername(), p.getPersonalObjectiveOptions());
-            virtualView.redrawView(p.getUsername());
         }
     }
 
@@ -298,18 +303,12 @@ public class GameController {
 
         try {
             game.setPlayerObjective(username, objectiveCard);
-        } catch (UnknownObjectiveCardException e) {
-            e.printStackTrace();
-            //TODO handle it better?
+        } catch (UnknownObjectiveCardException | UnexpectedActionException e) {
+            System.err.println("Error setting player objective: " + e.getMessage());
             return;
-        } catch (UnexpectedActionException e) {
-            e.printStackTrace();
-            return;
-            //TODO handle it
         }
 
         virtualView.communicatePersonalObjective(username, objectiveCard);
-        virtualView.redrawView(username);
 
         if (game.allPlayersChoseObjective()) {
             startGame();
@@ -324,15 +323,13 @@ public class GameController {
         try {
             game.startGame();
         } catch (UnexpectedActionException e) {
-            e.printStackTrace();
+            System.err.println("Error starting game: " + e.getMessage());
             return;
-            //TODO handle it
         }
 
         virtualView.communicateGameState(game.getState());
         virtualView.communicateTurnOrder(game.getTurnOrder());
         virtualView.notifyTurnStart(game.getActivePlayer());
-        virtualView.redrawView();
     }
 
     /**
@@ -345,13 +342,11 @@ public class GameController {
         try {
             game.advanceTurn();
         } catch (UnexpectedActionException e) {
-            e.printStackTrace();
+            System.err.println("Error advancing turn: " + e.getMessage());
             return;
-            //TODO handle it
         }
 
         if (Objects.equals(game.getActivePlayer(), game.getStartingPlayer())) {
-            lobbyManager.saveGame(game);
             if (game.getState() == GameState.FINAL_ROUND) {
                 endGame();
                 return;
@@ -360,18 +355,26 @@ public class GameController {
             if (game.checkFinalRound()) {
                 try {
                     game.triggerFinalRound();
-                } catch (UnexpectedActionException e) {
-                    e.printStackTrace();
+                } catch (UnexpectedActionException ignored) {
+                    System.err.println("Unexpected error while initiating final round.");
                     return;
-                    //TODO handle it
                 }
                 virtualView.communicateGameState(game.getState());
                 virtualView.communicateDontDraw();
             }
+            lobbyManager.saveGame(game);
         }
 
         if (game.getPlayers().get(game.getActivePlayer()).isDeadlocked()) {
+            deadlockedPlayers.add(game.getActivePlayer());
             virtualView.communicateDeadlock(game.getActivePlayer());
+            if (deadlockedPlayers.size() == game.getNumPlayers()) {
+                for(Player p : game.getPlayers().values()) {
+                    virtualView.promptError(p.getUsername(), "Everybody has deadlocked themselves... The game has been deleted.", ErrorType.OTHER_PLAYER_DISCONNECTED);
+                    virtualView.disconnectEverybody();
+                    lobbyManager.deleteGame(game.getId());
+                }
+            }
             turnManager();
         } else {
             virtualView.notifyTurnStart(game.getActivePlayer());
@@ -394,12 +397,11 @@ public class GameController {
         try {
             game.placeCard(username, card, side, newPos);
         } catch (IllegalMoveException e) {
-            virtualView.promptError(username, "Illegal move.");
+            virtualView.promptError(username, "Illegal move.", ErrorType.GENERIC_ERROR);
             return;
         } catch (UnexpectedActionException e) {
-            e.printStackTrace();
+            System.err.println("Error placing card: " + e.getMessage());
             return;
-            //TODO handle it
         }
 
         hasPlacedCard = true;
@@ -416,7 +418,6 @@ public class GameController {
                 virtualView.communicateRemoveOtherCard(p.getUsername(), username, card.getRestrictedVersion());
             }
         }
-        virtualView.redrawView();
 
         if (game.getState() == GameState.FINAL_ROUND) {
             turnManager();
@@ -439,11 +440,10 @@ public class GameController {
         try {
             drawnCard = game.drawCard(username, drawType);
         } catch (IllegalMoveException e) {
-            virtualView.promptError(username, "Illegal draw.");
+            virtualView.promptError(username, "Illegal draw.", ErrorType.GENERIC_ERROR);
             return;
         } catch (UnexpectedActionException e) {
-            //TODO handle it
-            e.printStackTrace();
+            //Silently return. This should not happen unless there are hacked clients or there are connection issues which will be caught in other ways.
             return;
         }
 
@@ -464,10 +464,8 @@ public class GameController {
         for(Player p : game.getPlayers().values()) {
             if (!p.getUsername().equals(username)) {
                 virtualView.communicateNewOtherCard(p.getUsername(), username, drawnCard.getRestrictedVersion());
-                virtualView.redrawView(p.getUsername());
             }
         }
-        virtualView.redrawView(username);
 
         turnManager();
     }
@@ -480,8 +478,7 @@ public class GameController {
         try {
             game.endGame();
         } catch (UnexpectedActionException e) {
-            e.printStackTrace();
-            //TODO handle it
+            System.err.println("Error ending game: " + e.getMessage());
             return;
         }
 
@@ -490,8 +487,16 @@ public class GameController {
             virtualView.communicateObjectivePoints(p.getUsername(), p.getObjectivePoints());
         }
         List<String> winnerUsernames = game.getWinnerUsernames();
-        virtualView.communicateWinners(winnerUsernames);
-        virtualView.redrawView();
+
+        Map<String, ObjectiveCard> personalObjectives =
+                game.getPlayers()
+                        .values()
+                        .stream()
+                        .collect(
+                                Collectors.toMap(Player::getUsername, Player::getPersonalObjective)
+                        );
+
+        virtualView.communicateWinners(winnerUsernames, personalObjectives);
 
         lobbyManager.deleteGame(game.getId());
     }
@@ -531,12 +536,15 @@ public class GameController {
             virtualView.signalGameSuspension(username);
             chatController.clear();
             game.pause();
+        } else if (game.getState() == GameState.INIT) {
+            virtualView.signalGameDeletion(username);
+            lobbyManager.deleteGame(game.getId());
         } else {
             virtualView.signalDisconnection(username);
             try {
                 game.removePlayer(username);
-            } catch (UnexpectedActionException ignored) {
-                System.err.println("Unexpected error.");
+            } catch (UnexpectedActionException e) {
+                System.err.println("Unexpected error: " + e.getMessage());
             }
             chatController.unsubscribe(username);
             if (game.getState() == GameState.INIT || (game.getCurrentPlayerCount() == 0 && !game.isRejoiningAfterCrash())) {
@@ -546,10 +554,27 @@ public class GameController {
     }
 
     /**
-     * @return The non-variable number of players expected to play the game.
+     * @return The non-variable number of players expected to play the game controlled by this controller.
      */
     public synchronized int getNumPlayers() {
         return game.getNumPlayers();
+    }
+
+    /**
+     * @return The {@link LobbyState} of the game controlled by this controller.
+     */
+    public synchronized LobbyState getLobbyState() {
+        if (isRejoiningAfterCrash()) {
+            return LobbyState.REJOINING;
+        }
+
+        GameState gameState = game.getState();
+
+        return switch (gameState) {
+            case JOINING -> LobbyState.JOINING;
+            case INIT, STARTED -> LobbyState.IN_GAME;
+            case FINAL_ROUND, ENDED -> LobbyState.ENDING;
+        };
     }
 
     /**
