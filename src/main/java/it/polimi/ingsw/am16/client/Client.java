@@ -50,28 +50,48 @@ public class Client {
 
     /**
      * Creates a new connection with the server using the given protocol.
-     * @param protocol The protocol, either "socket" or "rmi", which will be used to communicate with the server and vice versa.
-     * @param host The hostname of the server.
-     * @param port The port which the server is expected to be listening on.
+     * @param args The command line arguments passed to the application.
      * @param view The view of the client which will receive responses from the server.
      * @return The interface which the view can use to communicate with the server through the connection that was established.
      * @throws IllegalArgumentException Thrown if an invalid protocol name is given.
      */
-    public static ServerInterface serverInterfaceFactory(String protocol, String host, int port, ViewInterface view) throws IllegalArgumentException {
-        ServerInterface serverInterface = null;
+    public static ServerInterface serverInterfaceFactory(List<String> args, ViewInterface view) throws IllegalArgumentException {
+        String protocol;
+        int protocolIndex = args.indexOf("--socket");
+        if (protocolIndex == -1) {
+            protocolIndex = args.indexOf("--rmi");
+            protocol = "rmi";
+        } else {
+            protocol = "socket";
+        }
+
+        if (protocolIndex + 1 >= args.size()) {
+            throw new IllegalArgumentException("Missing server address and port. Use -h for more information.");
+        }
+
+        String[] hostAndPort = args.get(protocolIndex + 1).split(":");
+
+        String host = hostAndPort[0];
+        int port;
+
+        try {
+            port = Integer.parseInt(hostAndPort[1]);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Missing server address and port. Use -h for more information.");
+        }
+
+        ServerInterface serverInterface;
 
         switch (protocol) {
             case "socket" -> {
-                TCPClient tcpClient = null;
+                TCPClient tcpClient;
                 try {
                     tcpClient = new TCPClient(host, port, view);
                     new Thread(tcpClient).start();
                 } catch (UnknownHostException e) {
-                    System.err.println("Unknown host: " + host);
-                    System.exit(1);
+                    throw new IllegalArgumentException("Unknown host: " + host);
                 } catch (IOException e) {
-                    System.err.println("Couldn't establish a connection to the host.");
-                    System.exit(1);
+                    throw new IllegalArgumentException("Couldn't establish a connection to the host.");
                 }
                 serverInterface = tcpClient;
             }
@@ -82,14 +102,11 @@ public class Client {
                     serverInterface = rmiClient.getServerInterface();
                     rmiClient.start();
                 } catch (RemoteException e) {
-                    System.err.println("Couldn't start RMI client: " + e.getMessage());
-                    System.exit(1);
+                    throw new IllegalArgumentException("Couldn't start RMI client: " + e.getMessage());
                 } catch (NotBoundException e) {
-                    System.err.println("Couldn't find RMI server: " + e.getMessage());
-                    System.exit(1);
+                    throw new IllegalArgumentException("Couldn't find RMI server: " + e.getMessage());
                 } catch (MalformedURLException e) {
-                    System.err.println("Invalid hostname: " + e.getMessage());
-                    System.exit(1);
+                    throw new IllegalArgumentException("Invalid hostname: " + e.getMessage());
                 }
             }
             default -> throw new IllegalArgumentException("Illegal protocol: " + protocol);

@@ -100,7 +100,7 @@ public class CodexGUI extends Application implements ViewInterface {
     /**
      * Starts the GUI, connecting it to the server and displaying the splash screen for 2 seconds before switching to the welcome screen.
      *
-     * @inheritDoc
+     * @see Application#start
      */
     @Override
     public void start(Stage stage) throws IOException {
@@ -109,36 +109,10 @@ public class CodexGUI extends Application implements ViewInterface {
 
         List<String> args = getParameters().getRaw();
 
-        System.out.println(args);
-
-        String protocol;
-        int protocolIndex = args.indexOf("--socket");
-        if (protocolIndex == -1) {
-            protocolIndex = args.indexOf("--rmi");
-            protocol = "rmi";
-        } else {
-            protocol = "socket";
-        }
-
-        if (protocolIndex + 1 >= args.size()) {
-            System.out.println("Missing server address and port. Use -h for more information.");
-            return;
-        }
-
-        String[] hostAndPort = args.get(protocolIndex + 1).split(":");
-
-        int port = -1;
-
         try {
-            port = Integer.parseInt(hostAndPort[1]);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid port: " + hostAndPort[1]);
-            System.exit(1);
-        }
-
-        try {
-            serverInterface = Client.serverInterfaceFactory(protocol, hostAndPort[0], port, this);
+            serverInterface = Client.serverInterfaceFactory(args, this);
         } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
             return;
         }
 

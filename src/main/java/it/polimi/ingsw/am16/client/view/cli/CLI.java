@@ -114,41 +114,12 @@ public class CLI implements ViewInterface {
     public synchronized void startView(String[] args) {
         List<String> argsList = Arrays.asList(args);
 
-        System.out.println(argsList);
-
-        String protocol;
-        int protocolIndex = argsList.indexOf("--socket");
-        if (protocolIndex == -1) {
-            protocolIndex = argsList.indexOf("--rmi");
-            protocol = "rmi";
-        } else {
-            protocol = "socket";
-        }
-
-        if (protocolIndex + 1 >= argsList.size()) {
-            System.out.println("Missing server address and port. Use -h for more information.");
-            return;
-        }
-        String[] hostAndPort = argsList.get(protocolIndex + 1).split(":");
-        if (hostAndPort.length < 2) {
-            System.out.println("Invalid arguments. Use -h for more information.");
-            return;
-        }
-
-        int port = -1;
-
-        try {
-            port = Integer.parseInt(hostAndPort[1]);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid port: " + hostAndPort[1]);
-            System.exit(1);
-        }
-
         ServerInterface serverInterface;
 
         try {
-            serverInterface = Client.serverInterfaceFactory(protocol, hostAndPort[0], port, this);
+            serverInterface = Client.serverInterfaceFactory(argsList, this);
         } catch (IllegalArgumentException e) {
+            System.err.println(e.getMessage());
             return;
         }
 

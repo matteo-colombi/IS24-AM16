@@ -100,11 +100,17 @@ public class GameController {
         }
 
         if (game.getCurrentPlayerCount() == game.getNumPlayers() && game.everybodyConnected()) {
-            if (!game.isRejoiningAfterCrash()) {
-                initializingProcedures();
-            } else {
-                restartingProcedures();
-            }
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    if (!game.isRejoiningAfterCrash()) {
+                        initializingProcedures();
+                    } else {
+                        restartingProcedures();
+                    }
+                }
+            }, 3000);
         }
 
         chatController.subscribe(username, players.get(username).getChat());

@@ -806,7 +806,7 @@ public class PlayScreenController {
         otherPlayerInfoController.getRoot().setVisible(false);
 
         otherPlayersArea.getChildren().addLast(otherPlayerInfoController.getRoot());
-        otherPlayerInfoController.getRoot().setTranslateX(-75);
+        otherPlayerInfoController.getRoot().setTranslateX(-85);
         otherPlayerInfoController.getRoot().setTranslateY(-(playersBox.getHeight() / 2 - playerButton.getRoot().getBoundsInParent().getCenterY()));
 
         playerButton.getRoot().boundsInParentProperty().addListener((observable, oldValue, newValue) -> otherPlayerInfoController.getRoot().setTranslateY(-(playersBox.getHeight() / 2 - newValue.getCenterY())));
