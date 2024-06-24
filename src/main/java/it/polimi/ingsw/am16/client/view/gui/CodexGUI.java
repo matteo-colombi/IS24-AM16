@@ -41,66 +41,44 @@ import java.util.Set;
  */
 public class CodexGUI extends Application implements ViewInterface {
 
-    /**
-     * The instance of the GUI.
-     */
     private static CodexGUI guiInstance;
-
-    /**
-     * The state of the GUI.
-     */
     private GUIState guiState;
-
-    /**
-     * The stage of the GUI.
-     */
     private Stage stage;
-
-    /**
-     * The server interface.
-     */
     private ServerInterface serverInterface;
 
     /**
-     * Gets the instance of the GUI.
-     *
-     * @return The instance of the GUI.
+     * @return The only instance of the GUI.
      */
     public static CodexGUI getGUI() {
         return guiInstance;
     }
 
     /**
-     * Gets the server interface.
-     *
-     * @return The server interface.
+     * @return The server interface to communicate with the server.
      */
     public ServerInterface getServerInterface() {
         return serverInterface;
     }
 
     /**
-     * Gets the GUI state.
+     * @return This GUI's state.
      *
-     * @return The GUI state.
+     * @see GUIState
      */
     public GUIState getGuiState() {
         return guiState;
     }
 
     /**
-     * Gets the stage.
-     *
-     * @return The stage.
+     * @return The stage of the application.
      */
     public Stage getStage() {
         return stage;
     }
 
     /**
-     * Starts the GUI, connecting it to the server and displaying the splash screen for 2 seconds before switching to the welcome screen.
-     *
-     * @see Application#start
+     * Starts the GUI, connecting it to the server and displaying the splash screen for 2 seconds before switching to the welcome screen. <br>
+     * {@inheritDoc}
      */
     @Override
     public void start(Stage stage) throws IOException {
@@ -140,6 +118,8 @@ public class CodexGUI extends Application implements ViewInterface {
 
     /**
      * Switches to the welcome screen.
+     *
+     * @see it.polimi.ingsw.am16.client.view.gui.controllers.screens.WelcomeScreenController
      */
     public void switchToWelcomeScreen() {
         FXMLLoader welcomeScreenLoader = new FXMLLoader(CodexGUI.class.getResource(FilePaths.GUI_SCREENS + "/welcome-screen.fxml"));
@@ -154,6 +134,8 @@ public class CodexGUI extends Application implements ViewInterface {
 
     /**
      * Switches to the games screen.
+     *
+     * @see it.polimi.ingsw.am16.client.view.gui.controllers.screens.CreateScreenController
      */
     public void switchToCreateScreen() {
         FXMLLoader createScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/create-screen.fxml"));
@@ -167,6 +149,8 @@ public class CodexGUI extends Application implements ViewInterface {
 
     /**
      * Switches to the games screen.
+     *
+     * @see it.polimi.ingsw.am16.client.view.gui.controllers.screens.GamesScreenController
      */
     public void switchToGamesScreen() {
         FXMLLoader gamesScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/games-screen.fxml"));
@@ -180,6 +164,8 @@ public class CodexGUI extends Application implements ViewInterface {
 
     /**
      * Switches to the lobby screen.
+     *
+     * @see it.polimi.ingsw.am16.client.view.gui.controllers.screens.LobbyScreenController
      */
     public void switchToLobbyScreen() {
         FXMLLoader lobbyScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/lobby-screen.fxml"));
@@ -193,6 +179,8 @@ public class CodexGUI extends Application implements ViewInterface {
 
     /**
      * Switches to the game screen.
+     *
+     * @see it.polimi.ingsw.am16.client.view.gui.controllers.screens.PlayScreenController
      */
     public void switchToPlayScreen() {
         FXMLLoader playScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/play-screen.fxml"));
@@ -206,6 +194,8 @@ public class CodexGUI extends Application implements ViewInterface {
 
     /**
      * Switches to the endgame screen.
+     *
+     * @see it.polimi.ingsw.am16.client.view.gui.controllers.screens.EndgameScreenController
      */
     public void switchToEndgameScreen() {
         FXMLLoader endgameScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/endgame-screen.fxml"));
@@ -219,6 +209,8 @@ public class CodexGUI extends Application implements ViewInterface {
 
     /**
      * Switches to the rules screen.
+     *
+     * @see it.polimi.ingsw.am16.client.view.gui.controllers.screens.RulesScreenController
      */
     public void switchToRulesScreen() {
         FXMLLoader rulesScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/rules-screen.fxml"));
@@ -232,6 +224,8 @@ public class CodexGUI extends Application implements ViewInterface {
 
     /**
      * Switches to the credits screen.
+     *
+     * @see it.polimi.ingsw.am16.client.view.gui.controllers.screens.CreditsScreenController
      */
     public void switchToCreditsScreen() {
         FXMLLoader creditsScreenLoader = new FXMLLoader(getClass().getResource(FilePaths.GUI_SCREENS + "/credits-screen.fxml"));
