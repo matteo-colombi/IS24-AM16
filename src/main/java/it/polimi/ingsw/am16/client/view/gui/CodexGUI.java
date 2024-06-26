@@ -91,7 +91,7 @@ public class CodexGUI extends Application implements ViewInterface {
             serverInterface = Client.serverInterfaceFactory(args, this);
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
-            return;
+            Platform.exit();
         }
 
         guiState.setServerInterface(serverInterface);
@@ -239,10 +239,12 @@ public class CodexGUI extends Application implements ViewInterface {
 
     @Override
     public void stop() {
-        try {
-            serverInterface.disconnect();
-        } catch (RemoteException e) {
-            System.err.println("Couldn't communicate to the server that the client is stopping: " + e.getMessage());
+        if (serverInterface != null) {
+            try {
+                serverInterface.disconnect();
+            } catch (RemoteException e) {
+                System.err.println("Couldn't communicate to the server that the client is stopping: " + e.getMessage());
+            }
         }
     }
 
