@@ -79,9 +79,10 @@ public class GameController {
      * Sets the player with the given username's status to connected, and adds it to the list of players which should receive updates about the game.
      * @param username The player's username. If an invalid username is given, this method does nothing.
      * @param userView The {@link RemoteClientInterface}, used to communicate with the player.
+     * @param noDelay Whether a 3-second delay should expire before the game actually starts.
      * @throws UnexpectedActionException If a user with the given username is already connected, or if the user has not been created with {@link GameController#createPlayer}.
      */
-    public synchronized void joinPlayer(String username, RemoteClientInterface userView) throws UnexpectedActionException {
+    public synchronized void joinPlayer(String username, RemoteClientInterface userView, boolean noDelay) throws UnexpectedActionException {
         Map<String, Player> players = game.getPlayers();
 
         if (!players.containsKey(username)) {
@@ -100,20 +101,38 @@ public class GameController {
         }
 
         if (game.getCurrentPlayerCount() == game.getNumPlayers() && game.everybodyConnected()) {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    if (!game.isRejoiningAfterCrash()) {
-                        initializingProcedures();
-                    } else {
-                        restartingProcedures();
-                    }
+            if (noDelay) {
+                if (!game.isRejoiningAfterCrash()) {
+                    initializingProcedures();
+                } else {
+                    restartingProcedures();
                 }
-            }, 3000);
+            } else {
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (!game.isRejoiningAfterCrash()) {
+                            initializingProcedures();
+                        } else {
+                            restartingProcedures();
+                        }
+                    }
+                }, 3000);
+            }
         }
 
         chatController.subscribe(username, players.get(username).getChat());
+    }
+
+    /**
+     * Sets the player with the given username's status to connected, and adds it to the list of players which should receive updates about the game.
+     * @param username The player's username. If an invalid username is given, this method does nothing.
+     * @param userView The {@link RemoteClientInterface}, used to communicate with the player.
+     * @throws UnexpectedActionException If a user with the given username is already connected, or if the user has not been created with {@link GameController#createPlayer}.
+     */
+    public synchronized void joinPlayer(String username, RemoteClientInterface userView) throws UnexpectedActionException {
+        joinPlayer(username, userView, false);
     }
 
     /**

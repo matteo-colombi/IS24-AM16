@@ -47,18 +47,18 @@ public class TestGameController {
         assertThrows(UnexpectedActionException.class, () -> controller.joinPlayer("xLorde", user1Interface));
 
         controller.createPlayer("xLorde");
-        controller.joinPlayer("xLorde", user1Interface);
+        controller.joinPlayer("xLorde", user1Interface, true);
         assertEquals(1, controller.getCurrentPlayerCount());
         controller.disconnect("xLorde");
         assertEquals(0, controller.getCurrentPlayerCount());
         assertEquals(LobbyState.JOINING, controller.getLobbyState());
         controller.createPlayer("xLorde");
-        controller.joinPlayer("xLorde", user1Interface);
+        controller.joinPlayer("xLorde", user1Interface, true);
         controller.createPlayer("teo");
 
         assertThrows(UnexpectedActionException.class, () -> controller.createPlayer("test"));
 
-        controller.joinPlayer("teo", user2Interface);
+        controller.joinPlayer("teo", user2Interface, true);
 
 
         /*
@@ -106,8 +106,8 @@ public class TestGameController {
         assertEquals(LobbyState.REJOINING, controller.getLobbyState());
         assertTrue(controller.isRejoiningAfterCrash());
 
-        controller.joinPlayer("teo", user2Interface);
-        controller.joinPlayer("xLorde", user1Interface);
+        controller.joinPlayer("teo", user2Interface, true);
+        controller.joinPlayer("xLorde", user1Interface, true);
 
         assertEquals(LobbyState.IN_GAME, controller.getLobbyState());
         assertFalse(controller.isRejoiningAfterCrash());
