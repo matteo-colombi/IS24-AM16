@@ -61,4 +61,4 @@ To play Codex Naturalis, you must have Java version 21 or later properly install
      for a complete list of the options you can specify when launching the client or the server.
 
 ## Credits
---TODO
+The game concept and all graphical assets are property of Cranio Creations S.r.l. ([https://www.craniocreations.it/](https://www.craniocreations.it/))
